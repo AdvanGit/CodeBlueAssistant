@@ -8,7 +8,6 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Input;
-using WpfApp1.Model;
 using WpfApp1.View;
 
 namespace WpfApp1.ViewModel
@@ -18,14 +17,13 @@ namespace WpfApp1.ViewModel
         private Page currentPage;
         public ObservableCollection<Page> Pages { get; }
 
-
         public Page CurrentPage
         {
             get { return currentPage; }
             set
             {
                 if (currentPage == value) return;
-                currentPage = value;
+                 currentPage = value;
                 OnPropertyChanged("CurrentPage");
             }
         }
@@ -33,13 +31,12 @@ namespace WpfApp1.ViewModel
         public AppViewModel()
         {
 
-            CurrentPage = new View.Visit();
-
             Pages = new ObservableCollection<Page>
             {
-               new View.Visit(), new View.Registration()
+               new View.Visit(),
+               new View.Registration()
             };
-            CurrentPage = new View.Visit();
+            currentPage = Pages.ElementAt(0);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

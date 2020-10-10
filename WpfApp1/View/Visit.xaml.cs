@@ -22,8 +22,6 @@ namespace WpfApp1.View
         public Visit()
         {
             InitializeComponent();
-            DataContext = new VisitVM();
-
         }
     }
 }

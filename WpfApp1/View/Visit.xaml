@@ -4,9 +4,8 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:WpfApp1.View"
-      
-      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-
+      xmlns:local1="clr-namespace:WpfApp1.ViewModel"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
       mc:Ignorable="d" 
       d:DesignHeight="558" d:DesignWidth="825.885"
       FontSize="12"
@@ -19,7 +18,14 @@
             <Setter Property="UniformCornerRadius" Value="0"/>
             <Setter Property="materialDesign:ShadowAssist.ShadowDepth" Value="Depth1"/>
         </Style>
+        <Style TargetType="DataGridColumnHeader" BasedOn="{StaticResource MaterialDesignDataGridColumnHeader}">
+            <Setter Property="Padding" Value="7,4,0,4"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
     </Page.Resources>
+    <Page.DataContext>
+        <local1:VisitVM/>
+    </Page.DataContext>
 
     <Grid>
 
@@ -28,11 +34,11 @@
             <ColumnDefinition Width="0.8*"/>
         </Grid.ColumnDefinitions>
         <materialDesign:ColorZone VerticalAlignment="Stretch"
-                                  Mode="Standard"
+                                  Mode="Standard" Grid.Column="0"
                                     materialDesign:ShadowAssist.ShadowEdges="Right"
                                   materialDesign:ShadowAssist.ShadowDepth="Depth2">
             <ScrollViewer VerticalScrollBarVisibility="Auto" CanContentScroll="True">
-                <Grid Grid.Column="0">
+                <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
@@ -215,15 +221,15 @@
             </ScrollViewer>
         </materialDesign:ColorZone>
 
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1"  >
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
-                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"  MaxHeight="300" MinHeight="135"/>
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="0">
+            <ScrollViewer VerticalScrollBarVisibility="Auto" IsEnabled="{Binding ElementName=cb_IsAppear, Path=IsChecked}" >
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition/>
@@ -245,7 +251,7 @@
                             <TextBlock Text="АМБУЛАТОРНЫЙ ОСМОТР" FontSize="12" FontWeight="Bold"
                                Foreground="{DynamicResource MaterialDesignBodyLight}" Margin="10,0" VerticalAlignment="Center"/>
 
-                            <ComboBox materialDesign:HintAssist.Hint="Шаблон"
+                            <ComboBox materialDesign:HintAssist.Hint="Шаблон" Style="{StaticResource MaterialDesignDataGridComboBox}"
                                   Margin="20,0"
                                   MinWidth="100"
                                   FontSize="14"
@@ -286,10 +292,30 @@
                             </Button>
                         </StackPanel>
 
-                        <DataGrid Grid.Row="1" ItemsSource="{Binding InspectList}"  
-                              DataContext="{Binding CurrentVisit}" 
-                              CanUserSortColumns="True" CanUserAddRows="True"
-                              SelectionUnit="FullRow" SelectionMode="Single" />
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding CurrentVisit.InspectList}"  AutoGenerateColumns="False"> 
+                            <DataGrid.Columns>
+                                
+                                <DataGridCheckBoxColumn Width="40" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" CanUserResize="False" CanUserReorder="False"
+                                                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"> 
+                                    <DataGridCheckBoxColumn.Header>
+                                        <Border Background="Transparent">
+                                            <CheckBox HorizontalAlignment="Left"/>
+                                        </Border>
+                                    </DataGridCheckBoxColumn.Header>
+                                </DataGridCheckBoxColumn>
+                                <DataGridTextColumn Header="#" />
+                                <materialDesign:DataGridComboBoxColumn Header="Название" MinWidth="150" IsEditable="True" 
+                                                                       SelectedValueBinding="{Binding Checkup.Title}"  SelectedValuePath="Title"
+                                                                       SelectedItemBinding="{Binding Checkup, UpdateSourceTrigger=PropertyChanged}" DisplayMemberPath="Title" 
+                                                                       ItemsSourceBinding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type DataGrid}}, Path=DataContext.Checkups}"/>
+                                <DataGridTextColumn Header="Определение" Binding="{Binding Definition}"/>
+                                <DataGridTextColumn Header="РЕЗУЛЬТАТ" MinWidth="70" Binding="{Binding Result}"/>
+                                <DataGridTextColumn Header="Норма" Binding="{Binding Checkup.Normal}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Департамент" Binding="{Binding Checkup.Department.Title}" IsReadOnly="True"/>
+
+                            </DataGrid.Columns>
+                            
+                        </DataGrid>
 
                     </Grid>
 
@@ -320,7 +346,6 @@
                         <DataGrid Grid.Row="1" ItemsSource="{Binding CheckUps}" 
                               CanUserSortColumns="True" CanUserAddRows="True"
                               SelectionUnit="Cell" SelectionMode="Extended" />
-
                     </Grid>
 
                     <!--СИМПТОМЫ-->
@@ -347,15 +372,35 @@
                             </Button>
                         </StackPanel>
 
-                        <DataGrid Grid.Row="1" ItemsSource="{Binding CheckUps}" 
-                              CanUserSortColumns="True" CanUserAddRows="True"
-                              SelectionUnit="Cell" SelectionMode="Extended" />
+                        <DataGrid Grid.Row="1" ItemsSource="{Binding  CurrentVisit.SimptomList}" CanUserAddRows="False" AutoGenerateColumns="False"> 
+                            <DataGrid.Columns>
+                                
+                                <DataGridCheckBoxColumn Width="40" ElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnStyle}" CanUserResize="False" CanUserReorder="False"
+                                                        EditingElementStyle="{StaticResource MaterialDesignDataGridCheckBoxColumnEditingStyle}"> 
+                                    <DataGridCheckBoxColumn.Header>
+                                        <Border Background="Transparent">
+                                            <CheckBox HorizontalAlignment="Left"/>
+                                        </Border>
+                                    </DataGridCheckBoxColumn.Header>
+                                </DataGridCheckBoxColumn>
+                                <DataGridTextColumn Header="Номер" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Название" Binding="{Binding Inspect.Checkup.Title}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Определение" Binding="{Binding Inspect.Definition}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Результат" Binding="{Binding Inspect.Result}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Норма" Binding="{Binding Inspect.Checkup.Normal}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="Заключение" Binding="{Binding  Conclusion}" />
+                                
+                            </DataGrid.Columns>
+                            
+                        </DataGrid>
+
                     </Grid>
 
                 </Grid>
             </ScrollViewer>
+
             <!--ЗАКЛЮЧЕНИЯ-->
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1"   MaxHeight="300" MinHeight="135" IsEnabled="{Binding ElementName=cb_IsAppear, Path=IsChecked}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
@@ -387,7 +432,7 @@
                         </StackPanel>
 
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                            <TextBox AcceptsReturn="True" Margin="15,15,15,0" FontSize="18" Grid.Row="1" TextWrapping="WrapWithOverflow" 
+                            <TextBox AcceptsReturn="True" Margin="15,15,15,0" FontSize="16" Grid.Row="1" TextWrapping="WrapWithOverflow" 
                                      DataContext="{Binding CurrentVisit}" Text="{Binding Path=Conclusion, Mode=Default, UpdateSourceTrigger=PropertyChanged}"/>
                         </ScrollViewer>
 
@@ -403,7 +448,7 @@
                                     Margin="10,0,5,0" VerticalAlignment="Center">
                                     <TextBlock Text="ДИАГНОЗ" Margin="0,-3,0,0" FontSize="14" Foreground="{DynamicResource PrimaryHueMidBrush}" FontWeight="Bold"/>
                                 </CheckBox>
-                                
+
                                 <materialDesign:PopupBox PlacementMode="TopAndAlignLeftEdges" StaysOpen="True" Margin="5,2,0,0" IsEnabled="{Binding Path=IsChecked, ElementName=DiagChk}"
                                              VerticalAlignment="Center">
                                     <materialDesign:PopupBox.ToggleContent>
@@ -414,14 +459,14 @@
                                 </materialDesign:PopupBox>
 
                             </StackPanel>
-                            <ComboBox Grid.Column="1" FontSize="16" VerticalAlignment="Center" Style="{StaticResource MaterialDesignComboBox}" 
-                                      FontWeight="Bold" materialDesign:ComboBoxAssist.ShowSelectedItem="{Binding Path=IsChecked, ElementName=DiagChk}" 
+                            <ComboBox Grid.Column="1" FontSize="16" VerticalAlignment="Center" Style="{StaticResource MaterialDesignComboBox}"  FontWeight="Bold" 
+                                      materialDesign:ComboBoxAssist.ShowSelectedItem="{Binding Path=IsChecked, ElementName=DiagChk}" 
                                        DisplayMemberPath="Description" IsEditable="True"  Margin="10,0" IsEnabled="{Binding Path=IsChecked, ElementName=DiagChk}"
-                                       ItemsSource="{Binding DiagnosisList}" SelectedValue="{Binding CurDiagnosis}" IsSynchronizedWithCurrentItem="True"/>
+                                      SelectedItem="{Binding CurrentVisit.CurrentDiagnosis}" ItemsSource="{Binding DiagnosisList}"  IsSynchronizedWithCurrentItem="True"/>
                             <ComboBox Grid.Column="2" FontSize="16" VerticalAlignment="Center" Style="{StaticResource MaterialDesignComboBox}"
                                       materialDesign:ComboBoxAssist.ShowSelectedItem="{Binding Path=IsChecked, ElementName=DiagChk}"  
                                        DisplayMemberPath="Code" IsEditable="True" FlowDirection="LeftToRight" IsEnabled="{Binding Path=IsChecked, ElementName=DiagChk}"
-                                       ItemsSource="{Binding DiagnosisList}" SelectedValue="{Binding CurDiagnosis}" IsSynchronizedWithCurrentItem="True"/>
+                                       ItemsSource="{Binding DiagnosisList}"  SelectedItem="{Binding CurrentVisit.CurrentDiagnosis}" IsSynchronizedWithCurrentItem="True"/>
 
                         </Grid>
 
@@ -453,11 +498,12 @@
                         </StackPanel>
 
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                            <TextBox AcceptsReturn="True" Margin="15,15,15,10" FontSize="18" Grid.Row="1" TextWrapping="WrapWithOverflow" 
+                            <TextBox AcceptsReturn="True" Margin="15,15,15,10" FontSize="16" Grid.Row="1" TextWrapping="WrapWithOverflow" 
                                      DataContext="{Binding CurrentVisit}" Text="{Binding Path=Recomendation, Mode=Default, UpdateSourceTrigger=PropertyChanged}"/>
                         </ScrollViewer>
                     </Grid>
                 </materialDesign:Card>
+
                 <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Left" BorderThickness="2" BorderBrush="Transparent"/>
             </Grid>
 
@@ -465,78 +511,68 @@
             <Grid Grid.Row="2" Height="40" Margin="10,10">
 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <materialDesign:Card>
-                    <StackPanel Orientation="Horizontal">
-                        <materialDesign:PopupBox Height="30" PlacementMode="TopAndAlignLeftEdges" StaysOpen="True"
-                                             VerticalAlignment="Center" Margin="5,0">
-                            <StackPanel Margin="20,10" Orientation="Vertical" HorizontalAlignment="Right">
-                                <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
-                                    <TextBlock VerticalAlignment="Top" Text="Осмотр" FontSize="16"  Foreground="{DynamicResource MaterialDesignBody}"/>
-                                    <ToggleButton Margin="10,4,0,0" IsChecked="True"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="5"  HorizontalAlignment="Right">
-                                    <TextBlock VerticalAlignment="Top" Text="Анализы" FontSize="16"  Foreground="{DynamicResource MaterialDesignBody}"/>
-                                    <ToggleButton Margin="10,4,0,0" IsChecked="True"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="5"  HorizontalAlignment="Right">
-                                    <TextBlock VerticalAlignment="Top" Text="Заключение" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"/>
-                                    <ToggleButton Margin="10,4,0,0" IsChecked="True"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="5"  HorizontalAlignment="Right">
-                                    <TextBlock VerticalAlignment="Top" Text="Рекомендации" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"/>
-                                    <ToggleButton Margin="10,4,0,0" IsChecked="True"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal" Margin="5"  HorizontalAlignment="Right">
-                                    <TextBlock VerticalAlignment="Top" Text="Направление" FontSize="16"  Foreground="{DynamicResource MaterialDesignBody}"/>
-                                    <ToggleButton Margin="10,4,0,0" IsChecked="True"/>
-                                </StackPanel>
-                            </StackPanel>
-                        </materialDesign:PopupBox>
-                        <Button HorizontalAlignment="Right" Margin="10,0"
-                                Style="{StaticResource MaterialDesignToolForegroundButton}"
-                                 materialDesign:RippleAssist.IsCentered="True">
-                            <materialDesign:PackIcon Kind="Printer" Width="20" Height="20"
-                                                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                        </Button>
-                    </StackPanel>
-                </materialDesign:Card>
-
-                <materialDesign:Card HorizontalAlignment="Right" Margin="10,0">
+                    <materialDesign:Card>
                         <StackPanel Orientation="Horizontal">
-                        <Button HorizontalAlignment="Right" Margin="10,0"
+                            <materialDesign:PopupBox Height="30" PlacementMode="TopAndAlignLeftEdges" StaysOpen="True"
+                                             VerticalAlignment="Center" Margin="5,0">
+                                <StackPanel Margin="20,10" Orientation="Vertical" HorizontalAlignment="Right">
+                                    <StackPanel Orientation="Horizontal" Margin="5" HorizontalAlignment="Right">
+                                        <TextBlock VerticalAlignment="Top" Text="Осмотр" FontSize="16"  Foreground="{DynamicResource MaterialDesignBody}"/>
+                                        <ToggleButton Margin="10,4,0,0" IsChecked="True"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="5"  HorizontalAlignment="Right">
+                                        <TextBlock VerticalAlignment="Top" Text="Анализы" FontSize="16"  Foreground="{DynamicResource MaterialDesignBody}"/>
+                                        <ToggleButton Margin="10,4,0,0" IsChecked="True"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="5"  HorizontalAlignment="Right">
+                                        <TextBlock VerticalAlignment="Top" Text="Заключение" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"/>
+                                        <ToggleButton Margin="10,4,0,0" IsChecked="True"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="5"  HorizontalAlignment="Right">
+                                        <TextBlock VerticalAlignment="Top" Text="Рекомендации" FontSize="16" Foreground="{DynamicResource MaterialDesignBody}"/>
+                                        <ToggleButton Margin="10,4,0,0" IsChecked="True"/>
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal" Margin="5"  HorizontalAlignment="Right">
+                                        <TextBlock VerticalAlignment="Top" Text="Направление" FontSize="16"  Foreground="{DynamicResource MaterialDesignBody}"/>
+                                        <ToggleButton Margin="10,4,0,0" IsChecked="True"/>
+                                    </StackPanel>
+                                </StackPanel>
+                            </materialDesign:PopupBox>
+                            <Button HorizontalAlignment="Right" Margin="10,0"
                                 Style="{StaticResource MaterialDesignToolForegroundButton}"
                                  materialDesign:RippleAssist.IsCentered="True">
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="ArrowRight" Width="20" Height="20"
+                                <materialDesign:PackIcon Kind="Printer" Width="20" Height="20"
                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBlock Text="ТРАНСФЕР" Margin="10,0"/>
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
+                            </Button>
+                        </StackPanel>
+                    </materialDesign:Card>
 
-                        <Button HorizontalAlignment="Right" Margin="10,0"
+                    <materialDesign:Card HorizontalAlignment="Right" Margin="10,0">
+                        <StackPanel Orientation="Horizontal">
+                            <Button HorizontalAlignment="Right" Margin="10,0"
                                 Style="{StaticResource MaterialDesignToolForegroundButton}"
                                  materialDesign:RippleAssist.IsCentered="True">
-                            <Button.Content>
-                                <StackPanel Orientation="Horizontal">
-                                    <materialDesign:PackIcon Kind="CreateOutline" Width="20" Height="20"
+                                <Button.Content>
+                                    <StackPanel Orientation="Horizontal">
+                                        <materialDesign:PackIcon Kind="ArrowRight" Width="20" Height="20"
                                                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                    <TextBlock Text="ПОВТОРНЫЙ ПРИЕМ" Margin="10,0"/>
-
-                                </StackPanel>
-                            </Button.Content>
-                        </Button>
+                                        <TextBlock Text="ТРАНСФЕР" Margin="10,0"/>
+                                    </StackPanel>
+                                </Button.Content>
+                            </Button>
 
                         </StackPanel>
 
                     </materialDesign:Card>
                 </StackPanel>
-                
+
                 <materialDesign:Card HorizontalAlignment="Right" Foreground="{DynamicResource MaterialDesignBody}">
 
                     <StackPanel Orientation="Horizontal">
 
+                        <CheckBox x:Name="cb_IsAppear" Margin="10,0,5,0" VerticalAlignment="Center" IsChecked="True">
+                            <TextBlock Text="НЕЯВКА" Margin="0,-3,0,0" FontSize="14" FontWeight="DemiBold"/>
+                        </CheckBox>
 
                         <Button HorizontalAlignment="Right" Margin="5,0"
                                 Style="{StaticResource MaterialDesignToolForegroundButton}"
@@ -553,12 +589,9 @@
                 </materialDesign:Card>
 
             </Grid>
-   
-
-
+            <GridSplitter  Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Stretch" BorderThickness="2" BorderBrush="Transparent"  ResizeDirection="Rows"   />
         </Grid>
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Left" BorderThickness="2" BorderBrush="Transparent"/>
-
     </Grid>
 
 </Page>

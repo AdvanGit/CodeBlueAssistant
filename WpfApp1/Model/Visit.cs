@@ -58,12 +58,7 @@ namespace WpfApp1.Model
 
         public ObservableCollection<Inspect> InspectList { get; set;}
         public ObservableCollection<Symptom> SimptomList { get; set; }
-
-        public Visit()
-        {
-            route = new Route { VisitDateTime = System.DateTime.Now, };
-        }
-
+        public ObservableCollection<ProcQueue> ProcQueues { get; set; }
 
         // Лист Анализов
         // ------ Код анализа ------ Название анализа ------ Норма ------Результат
@@ -120,7 +115,7 @@ namespace WpfApp1.Model
 
     }
 
-    public class Symptom : INotifyPropertyChanged
+    public struct Symptom : INotifyPropertyChanged
     {
         private Inspect inspect;
         private string conclusion;
@@ -153,5 +148,6 @@ namespace WpfApp1.Model
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }
+
 
 }

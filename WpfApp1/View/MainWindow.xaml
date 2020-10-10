@@ -36,25 +36,22 @@
                              ItemsSource="{Binding Pages}"
                              ItemContainerStyle="{StaticResource ListBoxHead}"
                              SelectedItem="{Binding CurrentPage}">
-                        
                         <ListBox.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <StackPanel Orientation="Horizontal"/>
                             </ItemsPanelTemplate>
                         </ListBox.ItemsPanel>
-                        
                         <ListBox.ItemTemplate>
                             <DataTemplate>
                                     <TextBlock FontSize="18" Text="{Binding Path=Title}"  Margin="0,-3"/>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
-
                     </ListBox>
+                    
                 </StackPanel>
             </materialDesign:ColorZone>
         </Grid>
-        <Frame Grid.Row="1"
-               Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden" /> 
+        <Frame Grid.Row="1" Content="{Binding CurrentPage}" NavigationUIVisibility="Hidden" /> 
     </Grid>
 
 </Window>
