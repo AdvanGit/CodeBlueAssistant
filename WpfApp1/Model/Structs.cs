@@ -9,7 +9,6 @@ using System.Text.Json.Serialization;
 
 namespace WpfApp1.Model
 { 
-
     public struct Diagnosis : INotifyPropertyChanged
     {
         private string _description;
@@ -232,7 +231,6 @@ namespace WpfApp1.Model
             _visit = visit;
         }
 
-
         private enum status
         {
             Complete, Waiting
@@ -269,17 +267,15 @@ namespace WpfApp1.Model
             }
         }
 
-
-
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
 
     }
 
-    public struct Department : INotifyPropertyChanged
+    public class Department : INotifyPropertyChanged
     {
         private string _title;
-        private string _adress;
+        private Adress _adress;
         private Staff _manager;
 
         //private TimeSpan _time;
@@ -296,7 +292,7 @@ namespace WpfApp1.Model
                 OnPropertyChanged("Title");
             }
         }
-        public string Adress
+        public Adress Adress
         {
             get
             {
@@ -325,4 +321,3 @@ namespace WpfApp1.Model
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }
 }
-

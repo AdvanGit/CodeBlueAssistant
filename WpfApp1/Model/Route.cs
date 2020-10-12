@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using WpfApp1.Context;
 
 namespace WpfApp1.Model
 {
@@ -20,9 +21,6 @@ namespace WpfApp1.Model
 
         public Route()
         {
-            patient = new Patient { FirstName = "Очень", MidName = "Больной", LastName = "Человек" };
-            staffOrigin = new Staff { FirstName = "Ресепшен", MidName = "Вашу", LastName = "Мать"};
-            staffDestination = new Staff { FirstName = "Доктор", MidName = "Соколов", LastName = "Премудрый"};
             createDateTime = System.DateTime.Now;
         }
 

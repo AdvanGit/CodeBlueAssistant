@@ -8,6 +8,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Input;
+using WpfApp1.Data;
 using WpfApp1.Model;
 using WpfApp1.View;
 
@@ -20,7 +21,8 @@ namespace WpfApp1.ViewModel
         public ObservableCollection<Inspect> Inspects { get; }
         public ObservableCollection<Symptom> Symptoms { get; }
         public ObservableCollection<Proc> Procedures { get; }
-        public ObservableCollection
+
+        public Route route;
 
         public Model.Visit CurrentVisit { get; }
 
@@ -30,8 +32,8 @@ namespace WpfApp1.ViewModel
             DiagnosisList = CreateDiagList();
             Inspects = CreateInspList();
 
-
-
+            new DataCreate();
+            
             CurrentVisit = new Model.Visit { InspectList=Inspects, CurrentDiagnosis=DiagnosisList.ElementAt(0), Conclusion = "Человек явно здоров но показывает недовольный вид", Recomendation = "Пить, Курить, Слушать Моргенштерна" };
             Symptoms = CreateSympList();
             CurrentVisit.SimptomList = Symptoms;
