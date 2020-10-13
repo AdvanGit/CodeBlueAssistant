@@ -8,7 +8,8 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Windows.Controls;
 using System.Windows.Input;
-using WpfApp1.Data;
+using Hospital.Domain.Model;
+using Hospital.EntityFramework;
 using WpfApp1.Model;
 using WpfApp1.View;
 
@@ -32,7 +33,7 @@ namespace WpfApp1.ViewModel
             DiagnosisList = CreateDiagList();
             Inspects = CreateInspList();
 
-            new DataCreate();
+            new ContentCreate();
             
             CurrentVisit = new Model.Visit { InspectList=Inspects, CurrentDiagnosis=DiagnosisList.ElementAt(0), Conclusion = "Человек явно здоров но показывает недовольный вид", Recomendation = "Пить, Курить, Слушать Моргенштерна" };
             Symptoms = CreateSympList();

@@ -1,15 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
-using System.Windows.Documents;
 
-namespace WpfApp1.Model
+namespace Hospital.Domain.Model
 {
-    public enum Gender : byte {male, female}
+    public enum Gender : byte { male, female }
 
     public class User : INotifyPropertyChanged
     {
@@ -77,7 +75,7 @@ namespace WpfApp1.Model
             }
         }
 
-        internal string _Adress { get; set; }
+        public string _Adress { get; set; }
         public Adress Adress
         {
             get { return _Adress == null ? null : JsonConvert.DeserializeObject<Adress>(_Adress); }
@@ -155,6 +153,7 @@ namespace WpfApp1.Model
         private bool _isMarried;
         private bool _hasChild;
 
+
         public Belay Belay
         {
             get => _belay;
@@ -200,91 +199,6 @@ namespace WpfApp1.Model
                 OnPropertyChanged("HasChild");
             }
         }
-        public int BelayId { get; set; }
     }
 
-    public class Belay : INotifyPropertyChanged
-    {
-        private string _title;
-        private string _info;
-
-        public int Id { get; set; }
-        public string Title
-        {
-            get => _title;
-            set
-            {
-                _title = value;
-                OnPropertyChanged("Title");
-            }
-        }
-        public string Info
-        {
-            get => _info;
-            set
-            {
-                _info = value;
-                OnPropertyChanged("Info");
-            }
-        }
-
-        public ObservableCollection<Patient> Patients { get; set; }
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
-    }
-
-    public class Adress : INotifyPropertyChanged
-    {
-        private string _city, _street;
-        private int _number, _subNumber, _room;
-
-        public string City
-        {
-            get => _city;
-            set
-            {
-                _city = value;
-                OnPropertyChanged("City");
-            }
-        }
-        public string Street
-        {
-            get => _street;
-            set
-            {
-                _street = value;
-                OnPropertyChanged("Street");
-            }
-        }
-        public int Number
-        {
-            get => _number;
-                set
-            {
-                _number = value;
-                OnPropertyChanged("Number");
-            }
-        }
-        public int SubNumber
-        {
-            get => _subNumber;
-            set
-            {
-                _subNumber = value;
-                OnPropertyChanged("SubNumber");
-            }
-        }
-        public int Room
-        {
-            get => _room;
-            set
-            {
-                _room = value;
-                OnPropertyChanged("Room");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
-    }
 }

@@ -5,13 +5,14 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
 
-namespace WpfApp1.Model
+namespace Hospital.Domain.Model
 {
     public class Department : INotifyPropertyChanged
     {
         private string _title;
         private Adress _adress;
         private Staff _manager;
+        private ObservableCollection<Change> _changes;
 
         public string Title
         {
@@ -49,16 +50,6 @@ namespace WpfApp1.Model
                 OnPropertyChanged("Title");
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
-    }
-
-    public class Schedule : INotifyPropertyChanged
-    {
-        private ObservableCollection<DateTime> _dateTimes;
-        private Staff _staff;
-        private Change _change;
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }

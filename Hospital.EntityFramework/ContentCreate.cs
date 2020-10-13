@@ -1,17 +1,16 @@
-﻿using System;
+﻿using Hospital.Domain.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using WpfApp1.Context;
-using WpfApp1.Model;
 
-namespace WpfApp1.Data
+namespace Hospital.EntityFramework
 {
-    public class DataCreate
+    public class ContentCreate
     {
-        public DataCreate()
+        public ContentCreate()
         {
-            using (DataBaseContext db = new DataBaseContext())
+            using (HospitalDbContext db = new HospitalDbContext())
             {
                 List<Adress> adresses = new List<Adress>
                 {
@@ -48,7 +47,7 @@ namespace WpfApp1.Data
                 db.Staffs.AddRange(staffs);
                 db.SaveChanges();
             }
+
         }
     }
 }
-

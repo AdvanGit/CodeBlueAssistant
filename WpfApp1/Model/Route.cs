@@ -1,9 +1,9 @@
-﻿using System;
+﻿using Hospital.Domain.Model;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
-using WpfApp1.Context;
 
 namespace WpfApp1.Model
 {

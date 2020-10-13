@@ -10,7 +10,6 @@ namespace WpfApp1.Model
     public class Visit : INotifyPropertyChanged
     {
 
-        public Route route { get; }
         public DateTime VisitDateTime { get; }
 
         private Diagnosis currentDiagnosis;
