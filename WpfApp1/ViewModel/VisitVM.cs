@@ -37,7 +37,6 @@ namespace WpfApp1.ViewModel
             CurrentVisit = new Model.Visit { InspectList=Inspects, CurrentDiagnosis=DiagnosisList.ElementAt(0), Conclusion = "Человек явно здоров но показывает недовольный вид", Recomendation = "Пить, Курить, Слушать Моргенштерна" };
             Symptoms = CreateSympList();
             CurrentVisit.SimptomList = Symptoms;
-
         }
 
         private static ObservableCollection<Checkup> CreateDataCheck()

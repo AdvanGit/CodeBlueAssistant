@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -17,7 +18,6 @@ namespace WpfApp1.Model
         private string _lastName;
         private long _phoneNumber;
         private DateTime _birthDay;
-        //private Adress _adress;
         private Gender _gender;
         private DateTime _createDate;
 
@@ -77,16 +77,13 @@ namespace WpfApp1.Model
             }
         }
 
-        //public Adress Adress
-        //{
-        //    get => _adress;
-        //    set
-        //    {
-        //        _adress = value;
-        //        OnPropertyChanged("Adress");
-        //    }
+        internal string _Adress { get; set; }
+        public Adress Adress
+        {
+            get { return _Adress == null ? null : JsonConvert.DeserializeObject<Adress>(_Adress); }
+            set { _Adress = JsonConvert.SerializeObject(value); }
+        }
 
-        //} 
         public Gender Gender
         {
             get => _gender;
@@ -203,11 +200,13 @@ namespace WpfApp1.Model
                 OnPropertyChanged("HasChild");
             }
         }
+        public int BelayId { get; set; }
     }
 
     public class Belay : INotifyPropertyChanged
     {
         private string _title;
+        private string _info;
 
         public int Id { get; set; }
         public string Title
@@ -219,14 +218,22 @@ namespace WpfApp1.Model
                 OnPropertyChanged("Title");
             }
         }
+        public string Info
+        {
+            get => _info;
+            set
+            {
+                _info = value;
+                OnPropertyChanged("Info");
+            }
+        }
 
-        public List<Patient> Patients { get; set; }
-
+        public ObservableCollection<Patient> Patients { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }
 
-    public struct Adress : INotifyPropertyChanged
+    public class Adress : INotifyPropertyChanged
     {
         private string _city, _street;
         private int _number, _subNumber, _room;
