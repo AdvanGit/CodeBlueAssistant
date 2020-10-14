@@ -9,7 +9,8 @@ namespace Hospital.EntityFramework
 {
     public class HospitalDbContext : DbContext
     {
-        public DbSet<User> Users { get; set; }
+        //public HospitalDbContext(DbContextOptions options) : base(options) { }
+
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Belay> Belays { get; set; }
@@ -17,9 +18,11 @@ namespace Hospital.EntityFramework
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new UserConfig());
+            modelBuilder.ApplyConfiguration(new PatientConfig());
+            modelBuilder.ApplyConfiguration(new StaffConfig());
             modelBuilder.ApplyConfiguration(new DepartmentConfig());
             modelBuilder.Ignore<Department>();
+            modelBuilder.Ignore<User>();
 
             {
                 //modelBuilder.Entity<Country>();   //Fluent API include  
@@ -47,30 +50,42 @@ namespace Hospital.EntityFramework
 
             }
         }
-
-        public class UserConfig : IEntityTypeConfiguration<User>
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            public void Configure(EntityTypeBuilder<User> builder)
+            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HospitalDB;Trusted_Connection=True;");
+        }
+
+        private class StaffConfig : IEntityTypeConfiguration<Staff>
+        {
+            public void Configure(EntityTypeBuilder<Staff> builder)
             {
-                builder.Property(u => u.CreateDate).HasDefaultValueSql("GETDATE()");
-                builder.Property(u => u.FirstName).IsRequired();
-                builder.Property(u => u.LastName).IsRequired();
-                //Json serialize
-                builder.Property(u => u._Adress).HasColumnName("Adress");
-                builder.Ignore(u => u.Adress);
+                builder.Property(s => s.IsEnabled).HasDefaultValue(true);
+                builder.Property(s => s.LastName).IsRequired();
+                builder.Property(s => s.FirstName).IsRequired();
+                builder.Property(s => s.CreateDate).HasDefaultValueSql("GETDATE()");
+                builder.Property(s=>s._Adress).HasColumnName("Adress");
+                builder.Ignore(s => s.Adress);
+
             }
         }
-        public class DepartmentConfig : IEntityTypeConfiguration<Department>
+        private class PatientConfig : IEntityTypeConfiguration<Patient>
+        {
+            public void Configure(EntityTypeBuilder<Patient> builder)
+            {
+                builder.Property(s => s.CreateDate).HasDefaultValueSql("GETDATE()");
+                builder.Property(s => s._Adress).HasColumnName("Adress");
+                builder.Property(s => s.LastName).IsRequired();
+                builder.Property(s => s.FirstName).IsRequired();
+                builder.Ignore(s => s.Adress);
+
+            }
+        }
+        private class DepartmentConfig : IEntityTypeConfiguration<Department>
         {
             public void Configure(EntityTypeBuilder<Department> builder)
             {
 
             }
-        }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HospitalDB;Trusted_Connection=True;");
         }
     }
 }

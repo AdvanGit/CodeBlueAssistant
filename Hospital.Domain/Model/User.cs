@@ -103,7 +103,6 @@ namespace Hospital.Domain.Model
         private string _qualification;
         private bool _isEnabled;
 
-
         public bool IsEnabled
         {
             get => _isEnabled;
@@ -152,7 +151,6 @@ namespace Hospital.Domain.Model
         private DateTime _belayDateOut;
         private bool _isMarried;
         private bool _hasChild;
-
 
         public Belay Belay
         {

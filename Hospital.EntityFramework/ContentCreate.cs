@@ -21,26 +21,23 @@ namespace Hospital.EntityFramework
                 };
                 List<Belay> belays = new List<Belay>
                 {
-                    new Belay { Title="Росгосстрах-медицина"},
-                    new Belay { Title="СОГАЗ-Мед"},
+                    new Belay {Title="Росгосстрах-медицина"},
+                    new Belay {Title="СОГАЗ-Мед"},
                     new Belay {Title="ВТБ МС"},
                     new Belay {Title="МАКС-М"},
                     new Belay {Title="АльфаСтрахование-ОМС"}
                 };
                 List<Patient> patients = new List<Patient>
                 {
-                    new Patient { FirstName = "Очень", MidName = "Больной", LastName = "Человек", Gender = Gender.female, HasChild = true, Belay = belays.ElementAt(0), BelayCode = 12345678, Adress=adresses.ElementAt(0)},
-                    new Patient { FirstName = "Очень", MidName = "Твердая", LastName = "Воля", Gender = Gender.female, Belay = belays.ElementAt(1), BelayCode=88888888, Adress=adresses.ElementAt(1) }
+                    new Patient { FirstName = "Очень", MidName = "Больной", LastName = "Человек", Gender = Gender.female, HasChild = true, Belay = belays.ElementAt(0), BelayCode = 12345678, Adress=adresses.ElementAt(new Random().Next(adresses.Count))},
+                    new Patient { FirstName = "Очень", MidName = "Твердая", LastName = "Воля", Gender = Gender.female, Belay = belays.ElementAt(1), BelayCode=88888888, Adress=adresses.ElementAt(new Random().Next(adresses.Count))}
 
                 };
                 List<Staff> staffs = new List<Staff>
                 {
-                    new Staff { FirstName = "Ресепшен", MidName = "Вашу", LastName = "Мать",  Gender=Gender.female, Password="123", PhoneNumeber=89991231190, Adress=adresses.ElementAt(2)},
-                    new Staff { FirstName = "Доктор", MidName = "Соколов", LastName = "Премудрый", Password="123", PhoneNumeber=89223348043, Adress=adresses.ElementAt(3)}
+                    new Staff { FirstName = "Ресепшен", MidName = "Вашу", LastName = "Мать",  Gender=Gender.female, Password="123", PhoneNumeber=89991231190, Adress=adresses.ElementAt(new Random().Next(adresses.Count))},
+                    new Staff { FirstName = "Доктор", MidName = "Соколов", LastName = "Премудрый", Password="123", PhoneNumeber=89223348043, Adress=adresses.ElementAt(new Random().Next(adresses.Count))}
                 };
-
-
-
 
                 db.Belays.AddRange(belays);
                 db.Patients.AddRange(patients);
