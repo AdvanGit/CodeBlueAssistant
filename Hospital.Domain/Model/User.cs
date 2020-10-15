@@ -8,6 +8,7 @@ using System.Text;
 namespace Hospital.Domain.Model
 {
     public enum Gender : byte { male, female }
+    public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
 
     public class User : INotifyPropertyChanged
     {
@@ -98,12 +99,13 @@ namespace Hospital.Domain.Model
 
     public class Staff : User
     {
-        private string _password;
-        private Department _department;
-        private string _qualification;
         private bool _isEnabled;
+        private string _password;
+        private string _qualification;
+        private WeekDays _weekDays;
+        private int _cabinet;
+        private Department _department;
 
-        //public int DepartmentId { get; set; }
         public bool IsEnabled
         {
             get => _isEnabled;
@@ -111,6 +113,15 @@ namespace Hospital.Domain.Model
             {
                 _isEnabled = value;
                 OnPropertyChanged("IsEnabled");
+            }
+        }
+        public string Password
+        {
+            get { return _password; }
+            set
+            {
+                _password = value;
+                OnPropertyChanged("Password");
             }
         }
         public string Qualification
@@ -122,13 +133,22 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("Qualification");
             }
         }
-        public string Password
+        public WeekDays WeekDays
         {
-            get { return _password; }
+            get => _weekDays;
             set
             {
-                _password = value;
-                OnPropertyChanged("Password");
+                _weekDays = value;
+                OnPropertyChanged("WeekDays");
+            }
+        }
+        public int Cabinet
+        {
+            get => _cabinet;
+            set
+            {
+                _cabinet = value;
+                OnPropertyChanged("Cabinet");
             }
         }
         public Department Department
@@ -199,5 +219,4 @@ namespace Hospital.Domain.Model
             }
         }
     }
-
 }

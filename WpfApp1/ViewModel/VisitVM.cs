@@ -59,16 +59,16 @@ namespace WpfApp1.ViewModel
         {
             return new ObservableCollection<Diagnosis>
             {
-                new Diagnosis {Description = "Нет", Code="000"},
-                new Diagnosis {Description = "Здоров", Code="001"},
-                new Diagnosis {Description = "Вылечен", Code="002"},
-                new Diagnosis {Description = "Грипп", Code="141"},
-                new Diagnosis {Description = "Недержание мочи", Code="142"},
-                new Diagnosis {Description = "Малярия", Code="143"},
-                new Diagnosis {Description = "Перелом", Code="144"},
-                new Diagnosis {Description = "Расстройство пищеварения", Code="145"},
-                new Diagnosis {Description = "Тромбоэмболия легочной артерии", Code="146"},
-                new Diagnosis {Description = "Камни в почках", Code="147"},
+                new Diagnosis { Title = "Нет", Code="000"},
+                new Diagnosis {Title = "Здоров", Code="001"},
+                new Diagnosis {Title = "Вылечен", Code="002"},
+                new Diagnosis {Title = "Грипп", Code="141"},
+                new Diagnosis {Title = "Недержание мочи", Code="142"},
+                new Diagnosis {Title = "Малярия", Code="143"},
+                new Diagnosis {Title = "Перелом", Code="144"},
+                new Diagnosis {Title = "Расстройство пищеварения", Code="145"},
+                new Diagnosis {Title = "Тромбоэмболия легочной артерии", Code="146"},
+                new Diagnosis {Title = "Камни в почках", Code="147"},
             };
         }
         private static ObservableCollection<Inspect> CreateInspList()

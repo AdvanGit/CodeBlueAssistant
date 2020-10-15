@@ -64,6 +64,7 @@ namespace Hospital.Domain.Model
 
         public ObservableCollection<Change> Changes { get; set; }
         public ObservableCollection<Staff> Staffs { get; set; }
+        public ObservableCollection<Diagnosis> Diagnoses { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }

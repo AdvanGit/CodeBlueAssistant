@@ -10,40 +10,6 @@ using System.Text.Json.Serialization;
 
 namespace WpfApp1.Model
 { 
-    public struct Diagnosis : INotifyPropertyChanged
-    {
-        private string _description;
-        private string _code;
-
-        public string Code
-        {
-            get
-            {  
-                return _code;
-            }
-            set
-            {
-                _code = value;
-                OnPropertyChanged("Code");
-            }
-        }
-        public string Description
-        {
-            get
-            {
-                return _description;
-            }
-            set
-            {
-                _description = value;
-                OnPropertyChanged("Description");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") {PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));}
-    }
-
     public struct Checkup : INotifyPropertyChanged
     {
         private string _title;

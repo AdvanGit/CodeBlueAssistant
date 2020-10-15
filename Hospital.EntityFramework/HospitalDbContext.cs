@@ -17,6 +17,9 @@ namespace Hospital.EntityFramework
         public DbSet<DepartmentTitle> DepartmentTitles { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Change> Changes { get; set; }
+        public DbSet<Diagnosis> Diagnoses { get; set; }
+        public DbSet<Test> Tests { get; set; }
+        public DbSet<TestData> TestDatas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
