@@ -11,7 +11,7 @@ Migrations/
 *.user
 *.userosscache
 *.sln.docstates
-Migrations/
+Migrations/ 
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
