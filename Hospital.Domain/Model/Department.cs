@@ -156,22 +156,4 @@ namespace Hospital.Domain.Model
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }
-
-    public class Manager : INotifyPropertyChanged
-    {
-        private Staff _staff;
-        public Staff Staff
-        {
-            get => _staff;
-            set
-            {
-                _staff = value;
-                OnPropertyChanged("Staff");
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
-
-    }
 }
