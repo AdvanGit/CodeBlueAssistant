@@ -103,6 +103,7 @@ namespace Hospital.Domain.Model
         private string _qualification;
         private bool _isEnabled;
 
+        //public int DepartmentId { get; set; }
         public bool IsEnabled
         {
             get => _isEnabled;

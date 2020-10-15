@@ -14,15 +14,18 @@ namespace Hospital.EntityFramework
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Staff> Staffs { get; set; }
         public DbSet<Belay> Belays { get; set; }
+        public DbSet<DepartmentTitle> DepartmentTitles { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<Change> Changes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new PatientConfig());
             modelBuilder.ApplyConfiguration(new StaffConfig());
             modelBuilder.ApplyConfiguration(new DepartmentConfig());
-            modelBuilder.Ignore<Department>();
-            modelBuilder.Ignore<User>();
+            //modelBuilder.Ignore<User>();
+            //modelBuilder.Ignore<Schedule>();
+            modelBuilder.Ignore<Adress>();
 
             {
                 //modelBuilder.Entity<Country>();   //Fluent API include  
@@ -64,7 +67,8 @@ namespace Hospital.EntityFramework
                 builder.Property(s => s.FirstName).IsRequired();
                 builder.Property(s => s.CreateDate).HasDefaultValueSql("GETDATE()");
                 builder.Property(s=>s._Adress).HasColumnName("Adress");
-                builder.Ignore(s => s.Adress);
+                builder.HasOne(s => s.Department).WithMany(d => d.Staffs);
+                //builder.Ignore(s => s.Adress);
 
             }
         }
@@ -76,15 +80,13 @@ namespace Hospital.EntityFramework
                 builder.Property(s => s._Adress).HasColumnName("Adress");
                 builder.Property(s => s.LastName).IsRequired();
                 builder.Property(s => s.FirstName).IsRequired();
-                builder.Ignore(s => s.Adress);
-
+                //builder.Ignore(s => s.Adress);
             }
         }
         private class DepartmentConfig : IEntityTypeConfiguration<Department>
         {
             public void Configure(EntityTypeBuilder<Department> builder)
             {
-
             }
         }
     }

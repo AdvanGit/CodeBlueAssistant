@@ -44,15 +44,15 @@ namespace WpfApp1.ViewModel
         {
             return new ObservableCollection<Checkup>
                 {
-                new Checkup {Title="Опрос", Department = new Department{Title = "Общая терапия"} },
-                new Checkup {Title="Внешний осмотр", Department = new Department{Title="Общая терапия"} },
+                new Checkup {Title="Опрос"},
+                new Checkup {Title="Внешний осмотр"},
                 new Checkup {Title="Пульс", Normal = "75"},
                 new Checkup {Title="Давление", Normal = "120/80"},
-                new Checkup {Title="Температура", Normal = "36.6", Department = new Department{Title = "Общая терапия"} },
-                new Checkup {Title="Аускультация", Department = new Department{Title = "Общая терапия" } },
-                new Checkup {Title="Пальпация", Department = new Department{Title = "Общая терапия" } },
-                new Checkup {Title="Перкуссия", Department = new Department{Title="Общая хирургия"}},
-                new Checkup {Title="Электромиография", Department = new Department{Title = "Ортопедия"} }
+                new Checkup {Title="Температура", Normal = "36.6"},
+                new Checkup {Title="Аускультация"},
+                new Checkup {Title="Пальпация"},
+                new Checkup {Title="Перкуссия"},
+                new Checkup {Title="Электромиография"}
                 };
         }
         private static ObservableCollection<Diagnosis> CreateDiagList()

@@ -12,6 +12,13 @@ namespace Hospital.EntityFramework
         {
             using (HospitalDbContext db = new HospitalDbContext())
             {
+                List<DepartmentTitle> departmentTitles = new List<DepartmentTitle>
+                {
+                    new DepartmentTitle{ Title="Общая терапия", Code="Therapy"},
+                    new DepartmentTitle{Title = "Стоматология", Code="Stomatology"},
+                    new DepartmentTitle{Title = "Станция переливания крови", Code="Transfusiology"},
+                    new DepartmentTitle{Title = "Интенсивная терапия", Code="ICU"},
+                };
                 List<Adress> adresses = new List<Adress>
                 {
                     new Adress { City="Чайковский", Street="Декабристов", Number=5, SubNumber=3, Room=15},
@@ -38,7 +45,24 @@ namespace Hospital.EntityFramework
                     new Staff { FirstName = "Ресепшен", MidName = "Вашу", LastName = "Мать",  Gender=Gender.female, Password="123", PhoneNumeber=89991231190, Adress=adresses.ElementAt(new Random().Next(adresses.Count))},
                     new Staff { FirstName = "Доктор", MidName = "Соколов", LastName = "Премудрый", Password="123", PhoneNumeber=89223348043, Adress=adresses.ElementAt(new Random().Next(adresses.Count))}
                 };
+                List<Department> departments = new List<Department>
+                {
+                    new Department { Title=departmentTitles.ElementAt(0), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Ambulatory, Manager=staffs.ElementAt(new Random().Next(staffs.Count)) },
+                    new Department { Title=departmentTitles.ElementAt(1), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Stationary, Manager=staffs.ElementAt(new Random().Next(staffs.Count)) },
+                    new Department { Title=departmentTitles.ElementAt(2), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Laboratory, Manager=staffs.ElementAt(new Random().Next(staffs.Count)) },
+                    new Department { Title=departmentTitles.ElementAt(3), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Ambulatory, Manager=staffs.ElementAt(new Random().Next(staffs.Count)) },
+                    new Department { Title=departmentTitles.ElementAt(3), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Stationary, Manager=staffs.ElementAt(new Random().Next(staffs.Count)) },
+                };
+                List<Change> changes = new List<Change>
+                {
+                    new Change { ChangeTitle=ChangeTitle.Первая, TimeStart=DateTime.Parse("8:00"), TimeSpan=TimeSpan.FromHours(6), Department=departments.ElementAt(0)},
+                    new Change { ChangeTitle=ChangeTitle.Вторая, TimeStart=DateTime.Parse("13:00"), TimeSpan=TimeSpan.FromHours(6), Department=departments.ElementAt(0)},
+                    new Change { ChangeTitle=ChangeTitle.Ночная, TimeStart=DateTime.Parse("19:00"), TimeSpan=TimeSpan.FromHours(12), Department=departments.ElementAt(0)}
+                };
 
+                db.DepartmentTitles.AddRange(departmentTitles);
+                db.Changes.AddRange(changes);
+                db.Departments.AddRange(departments);
                 db.Belays.AddRange(belays);
                 db.Patients.AddRange(patients);
                 db.Staffs.AddRange(staffs);
