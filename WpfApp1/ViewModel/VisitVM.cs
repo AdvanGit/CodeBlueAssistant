@@ -21,7 +21,7 @@ namespace WpfApp1.ViewModel
         public ObservableCollection<Diagnosis> DiagnosisList { get; }
         public ObservableCollection<Inspect> Inspects { get; }
         public ObservableCollection<Symptom> Symptoms { get; }
-        public ObservableCollection<Proc> Procedures { get; }
+        public ObservableCollection<Procedures> Procedures { get; }
 
         public Route route;
 

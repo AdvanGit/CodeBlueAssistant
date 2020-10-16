@@ -1,17 +1,13 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Hospital.Domain.Model
 {
     public enum ChangeTitle : byte { Первая, Вторая, Вечерняя, Ночная}
     public enum DepartmentType : byte {Ambulatory, Stationary, Laboratory}
 
-    public class Department : INotifyPropertyChanged
+    public class Department : ModelBase
     {
         private DepartmentTitle _title;
         private Staff _manager;
@@ -62,15 +58,13 @@ namespace Hospital.Domain.Model
             set { _Adress = JsonConvert.SerializeObject(value); }
         }
 
+        public ObservableCollection<Test> Tests { get; set; }
         public ObservableCollection<Change> Changes { get; set; }
         public ObservableCollection<Staff> Staffs { get; set; }
         public ObservableCollection<Diagnosis> Diagnoses { get; set; }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }
 
-    public class Change : INotifyPropertyChanged
+    public class Change : ModelBase
     {
         private Department _department;
         private ChangeTitle _changeTitle;
@@ -114,12 +108,9 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("TimeSpan");
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }
 
-    public class DepartmentTitle : INotifyPropertyChanged
+    public class DepartmentTitle : ModelBase
     {
         private string _title;
         private string _code;
@@ -153,8 +144,5 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("ShortTitle");
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }
 }

@@ -72,7 +72,7 @@ namespace WpfApp1.Model
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }
 
-    public struct Proc : INotifyPropertyChanged
+    public struct Procedures : INotifyPropertyChanged
     {
         private string _title;
         //private int _procId;

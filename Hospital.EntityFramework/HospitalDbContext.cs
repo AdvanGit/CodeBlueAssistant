@@ -1,9 +1,6 @@
 ﻿using Hospital.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Hospital.EntityFramework
 {
@@ -69,7 +66,7 @@ namespace Hospital.EntityFramework
                 builder.Property(s => s.LastName).IsRequired();
                 builder.Property(s => s.FirstName).IsRequired();
                 builder.Property(s => s.CreateDate).HasDefaultValueSql("GETDATE()");
-                builder.Property(s=>s._Adress).HasColumnName("Adress");
+                builder.Property(s => s._Adress).HasColumnName("Adress");
                 builder.HasOne(s => s.Department).WithMany(d => d.Staffs);
                 //builder.Ignore(s => s.Adress);
 

@@ -1,16 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Hospital.Domain.Model
 {
     public enum Gender : byte { male, female }
     public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
 
-    public class User : INotifyPropertyChanged
+    public class User : ModelBase
     {
         private string _firstName;
         private string _midName;
@@ -92,9 +88,6 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("Gender");
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }
 
     public class Staff : User

@@ -1,36 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Hospital.Domain.Model
 {
-    public class Schedule : INotifyPropertyChanged
+    public class Schedule : ModelBase
     {
-        private Staff _staff;
-        private Change _change;
+        private Staff _doctor;
         private DateTime _targetTime;
-        //private Transfer _transfer;
+        private Entry _entry;
 
         public int Id { get; set; }
-        public Staff Staff
+        public Staff Doctor
         {
-            get => _staff;
+            get => _doctor;
             set
             {
-                _staff = value;
+                _doctor = value;
                 OnPropertyChanged("Staff");
-            }
-        }
-        public Change Change
-        {
-            get => _change;
-            set
-            {
-                _change = value;
-                OnPropertyChanged("Change");
             }
         }
         public DateTime TargetTime
@@ -42,8 +27,14 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("TargetTime");
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
+        public Entry Entry
+        {
+            get => _entry;
+            set
+            {
+                _entry = value;
+                OnPropertyChanged("Entry");
+            }
+        }
     }
 }

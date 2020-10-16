@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
-
+﻿
 namespace Hospital.Domain.Model
 {
-    public class Adress : INotifyPropertyChanged
+    public class Adress : ModelBase
     {
         private string _city, _street;
         private int _number, _subNumber, _room;
@@ -56,8 +51,5 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("Room");
             }
         }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }
 }
