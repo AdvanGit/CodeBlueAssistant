@@ -135,6 +135,41 @@ namespace Hospital.EntityFramework.Migrations
                     b.ToTable("Diagnoses");
                 });
 
+            modelBuilder.Entity("Hospital.Domain.Model.Entry", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Chain")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DestinationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EntryStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OriginId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ResumeId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TargetDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DestinationId");
+
+                    b.ToTable("Entries");
+                });
+
             modelBuilder.Entity("Hospital.Domain.Model.Patient", b =>
                 {
                     b.Property<int>("Id")
@@ -191,6 +226,154 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasIndex("BelayId");
 
                     b.ToTable("Patients");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.Presence", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Conclusion")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DiagnosisId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EntryInId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("EntryOutId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Recomendation")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DiagnosisId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("EntryInId")
+                        .IsUnique();
+
+                    b.HasIndex("EntryOutId")
+                        .IsUnique();
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Presences");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.Proc", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProcType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.ToTable("Procedures");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.ProcAsset", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsSymptom")
+                        .HasColumnType("bit");
+
+                    b.Property<int?>("PresenceId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProcOptionId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProcStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ResultDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ResultValue")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("StaffResultId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PresenceId");
+
+                    b.HasIndex("ProcOptionId");
+
+                    b.HasIndex("StaffResultId");
+
+                    b.ToTable("ProcAssets");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.ProcOption", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("Code")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Measure")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Price")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ProcId")
+                        .HasColumnType("int");
+
+                    b.Property<TimeSpan>("TimeSpan")
+                        .HasColumnType("time");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcId");
+
+                    b.ToTable("ProcOptions");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Staff", b =>
@@ -286,8 +469,14 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Detail")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("IsSymptom")
                         .HasColumnType("bit");
+
+                    b.Property<int?>("PresenceId")
+                        .HasColumnType("int");
 
                     b.Property<int?>("TestId")
                         .HasColumnType("int");
@@ -296,6 +485,8 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PresenceId");
 
                     b.HasIndex("TestId");
 
@@ -327,11 +518,76 @@ namespace Hospital.EntityFramework.Migrations
                         .HasForeignKey("DepartmentId");
                 });
 
+            modelBuilder.Entity("Hospital.Domain.Model.Entry", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.Staff", "Destination")
+                        .WithMany()
+                        .HasForeignKey("DestinationId");
+                });
+
             modelBuilder.Entity("Hospital.Domain.Model.Patient", b =>
                 {
                     b.HasOne("Hospital.Domain.Model.Belay", "Belay")
                         .WithMany()
                         .HasForeignKey("BelayId");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.Presence", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.Diagnosis", "Diagnosis")
+                        .WithMany()
+                        .HasForeignKey("DiagnosisId");
+
+                    b.HasOne("Hospital.Domain.Model.Staff", "Doctor")
+                        .WithMany()
+                        .HasForeignKey("DoctorId");
+
+                    b.HasOne("Hospital.Domain.Model.Entry", "EntryIn")
+                        .WithOne("Resume")
+                        .HasForeignKey("Hospital.Domain.Model.Presence", "EntryInId")
+                        .HasPrincipalKey("Hospital.Domain.Model.Entry", "ResumeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Hospital.Domain.Model.Entry", "EntryOut")
+                        .WithOne("Origin")
+                        .HasForeignKey("Hospital.Domain.Model.Presence", "EntryOutId")
+                        .HasPrincipalKey("Hospital.Domain.Model.Entry", "OriginId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("Hospital.Domain.Model.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.Proc", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.ProcAsset", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.Presence", "Presence")
+                        .WithMany("ProcAssets")
+                        .HasForeignKey("PresenceId");
+
+                    b.HasOne("Hospital.Domain.Model.ProcOption", "ProcOption")
+                        .WithMany()
+                        .HasForeignKey("ProcOptionId");
+
+                    b.HasOne("Hospital.Domain.Model.Staff", "StaffResult")
+                        .WithMany()
+                        .HasForeignKey("StaffResultId");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.ProcOption", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.Proc", "Proc")
+                        .WithMany("Options")
+                        .HasForeignKey("ProcId");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Staff", b =>
@@ -344,12 +600,16 @@ namespace Hospital.EntityFramework.Migrations
             modelBuilder.Entity("Hospital.Domain.Model.Test", b =>
                 {
                     b.HasOne("Hospital.Domain.Model.Department", "Department")
-                        .WithMany()
+                        .WithMany("Tests")
                         .HasForeignKey("DepartmentId");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.TestData", b =>
                 {
+                    b.HasOne("Hospital.Domain.Model.Presence", "Presence")
+                        .WithMany("TestDatas")
+                        .HasForeignKey("PresenceId");
+
                     b.HasOne("Hospital.Domain.Model.Test", "Test")
                         .WithMany()
                         .HasForeignKey("TestId");

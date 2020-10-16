@@ -16,8 +16,13 @@ namespace Hospital.Domain.Model
         private string _recomendation;
 
         public int Id { get; set; }
+
+
+
+
         public Staff Doctor { get => _doctor; set { _doctor = value; OnPropertyChanged("Doctor"); } }
         public Patient Patient { get => _patient;set { _patient = value; OnPropertyChanged("Patient"); } }
+
         public Entry EntryIn
         {
             get => _entyIn;
@@ -27,6 +32,8 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("EntryIn");
             }
         }
+        public int EntryInId { get; set; }
+
         public Entry EntryOut
         {
             get => _entryOut;
@@ -36,6 +43,8 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("EntryOut");
             }
         }
+        public int EntryOutId { get; set; }
+
         public Diagnosis Diagnosis
         {
             get => _diagnosis;

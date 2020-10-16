@@ -17,15 +17,22 @@ namespace Hospital.EntityFramework
         public DbSet<Diagnosis> Diagnoses { get; set; }
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestData> TestDatas { get; set; }
+        public DbSet<Proc> Procedures { get; set; }
+        public DbSet<ProcAsset> ProcAssets { get; set; }
+        public DbSet<ProcOption> ProcOptions { get; set; }
+        public DbSet<Presence> Presences { get; set; }
+        public DbSet<Entry> Entries { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new PatientConfig());
             modelBuilder.ApplyConfiguration(new StaffConfig());
             modelBuilder.ApplyConfiguration(new DepartmentConfig());
+            modelBuilder.ApplyConfiguration(new EntryConfig());
+            modelBuilder.ApplyConfiguration(new PresenceConfig());
             //modelBuilder.Ignore<User>();
-            //modelBuilder.Ignore<Schedule>();
             modelBuilder.Ignore<Adress>();
+            modelBuilder.Ignore<ModelBase>();
 
             {
                 //modelBuilder.Entity<Country>();   //Fluent API include  
@@ -87,6 +94,33 @@ namespace Hospital.EntityFramework
         {
             public void Configure(EntityTypeBuilder<Department> builder)
             {
+            }
+        }
+
+        private class EntryConfig : IEntityTypeConfiguration<Entry>
+        {
+            public void Configure(EntityTypeBuilder<Entry> builder)
+            {
+                builder.HasOne(e => e.Origin).WithOne(p => p.EntryOut).HasForeignKey<Presence>(p => p.EntryOutId).OnDelete(DeleteBehavior.NoAction);
+                builder.HasOne(e => e.Resume).WithOne(p => p.EntryIn).HasForeignKey<Presence>(p => p.EntryInId).OnDelete(DeleteBehavior.NoAction);
+            }
+        }
+
+        private class PresenceConfig : IEntityTypeConfiguration<Presence>
+        {
+            public void Configure(EntityTypeBuilder<Presence> builder)
+            {
+                builder.HasOne(p => p.EntryOut).WithOne(e => e.Origin).HasPrincipalKey<Entry>(e => e.OriginId).OnDelete(DeleteBehavior.NoAction);
+                builder.HasOne(p => p.EntryIn).WithOne(e => e.Resume).HasPrincipalKey<Entry>(e => e.ResumeId).OnDelete(DeleteBehavior.NoAction);
+                builder.HasMany(p => p.TestDatas).WithOne(t => t.Presence);
+            }
+        }
+
+        private class TestDataConfig : IEntityTypeConfiguration<TestData>
+        {
+            public void Configure(EntityTypeBuilder<TestData> builder)
+            {
+                builder.HasOne(t => t.Presence).WithMany(p => p.TestDatas);
             }
         }
     }

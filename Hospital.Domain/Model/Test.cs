@@ -6,7 +6,6 @@ namespace Hospital.Domain.Model
         private string _title;
         private string _normal;
         private Department _department;
-        private Presence _presence;
 
         public int Id { get; set; }
         public string Title
@@ -36,15 +35,6 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("Department");
             }
         }
-        public Presence Presence
-        {
-            get => _presence;
-            set
-            {
-                _presence = value;
-                OnPropertyChanged("Presence");
-            }
-        }
     }
 
     public class TestData : ModelBase
@@ -52,6 +42,7 @@ namespace Hospital.Domain.Model
         private Test _test;
         private string _detail;
         private string _value;
+        private Presence _presence;
         private bool _isSymptom;
 
         public int Id { get; set; }
@@ -82,6 +73,8 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("Value");
             }
         }
+        public Presence Presence { get => _presence; set { _presence = value; OnPropertyChanged("Presence"); } }
+
         public bool IsSymptom
         {
             get => _isSymptom;
@@ -91,5 +84,6 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("IsSymptom");
             }
         }
+
     }
 }
