@@ -101,8 +101,9 @@ namespace Hospital.EntityFramework
         {
             public void Configure(EntityTypeBuilder<Entry> builder)
             {
-                builder.HasOne(e => e.Origin).WithOne(p => p.EntryOut).HasForeignKey<Presence>(p => p.EntryOutId).OnDelete(DeleteBehavior.NoAction);
-                builder.HasOne(e => e.Resume).WithOne(p => p.EntryIn).HasForeignKey<Presence>(p => p.EntryInId).OnDelete(DeleteBehavior.NoAction);
+                builder.Property(e => e.PatientId).IsRequired();
+                builder.Property(e => e.DestinationId).IsRequired();
+                builder.Property(e => e.CreateDateTime).HasDefaultValueSql("GETDATE()");
             }
         }
 
@@ -110,9 +111,9 @@ namespace Hospital.EntityFramework
         {
             public void Configure(EntityTypeBuilder<Presence> builder)
             {
-                builder.HasOne(p => p.EntryOut).WithOne(e => e.Origin).HasPrincipalKey<Entry>(e => e.OriginId).OnDelete(DeleteBehavior.NoAction);
-                builder.HasOne(p => p.EntryIn).WithOne(e => e.Resume).HasPrincipalKey<Entry>(e => e.ResumeId).OnDelete(DeleteBehavior.NoAction);
                 builder.HasMany(p => p.TestDatas).WithOne(t => t.Presence);
+                builder.Property(p => p.DiagnosisId).IsRequired();
+                builder.Property(p => p.Conclusion).IsRequired();
             }
         }
 

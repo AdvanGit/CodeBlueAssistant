@@ -146,18 +146,17 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("CreateDateTime")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<int?>("DestinationId")
+                    b.Property<int>("DestinationId")
                         .HasColumnType("int");
 
                     b.Property<int>("EntryStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("OriginId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ResumeId")
+                    b.Property<int>("PatientId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("TargetDateTime")
@@ -166,6 +165,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("DestinationId");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Entries");
                 });
@@ -236,21 +237,16 @@ namespace Hospital.EntityFramework.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Conclusion")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("DiagnosisId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("DoctorId")
+                    b.Property<int>("DiagnosisId")
                         .HasColumnType("int");
 
                     b.Property<int>("EntryInId")
                         .HasColumnType("int");
 
-                    b.Property<int>("EntryOutId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("PatientId")
+                    b.Property<int?>("EntryOutId")
                         .HasColumnType("int");
 
                     b.Property<string>("Recomendation")
@@ -260,15 +256,9 @@ namespace Hospital.EntityFramework.Migrations
 
                     b.HasIndex("DiagnosisId");
 
-                    b.HasIndex("DoctorId");
+                    b.HasIndex("EntryInId");
 
-                    b.HasIndex("EntryInId")
-                        .IsUnique();
-
-                    b.HasIndex("EntryOutId")
-                        .IsUnique();
-
-                    b.HasIndex("PatientId");
+                    b.HasIndex("EntryOutId");
 
                     b.ToTable("Presences");
                 });
@@ -522,7 +512,15 @@ namespace Hospital.EntityFramework.Migrations
                 {
                     b.HasOne("Hospital.Domain.Model.Staff", "Destination")
                         .WithMany()
-                        .HasForeignKey("DestinationId");
+                        .HasForeignKey("DestinationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Hospital.Domain.Model.Patient", "Patient")
+                        .WithMany()
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Patient", b =>
@@ -536,29 +534,19 @@ namespace Hospital.EntityFramework.Migrations
                 {
                     b.HasOne("Hospital.Domain.Model.Diagnosis", "Diagnosis")
                         .WithMany()
-                        .HasForeignKey("DiagnosisId");
-
-                    b.HasOne("Hospital.Domain.Model.Staff", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId");
+                        .HasForeignKey("DiagnosisId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Hospital.Domain.Model.Entry", "EntryIn")
-                        .WithOne("Resume")
-                        .HasForeignKey("Hospital.Domain.Model.Presence", "EntryInId")
-                        .HasPrincipalKey("Hospital.Domain.Model.Entry", "ResumeId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .WithMany()
+                        .HasForeignKey("EntryInId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("Hospital.Domain.Model.Entry", "EntryOut")
-                        .WithOne("Origin")
-                        .HasForeignKey("Hospital.Domain.Model.Presence", "EntryOutId")
-                        .HasPrincipalKey("Hospital.Domain.Model.Entry", "OriginId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("Hospital.Domain.Model.Patient", "Patient")
                         .WithMany()
-                        .HasForeignKey("PatientId");
+                        .HasForeignKey("EntryOutId");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Proc", b =>

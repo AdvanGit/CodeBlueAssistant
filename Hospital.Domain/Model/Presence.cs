@@ -7,8 +7,6 @@ namespace Hospital.Domain.Model
 {
     public class Presence : ModelBase
     {
-        private Staff _doctor;
-        private Patient _patient;
         private Entry _entyIn;
         private Entry _entryOut;
         private Diagnosis _diagnosis;
@@ -16,12 +14,6 @@ namespace Hospital.Domain.Model
         private string _recomendation;
 
         public int Id { get; set; }
-
-
-
-
-        public Staff Doctor { get => _doctor; set { _doctor = value; OnPropertyChanged("Doctor"); } }
-        public Patient Patient { get => _patient;set { _patient = value; OnPropertyChanged("Patient"); } }
 
         public Entry EntryIn
         {
@@ -34,16 +26,8 @@ namespace Hospital.Domain.Model
         }
         public int EntryInId { get; set; }
 
-        public Entry EntryOut
-        {
-            get => _entryOut;
-            set
-            {
-                _entryOut = value;
-                OnPropertyChanged("EntryOut");
-            }
-        }
-        public int EntryOutId { get; set; }
+        public ObservableCollection<TestData> TestDatas { get; set; }
+        public ObservableCollection<ProcAsset> ProcAssets { get; set; }
 
         public Diagnosis Diagnosis
         {
@@ -54,6 +38,7 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("Diagnosis");
             }
         }
+        public int DiagnosisId { get; set; }
         public string Conclusion
         {
             get => _conclusion;
@@ -73,7 +58,16 @@ namespace Hospital.Domain.Model
             }
         }
 
-        public ObservableCollection<TestData> TestDatas { get; set; }
-        public ObservableCollection<ProcAsset> ProcAssets { get; set; }
+        public Entry EntryOut
+        {
+            get => _entryOut;
+            set
+            {
+                _entryOut = value;
+                OnPropertyChanged("EntryOut");
+            }
+        }
+        public int? EntryOutId { get; set; }
+
     }
 }
