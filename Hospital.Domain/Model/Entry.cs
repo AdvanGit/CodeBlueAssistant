@@ -12,8 +12,7 @@ namespace Hospital.Domain.Model
         private DateTime _targetDateTime;
 
 
-
-
+        public DateTime CreateDateTime { get; }
         public int Id { get; set; }
         public int Chain { get; set; }
 
@@ -26,6 +25,5 @@ namespace Hospital.Domain.Model
         public DateTime TargetDateTime { get => _targetDateTime; set { _targetDateTime = value; OnPropertyChanged("TargetDateTime"); } }
 
         public EntryStatus EntryStatus { get => _entryStatus; set { _entryStatus = value; OnPropertyChanged("EntryStatus"); } }
-        public DateTime CreateDateTime { get; }
     }
 }

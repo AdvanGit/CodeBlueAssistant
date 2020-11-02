@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Windows.Controls;
-using System.Windows.Input;
-using WpfApp1.View;
 
 namespace WpfApp1.ViewModel
 {
@@ -23,7 +17,7 @@ namespace WpfApp1.ViewModel
             set
             {
                 if (currentPage == value) return;
-                 currentPage = value;
+                currentPage = value;
                 OnPropertyChanged("CurrentPage");
             }
         }

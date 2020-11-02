@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Text;
+﻿using System.Collections.ObjectModel;
 
 namespace Hospital.Domain.Model
 {
-    public class Presence : ModelBase
+    public class Visit : ModelBase
     {
         private Entry _entyIn;
         private Entry _entryOut;
@@ -13,8 +10,10 @@ namespace Hospital.Domain.Model
         private string _conclusion;
         private string _recomendation;
 
-        public int Id { get; set; }
+        public ObservableCollection<TestData> TestDatas;
+        public ObservableCollection<PharmacoTherapyData> PharmacoTherapyDatas;
 
+        public int Id { get; set; }
         public Entry EntryIn
         {
             get => _entyIn;
@@ -26,9 +25,6 @@ namespace Hospital.Domain.Model
         }
         public int EntryInId { get; set; }
 
-        public ObservableCollection<TestData> TestDatas { get; set; }
-        public ObservableCollection<ProcAsset> ProcAssets { get; set; }
-
         public Diagnosis Diagnosis
         {
             get => _diagnosis;
@@ -38,7 +34,7 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("Diagnosis");
             }
         }
-        public int DiagnosisId { get; set; }
+        //public int DiagnosisId { get; set; }
         public string Conclusion
         {
             get => _conclusion;

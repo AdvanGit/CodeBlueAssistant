@@ -5,7 +5,7 @@ using System.Collections.ObjectModel;
 namespace Hospital.Domain.Model
 {
     public enum ChangeTitle : byte { Первая, Вторая, Вечерняя, Ночная}
-    public enum DepartmentType : byte {Ambulatory, Stationary, Laboratory}
+    public enum DepartmentType : byte {Ambulatory, Stationary, Laboratory, Reception}
 
     public class Department : ModelBase
     {
@@ -58,7 +58,6 @@ namespace Hospital.Domain.Model
             set { _Adress = JsonConvert.SerializeObject(value); }
         }
 
-        public ObservableCollection<Test> Tests { get; set; }
         public ObservableCollection<Change> Changes { get; set; }
         public ObservableCollection<Staff> Staffs { get; set; }
         public ObservableCollection<Diagnosis> Diagnoses { get; set; }

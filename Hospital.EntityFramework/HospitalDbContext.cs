@@ -15,13 +15,20 @@ namespace Hospital.EntityFramework
         public DbSet<Department> Departments { get; set; }
         public DbSet<Change> Changes { get; set; }
         public DbSet<Diagnosis> Diagnoses { get; set; }
+        public DbSet<Visit> Visits { get; set; }
+        public DbSet<Entry> Entries { get; set; }
+
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestData> TestDatas { get; set; }
-        public DbSet<Proc> Procedures { get; set; }
-        public DbSet<ProcAsset> ProcAssets { get; set; }
-        public DbSet<ProcOption> ProcOptions { get; set; }
-        public DbSet<Presence> Presences { get; set; }
-        public DbSet<Entry> Entries { get; set; }
+        public DbSet<TestNormalValue> TestNormalValues { get; set; }
+        public DbSet<TestType> TestTypes { get; set; }
+
+        public DbSet<Drug> Drugs { get; set; }
+        public DbSet<DrugSubGroup> DrugSubGroups { get; set; }
+        public DbSet<DrugGroup> DrugGroups { get; set; }
+        public DbSet<DrugSubClass> DrugSubClasses { get; set; }
+        public DbSet<DrugClass> DrugClasses { get; set; }
+        public DbSet<PharmacoTherapyData> PharmacoTherapyDatas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -29,7 +36,7 @@ namespace Hospital.EntityFramework
             modelBuilder.ApplyConfiguration(new StaffConfig());
             modelBuilder.ApplyConfiguration(new DepartmentConfig());
             modelBuilder.ApplyConfiguration(new EntryConfig());
-            modelBuilder.ApplyConfiguration(new PresenceConfig());
+            modelBuilder.ApplyConfiguration(new VisitConfig());
             //modelBuilder.Ignore<User>();
             modelBuilder.Ignore<Adress>();
             modelBuilder.Ignore<ModelBase>();
@@ -107,21 +114,12 @@ namespace Hospital.EntityFramework
             }
         }
 
-        private class PresenceConfig : IEntityTypeConfiguration<Presence>
+        private class VisitConfig : IEntityTypeConfiguration<Visit>
         {
-            public void Configure(EntityTypeBuilder<Presence> builder)
+            public void Configure(EntityTypeBuilder<Visit> builder)
             {
-                builder.HasMany(p => p.TestDatas).WithOne(t => t.Presence);
-                builder.Property(p => p.DiagnosisId).IsRequired();
-                builder.Property(p => p.Conclusion).IsRequired();
-            }
-        }
-
-        private class TestDataConfig : IEntityTypeConfiguration<TestData>
-        {
-            public void Configure(EntityTypeBuilder<TestData> builder)
-            {
-                builder.HasOne(t => t.Presence).WithMany(p => p.TestDatas);
+                //builder.Property(p => p.DiagnosisId).IsRequired();
+                //builder.Property(p => p.Conclusion).IsRequired();
             }
         }
     }
