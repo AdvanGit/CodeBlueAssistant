@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 namespace Hospital.Domain.Model
 {
     public enum TestMethod { Физикальная, Лабараторная, Инструментальная }
-    public enum TestStatus { Ожидание, Готов }
+    public enum TestStatus { Ожидание, Готов, Неявка }
 
     public class Test : ModelBase
     {

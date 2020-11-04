@@ -274,8 +274,8 @@ namespace Hospital.EntityFramework
                     new DrugSubGroup {Title="Пиперидиновые производные", DrugGroup=drugGroups.ElementAt(0)},
                     //тиоксе
                     new DrugSubGroup {Title="Производные тиоксантена", DrugGroup=drugGroups.ElementAt(1)},
-                    
-                    
+
+
                 };
                 List<Drug> drugs = new List<Drug>
                 {
@@ -306,6 +306,180 @@ namespace Hospital.EntityFramework
                     new PharmacoTherapyData{ Drug = drugs.ElementAt(new Random().Next(drugs.Count)), Dose=((new Random().Next(10)).ToString()), DateCreate=DateTime.Now, Treatment=Treatment.Симптоматическая, Visit=visits.ElementAt(0)}
                 };
 
+                List<PhysTherMethodGroup> physTherMethodGroups = new List<PhysTherMethodGroup>
+                {
+                   new PhysTherMethodGroup { Title="Анальгетические методы"},
+                   new PhysTherMethodGroup { Title="Лечение воспаления", FullTitle="Методы лечения восполения" },
+                   new PhysTherMethodGroup { Title="ЦНС", FullTitle="Методы воздействия на ЦНС" },
+                   new PhysTherMethodGroup { Title="Переферическая НС", FullTitle="Методы воздействия на Переферическую НС" },
+                   new PhysTherMethodGroup { Title="Мышечная система", FullTitle="Методы воздействия на мышечную систему" },
+                   new PhysTherMethodGroup { Title="Сердце и Сосуды", FullTitle="Методы воздействия преимущественно на Сердце и Сосуды" },
+                   new PhysTherMethodGroup { Title="Система Крови", FullTitle="Методы воздействия преимущественно на Систему Крови" },
+                   new PhysTherMethodGroup { Title="Респираторный тракт", FullTitle="Методы воздействия преимущественно на Респираторный тракт" },
+                   new PhysTherMethodGroup { Title="Желуд-кишечн тракт", FullTitle="Методы воздействия на Желудочно-кишечный тракт" },
+                   new PhysTherMethodGroup { Title="Кожа и Соед. ткань", FullTitle="Методы воздействия на Кожу и Соединительную ткань"},
+                   new PhysTherMethodGroup { Title="Мочепол. система", FullTitle="Методы воздействия на Мочеполовую систему" },
+                   new PhysTherMethodGroup { Title="Эндокрин. система", FullTitle="Методы воздействия на Эндокринную систему" },
+                   new PhysTherMethodGroup { Title="Корр. обмена веществ", FullTitle="Методы коррекции обмена веществ" },
+                   new PhysTherMethodGroup { Title="Мод. Иммун и несп. Резист.", FullTitle="Методы модуляции иммунитета и неспецифической резистентности" },
+                   new PhysTherMethodGroup { Title="Вирусы, Бактерии и Грибы", FullTitle="Методы воздействия на вирусы, бактерии, грибы" },
+                   new PhysTherMethodGroup { Title="Повреждения, Раны, Ожоги", FullTitle="Методы лечения повреждений, ран и ожогов"},
+                   new PhysTherMethodGroup { Title="Злокач. образования", FullTitle="Методы лечения злокачественных образований" }
+                };
+                List<PhysTherMethod> physTherMethods = new List<PhysTherMethod>
+                {
+                    new PhysTherMethod {Title="Центр. воздействие", FullTitle="Методы центрального воздействия", PhysTherMethodGroup=physTherMethodGroups.ElementAt(0)},
+                    new PhysTherMethod{Title="Периф. воздействие", FullTitle="Методы периферического воздействия", PhysTherMethodGroup=physTherMethodGroups.ElementAt(0)},
+                    new PhysTherMethod{Title="Альтер-экссуд. фаза", FullTitle="Альтернативно-экссудативная фаза", PhysTherMethodGroup=physTherMethodGroups.ElementAt(1)},
+                    new PhysTherMethod{Title="Пролиферативная фаза", FullTitle="Пролиферативная фаза", PhysTherMethodGroup=physTherMethodGroups.ElementAt(1)},
+                    new PhysTherMethod{Title="Репарат. регенерация", FullTitle="Репаративная регенерация", PhysTherMethodGroup=physTherMethodGroups.ElementAt(1)},
+                    new PhysTherMethod{Title="Седативные", PhysTherMethodGroup=physTherMethodGroups.ElementAt(2)},
+                    new PhysTherMethod{Title="Психостимульрующие", PhysTherMethodGroup=physTherMethodGroups.ElementAt(2)},
+                    new PhysTherMethod{Title="Тонизирующие", PhysTherMethodGroup=physTherMethodGroups.ElementAt(2)},
+                    new PhysTherMethod{Title="Анестезирующие", PhysTherMethodGroup=physTherMethodGroups.ElementAt(3)},
+                    new PhysTherMethod{Title="Нейростимулирующие", PhysTherMethodGroup=physTherMethodGroups.ElementAt(3)},
+                    new PhysTherMethod{Title="Трофостимульрующие", PhysTherMethodGroup=physTherMethodGroups.ElementAt(3)},
+                    new PhysTherMethod{Title="Раздр.Св.Нервн.Оконч.", FullTitle="Раздражающие свободные нервные окончания", PhysTherMethodGroup=physTherMethodGroups.ElementAt(3)},
+                    new PhysTherMethod{Title="Миостимулирующие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(4)},
+                    new PhysTherMethod{Title="Миорелаксирующие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(4)},
+                    new PhysTherMethod{Title="Кардиотонические",PhysTherMethodGroup=physTherMethodGroups.ElementAt(5)},
+                    new PhysTherMethod{Title="Гипотензивные",PhysTherMethodGroup=physTherMethodGroups.ElementAt(5)},
+                    new PhysTherMethod{Title="Сосуд.Расш.Спазмолит.", FullTitle="Сосудорасширяющие и спазмолитические",PhysTherMethodGroup=physTherMethodGroups.ElementAt(5)},
+                    new PhysTherMethod{Title="Сосудосуживующие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(5)},
+                    new PhysTherMethod{Title="Лимфодренирующие", FullTitle="Лимфодренирующие (противоотечные)",PhysTherMethodGroup=physTherMethodGroups.ElementAt(5)},
+                    new PhysTherMethod{Title="Гиперкоагулирующие", PhysTherMethodGroup=physTherMethodGroups.ElementAt(6)},
+                    new PhysTherMethod{Title="Гипокоагулирующие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(6)},
+                    new PhysTherMethod{Title="Гемостимулирующие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(6)},
+                    new PhysTherMethod{Title="Гемодеструктивные",PhysTherMethodGroup=physTherMethodGroups.ElementAt(6)},
+                    new PhysTherMethod{Title="Бронхролитические",PhysTherMethodGroup=physTherMethodGroups.ElementAt(7)},
+                    new PhysTherMethod{Title="Мукокинетические",PhysTherMethodGroup=physTherMethodGroups.ElementAt(7)},
+                    new PhysTherMethod{Title="Усил.АльвКап.Тран", FullTitle="Усиливающие альвеолокаппилярный транспорт",PhysTherMethodGroup=physTherMethodGroups.ElementAt(7)},
+                    new PhysTherMethod{Title="Стимул.Секрет.Желуд", FullTitle="Стимулирующие секреторную функцию желудка",PhysTherMethodGroup=physTherMethodGroups.ElementAt(8)},
+                    new PhysTherMethod{Title="Ослаб.Секрет.Желуд", FullTitle="Ослабляющие секреторную функцию желудка",PhysTherMethodGroup=physTherMethodGroups.ElementAt(8)},
+                    new PhysTherMethod{Title="Усил.Мотор.Кишечн", FullTitle="Усиливающие моторную функцию кишечника",PhysTherMethodGroup=physTherMethodGroups.ElementAt(8)},
+                    new PhysTherMethod{Title="Ослаб.Мотор.Кишечн", FullTitle="Ослабляющие моторную функцию кишечника",PhysTherMethodGroup=physTherMethodGroups.ElementAt(8)},
+                    new PhysTherMethod{Title="Желчегонные",PhysTherMethodGroup=physTherMethodGroups.ElementAt(8)},
+                    new PhysTherMethod{Title="МеланинСтим.ФотоСенс.", FullTitle="Меланинстимулирующие и фотосенсибилизирующие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(9)},
+                    new PhysTherMethod{Title="Обволакивающие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(9)},
+                    new PhysTherMethod{Title="Вяжущие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(9)},
+                    new PhysTherMethod{Title="Противозудные",PhysTherMethodGroup=physTherMethodGroups.ElementAt(9)},
+                    new PhysTherMethod{Title="Диафоретические",PhysTherMethodGroup=physTherMethodGroups.ElementAt(9)},
+                    new PhysTherMethod{Title="Кератолитические",PhysTherMethodGroup=physTherMethodGroups.ElementAt(9)},
+                    new PhysTherMethod{Title="Дефиброзирующие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(9)},
+                    new PhysTherMethod{Title="Модул.Обм.СоедТкан", FullTitle="Модулирующие обмен соединительной ткани",PhysTherMethodGroup=physTherMethodGroups.ElementAt(9)},
+                    new PhysTherMethod{Title="Мочегонные",PhysTherMethodGroup=physTherMethodGroups.ElementAt(10)},
+                    new PhysTherMethod{Title="Корр.Эрект.Ф-цию", FullTitle="Корригирующие эректильную функцию",PhysTherMethodGroup=physTherMethodGroups.ElementAt(10)},
+                    new PhysTherMethod{Title="Стим.Репрод.Ф-цию", FullTitle="Стимулирующие репродуктивную функцию",PhysTherMethodGroup=physTherMethodGroups.ElementAt(10)},
+                    new PhysTherMethod{Title="Стим.Гипот.Гипоф", FullTitle="Стимулирующие гипоталамус и гипофиз",PhysTherMethodGroup=physTherMethodGroups.ElementAt(11)},
+                    new PhysTherMethod{Title="Стим.ЩитовЖел", FullTitle="Стимулирующие щитовидную железу",PhysTherMethodGroup=physTherMethodGroups.ElementAt(11)},
+                    new PhysTherMethod{Title="Стим.Надпочечники", FullTitle="Стимулирующие надпочечники",PhysTherMethodGroup=physTherMethodGroups.ElementAt(11)},
+                    new PhysTherMethod{Title="Стим.ПоджЖел", FullTitle="Стимулирующие поджелудочную железу",PhysTherMethodGroup=physTherMethodGroups.ElementAt(11)},
+                    new PhysTherMethod{Title="Энзимстимулирующие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(12)},
+                    new PhysTherMethod{Title="Пластические",PhysTherMethodGroup=physTherMethodGroups.ElementAt(12)},
+                    new PhysTherMethod{Title="Ионокоррегирующие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(12)},
+                    new PhysTherMethod{Title="Витаминостимулир",PhysTherMethodGroup=physTherMethodGroups.ElementAt(12)},
+                    new PhysTherMethod{Title="Имунностимулрующие",PhysTherMethodGroup=physTherMethodGroups.ElementAt(13)},
+                    new PhysTherMethod{Title="Имунносупрессивные",PhysTherMethodGroup=physTherMethodGroups.ElementAt(13)},
+                    new PhysTherMethod{Title="Гипосенсибилизир",PhysTherMethodGroup=physTherMethodGroups.ElementAt(13)},
+                    new PhysTherMethod{Title="Противовирусные",PhysTherMethodGroup=physTherMethodGroups.ElementAt(14)},
+                    new PhysTherMethod{Title="БактерЦид.МикоЦид", FullTitle="Бактерицидные и микоцидные",PhysTherMethodGroup=physTherMethodGroups.ElementAt(14)},
+                    new PhysTherMethod{Title="Заживл.Ран.Поврежд", FullTitle="Стимулирующие заживление ран и повреждений",PhysTherMethodGroup=physTherMethodGroups.ElementAt(15)},
+                    new PhysTherMethod{Title="Противоожоговые",PhysTherMethodGroup=physTherMethodGroups.ElementAt(15)},
+                    new PhysTherMethod{Title="Онкодеструктивные",PhysTherMethodGroup=physTherMethodGroups.ElementAt(16)},
+                    new PhysTherMethod{Title="Цитолитические",PhysTherMethodGroup=physTherMethodGroups.ElementAt(16)}
+                };
+                List<PhysTherFactGroup> physTherFactGroups = new List<PhysTherFactGroup>
+                {
+                    new PhysTherFactGroup { FullTitle="Постоянный электрический ток Низкого напряжения", Title="ПТНН"},
+                    new PhysTherFactGroup { FullTitle="Импульсный ток Низкого напряжения", Title="ИТНН"},
+                    new PhysTherFactGroup { FullTitle="Электрический ток Высокого напряжения", Title="ЭТВН"},
+                    new PhysTherFactGroup { FullTitle="Электрические, магнитные, электромангнитные поля", Title="ЭлМагПоля"},
+                    new PhysTherFactGroup { FullTitle="Электромагнитные колебания оптического диапазона", Title="ЭлКолебанОпт"},
+                    new PhysTherFactGroup { FullTitle="Механические колебания среды", Title="МеханКолебанСреды"},
+                    new PhysTherFactGroup { FullTitle="Измененная или особая воздушная среда", Title="ВоздушнСреда"},
+                    new PhysTherFactGroup { FullTitle="Пресная вода, природные минеральные воды и их аналоги", Title="Воды"},
+                    new PhysTherFactGroup { FullTitle="Теплолечение, Криолечение", Title="ТеплоКриоЛечение"}
+                };
+                List<PhysioTherapyFactor> physioTherapyFactors = new List<PhysioTherapyFactor>
+                {
+                    new PhysioTherapyFactor{ Title="Гальванизация", PhysTherFactGroup=physTherFactGroups.ElementAt(0)},
+                    new PhysioTherapyFactor{ FullTitle="Лекарственный Электрофорез", Title="Электрофорез", PhysTherFactGroup=physTherFactGroups.ElementAt(0)},
+                    new PhysioTherapyFactor{Title="Электросон", PhysTherFactGroup=physTherFactGroups.ElementAt(1)},
+                    new PhysioTherapyFactor{Title="Диадинамотерапия", PhysTherFactGroup=physTherFactGroups.ElementAt(1)},
+                    new PhysioTherapyFactor{ Title="Амплипульстерапия", PhysTherFactGroup=physTherFactGroups.ElementAt(1)},
+                    new PhysioTherapyFactor{ Title="Интерференцтерапия", PhysTherFactGroup=physTherFactGroups.ElementAt(1)},
+                    new PhysioTherapyFactor{ Title="Флюктуризация", PhysTherFactGroup=physTherFactGroups.ElementAt(1)},
+                    new PhysioTherapyFactor{ Title="Электродиагностика", PhysTherFactGroup=physTherFactGroups.ElementAt(1)},
+                    new PhysioTherapyFactor{ Title="Электростимуляция", PhysTherFactGroup=physTherFactGroups.ElementAt(1)},
+                    new PhysioTherapyFactor{ Title="Ультратонотерапия", PhysTherFactGroup=physTherFactGroups.ElementAt(2)},
+                    new PhysioTherapyFactor{ FullTitle="Местная дарсонвализация", Title="Дарсонвализация", PhysTherFactGroup=physTherFactGroups.ElementAt(2)},
+                    new PhysioTherapyFactor{ Title="Индуктотермия", PhysTherFactGroup=physTherFactGroups.ElementAt(2)},
+                    new PhysioTherapyFactor{ FullTitle="Ультравысокочастотная терапия", Title="УльтраВысокЧастТер", PhysTherFactGroup=physTherFactGroups.ElementAt(2)},
+                    new PhysioTherapyFactor{ FullTitle="Микроволновая терапия", Title="МикроволновТер", PhysTherFactGroup=physTherFactGroups.ElementAt(2)},
+                    new PhysioTherapyFactor{ Title="Франклинизация", PhysTherFactGroup=physTherFactGroups.ElementAt(3)},
+                    new PhysioTherapyFactor{ Title="Магнитотерапия", PhysTherFactGroup=physTherFactGroups.ElementAt(3)},
+                    new PhysioTherapyFactor{ FullTitle="Терапия инфракрасным излученим", Title="ИнфракраснИзл", PhysTherFactGroup=physTherFactGroups.ElementAt(4)},
+                    new PhysioTherapyFactor{ FullTitle="Терапия видимым излучением", Title="ВидимоеИзл", PhysTherFactGroup=physTherFactGroups.ElementAt(4)},
+                    new PhysioTherapyFactor{ FullTitle="Терапия ультрафиолетовым излучением", Title="УльтрафиолетИзлуч", PhysTherFactGroup=physTherFactGroups.ElementAt(4)},
+                    new PhysioTherapyFactor{ FullTitle="Лазерная терапия", Title="ЛазернаяТер", PhysTherFactGroup=physTherFactGroups.ElementAt(4)},
+                    new PhysioTherapyFactor{ FullTitle="Лечебный массаж", Title="МассажЛечебн", PhysTherFactGroup=physTherFactGroups.ElementAt(5)},
+                    new PhysioTherapyFactor{ FullTitle="Ультразвуковая терапия", Title="УльтразвукТер", PhysTherFactGroup=physTherFactGroups.ElementAt(5)},
+                    new PhysioTherapyFactor{ FullTitle="Лекарственный фонофорез", Title="ЛекарствФоноф", PhysTherFactGroup=physTherFactGroups.ElementAt(5)},
+                    new PhysioTherapyFactor{ Title="Аэрозольтерапия", PhysTherFactGroup=physTherFactGroups.ElementAt(6)},
+                    new PhysioTherapyFactor{ FullTitle="Электроаэрозольтерапия", Title="ЭлектроАэрозТер", PhysTherFactGroup=physTherFactGroups.ElementAt(6)},
+                    new PhysioTherapyFactor{ Title="Аэроионтерапия", PhysTherFactGroup=physTherFactGroups.ElementAt(6)},
+                    new PhysioTherapyFactor{ Title="Галотерапия", PhysTherFactGroup=physTherFactGroups.ElementAt(6)},
+                    new PhysioTherapyFactor{ FullTitle="Гипербарическая оксигенерация", Title="ГипербарОксиген", PhysTherFactGroup=physTherFactGroups.ElementAt(6)},
+                    new PhysioTherapyFactor{ Title="Климатотерапия", PhysTherFactGroup=physTherFactGroups.ElementAt(6)},
+                    new PhysioTherapyFactor{ Title="Пресная вода", PhysTherFactGroup=physTherFactGroups.ElementAt(7)},
+                    new PhysioTherapyFactor{ FullTitle="Минеральные соли", Title="МинСоли", PhysTherFactGroup=physTherFactGroups.ElementAt(7)},
+                    new PhysioTherapyFactor{ Title="Теплолечение",PhysTherFactGroup=physTherFactGroups.ElementAt(8)},
+                    new PhysioTherapyFactor{ Title="Криолечение", PhysTherFactGroup=physTherFactGroups.ElementAt(8)}
+                };
+                List<PhysioTherapyData> physioTherapyDatas = new List<PhysioTherapyData>
+                {
+                    new PhysioTherapyData
+                    {
+                        Visit = visits.FirstOrDefault(),
+                        Staff = staffs.ElementAt(new Random().Next(staffs.Count)),
+                        CreateDateTime = DateTime.Now,
+                        PhysTherStatus = PhysTherStatus.Ожидание,
+                        PhysTherMethod = physTherMethods.ElementAt(new Random().Next(physTherMethods.Count)),
+                        PhysioTherapyFactor = physioTherapyFactors.ElementAt(new Random().Next(physioTherapyFactors.Count)),
+                        TargetDateTime = DateTime.Now
+                    },
+                    new PhysioTherapyData
+                    {
+                        Visit = visits.FirstOrDefault(),
+                        Staff = staffs.ElementAt(new Random().Next(staffs.Count)),
+                        CreateDateTime = DateTime.Now,
+                        PhysTherStatus = PhysTherStatus.Ожидание,
+                        PhysTherMethod = physTherMethods.ElementAt(new Random().Next(physTherMethods.Count)),
+                        PhysioTherapyFactor = physioTherapyFactors.ElementAt(new Random().Next(physioTherapyFactors.Count)),
+                        TargetDateTime = DateTime.Now
+                    },
+                    new PhysioTherapyData
+                    {
+                        Visit = visits.FirstOrDefault(),
+                        Staff = staffs.ElementAt(new Random().Next(staffs.Count)),
+                        CreateDateTime = DateTime.Now,
+                        PhysTherStatus = PhysTherStatus.Неявка,
+                        PhysTherMethod = physTherMethods.ElementAt(new Random().Next(physTherMethods.Count)),
+                        PhysioTherapyFactor = physioTherapyFactors.ElementAt(new Random().Next(physioTherapyFactors.Count)),
+                        TargetDateTime = DateTime.Now
+                    },
+                    new PhysioTherapyData
+                    {
+                        Visit = visits.FirstOrDefault(),
+                        Staff = staffs.ElementAt(new Random().Next(staffs.Count)),
+                        CreateDateTime = DateTime.Now,
+                        PhysTherStatus = PhysTherStatus.Готов,
+                        PhysTherMethod = physTherMethods.ElementAt(new Random().Next(physTherMethods.Count)),
+                        PhysioTherapyFactor = physioTherapyFactors.ElementAt(new Random().Next(physioTherapyFactors.Count)),
+                        TargetDateTime = DateTime.Now
+                    },
+                };
+
 
                 db.DepartmentTitles.AddRange(departmentTitles);
                 db.Changes.AddRange(changes);
@@ -326,6 +500,12 @@ namespace Hospital.EntityFramework
                 db.DrugSubGroups.AddRange(drugSubGroups);
                 db.Drugs.AddRange(drugs);
                 db.PharmacoTherapyDatas.AddRange(pharmacoTherapyDatas);
+
+                db.PhysTherMethodGroups.AddRange(physTherMethodGroups);
+                db.PhysTherMethods.AddRange(physTherMethods);
+                db.PhysTherFactGroups.AddRange(physTherFactGroups);
+                db.PhysioTherapyFactors.AddRange(physioTherapyFactors);
+                db.PhysioTherapyDatas.AddRange(physioTherapyDatas);
 
                 db.SaveChanges();
             }

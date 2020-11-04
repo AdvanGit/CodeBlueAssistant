@@ -370,6 +370,138 @@ namespace Hospital.EntityFramework.Migrations
                     b.ToTable("PharmacoTherapyDatas");
                 });
 
+            modelBuilder.Entity("Hospital.Domain.Model.PhysTherFactGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FullTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PhysTherFactGroups");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.PhysTherMethod", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FullTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PhysTherMethodGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhysTherMethodGroupId");
+
+                    b.ToTable("PhysTherMethods");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.PhysTherMethodGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FullTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PhysTherMethodGroups");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.PhysioTherapyData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Option")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PhysTherMethodId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PhysTherStatus")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("PhysioTherapyFactorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StaffId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TargetDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Value")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("VisitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhysTherMethodId");
+
+                    b.HasIndex("PhysioTherapyFactorId");
+
+                    b.HasIndex("StaffId");
+
+                    b.HasIndex("VisitId");
+
+                    b.ToTable("PhysioTherapyDatas");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.PhysioTherapyFactor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("FullTitle")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("PhysTherFactGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tool")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PhysTherFactGroupId");
+
+                    b.ToTable("PhysioTherapyFactors");
+                });
+
             modelBuilder.Entity("Hospital.Domain.Model.Staff", b =>
                 {
                     b.Property<int>("Id")
@@ -431,6 +563,89 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasIndex("DepartmentId");
 
                     b.ToTable("Staffs");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.SurgencyGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("SurgencyType")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SurgencyGroups");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.SurgencyOperation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SurgencyGroupId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DepartmentId");
+
+                    b.HasIndex("SurgencyGroupId");
+
+                    b.ToTable("SurgencyOperations");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.SurgencyTherapyData", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("CreateDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Option")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SurgencyClass")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("SurgencyOperationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SurgencyPriority")
+                        .HasColumnType("int");
+
+                    b.Property<int>("SurgencyStatus")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("TargetDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("VisitId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SurgencyOperationId");
+
+                    b.HasIndex("VisitId");
+
+                    b.ToTable("SurgencyTherapyDatas");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Test", b =>
@@ -671,8 +886,41 @@ namespace Hospital.EntityFramework.Migrations
                         .HasForeignKey("DrugId");
 
                     b.HasOne("Hospital.Domain.Model.Visit", "Visit")
-                        .WithMany()
+                        .WithMany("PharmacoTherapyDatas")
                         .HasForeignKey("VisitId");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.PhysTherMethod", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.PhysTherMethodGroup", "PhysTherMethodGroup")
+                        .WithMany("PhysTherMethods")
+                        .HasForeignKey("PhysTherMethodGroupId");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.PhysioTherapyData", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.PhysTherMethod", "PhysTherMethod")
+                        .WithMany()
+                        .HasForeignKey("PhysTherMethodId");
+
+                    b.HasOne("Hospital.Domain.Model.PhysioTherapyFactor", "PhysioTherapyFactor")
+                        .WithMany()
+                        .HasForeignKey("PhysioTherapyFactorId");
+
+                    b.HasOne("Hospital.Domain.Model.Staff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId");
+
+                    b.HasOne("Hospital.Domain.Model.Visit", "Visit")
+                        .WithMany("PhysioTherapyDatas")
+                        .HasForeignKey("VisitId");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.PhysioTherapyFactor", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.PhysTherFactGroup", "PhysTherFactGroup")
+                        .WithMany("PhysioTherapyFactors")
+                        .HasForeignKey("PhysTherFactGroupId");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Staff", b =>
@@ -680,6 +928,28 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.Department", "Department")
                         .WithMany("Staffs")
                         .HasForeignKey("DepartmentId");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.SurgencyOperation", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.Department", "Department")
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
+
+                    b.HasOne("Hospital.Domain.Model.SurgencyGroup", "SurgencyGroup")
+                        .WithMany("SurgencyOperations")
+                        .HasForeignKey("SurgencyGroupId");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.SurgencyTherapyData", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.SurgencyOperation", "SurgencyOperation")
+                        .WithMany()
+                        .HasForeignKey("SurgencyOperationId");
+
+                    b.HasOne("Hospital.Domain.Model.Visit", "Visit")
+                        .WithMany("SurgencyTherapyDatas")
+                        .HasForeignKey("VisitId");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Test", b =>
@@ -700,7 +970,7 @@ namespace Hospital.EntityFramework.Migrations
                         .HasForeignKey("TestId");
 
                     b.HasOne("Hospital.Domain.Model.Visit", "Visit")
-                        .WithMany()
+                        .WithMany("TestDatas")
                         .HasForeignKey("VisitId");
                 });
 

@@ -10,8 +10,10 @@ namespace Hospital.Domain.Model
         private string _conclusion;
         private string _recomendation;
 
-        public ObservableCollection<TestData> TestDatas;
-        public ObservableCollection<PharmacoTherapyData> PharmacoTherapyDatas;
+        public ObservableCollection<TestData> TestDatas { get; set; }
+        public ObservableCollection<PharmacoTherapyData> PharmacoTherapyDatas { get; set; }
+        public ObservableCollection<PhysioTherapyData> PhysioTherapyDatas { get; set; }
+        public ObservableCollection<SurgencyTherapyData> SurgencyTherapyDatas { get; set; }
 
         public int Id { get; set; }
         public Entry EntryIn

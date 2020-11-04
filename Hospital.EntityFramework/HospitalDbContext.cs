@@ -30,6 +30,16 @@ namespace Hospital.EntityFramework
         public DbSet<DrugClass> DrugClasses { get; set; }
         public DbSet<PharmacoTherapyData> PharmacoTherapyDatas { get; set; }
 
+        public DbSet<PhysioTherapyFactor> PhysioTherapyFactors { get; set; }
+        public DbSet<PhysTherFactGroup> PhysTherFactGroups { get; set; }
+        public DbSet<PhysTherMethod> PhysTherMethods { get; set; }
+        public DbSet<PhysTherMethodGroup> PhysTherMethodGroups { get; set; }
+        public DbSet<PhysioTherapyData> PhysioTherapyDatas { get; set; }
+
+        public DbSet<SurgencyOperation> SurgencyOperations { get; set; }
+        public DbSet<SurgencyGroup> SurgencyGroups { get; set; }
+        public DbSet<SurgencyTherapyData> SurgencyTherapyDatas { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new PatientConfig());
