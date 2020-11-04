@@ -480,6 +480,92 @@ namespace Hospital.EntityFramework
                     },
                 };
 
+                List<SurgencyEndoscop> surgencyEndoscops = new List<SurgencyEndoscop>
+                {
+                    new SurgencyEndoscop { Title="Торакоскопия"},
+                    new SurgencyEndoscop { Title="Артроскопия"},
+                    new SurgencyEndoscop { Title="Лапароскопия"},
+                    new SurgencyEndoscop { Title="Биопсия"},
+                };
+                List<SurgencyGroup> surgencyGroups = new List<SurgencyGroup>
+                { 
+                    new SurgencyGroup { Title="Эктомия"},
+                    new SurgencyGroup { Title="Резекция"},
+                    new SurgencyGroup { Title="Стомия"},
+                    new SurgencyGroup { Title="Ушивание"},
+                    new SurgencyGroup { Title="Дилатация"},
+                    new SurgencyGroup { Title="Экстракция"},
+                    new SurgencyGroup { Title="Ампутация"},
+                    new SurgencyGroup { Title="Реплантация"},
+                    new SurgencyGroup { Title="Трансплантация"},
+                    new SurgencyGroup { Title="Протезирование"},
+                    new SurgencyGroup { Title="Шунтирование"},
+                    new SurgencyGroup { Title="Пункция"},
+                    new SurgencyGroup { Title="Вскрытие"}
+                };
+                List<SurgencyOperation> surgencyOperations = new List<SurgencyOperation>
+                {
+                    new SurgencyOperation{ Title="Вазэктомия", SurgencyGroup=surgencyGroups.ElementAt(0)},
+                    new SurgencyOperation{ Title="Полипэктомия", SurgencyGroup=surgencyGroups.ElementAt(0)},
+                    new SurgencyOperation{ Title="Эктомия Зуба", SurgencyGroup=surgencyGroups.ElementAt(0)},
+                    new SurgencyOperation{ Title="Гастроэктомия", SurgencyGroup=surgencyGroups.ElementAt(0)},
+                    new SurgencyOperation{ Title="Гепатэктомия", SurgencyGroup=surgencyGroups.ElementAt(0)},
+                    new SurgencyOperation{ Title="Гистерэктомия", SurgencyGroup=surgencyGroups.ElementAt(0)},
+
+                    new SurgencyOperation{ Title="ПДР", FullTitle="Панкреатодуоденальная резекция", SurgencyGroup=surgencyGroups.ElementAt(1)},
+                    new SurgencyOperation{ Title="ПРЖ", FullTitle="Продольная резекция желудка", SurgencyGroup=surgencyGroups.ElementAt(1)},
+                    new SurgencyOperation{ Title="РезКореньЗуба", FullTitle="Резекция корня зуба", SurgencyGroup=surgencyGroups.ElementAt(1)},
+                    new SurgencyOperation{ Title="РезПоджелудЖел", FullTitle="Резекция поджелудочной железы", SurgencyGroup=surgencyGroups.ElementAt(1)},
+                    new SurgencyOperation{ Title="РезПрямКишка", FullTitle="Резекция прямой кишки", SurgencyGroup=surgencyGroups.ElementAt(1)},
+                    new SurgencyOperation{ Title="РезЯичники", FullTitle="Резекция яичников", SurgencyGroup=surgencyGroups.ElementAt(1)},
+                    new SurgencyOperation{ Title="РезПечени",FullTitle="Резекция печени", SurgencyGroup=surgencyGroups.ElementAt(1)},
+                    new SurgencyOperation{ Title="РезОбодКишка", FullTitle="Резекция ободочной кишки", SurgencyGroup=surgencyGroups.ElementAt(1)},
+
+                    new SurgencyOperation{Title="Гастростомия",SurgencyGroup=surgencyGroups.ElementAt(2)},
+                    new SurgencyOperation{Title="Трахеостомия",SurgencyGroup=surgencyGroups.ElementAt(2)},
+                    new SurgencyOperation{Title="Илео-стомия",SurgencyGroup=surgencyGroups.ElementAt(2)},
+                    new SurgencyOperation{Title="ХолПанкрСтомия",FullTitle="Холангиопанкреатостомия",SurgencyGroup=surgencyGroups.ElementAt(2)},
+
+                    new SurgencyOperation{Title="Лапаротомия",SurgencyGroup=surgencyGroups.ElementAt(12)},
+                    new SurgencyOperation{Title="Торакотомия",SurgencyGroup=surgencyGroups.ElementAt(12)},
+                    new SurgencyOperation{Title="Коникотомия",SurgencyGroup=surgencyGroups.ElementAt(12)},
+                };
+                List<SurgencyTherapyData> surgencyTherapyDatas = new List<SurgencyTherapyData>
+                {
+                    new SurgencyTherapyData
+                    {
+                        Visit = visits.FirstOrDefault(),
+                        CreateDateTime= DateTime.Now,
+                        TargetDateTime = DateTime.Now,
+                        SurgencyClass = SurgencyClass.Диагностическая,
+                        SurgencyPriority = SurgencyPriority.Плановая,
+                        SurgencyOperation = surgencyOperations.ElementAt(new Random().Next(surgencyOperations.Count)),
+                        SurgencyEndoscop = surgencyEndoscops.ElementAt(new Random().Next(surgencyEndoscops.Count)),
+                        SurgencyStatus = SurgencyStatus.Ожидание
+                    },
+                    new SurgencyTherapyData
+                    {
+                        Visit = visits.FirstOrDefault(),
+                        CreateDateTime= DateTime.Now,
+                        TargetDateTime = DateTime.Now,
+                        SurgencyClass = SurgencyClass.Лечебная,
+                        SurgencyPriority = SurgencyPriority.Срочная,
+                        SurgencyOperation = surgencyOperations.ElementAt(new Random().Next(surgencyOperations.Count)),
+                        SurgencyEndoscop = surgencyEndoscops.ElementAt(new Random().Next(surgencyEndoscops.Count)),
+                        SurgencyStatus = SurgencyStatus.Ожидание
+                    },
+                    new SurgencyTherapyData
+                    {
+                        Visit = visits.FirstOrDefault(),
+                        CreateDateTime= DateTime.Now,
+                        TargetDateTime = DateTime.Now,
+                        SurgencyClass = SurgencyClass.Паллативная,
+                        SurgencyPriority = SurgencyPriority.Плановая,
+                        SurgencyOperation = surgencyOperations.ElementAt(new Random().Next(surgencyOperations.Count)),
+                        SurgencyEndoscop = surgencyEndoscops.ElementAt(new Random().Next(surgencyEndoscops.Count)),
+                        SurgencyStatus = SurgencyStatus.Готово
+                    }
+                };
 
                 db.DepartmentTitles.AddRange(departmentTitles);
                 db.Changes.AddRange(changes);
@@ -507,9 +593,13 @@ namespace Hospital.EntityFramework
                 db.PhysioTherapyFactors.AddRange(physioTherapyFactors);
                 db.PhysioTherapyDatas.AddRange(physioTherapyDatas);
 
+                db.SurgencyEndoscops.AddRange(surgencyEndoscops);
+                db.SurgencyGroups.AddRange(surgencyGroups);
+                db.SurgencyOperations.AddRange(surgencyOperations);
+                db.SurgencyTherapyDatas.AddRange(surgencyTherapyDatas);
+
                 db.SaveChanges();
             }
-
         }
     }
 }

@@ -565,15 +565,30 @@ namespace Hospital.EntityFramework.Migrations
                     b.ToTable("Staffs");
                 });
 
-            modelBuilder.Entity("Hospital.Domain.Model.SurgencyGroup", b =>
+            modelBuilder.Entity("Hospital.Domain.Model.SurgencyEndoscop", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("SurgencyType")
-                        .HasColumnType("int");
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Tool")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("SurgencyEndoscops");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.SurgencyGroup", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -592,6 +607,9 @@ namespace Hospital.EntityFramework.Migrations
 
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
+
+                    b.Property<string>("FullTitle")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int?>("SurgencyGroupId")
                         .HasColumnType("int");
@@ -624,6 +642,9 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("SurgencyClass")
                         .HasColumnType("int");
 
+                    b.Property<int?>("SurgencyEndoscopId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("SurgencyOperationId")
                         .HasColumnType("int");
 
@@ -640,6 +661,8 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SurgencyEndoscopId");
 
                     b.HasIndex("SurgencyOperationId");
 
@@ -943,6 +966,10 @@ namespace Hospital.EntityFramework.Migrations
 
             modelBuilder.Entity("Hospital.Domain.Model.SurgencyTherapyData", b =>
                 {
+                    b.HasOne("Hospital.Domain.Model.SurgencyEndoscop", "SurgencyEndoscop")
+                        .WithMany()
+                        .HasForeignKey("SurgencyEndoscopId");
+
                     b.HasOne("Hospital.Domain.Model.SurgencyOperation", "SurgencyOperation")
                         .WithMany()
                         .HasForeignKey("SurgencyOperationId");
