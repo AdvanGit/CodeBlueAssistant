@@ -1,13 +1,12 @@
 ﻿
 namespace Hospital.Domain.Model
 {
-    public class Diagnosis : ModelBase
+    public class Diagnosis : DomainObject
     {
         private string _title;
         private string _code;
         private Department _department;
 
-        public int Id { get; set; }
         public string Title
         {
             get => _title;

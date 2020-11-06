@@ -4,7 +4,7 @@ namespace Hospital.Domain.Model
 {
     public enum EntryStatus { Open, Closed, OutOfDate }
 
-    public class Entry : ModelBase
+    public class Entry : DomainObject
     {
         private EntryStatus _entryStatus;
         private Patient _patient;
@@ -13,7 +13,6 @@ namespace Hospital.Domain.Model
 
 
         public DateTime CreateDateTime { get; }
-        public int Id { get; set; }
         public int Chain { get; set; }
 
         public Patient Patient { get => _patient; set { _patient = value; OnPropertyChanged("Patient"); } }

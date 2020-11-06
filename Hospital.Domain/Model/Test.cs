@@ -6,7 +6,7 @@ namespace Hospital.Domain.Model
     public enum TestMethod { Физикальная, Лабараторная, Инструментальная }
     public enum TestStatus { Ожидание, Готов, Неявка }
 
-    public class Test : ModelBase
+    public class Test : DomainObject
     {
         private string _title;
         private string _shortTitle;
@@ -15,7 +15,6 @@ namespace Hospital.Domain.Model
 
         public ObservableCollection<TestNormalValue> NormalValues { get; set; }
 
-        public int Id { get; set; }
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
         public string ShortTitle { get => _shortTitle; set { _shortTitle = value; OnPropertyChanged("ShortTitle"); } }
 
@@ -23,7 +22,7 @@ namespace Hospital.Domain.Model
         public TestType TestType { get => _testType; set { _testType = value; OnPropertyChanged("TestType"); } }
     }
 
-    public class TestType : ModelBase
+    public class TestType : DomainObject
     {
         private string _title;
         private TestMethod _testMethod;
@@ -31,13 +30,12 @@ namespace Hospital.Domain.Model
 
         public ObservableCollection<Test> Tests { get; set; }
 
-        public int Id { get; set; }
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
         public TestMethod TestMethod { get => _testMethod; set { _testMethod = value; OnPropertyChanged("TestMethod"); } }
         public Department Department { get => _department; set { _department = value; OnPropertyChanged("Department"); } }
     }
 
-    public class TestNormalValue : ModelBase
+    public class TestNormalValue : DomainObject
     {
         private Test _test;
         private Gender _gender;
@@ -45,7 +43,6 @@ namespace Hospital.Domain.Model
         private int _ageOut;
         private string _value;
 
-        public int Id { get; set; }
         public Test Test { get => _test; set { _test = value; OnPropertyChanged("Test"); } }
         public Gender Gender { get => _gender; set { _gender = value; OnPropertyChanged("Gender"); } }
         public int AgeIn { get => _ageIn; set { _ageIn = value; OnPropertyChanged("AgeIn"); } }
@@ -53,7 +50,7 @@ namespace Hospital.Domain.Model
         public string Value { get => _value; set { _value = value; OnPropertyChanged("Value"); } }
     }
 
-    public class TestData : ModelBase
+    public class TestData : DomainObject
     {
         private Visit _visit;
         private Test _test;
@@ -67,7 +64,6 @@ namespace Hospital.Domain.Model
         private TestStatus _status;
         private bool _isSymptom;
 
-        public int Id { get; set; }
         public Visit Visit { get => _visit; set { _visit = value; OnPropertyChanged("Visit"); } }
         public Test Test { get => _test; set { _test = value; OnPropertyChanged("Test"); } }
         public string Option { get => _option; set { _option = value; OnPropertyChanged("Option"); } }

@@ -50,7 +50,7 @@ namespace Hospital.EntityFramework
             modelBuilder.ApplyConfiguration(new VisitConfig());
             //modelBuilder.Ignore<User>();
             modelBuilder.Ignore<Adress>();
-            modelBuilder.Ignore<ModelBase>();
+            modelBuilder.Ignore<DomainObject>();
 
             {
                 //modelBuilder.Entity<Country>();   //Fluent API include  

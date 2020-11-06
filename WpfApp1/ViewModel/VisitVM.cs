@@ -6,7 +6,7 @@ namespace WpfApp1.ViewModel
 {
     public class VisitVM : INotifyPropertyChanged
     {
-        private static HospitalDbContextFactory contexFactory = new HospitalDbContextFactory();
+        private readonly HospitalDbContextFactory contexFactory = new HospitalDbContextFactory();
 
         public VisitVM()
         {

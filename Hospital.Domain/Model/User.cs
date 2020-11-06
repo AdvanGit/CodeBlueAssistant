@@ -6,7 +6,7 @@ namespace Hospital.Domain.Model
     public enum Gender : byte { male, female }
     public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
 
-    public class User : ModelBase
+    public class User : DomainObject
     {
         private string _firstName;
         private string _midName;
@@ -16,7 +16,6 @@ namespace Hospital.Domain.Model
         private Gender _gender;
         private DateTime _createDate;
 
-        public int Id { get; set; }
         public string FirstName
         {
             get { return _firstName; }

@@ -7,13 +7,12 @@ namespace Hospital.Domain.Model
     public enum ChangeTitle : byte { Первая, Вторая, Вечерняя, Ночная}
     public enum DepartmentType : byte {Ambulatory, Stationary, Laboratory, Reception}
 
-    public class Department : ModelBase
+    public class Department : DomainObject
     {
         private DepartmentTitle _title;
         private Staff _manager;
         private DepartmentType _type;
 
-        public int Id { get; set; }
         public DepartmentTitle Title
         {
             get
@@ -63,14 +62,13 @@ namespace Hospital.Domain.Model
         public ObservableCollection<Diagnosis> Diagnoses { get; set; }
     }
 
-    public class Change : ModelBase
+    public class Change : DomainObject
     {
         private Department _department;
         private ChangeTitle _changeTitle;
         private DateTime _timeStart;
         private TimeSpan _timeSpan;
 
-        public int Id { get; set; }
         public Department Department
         {
             get => _department;
@@ -109,13 +107,12 @@ namespace Hospital.Domain.Model
         }
     }
 
-    public class DepartmentTitle : ModelBase
+    public class DepartmentTitle : DomainObject
     {
         private string _title;
         private string _code;
         private string _shortTitle;
 
-        public int Id { get; set; }
         public string Title
         {
             get => _title;

@@ -5,7 +5,7 @@ namespace Hospital.Domain.Model
 {
     public enum PhysTherStatus { Ожидание, Готов, Неявка }
 
-    public class PhysioTherapyData : ModelBase
+    public class PhysioTherapyData : DomainObject
     {
         private Visit _visit;
         private PhysioTherapyFactor _physioTherapyFactor;
@@ -17,7 +17,6 @@ namespace Hospital.Domain.Model
         private DateTime _createDateTime;
         private PhysTherStatus _physTherStatus;
 
-        public int Id { get; set; }
         public Visit Visit { get => _visit; set { _visit = value; OnPropertyChanged("Visit"); } }
         public PhysioTherapyFactor PhysioTherapyFactor { get => _physioTherapyFactor; set { _physioTherapyFactor = value; OnPropertyChanged("PhysioTherapyFactor"); } }
         public PhysTherMethod PhysTherMethod { get => _physTherMethod; set { _physTherMethod = value; OnPropertyChanged("PhysTherMethod"); }    }
@@ -29,51 +28,47 @@ namespace Hospital.Domain.Model
         public PhysTherStatus PhysTherStatus { get => _physTherStatus; set { _physTherStatus = value; OnPropertyChanged("PhysTherStatus"); } }
     }
 
-    public class PhysioTherapyFactor : ModelBase
+    public class PhysioTherapyFactor : DomainObject
     {
         private string _title;
         private string _fullTitle;
         private string _tool;
         private PhysTherFactGroup _physTherFactGroup;
 
-        public int Id { get; set; }
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
         public string FullTitle { get => _fullTitle; set { _fullTitle = value; OnPropertyChanged("FullTitle"); } }
         public string Tool { get => _tool; set { _tool = value; OnPropertyChanged("Tool"); } }
         public PhysTherFactGroup PhysTherFactGroup { get => _physTherFactGroup; set { _physTherFactGroup = value; OnPropertyChanged("PhysTherFactGroup"); } }
     }
 
-    public class PhysTherFactGroup : ModelBase
+    public class PhysTherFactGroup : DomainObject
     {
         private string _title;
         private string _fullTitle;
 
         public ObservableCollection<PhysioTherapyFactor> PhysioTherapyFactors { get; set; }
-        public int Id { get; set; }
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
         public string FullTitle { get => _fullTitle; set { _fullTitle = value; OnPropertyChanged("FullTitle"); } }
     }
 
-    public class PhysTherMethod : ModelBase
+    public class PhysTherMethod : DomainObject
     {
         private string _title;
         private string _fullTitle;
         private PhysTherMethodGroup _physTherMethodGroup;
 
-        public int Id { get; set; }
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
         public string FullTitle { get => _fullTitle; set { _fullTitle = value; OnPropertyChanged("FullTitle"); } }
 
         public PhysTherMethodGroup PhysTherMethodGroup { get => _physTherMethodGroup; set { _physTherMethodGroup = value; OnPropertyChanged("PhysTherMethodGroup"); } }
     }
 
-    public class PhysTherMethodGroup : ModelBase
+    public class PhysTherMethodGroup : DomainObject
     {
         private string _title;
         private string _fullTitle;
 
         public ObservableCollection<PhysTherMethod> PhysTherMethods { get; set; }
-        public int Id { get; set; }
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
         public string FullTitle { get => _fullTitle; set { _fullTitle = value; OnPropertyChanged("FullTitle"); } }
     }

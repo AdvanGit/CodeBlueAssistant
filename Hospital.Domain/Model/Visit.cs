@@ -2,7 +2,7 @@
 
 namespace Hospital.Domain.Model
 {
-    public class Visit : ModelBase
+    public class Visit : DomainObject
     {
         private Entry _entyIn;
         private Entry _entryOut;
@@ -15,7 +15,6 @@ namespace Hospital.Domain.Model
         public ObservableCollection<PhysioTherapyData> PhysioTherapyDatas { get; set; }
         public ObservableCollection<SurgencyTherapyData> SurgencyTherapyDatas { get; set; }
 
-        public int Id { get; set; }
         public Entry EntryIn
         {
             get => _entyIn;
