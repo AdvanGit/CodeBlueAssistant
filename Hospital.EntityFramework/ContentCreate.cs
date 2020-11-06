@@ -7,9 +7,12 @@ namespace Hospital.EntityFramework
 {
     public class ContentCreate
     {
-        public ContentCreate()
+        private readonly HospitalDbContextFactory _contextFactory;
+        public ContentCreate(HospitalDbContextFactory contextFactory)
         {
-            using (HospitalDbContext db = new HospitalDbContext())
+
+            _contextFactory = contextFactory;
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 List<DepartmentTitle> departmentTitles = new List<DepartmentTitle>
                 {
@@ -488,7 +491,7 @@ namespace Hospital.EntityFramework
                     new SurgencyEndoscop { Title="Биопсия"},
                 };
                 List<SurgencyGroup> surgencyGroups = new List<SurgencyGroup>
-                { 
+                {
                     new SurgencyGroup { Title="Эктомия"},
                     new SurgencyGroup { Title="Резекция"},
                     new SurgencyGroup { Title="Стомия"},

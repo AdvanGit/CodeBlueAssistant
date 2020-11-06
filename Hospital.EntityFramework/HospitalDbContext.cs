@@ -6,7 +6,7 @@ namespace Hospital.EntityFramework
 {
     public class HospitalDbContext : DbContext
     {
-        //public HospitalDbContext(DbContextOptions options) : base(options) { }
+        public HospitalDbContext(DbContextOptions options) : base(options) {}
 
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Staff> Staffs { get; set; }
@@ -77,10 +77,6 @@ namespace Hospital.EntityFramework
                 // modelBuilder.Entity<User>().HasOne(p => p.Company).WithMany(t => t.Users).OnDelete(DeleteBehavior.Cascade);  SetNull: Restrict:
 
             }
-        }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HospitalDB;Trusted_Connection=True;");
         }
 
         private class StaffConfig : IEntityTypeConfiguration<Staff>

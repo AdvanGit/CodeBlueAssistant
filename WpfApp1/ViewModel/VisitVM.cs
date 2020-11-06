@@ -6,10 +6,11 @@ namespace WpfApp1.ViewModel
 {
     public class VisitVM : INotifyPropertyChanged
     {
+        private static HospitalDbContextFactory contexFactory = new HospitalDbContextFactory();
 
         public VisitVM()
         {
-            new ContentCreate();
+            new ContentCreate(contexFactory);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
