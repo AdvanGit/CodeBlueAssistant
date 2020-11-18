@@ -15,7 +15,7 @@ namespace Hospital.EntityFramework
         public DbSet<Department> Departments { get; set; }
         public DbSet<Change> Changes { get; set; }
         public DbSet<Diagnosis> Diagnoses { get; set; }
-        public DbSet<Visit> Visits { get; set; }
+        public DbSet<MedCard> MedCards { get; set; }
         public DbSet<Entry> Entries { get; set; }
 
         public DbSet<Test> Tests { get; set; }
@@ -47,7 +47,7 @@ namespace Hospital.EntityFramework
             modelBuilder.ApplyConfiguration(new StaffConfig());
             modelBuilder.ApplyConfiguration(new DepartmentConfig());
             modelBuilder.ApplyConfiguration(new EntryConfig());
-            modelBuilder.ApplyConfiguration(new VisitConfig());
+            modelBuilder.ApplyConfiguration(new MedCardConfig());
             //modelBuilder.Ignore<User>();
             modelBuilder.Ignore<Adress>();
             modelBuilder.Ignore<DomainObject>();
@@ -110,20 +110,18 @@ namespace Hospital.EntityFramework
             {
             }
         }
-
         private class EntryConfig : IEntityTypeConfiguration<Entry>
         {
             public void Configure(EntityTypeBuilder<Entry> builder)
             {
-                builder.Property(e => e.PatientId).IsRequired();
-                builder.Property(e => e.DestinationId).IsRequired();
+                builder.HasOne(e => e.Registrator).WithMany(s => s.Registrators).OnDelete(DeleteBehavior.NoAction);
+                builder.HasOne(e => e.DoctorDestination).WithMany(s => s.DoctorDestinations).OnDelete(DeleteBehavior.NoAction);
                 builder.Property(e => e.CreateDateTime).HasDefaultValueSql("GETDATE()");
             }
         }
-
-        private class VisitConfig : IEntityTypeConfiguration<Visit>
+        private class MedCardConfig : IEntityTypeConfiguration<MedCard>
         {
-            public void Configure(EntityTypeBuilder<Visit> builder)
+            public void Configure(EntityTypeBuilder<MedCard> builder)
             {
                 //builder.Property(p => p.DiagnosisId).IsRequired();
                 //builder.Property(p => p.Conclusion).IsRequired();

@@ -6,6 +6,31 @@ namespace Hospital.Domain.Model
     public enum TestMethod { Физикальная, Лабараторная, Инструментальная }
     public enum TestStatus { Ожидание, Готов, Неявка }
 
+    public class TestData : DomainObject
+    {
+        private MedCard _medCard;
+        private Test _test;
+        private string _option;
+        private string _value;
+
+        private DateTime _dateCreate;
+        private DateTime _dateResult;
+
+        private Staff _staffResult;
+        private TestStatus _status;
+        private bool _isSymptom;
+
+        public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged("MedCard"); } }
+        public Test Test { get => _test; set { _test = value; OnPropertyChanged("Test"); } }
+        public string Option { get => _option; set { _option = value; OnPropertyChanged("Option"); } }
+        public string Value { get => _value; set { _value = value; OnPropertyChanged("Value"); } }
+        public DateTime DateCreate { get => _dateCreate; set { _dateCreate = value; OnPropertyChanged("DateCreate"); } }
+        public DateTime DateResult { get => _dateResult; set { _dateResult = value; OnPropertyChanged("DateResult"); } }
+        public Staff StaffResult { get => _staffResult; set { _staffResult = value; OnPropertyChanged("StaffResult"); } }
+        public TestStatus Status { get => _status; set { _status = value; OnPropertyChanged("Status"); } }
+        public bool IsSymptom { get => _isSymptom; set { _isSymptom = value; OnPropertyChanged("IsSymptom"); } }
+    }
+   
     public class Test : DomainObject
     {
         private string _title;
@@ -48,30 +73,5 @@ namespace Hospital.Domain.Model
         public int AgeIn { get => _ageIn; set { _ageIn = value; OnPropertyChanged("AgeIn"); } }
         public int AgeOut { get => _ageOut; set { _ageOut = value; OnPropertyChanged("AgeOut"); } }
         public string Value { get => _value; set { _value = value; OnPropertyChanged("Value"); } }
-    }
-
-    public class TestData : DomainObject
-    {
-        private Visit _visit;
-        private Test _test;
-        private string _option;
-        private string _value;
-
-        private DateTime _dateCreate;
-        private DateTime _dateResult;
-
-        private Staff _staffResult;
-        private TestStatus _status;
-        private bool _isSymptom;
-
-        public Visit Visit { get => _visit; set { _visit = value; OnPropertyChanged("Visit"); } }
-        public Test Test { get => _test; set { _test = value; OnPropertyChanged("Test"); } }
-        public string Option { get => _option; set { _option = value; OnPropertyChanged("Option"); } }
-        public string Value { get => _value; set { _value = value; OnPropertyChanged("Value"); } }
-        public DateTime DateCreate { get => _dateCreate; set { _dateCreate = value; OnPropertyChanged("DateCreate"); } }
-        public DateTime DateResult { get => _dateResult; set { _dateResult = value; OnPropertyChanged("DateResult"); } }
-        public Staff StaffResult { get => _staffResult; set { _staffResult = value; OnPropertyChanged("StaffResult"); } }
-        public TestStatus Status { get => _status; set { _status = value; OnPropertyChanged("Status"); } }
-        public bool IsSymptom { get => _isSymptom; set { _isSymptom = value; OnPropertyChanged("IsSymptom"); } }
     }
 }

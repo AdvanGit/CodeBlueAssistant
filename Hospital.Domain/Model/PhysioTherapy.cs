@@ -7,7 +7,7 @@ namespace Hospital.Domain.Model
 
     public class PhysioTherapyData : DomainObject
     {
-        private Visit _visit;
+        private MedCard _medCard;
         private PhysioTherapyFactor _physioTherapyFactor;
         private PhysTherMethod _physTherMethod;
         private string _value;
@@ -17,7 +17,7 @@ namespace Hospital.Domain.Model
         private DateTime _createDateTime;
         private PhysTherStatus _physTherStatus;
 
-        public Visit Visit { get => _visit; set { _visit = value; OnPropertyChanged("Visit"); } }
+        public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged("MedCard"); } }
         public PhysioTherapyFactor PhysioTherapyFactor { get => _physioTherapyFactor; set { _physioTherapyFactor = value; OnPropertyChanged("PhysioTherapyFactor"); } }
         public PhysTherMethod PhysTherMethod { get => _physTherMethod; set { _physTherMethod = value; OnPropertyChanged("PhysTherMethod"); }    }
         public string Value { get => _value; set { _value = value; OnPropertyChanged("Value"); } }

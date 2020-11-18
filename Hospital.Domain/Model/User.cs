@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.ObjectModel;
 
 namespace Hospital.Domain.Model
 {
@@ -97,6 +98,9 @@ namespace Hospital.Domain.Model
         private WeekDays _weekDays;
         private int _cabinet;
         private Department _department;
+
+        public ObservableCollection<Entry> Registrators { get; set; }
+        public ObservableCollection<Entry> DoctorDestinations { get; set; }
 
         public bool IsEnabled
         {

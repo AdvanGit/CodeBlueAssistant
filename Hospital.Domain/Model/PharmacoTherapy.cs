@@ -8,13 +8,13 @@ namespace Hospital.Domain.Model
 
     public class PharmacoTherapyData : DomainObject
     {
-        private Visit _visit;
+        private MedCard _medCard;
         private Drug _drug;
         private string _dose;
         private Treatment _treatment;
         private DateTime _dateCreate;
 
-        public Visit Visit { get => _visit; set { _visit = value; OnPropertyChanged("Visit"); } }
+        public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged("MedCard"); } }
         public Drug Drug { get => _drug; set { _drug = value; OnPropertyChanged("Drug"); } }
         public string Dose { get => _dose; set { _dose = value; OnPropertyChanged("Dose"); } }
         public Treatment Treatment { get => _treatment; set { _treatment = value; OnPropertyChanged("Treatment"); } }

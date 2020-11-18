@@ -2,11 +2,12 @@
 
 namespace Hospital.Domain.Model
 {
-    public class Visit : DomainObject
+    public class MedCard : DomainObject
     {
-        private Entry _entyIn;
-        private Entry _entryOut;
         private Diagnosis _diagnosis;
+        private Staff _doctor;
+        private Staff _patient;
+        private string _option;
         private string _conclusion;
         private string _recomendation;
 
@@ -15,26 +16,6 @@ namespace Hospital.Domain.Model
         public ObservableCollection<PhysioTherapyData> PhysioTherapyDatas { get; set; }
         public ObservableCollection<SurgencyTherapyData> SurgencyTherapyDatas { get; set; }
 
-        public Entry EntryIn
-        {
-            get => _entyIn;
-            set
-            {
-                _entyIn = value;
-                OnPropertyChanged("EntryIn");
-            }
-        }
-        public int EntryInId { get; set; }
-
-        public Diagnosis Diagnosis
-        {
-            get => _diagnosis;
-            set
-            {
-                _diagnosis = value;
-                OnPropertyChanged("Diagnosis");
-            }
-        }
         //public int DiagnosisId { get; set; }
         public string Conclusion
         {
@@ -54,17 +35,19 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("Recomendation");
             }
         }
+        public string Option { get => _option; set { _option = value; OnPropertyChanged(nameof(Option)); } }
 
-        public Entry EntryOut
+        public Diagnosis Diagnosis
         {
-            get => _entryOut;
+            get => _diagnosis;
             set
             {
-                _entryOut = value;
-                OnPropertyChanged("EntryOut");
+                _diagnosis = value;
+                OnPropertyChanged("Diagnosis");
             }
         }
-        public int? EntryOutId { get; set; }
+        public Staff Doctor { get => _doctor; set { _doctor = value; OnPropertyChanged(nameof(Doctor));} }
+        public Staff Patient { get => _patient; set { _patient = value; OnPropertyChanged(nameof(Patient)); } }
 
     }
 }

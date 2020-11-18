@@ -62,13 +62,13 @@ namespace Hospital.EntityFramework
                     new Change { ChangeTitle=ChangeTitle.Ночная, TimeStart=DateTime.Parse("19:00"), TimeSpan=TimeSpan.FromHours(12), Department=departments.ElementAt(0)}
                 };
 
+                List<MedCard> medCards = new List<MedCard>
+                {
+                    new MedCard { Doctor=staffs.ElementAt(new Random().Next(staffs.Count) )}
+                };
                 List<Entry> entries = new List<Entry>
                 {
-                    new Entry {Chain=1, Destination=staffs.ElementAt(new Random().Next(staffs.Count)), EntryStatus=EntryStatus.Open, Patient=patients.ElementAt(new Random().Next(patients.Count)), TargetDateTime=DateTime.Now}
-                };
-                List<Visit> visits = new List<Visit>
-                {
-                    new Visit { EntryIn = entries.ElementAt(0) }
+                    new Entry {MedCard=medCards.FirstOrDefault(), Registrator=staffs.ElementAt(new Random().Next(staffs.Count)), DoctorDestination=staffs.ElementAt(new Random().Next(staffs.Count)), EntryStatus=EntryStatus.Open, Patient=patients.ElementAt(new Random().Next(patients.Count)), TargetDateTime=DateTime.Now}
                 };
 
                 List<TestType> testTypes = new List<TestType>
@@ -201,10 +201,10 @@ namespace Hospital.EntityFramework
                 };
                 List<TestData> testDatas = new List<TestData>
                 {
-                    new TestData {Test=tests.ElementAt(new Random().Next(tests.Count)), Visit=visits.ElementAt(0), DateCreate=DateTime.Now, StaffResult=staffs.ElementAt(new Random().Next(staffs.Count)), Status=TestStatus.Готов, DateResult=DateTime.Now, Value="Passed"},
-                    new TestData {Test=tests.ElementAt(new Random().Next(tests.Count)), Visit=visits.ElementAt(0), DateCreate=DateTime.Now, StaffResult=staffs.ElementAt(new Random().Next(staffs.Count)), Status=TestStatus.Готов, DateResult=DateTime.Now, Value="Passed"},
-                    new TestData {Test=tests.ElementAt(new Random().Next(tests.Count)), Visit=visits.ElementAt(0), DateCreate=DateTime.Now, StaffResult=staffs.ElementAt(new Random().Next(staffs.Count)), Status=TestStatus.Готов, DateResult=DateTime.Now, Value="Passed"},
-                    new TestData {Test=tests.ElementAt(new Random().Next(tests.Count)), Visit=visits.ElementAt(0), DateCreate=DateTime.Now, StaffResult=staffs.ElementAt(new Random().Next(staffs.Count)), Status=TestStatus.Готов, DateResult=DateTime.Now, Value="Passed"}
+                    new TestData {Test=tests.ElementAt(new Random().Next(tests.Count)), MedCard=medCards.ElementAt(0), DateCreate=DateTime.Now, StaffResult=staffs.ElementAt(new Random().Next(staffs.Count)), Status=TestStatus.Готов, DateResult=DateTime.Now, Value="Passed"},
+                    new TestData {Test=tests.ElementAt(new Random().Next(tests.Count)), MedCard=medCards.ElementAt(0), DateCreate=DateTime.Now, StaffResult=staffs.ElementAt(new Random().Next(staffs.Count)), Status=TestStatus.Готов, DateResult=DateTime.Now, Value="Passed"},
+                    new TestData {Test=tests.ElementAt(new Random().Next(tests.Count)), MedCard=medCards.ElementAt(0), DateCreate=DateTime.Now, StaffResult=staffs.ElementAt(new Random().Next(staffs.Count)), Status=TestStatus.Готов, DateResult=DateTime.Now, Value="Passed"},
+                    new TestData {Test=tests.ElementAt(new Random().Next(tests.Count)), MedCard=medCards.ElementAt(0), DateCreate=DateTime.Now, StaffResult=staffs.ElementAt(new Random().Next(staffs.Count)), Status=TestStatus.Готов, DateResult=DateTime.Now, Value="Passed"}
                 };
 
                 List<DrugClass> drugClasses = new List<DrugClass>
@@ -303,10 +303,10 @@ namespace Hospital.EntityFramework
                 };
                 List<PharmacoTherapyData> pharmacoTherapyDatas = new List<PharmacoTherapyData>
                 {
-                    new PharmacoTherapyData{ Drug = drugs.ElementAt(new Random().Next(drugs.Count)), Dose=((new Random().Next(10)).ToString()), DateCreate=DateTime.Now, Treatment=Treatment.Симптоматическая, Visit=visits.ElementAt(0)},
-                    new PharmacoTherapyData{ Drug = drugs.ElementAt(new Random().Next(drugs.Count)), Dose=((new Random().Next(10)).ToString()), DateCreate=DateTime.Now, Treatment=Treatment.Симптоматическая, Visit=visits.ElementAt(0)},
-                    new PharmacoTherapyData{ Drug = drugs.ElementAt(new Random().Next(drugs.Count)), Dose=((new Random().Next(10)).ToString()), DateCreate=DateTime.Now, Treatment=Treatment.Симптоматическая, Visit=visits.ElementAt(0)},
-                    new PharmacoTherapyData{ Drug = drugs.ElementAt(new Random().Next(drugs.Count)), Dose=((new Random().Next(10)).ToString()), DateCreate=DateTime.Now, Treatment=Treatment.Симптоматическая, Visit=visits.ElementAt(0)}
+                    new PharmacoTherapyData{ Drug = drugs.ElementAt(new Random().Next(drugs.Count)), Dose=((new Random().Next(10)).ToString()), DateCreate=DateTime.Now, Treatment=Treatment.Симптоматическая, MedCard=medCards.ElementAt(0)},
+                    new PharmacoTherapyData{ Drug = drugs.ElementAt(new Random().Next(drugs.Count)), Dose=((new Random().Next(10)).ToString()), DateCreate=DateTime.Now, Treatment=Treatment.Симптоматическая, MedCard=medCards.ElementAt(0)},
+                    new PharmacoTherapyData{ Drug = drugs.ElementAt(new Random().Next(drugs.Count)), Dose=((new Random().Next(10)).ToString()), DateCreate=DateTime.Now, Treatment=Treatment.Симптоматическая, MedCard=medCards.ElementAt(0)},
+                    new PharmacoTherapyData{ Drug = drugs.ElementAt(new Random().Next(drugs.Count)), Dose=((new Random().Next(10)).ToString()), DateCreate=DateTime.Now, Treatment=Treatment.Симптоматическая, MedCard=medCards.ElementAt(0)}
                 };
 
                 List<PhysTherMethodGroup> physTherMethodGroups = new List<PhysTherMethodGroup>
@@ -443,7 +443,7 @@ namespace Hospital.EntityFramework
                 {
                     new PhysioTherapyData
                     {
-                        Visit = visits.FirstOrDefault(),
+                        MedCard = medCards.FirstOrDefault(),
                         Staff = staffs.ElementAt(new Random().Next(staffs.Count)),
                         CreateDateTime = DateTime.Now,
                         PhysTherStatus = PhysTherStatus.Ожидание,
@@ -453,7 +453,7 @@ namespace Hospital.EntityFramework
                     },
                     new PhysioTherapyData
                     {
-                        Visit = visits.FirstOrDefault(),
+                        MedCard = medCards.FirstOrDefault(),
                         Staff = staffs.ElementAt(new Random().Next(staffs.Count)),
                         CreateDateTime = DateTime.Now,
                         PhysTherStatus = PhysTherStatus.Ожидание,
@@ -463,7 +463,7 @@ namespace Hospital.EntityFramework
                     },
                     new PhysioTherapyData
                     {
-                        Visit = visits.FirstOrDefault(),
+                        MedCard = medCards.FirstOrDefault(),
                         Staff = staffs.ElementAt(new Random().Next(staffs.Count)),
                         CreateDateTime = DateTime.Now,
                         PhysTherStatus = PhysTherStatus.Неявка,
@@ -473,7 +473,7 @@ namespace Hospital.EntityFramework
                     },
                     new PhysioTherapyData
                     {
-                        Visit = visits.FirstOrDefault(),
+                        MedCard = medCards.FirstOrDefault(),
                         Staff = staffs.ElementAt(new Random().Next(staffs.Count)),
                         CreateDateTime = DateTime.Now,
                         PhysTherStatus = PhysTherStatus.Готов,
@@ -537,7 +537,7 @@ namespace Hospital.EntityFramework
                 {
                     new SurgencyTherapyData
                     {
-                        Visit = visits.FirstOrDefault(),
+                        MedCard = medCards.FirstOrDefault(),
                         CreateDateTime= DateTime.Now,
                         TargetDateTime = DateTime.Now,
                         SurgencyClass = SurgencyClass.Диагностическая,
@@ -548,7 +548,7 @@ namespace Hospital.EntityFramework
                     },
                     new SurgencyTherapyData
                     {
-                        Visit = visits.FirstOrDefault(),
+                        MedCard = medCards.FirstOrDefault(),
                         CreateDateTime= DateTime.Now,
                         TargetDateTime = DateTime.Now,
                         SurgencyClass = SurgencyClass.Лечебная,
@@ -559,7 +559,7 @@ namespace Hospital.EntityFramework
                     },
                     new SurgencyTherapyData
                     {
-                        Visit = visits.FirstOrDefault(),
+                        MedCard = medCards.FirstOrDefault(),
                         CreateDateTime= DateTime.Now,
                         TargetDateTime = DateTime.Now,
                         SurgencyClass = SurgencyClass.Паллативная,
@@ -576,8 +576,8 @@ namespace Hospital.EntityFramework
                 db.Belays.AddRange(belays);
                 db.Patients.AddRange(patients);
                 db.Staffs.AddRange(staffs);
+                db.MedCards.AddRange(medCards);
                 db.Entries.AddRange(entries);
-                db.Visits.AddRange(visits);
 
                 db.TestTypes.AddRange(testTypes);
                 db.Tests.AddRange(tests);

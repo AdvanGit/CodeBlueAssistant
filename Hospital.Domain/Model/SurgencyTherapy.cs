@@ -9,7 +9,7 @@ namespace Hospital.Domain.Model
 
     public class SurgencyTherapyData : DomainObject
     {
-        private Visit _visit;
+        private MedCard _medCard;
         private SurgencyClass _surgencyClass;
         private SurgencyPriority _surgencyPriority;
         private SurgencyOperation _surgencyOperation;
@@ -19,7 +19,7 @@ namespace Hospital.Domain.Model
         private DateTime _targetDateTime;
         private string _option;
 
-        public Visit Visit { get => _visit; set { _visit = value; OnPropertyChanged("Visit"); } }
+        public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged("MedCard"); } }
         public SurgencyClass SurgencyClass { get => _surgencyClass; set { _surgencyClass = value; OnPropertyChanged("SurgencyClass"); } }
         public SurgencyPriority SurgencyPriority { get => _surgencyPriority; set { _surgencyPriority = value; OnPropertyChanged("SurgencyPriority"); } }
         public SurgencyOperation SurgencyOperation { get => _surgencyOperation; set { _surgencyOperation = value; OnPropertyChanged("SurgencyOperation"); } }
