@@ -25,6 +25,7 @@ namespace Hospital.UI.ViewModels
                     {
                         new Views.Registrator(),
                         new Views.Schedule(),
+
                         new Views.Ambulatory()
                         
                     };
