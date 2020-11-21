@@ -6,16 +6,12 @@
     <UseWPF>true</UseWPF>
   </PropertyGroup>
 
-
   <ItemGroup>
-    <PackageReference Include="MaterialDesignColors" Version="1.2.7" />
-    <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
+    <PackageReference Include="MahApps.Metro" Version="2.3.4" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hospital.Domain\Hospital.Domain.csproj" />
     <ProjectReference Include="..\Hospital.EntityFramework\Hospital.EntityFramework.csproj" />
   </ItemGroup>
 
- 
 </Project>
