@@ -19,7 +19,7 @@ namespace Hospital.Domain.Model
         public EntryStatus EntryStatus { get => _entryStatus; set { _entryStatus = value; OnPropertyChanged("EntryStatus"); } }
 
         public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged(nameof(MedCard)); } }
-        public int? MedCardId { get; set; }
+        public int MedCardId { get; set; }
 
         public Patient Patient { get => _patient; set { _patient = value; OnPropertyChanged("Patient"); } }
         public int PatientId { get; set; }

@@ -18,7 +18,7 @@ namespace WpfApp1.ViewModel
             {
                 if (currentPage == value) return;
                 currentPage = value;
-                OnPropertyChanged(nameof(CurrentPage));
+                OnPropertyChanged("CurrentPage");
             }
         }
 

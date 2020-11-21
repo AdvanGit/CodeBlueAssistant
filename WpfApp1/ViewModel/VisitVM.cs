@@ -10,7 +10,7 @@ namespace WpfApp1.ViewModel
 
         public VisitVM()
         {
-            //new ContentCreate(contexFactory);
+            new ContentCreate(contexFactory);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
