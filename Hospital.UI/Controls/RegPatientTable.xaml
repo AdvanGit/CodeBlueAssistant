@@ -4,9 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hospital.UI.Controls"
+             xmlns:vm="clr-namespace:Hospital.UI.ViewModels"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <!--<UserControl.DataContext>
+        <vm:RegistratorViewModel/>
+    </UserControl.DataContext>-->
+    
     <Grid>
-        <TextBlock Text="PatientTableTest" />
+        <DataGrid ItemsSource="{Binding Patients}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ФАМИЛИЯ" Binding="{Binding FirstName}"/>
+                <DataGridTextColumn Header="ИМЯ" Binding="{Binding MidName}"/>
+                <DataGridTextColumn Header="ОТЧЕСТВО" Binding="{Binding LastName}"/>
+                <DataGridTextColumn Header="ДАТА РОЖДЕНИЯ" Binding="{Binding BirthDay.Date}"/>
+                <DataGridTextColumn Header="ОМС" Binding="{Binding Belay.Title}"/>
+                <DataGridTextColumn Header="НОМЕР" Binding="{Binding BelayCode}"/>
+            </DataGrid.Columns>
+                
+        </DataGrid>
+
     </Grid>
 </UserControl>

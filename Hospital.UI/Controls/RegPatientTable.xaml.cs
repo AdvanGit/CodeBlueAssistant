@@ -8,6 +8,7 @@ namespace Hospital.UI.Controls
     public partial class RegPatientTable : UserControl
     {
         public string Label { get; set; }
+
         public RegPatientTable()
         {
             Label = "ПАЦИЕНТЫ";

@@ -6,6 +6,7 @@
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:local="clr-namespace:Hospital.UI.Views"
       xmlns:data="clr-namespace:Hospital.UI.ViewModels"
+      xmlns:controls="clr-namespace:Hospital.UI.Controls"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800" >
 
@@ -18,6 +19,7 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="Auto" MinWidth="200" MaxWidth="400"/>
         </Grid.ColumnDefinitions>
+        
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -41,12 +43,13 @@
                 <Button Content="Фильтр"/>
                 <TextBox Text="Поиск"/>
             </StackPanel>
-            <TextBlock Text="РЕГИСТРАЦИЯ" Grid.Row="0" HorizontalAlignment="Right"/>
+            <Button Content="РЕГИСТРАЦИЯ" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding InsertData}"/>
+            
             <ContentControl Content="{Binding CurrentRegTable}" Grid.Row="1"/>
         </Grid>
         <Grid Grid.Column="1" Background="LightBlue">
+            <controls:RegEntryPanel/>
         </Grid>
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Left" BorderThickness="2" BorderBrush="Red"/>
-        
     </Grid>
 </UserControl>
