@@ -12,7 +12,10 @@
     </UserControl.DataContext>-->
     
     <Grid>
-        <DataGrid ItemsSource="{Binding Patients}" AutoGenerateColumns="False">
+        <DataGrid ItemsSource="{Binding Patients}"
+                  SelectionMode="Single"
+                  SelectedItem="{Binding SelectedPatient}"
+                  AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ФАМИЛИЯ" Binding="{Binding FirstName}"/>
                 <DataGridTextColumn Header="ИМЯ" Binding="{Binding MidName}"/>

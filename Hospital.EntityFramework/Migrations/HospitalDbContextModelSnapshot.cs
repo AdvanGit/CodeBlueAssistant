@@ -15,16 +15,16 @@ namespace Hospital.EntityFramework.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .UseIdentityColumns()
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
-                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                .HasAnnotation("ProductVersion", "5.0.0");
 
             modelBuilder.Entity("Hospital.Domain.Model.Belay", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Info")
                         .HasColumnType("nvarchar(max)");
@@ -42,7 +42,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<byte>("ChangeTitle")
                         .HasColumnType("tinyint");
@@ -68,7 +68,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("ManagerId")
                         .HasColumnType("int");
@@ -96,7 +96,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
@@ -117,7 +117,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Code")
                         .HasColumnType("nvarchar(max)");
@@ -140,7 +140,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("DrugForm")
                         .HasColumnType("int");
@@ -166,7 +166,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -181,7 +181,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("DrugSubClassId")
                         .HasColumnType("int");
@@ -204,7 +204,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("DrugClassId")
                         .HasColumnType("int");
@@ -224,7 +224,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("DrugGroupId")
                         .HasColumnType("int");
@@ -250,7 +250,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("CreateDateTime")
                         .ValueGeneratedOnAdd()
@@ -266,7 +266,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("EntryStatus")
                         .HasColumnType("int");
 
-                    b.Property<int>("MedCardId")
+                    b.Property<int?>("MedCardId")
                         .HasColumnType("int");
 
                     b.Property<int>("PatientId")
@@ -298,7 +298,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Conclusion")
                         .HasColumnType("nvarchar(max)");
@@ -334,7 +334,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("BelayCode")
                         .HasColumnType("int");
@@ -377,8 +377,8 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("bigint");
 
                     b.Property<string>("_Adress")
-                        .HasColumnName("Adress")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Adress");
 
                     b.HasKey("Id");
 
@@ -392,7 +392,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("DateCreate")
                         .HasColumnType("datetime2");
@@ -423,7 +423,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("FullTitle")
                         .HasColumnType("nvarchar(max)");
@@ -441,7 +441,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("FullTitle")
                         .HasColumnType("nvarchar(max)");
@@ -464,7 +464,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("FullTitle")
                         .HasColumnType("nvarchar(max)");
@@ -482,7 +482,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("CreateDateTime")
                         .HasColumnType("datetime2");
@@ -529,7 +529,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("FullTitle")
                         .HasColumnType("nvarchar(max)");
@@ -555,7 +555,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("BirthDay")
                         .HasColumnType("datetime2");
@@ -603,8 +603,8 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("tinyint");
 
                     b.Property<string>("_Adress")
-                        .HasColumnName("Adress")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(max)")
+                        .HasColumnName("Adress");
 
                     b.HasKey("Id");
 
@@ -618,7 +618,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -636,7 +636,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");
@@ -651,7 +651,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
@@ -679,7 +679,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("CreateDateTime")
                         .HasColumnType("datetime2");
@@ -724,7 +724,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<string>("Measure")
                         .HasColumnType("nvarchar(max)");
@@ -750,7 +750,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<DateTime>("DateCreate")
                         .HasColumnType("datetime2");
@@ -795,7 +795,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int>("AgeIn")
                         .HasColumnType("int");
@@ -824,7 +824,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .UseIdentityColumn();
 
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
@@ -847,6 +847,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.Department", "Department")
                         .WithMany("Changes")
                         .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Department", b =>
@@ -858,6 +860,10 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.DepartmentTitle", "Title")
                         .WithMany()
                         .HasForeignKey("TitleId");
+
+                    b.Navigation("Manager");
+
+                    b.Navigation("Title");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Diagnosis", b =>
@@ -865,6 +871,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.Department", "Department")
                         .WithMany("Diagnoses")
                         .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Drug", b =>
@@ -872,6 +880,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.DrugSubGroup", "DrugSubGroup")
                         .WithMany("Drugs")
                         .HasForeignKey("DrugSubGroupId");
+
+                    b.Navigation("DrugSubGroup");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.DrugGroup", b =>
@@ -879,6 +889,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.DrugSubClass", "DrugSubClass")
                         .WithMany("DrugGroups")
                         .HasForeignKey("DrugSubClassId");
+
+                    b.Navigation("DrugSubClass");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.DrugSubClass", b =>
@@ -886,6 +898,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.DrugClass", "DrugClass")
                         .WithMany("DrugSubClasses")
                         .HasForeignKey("DrugClassId");
+
+                    b.Navigation("DrugClass");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.DrugSubGroup", b =>
@@ -893,6 +907,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.DrugGroup", "DrugGroup")
                         .WithMany("DrugSubGroups")
                         .HasForeignKey("DrugGroupId");
+
+                    b.Navigation("DrugGroup");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Entry", b =>
@@ -909,9 +925,7 @@ namespace Hospital.EntityFramework.Migrations
 
                     b.HasOne("Hospital.Domain.Model.MedCard", "MedCard")
                         .WithMany()
-                        .HasForeignKey("MedCardId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MedCardId");
 
                     b.HasOne("Hospital.Domain.Model.Patient", "Patient")
                         .WithMany()
@@ -924,6 +938,16 @@ namespace Hospital.EntityFramework.Migrations
                         .HasForeignKey("RegistratorId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
+
+                    b.Navigation("DoctorDestination");
+
+                    b.Navigation("EntryOut");
+
+                    b.Navigation("MedCard");
+
+                    b.Navigation("Patient");
+
+                    b.Navigation("Registrator");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.MedCard", b =>
@@ -939,6 +963,12 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.Staff", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId");
+
+                    b.Navigation("Diagnosis");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Patient", b =>
@@ -946,6 +976,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.Belay", "Belay")
                         .WithMany()
                         .HasForeignKey("BelayId");
+
+                    b.Navigation("Belay");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.PharmacoTherapyData", b =>
@@ -957,6 +989,10 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.MedCard", "MedCard")
                         .WithMany("PharmacoTherapyDatas")
                         .HasForeignKey("MedCardId");
+
+                    b.Navigation("Drug");
+
+                    b.Navigation("MedCard");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.PhysTherMethod", b =>
@@ -964,6 +1000,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.PhysTherMethodGroup", "PhysTherMethodGroup")
                         .WithMany("PhysTherMethods")
                         .HasForeignKey("PhysTherMethodGroupId");
+
+                    b.Navigation("PhysTherMethodGroup");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.PhysioTherapyData", b =>
@@ -983,6 +1021,14 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.Staff", "Staff")
                         .WithMany()
                         .HasForeignKey("StaffId");
+
+                    b.Navigation("MedCard");
+
+                    b.Navigation("PhysioTherapyFactor");
+
+                    b.Navigation("PhysTherMethod");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.PhysioTherapyFactor", b =>
@@ -990,6 +1036,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.PhysTherFactGroup", "PhysTherFactGroup")
                         .WithMany("PhysioTherapyFactors")
                         .HasForeignKey("PhysTherFactGroupId");
+
+                    b.Navigation("PhysTherFactGroup");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Staff", b =>
@@ -997,6 +1045,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.Department", "Department")
                         .WithMany("Staffs")
                         .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Department");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.SurgencyOperation", b =>
@@ -1008,6 +1058,10 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.SurgencyGroup", "SurgencyGroup")
                         .WithMany("SurgencyOperations")
                         .HasForeignKey("SurgencyGroupId");
+
+                    b.Navigation("Department");
+
+                    b.Navigation("SurgencyGroup");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.SurgencyTherapyData", b =>
@@ -1023,6 +1077,12 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.SurgencyOperation", "SurgencyOperation")
                         .WithMany()
                         .HasForeignKey("SurgencyOperationId");
+
+                    b.Navigation("MedCard");
+
+                    b.Navigation("SurgencyEndoscop");
+
+                    b.Navigation("SurgencyOperation");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Test", b =>
@@ -1030,6 +1090,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.TestType", "TestType")
                         .WithMany("Tests")
                         .HasForeignKey("TestTypeId");
+
+                    b.Navigation("TestType");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.TestData", b =>
@@ -1045,6 +1107,12 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.Test", "Test")
                         .WithMany()
                         .HasForeignKey("TestId");
+
+                    b.Navigation("MedCard");
+
+                    b.Navigation("StaffResult");
+
+                    b.Navigation("Test");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.TestNormalValue", b =>
@@ -1052,6 +1120,8 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.Test", "Test")
                         .WithMany("NormalValues")
                         .HasForeignKey("TestId");
+
+                    b.Navigation("Test");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.TestType", b =>
@@ -1059,6 +1129,80 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasOne("Hospital.Domain.Model.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId");
+
+                    b.Navigation("Department");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.Department", b =>
+                {
+                    b.Navigation("Changes");
+
+                    b.Navigation("Diagnoses");
+
+                    b.Navigation("Staffs");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.DrugClass", b =>
+                {
+                    b.Navigation("DrugSubClasses");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.DrugGroup", b =>
+                {
+                    b.Navigation("DrugSubGroups");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.DrugSubClass", b =>
+                {
+                    b.Navigation("DrugGroups");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.DrugSubGroup", b =>
+                {
+                    b.Navigation("Drugs");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.MedCard", b =>
+                {
+                    b.Navigation("PharmacoTherapyDatas");
+
+                    b.Navigation("PhysioTherapyDatas");
+
+                    b.Navigation("SurgencyTherapyDatas");
+
+                    b.Navigation("TestDatas");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.PhysTherFactGroup", b =>
+                {
+                    b.Navigation("PhysioTherapyFactors");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.PhysTherMethodGroup", b =>
+                {
+                    b.Navigation("PhysTherMethods");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.Staff", b =>
+                {
+                    b.Navigation("DoctorDestinations");
+
+                    b.Navigation("Registrators");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.SurgencyGroup", b =>
+                {
+                    b.Navigation("SurgencyOperations");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.Test", b =>
+                {
+                    b.Navigation("NormalValues");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.TestType", b =>
+                {
+                    b.Navigation("Tests");
                 });
 #pragma warning restore 612, 618
         }

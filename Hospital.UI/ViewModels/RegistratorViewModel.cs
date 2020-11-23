@@ -8,75 +8,63 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace Hospital.UI.ViewModels
 {
-    public static class Extensions
-    {
-        public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> col)
-        {
-            return new ObservableCollection<T>(col);
-        }
-    }
+	public static class Extensions
+	{
+		public static ObservableCollection<T> ToObservableCollection<T>(this IEnumerable<T> col)
+		{
+			return new ObservableCollection<T>(col);
+		}
+	}
 
-    class RegistratorViewModel : INotifyPropertyChanged
-    {
-        public RegistratorViewModel()
-        {
-            RegTables = new ObservableCollection<UserControl>
-            {
-                new Controls.RegDoctorTable(),
-                new Controls.RegPatientTable()
-            };
-            CurrentRegTable = RegTables.ElementAt(0);
-        }
+	public class RegistratorViewModel : INotifyPropertyChanged
+	{
+		public RegistratorViewModel()
+		{
+			RegTables = new List<UserControl>
+			{
+				new Controls.RegDoctorTable(),
+				new Controls.RegPatientTable()
+			};
+			CurrentRegTable = RegTables.ElementAt(0);
+		}
 
-        private UserControl _currentRegTable;
-        public UserControl CurrentRegTable { get => _currentRegTable; set { _currentRegTable = value; OnPropertyChanged(nameof(CurrentRegTable)); } }
+		private UserControl _currentRegTable;
+		private Patient _selectedPatient;
+		private Staff _selectedStaff;
 
-        public ObservableCollection<Staff> Doctors { get; set; }
-        public ObservableCollection<Patient> Patients { get; set; }
-        public ObservableCollection<UserControl> RegTables { get; set; }
+		public UserControl CurrentRegTable { get => _currentRegTable; set { _currentRegTable = value; OnPropertyChanged(nameof(CurrentRegTable)); } }
+		public Patient SelectedPatient { get => _selectedPatient; set { _selectedPatient = value; OnPropertyChanged(nameof(SelectedPatient)); } }
+		public Staff SelectedStaff { get => _selectedStaff; set { _selectedStaff = value; OnPropertyChanged(nameof(SelectedStaff)); } }
 
-        private RelayCommand _testCommand;
-        private RelayCommand _insertData;
+		private RelayCommand _insertData;
+		public RelayCommand InsertData { get => _insertData ?? (_insertData = new RelayCommand(obj => { Task.Run(() => GetData()); })); }
 
-        public RelayCommand TestCommand
-        {
-            get
-            {
-                return _testCommand ?? (_testCommand = new RelayCommand(obj => {MessageBox.Show("Команда");} )  );
-            }
-        }
-        public RelayCommand InsertData { get => _insertData ?? (_insertData = new RelayCommand(obj => { GetData(); })); }
+		public ObservableCollection<Staff> Doctors { get; set; }
+		public ObservableCollection<Patient> Patients { get; set; }
+		public List<UserControl> RegTables { get; set; }
 
-        public async void GetData()
-        {
-            using (HospitalDbContext db = new HospitalDbContextFactory().CreateDbContext())
-            {
-                IEnumerable<Patient> patients = await db.Patients.Include(e=>e.Belay).ToListAsync();
-                Patients = patients.ToObservableCollection();
+		public async void GetData()
+		{
+			using (HospitalDbContext db = new HospitalDbContextFactory().CreateDbContext())
+			{
+				var _patients = await db.Patients.Include(e => e.Belay).ToListAsync();
+				Patients = _patients.ToObservableCollection();
 
-                IEnumerable<Staff> doctors = await db.Staffs.Include(s => s.Department).ThenInclude(d => d.Title).ToListAsync();
-                Doctors = doctors.ToObservableCollection();
-            }
-        }
+				var _doctors = await db.Staffs.Include(s => s.Department).ThenInclude(d => d.Title).ToListAsync();
+				Doctors = _doctors.ToObservableCollection();
+			}
+		}
 
-        public async void GetServicesData()
-        {
-            IDataServices<Patient> PatientServices = new GenericDataServices<Patient>(new HospitalDbContextFactory());
-            IEnumerable<Patient> patients = await PatientServices.GetAll();
-            Patients = patients.ToObservableCollection();
-        }
-
-
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged([CallerMemberName] string prop = "")
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
-        }
+		public event PropertyChangedEventHandler PropertyChanged;
+		public void OnPropertyChanged([CallerMemberName] string prop = "")
+		{
+			PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+		}
 }
 }

@@ -55,6 +55,13 @@ namespace Hospital.Domain.Model
             }
         }
 
+        public string StreetNumber 
+        {
+            get
+            {
+                return SubNumber == 0 ? Street + " " + Number.ToString() : Street + " " + Number.ToString() + "/" + SubNumber.ToString();
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }

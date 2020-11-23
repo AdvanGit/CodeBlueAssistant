@@ -1,28 +1,39 @@
 ﻿<UserControl x:Class="Hospital.UI.Controls.RegDoctorTable"
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Hospital.UI.Controls"
-             xmlns:data="clr-namespace:Hospital.UI.ViewModels"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <!--<UserControl.DataContext>
-        <data:RegistratorViewModel/>
-    </UserControl.DataContext>-->
+			 xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+			 xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:local="clr-namespace:Hospital.UI.Controls"
+			 xmlns:vm="clr-namespace:Hospital.UI.ViewModels"
+			 mc:Ignorable="d" 
+			 d:DesignHeight="450" d:DesignWidth="800">
+	<!--<UserControl.DataContext>
+		<vm:RegistratorViewModel/>
+	</UserControl.DataContext>-->
 
-    <Grid>
-        
-        <DataGrid ItemsSource="{Binding Doctors}" AutoGenerateColumns="False">
-                <DataGrid.Columns>
-                    <DataGridTextColumn Binding="{Binding FirstName}" Header="ИМЯ"/>
-                    <DataGridTextColumn Binding="{Binding MidName}" Header="ФАМИЛИЯ"/>
-                    <DataGridTextColumn Binding="{Binding LastName}" Header="ОТЧЕСТВО"/>
-                    <DataGridTextColumn Binding="{Binding Qualification}" Header="СПЕЦИАЛЬНОСТЬ"/>
-                    <DataGridTextColumn Binding="{Binding Department.Title.Title}" Header="ОТЕДЕЛЕНИЕ" />
-                    <DataGridTextColumn Binding="{Binding Adress.City}" Header="АДРЕС"/>
-                    </DataGrid.Columns>
-        </DataGrid>
-        
-    </Grid>
+	<Grid>
+		
+		<DataGrid ItemsSource="{Binding Doctors}" AutoGenerateColumns="False"
+				  SelectionMode="Single"
+				  SelectedItem="{Binding SelectedStaff}">
+				<DataGrid.Columns>
+					<DataGridTextColumn Binding="{Binding FirstName}" Header="ФАМИЛИЯ"/>
+					<DataGridTextColumn Binding="{Binding MidName}" Header="ИМЯ"/>
+					<DataGridTextColumn Binding="{Binding LastName}" Header="ОТЧЕСТВО"/>
+					<DataGridTextColumn Binding="{Binding Qualification}" Header="СПЕЦИАЛЬНОСТЬ"/>
+					<DataGridTextColumn Binding="{Binding Department.Title.Title}" Header="ОТЕДЕЛЕНИЕ" />
+                <DataGridTemplateColumn Header="АДРЕС">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="{Binding Department.Adress.Street}"/>
+                                <TextBlock Text="{Binding Department.Adress.Number}" Margin="5,0"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+		</DataGrid>
+		
+	</Grid>
 </UserControl>
