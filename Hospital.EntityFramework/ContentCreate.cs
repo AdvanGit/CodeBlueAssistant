@@ -23,10 +23,10 @@ namespace Hospital.EntityFramework
                 };
                 List<Adress> adresses = new List<Adress>
                 {
-                    new Adress { City="Чайковский", Street="Декабристов", Number=5, SubNumber=3, Room=15},
-                    new Adress { City="Чайковский", Street="Сосновая", Number=17, Room=55},
-                    new Adress { City="Пермь", Street="Ленина", Number=48, Room=1},
-                    new Adress { City="Москва", Street="Проспект Кожевникова", Number=7}
+                    new Adress { City="Чайковский", Street="Декабристов", Number="5", Room=15},
+                    new Adress { City="Чайковский", Street="Сосновая", Number="17", Room=55},
+                    new Adress { City="Пермь", Street="Ленина", Number = "35", Room=13 },
+                    new Adress { City="Москва", Street="Проспект Кожевникова", Number="12"}
                 };
                 List<Belay> belays = new List<Belay>
                 {
@@ -44,8 +44,8 @@ namespace Hospital.EntityFramework
                 };
                 List<Staff> staffs = new List<Staff>
                 {
-                    new Staff { FirstName = "Ресепшен", MidName = "Вашу", LastName = "Мать",  Gender=Gender.female, Password="123", PhoneNumeber=89991231190, Adress=adresses.ElementAt(new Random().Next(adresses.Count))},
-                    new Staff { FirstName = "Доктор", MidName = "Соколов", LastName = "Премудрый", Password="123", PhoneNumeber=89223348043, Adress=adresses.ElementAt(new Random().Next(adresses.Count))}
+                    new Staff { FirstName = "Ресепшен", MidName = "Вашу", LastName = "Мать",  Gender=Gender.female, Password="123", PhoneNumber=89991231190, Adress=adresses.ElementAt(new Random().Next(adresses.Count))},
+                    new Staff { FirstName = "Доктор", MidName = "Соколов", LastName = "Премудрый", Password="123", PhoneNumber=89223348043, Adress=adresses.ElementAt(new Random().Next(adresses.Count))}
                 };
                 List<Department> departments = new List<Department>
                 {

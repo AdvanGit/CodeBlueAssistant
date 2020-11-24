@@ -44,7 +44,7 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("LastName");
             }
         }
-        public long PhoneNumeber
+        public long PhoneNumber
         {
             get { return _phoneNumber; }
             set

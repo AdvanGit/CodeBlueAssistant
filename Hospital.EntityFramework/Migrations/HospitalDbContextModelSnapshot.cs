@@ -373,7 +373,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<string>("MidName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("PhoneNumeber")
+                    b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");
 
                     b.Property<string>("_Adress")
@@ -593,7 +593,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<string>("Password")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<long>("PhoneNumeber")
+                    b.Property<long>("PhoneNumber")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Qualification")

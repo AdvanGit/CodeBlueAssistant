@@ -27,7 +27,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="{Binding Department.Adress.Street}"/>
-                                <TextBlock Text="{Binding Department.Adress.Number}" Margin="5,0"/>
+                                <TextBlock Text="{Binding Department.Adress.Number}" Margin="4,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>

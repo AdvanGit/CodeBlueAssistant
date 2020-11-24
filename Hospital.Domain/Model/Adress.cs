@@ -6,8 +6,8 @@ namespace Hospital.Domain.Model
 {
     public class Adress : INotifyPropertyChanged
     {
-        private string _city, _street;
-        private int _number, _subNumber, _room;
+        private string _city, _street, _number;
+        private int _room;
 
         public string City
         {
@@ -27,22 +27,13 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("Street");
             }
         }
-        public int Number
+        public string Number
         {
             get => _number;
             set
             {
                 _number = value;
                 OnPropertyChanged("Number");
-            }
-        }
-        public int SubNumber
-        {
-            get => _subNumber;
-            set
-            {
-                _subNumber = value;
-                OnPropertyChanged("SubNumber");
             }
         }
         public int Room
@@ -55,13 +46,6 @@ namespace Hospital.Domain.Model
             }
         }
 
-        public string StreetNumber 
-        {
-            get
-            {
-                return SubNumber == 0 ? Street + " " + Number.ToString() : Street + " " + Number.ToString() + "/" + SubNumber.ToString();
-            }
-        }
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }

@@ -40,15 +40,15 @@
                         </DataTemplate>
                     </ListBox.ItemTemplate>
                 </ListBox>
-                <Button Content="Фильтр"/>
+                <Button Content="Фильтр" Command="{Binding InsertData}"/>
                 <TextBox Text="Поиск"/>
             </StackPanel>
-            <Button Content="РЕГИСТРАЦИЯ" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding InsertData}"/>
+            <Button Content="РЕГИСТРАЦИЯ" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding CreatePatient}"/>
             
             <ContentControl Content="{Binding CurrentRegTable}" Grid.Row="1"/>
         </Grid>
         <Grid Grid.Column="1" Background="LightBlue">
-            <controls:RegEntryPanel/>
+            <mah:TransitioningContentControl Content="{Binding CurrentRegPanel}" Transition="LeftReplace"/>
         </Grid>
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Left" BorderThickness="2" BorderBrush="Red"/>
     </Grid>
