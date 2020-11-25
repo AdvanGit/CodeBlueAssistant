@@ -6,11 +6,24 @@
              xmlns:local="clr-namespace:Hospital.UI.Controls"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:vm="clr-namespace:Hospital.UI.ViewModels"
+             xmlns:domain="clr-namespace:Hospital.Domain.Model;assembly=Hospital.Domain"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="350">
     <!--<UserControl.DataContext>
         <vm:RegistratorViewModel/>
     </UserControl.DataContext>-->
+    
+    
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="genderEnum" MethodName="GetValues"
+                        ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="domain:Gender"/>     <!--not MVVM-->
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+
 
     <Grid>
         <Grid.RowDefinitions>
@@ -44,7 +57,7 @@
                 <TextBlock Text="Пол" Grid.Row="0" Grid.Column="1"/>
                 <DatePicker Grid.Row="1" Grid.Column="0" SelectedDate="{Binding EditingPatient.BirthDay}"/>
                 <ComboBox SelectedItem="{Binding EditingPatient.Gender}" 
-                          ItemsSource="{Binding Gender}"
+                          ItemsSource="{Binding Source={StaticResource genderEnum}}"
                           Grid.Row="1" Grid.Column="1"/>
                 <TextBlock Text="ОМС" Grid.Row="2" Grid.ColumnSpan="2"/>
                 <ComboBox Grid.Row="3" Grid.Column="0"
