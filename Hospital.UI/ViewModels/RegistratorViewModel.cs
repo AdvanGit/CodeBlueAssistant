@@ -1,5 +1,4 @@
 ﻿using Hospital.Domain.Model;
-using Hospital.Domain.Services;
 using Hospital.EntityFramework;
 using Hospital.UI.Controls;
 using Hospital.UI.Services;
@@ -10,13 +9,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 
 namespace Hospital.UI.ViewModels
 {
-
     public class RegistratorViewModel : INotifyPropertyChanged
     {
         public RegistratorViewModel()
@@ -40,9 +36,11 @@ namespace Hospital.UI.ViewModels
         public ObservableCollection<Staff> Doctors { get; } = new ObservableCollection<Staff>();
         public ObservableCollection<Patient> Patients { get; } = new ObservableCollection<Patient>();
         public ObservableCollection<Belay> Belays { get; } = new ObservableCollection<Belay>();
+        public ObservableCollection<Entry> Entries { get; } = new ObservableCollection<Entry>();
+
         public List<UserControl> RegTables { get; } = new List<UserControl> { new Controls.RegDoctorTable(), new Controls.RegPatientTable() };
 
-        private GenericDataServices<Patient> dataServicesPatient = new GenericDataServices<Patient>(new HospitalDbContextFactory());
+        private readonly GenericDataServices<Patient> dataServicesPatient = new GenericDataServices<Patient>(new HospitalDbContextFactory());
 
         private RelayCommand _insertData;
         private RelayCommand _selectRow;
@@ -85,6 +83,10 @@ namespace Hospital.UI.ViewModels
                 Patients.Clear();
                 var _patients = await db.Patients.Include(p => p.Belay).ToListAsync();
                 foreach (Patient patient in _patients) Patients.Add(patient);
+
+                Entries.Clear();
+                var _entries = await db.Entries.Include(e => e.Patient).Include(e => e.DoctorDestination).ToListAsync();
+                foreach (Entry entry in _entries) Entries.Add(entry);
             }
         }
         private async Task GetBelays()

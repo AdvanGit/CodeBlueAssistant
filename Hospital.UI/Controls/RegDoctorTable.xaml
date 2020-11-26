@@ -12,6 +12,10 @@
 	</UserControl.DataContext>-->
 
 	<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
         <DataGrid  ItemsSource="{Binding Doctors}" AutoGenerateColumns="False" SelectionMode="Single" IsReadOnly="True">
 
             <DataGrid.InputBindings>
@@ -38,8 +42,33 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
             </DataGrid.Columns>
-            
 		</DataGrid>
+            
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Grid.Row="0" Background="Gray"/>
+            <StackPanel Grid.Row="0" Orientation="Horizontal">
+                <TextBlock Text="{Binding SelectedStaff.FirstName}"/>
+                <TextBlock Text="{Binding SelectedStaff.MidName}"/>
+                <TextBlock Text="{Binding SelectedStaff.LastName}"/>
+            </StackPanel>
+            <DataGrid Grid.Row="1" ItemsSource="{Binding Entries}" AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="ДАТА" Binding="{Binding TargetDateTime}"/>
+                    <DataGridTextColumn Header="ВРЕМЯ" Binding="{Binding TargetDateTime}"/>
+                    <DataGridTextColumn Header="ФАМИЛИЯ" Binding="{Binding Patient.FirstName}"/>
+                    <DataGridTextColumn Header="ИМЯ" Binding="{Binding Patient.MidName}"/>
+                    <DataGridTextColumn Header="ОТЧЕСТВО" Binding="{Binding Patient.LastName}"/>
+                    <DataGridTextColumn Header="СТАТУС" Binding="{Binding EntryStatus}"/>
+                    <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Patient.PhoneNumber}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        
+        <GridSplitter Grid.Row="1" ResizeDirection="Rows" VerticalAlignment="Top" BorderBrush="Red" BorderThickness="2"/>
     </Grid>
     
 </UserControl>
