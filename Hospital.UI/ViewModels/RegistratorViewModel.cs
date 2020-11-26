@@ -3,6 +3,7 @@ using Hospital.EntityFramework;
 using Hospital.UI.Controls;
 using Hospital.UI.Services;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -52,7 +53,8 @@ namespace Hospital.UI.ViewModels
         public RelayCommand InsertData { get => _insertData ??= new RelayCommand(async obj => await GetData()); }
         public RelayCommand EditUser
         {
-            get => _editUser ??= new RelayCommand(async obj => {
+            get => _editUser ??= new RelayCommand(async obj =>
+            {
                 EditingPatient = (Patient)SelectedPatient.Clone();
                 CurrentRegPanel = new RegEditPanel();
                 await GetBelays();
@@ -66,8 +68,12 @@ namespace Hospital.UI.ViewModels
         public RelayCommand SavePatient { get => _savePatient ??= new RelayCommand(async obj => await dataServicesPatient.Update(EditingPatient.Id, EditingPatient)); }
         public RelayCommand SelectRow
         {
-            get => _selectRow ??= new RelayCommand(obj => {
-                if (obj.GetType() == typeof(Staff)) SelectedStaff = (Staff)obj;
+            get => _selectRow ??= new RelayCommand(async obj =>
+            {
+                if (obj.GetType() == typeof(Staff)) {
+                    SelectedStaff = (Staff)obj;
+                    await GetEntries(SelectedStaff);
+                    }
                 else if (obj.GetType() == typeof(Patient)) SelectedPatient = (Patient)obj;
             });
         }
@@ -83,10 +89,6 @@ namespace Hospital.UI.ViewModels
                 Patients.Clear();
                 var _patients = await db.Patients.Include(p => p.Belay).ToListAsync();
                 foreach (Patient patient in _patients) Patients.Add(patient);
-
-                Entries.Clear();
-                var _entries = await db.Entries.Include(e => e.Patient).Include(e => e.DoctorDestination).ToListAsync();
-                foreach (Entry entry in _entries) Entries.Add(entry);
             }
         }
         private async Task GetBelays()
@@ -97,6 +99,24 @@ namespace Hospital.UI.ViewModels
                     var _belays = await db.Belays.ToListAsync();
                     foreach (Belay belay in _belays) Belays.Add(belay);
                 }
+        }
+        private async Task GetEntries(Staff selectedStaff)
+        {
+            Entries.Clear();
+            using (HospitalDbContext db = new HospitalDbContextFactory().CreateDbContext())
+            {
+                List<Entry> entries = await db.Entries.Where(e=>e.DoctorDestination==selectedStaff).Include(e=>e.Patient).ToListAsync();
+                List<Entry> emptyEntries = new List<Entry>();
+
+                var change = db.Changes.Where(c => c.Staff == selectedStaff).FirstOrDefault();
+                //foreach (Change change in db.Changes.Where(c => c.Staff == selectedStaff).ToList())
+
+                foreach (DateTime time in change.GetTimes()) emptyEntries.Add(new Entry { CreateDateTime = DateTime.Now, TargetDateTime = time });
+                
+                emptyEntries.AddRange(entries);
+                var result = emptyEntries.OrderBy(e => e.TargetDateTime).GroupBy(e => e.TargetDateTime).Select(e => e.Last());
+                foreach (Entry entry in result) Entries.Add(entry);
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

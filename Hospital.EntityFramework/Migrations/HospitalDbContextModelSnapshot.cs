@@ -44,21 +44,26 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<byte>("ChangeTitle")
-                        .HasColumnType("tinyint");
+                    b.Property<DateTime>("DateTimeEnd")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateTimeStart")
+                        .HasColumnType("datetime2");
 
                     b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("StaffId")
                         .HasColumnType("int");
 
                     b.Property<TimeSpan>("TimeSpan")
                         .HasColumnType("time");
 
-                    b.Property<DateTime>("TimeStart")
-                        .HasColumnType("datetime2");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DepartmentId");
+
+                    b.HasIndex("StaffId");
 
                     b.ToTable("Changes");
                 });
@@ -844,11 +849,15 @@ namespace Hospital.EntityFramework.Migrations
 
             modelBuilder.Entity("Hospital.Domain.Model.Change", b =>
                 {
-                    b.HasOne("Hospital.Domain.Model.Department", "Department")
+                    b.HasOne("Hospital.Domain.Model.Department", null)
                         .WithMany("Changes")
                         .HasForeignKey("DepartmentId");
 
-                    b.Navigation("Department");
+                    b.HasOne("Hospital.Domain.Model.Staff", "Staff")
+                        .WithMany()
+                        .HasForeignKey("StaffId");
+
+                    b.Navigation("Staff");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Department", b =>

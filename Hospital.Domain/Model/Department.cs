@@ -62,51 +62,6 @@ namespace Hospital.Domain.Model
         public ObservableCollection<Diagnosis> Diagnoses { get; set; }
     }
 
-    public class Change : DomainObject
-    {
-        private Department _department;
-        private ChangeTitle _changeTitle;
-        private DateTime _timeStart;
-        private TimeSpan _timeSpan;
-
-        public Department Department
-        {
-            get => _department;
-            set
-            {
-                _department = value;
-                OnPropertyChanged("Department");
-            }
-        }
-        public ChangeTitle ChangeTitle
-        {
-            get => _changeTitle;
-            set
-            {
-                _changeTitle = value;
-                OnPropertyChanged("ChangeTitle");
-            }
-        }
-        public DateTime TimeStart
-        {
-            get => _timeStart;
-            set
-            {
-                _timeStart = value;
-                OnPropertyChanged("TimeStart");
-            }
-        }
-        public TimeSpan TimeSpan
-        {
-            get => _timeSpan;
-            set
-            {
-                _timeSpan = value;
-                OnPropertyChanged("TimeSpan");
-            }
-        }
-    }
-
     public class DepartmentTitle : DomainObject
     {
         private string _title;

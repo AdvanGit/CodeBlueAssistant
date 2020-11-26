@@ -16,7 +16,7 @@ namespace Hospital.EntityFramework
             {
                 List<DepartmentTitle> departmentTitles = new List<DepartmentTitle>
                 {
-                    new DepartmentTitle{ Title="Общая терапия", Code="Therapy"},
+                    new DepartmentTitle{Title="Общая терапия", Code="Therapy"},
                     new DepartmentTitle{Title = "Стоматология", Code="Stomatology"},
                     new DepartmentTitle{Title = "Станция переливания крови", Code="Transfusiology"},
                     new DepartmentTitle{Title = "Интенсивная терапия", Code="ICU"},
@@ -28,6 +28,14 @@ namespace Hospital.EntityFramework
                     new Adress { City="Пермь", Street="Ленина", Number = "35", Room=13 },
                     new Adress { City="Москва", Street="Проспект Кожевникова", Number="12"}
                 };
+                List<Department> departments = new List<Department>
+                {
+                    new Department { Title=departmentTitles.ElementAt(0), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Ambulatory },
+                    new Department { Title=departmentTitles.ElementAt(1), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Stationary},
+                    new Department { Title=departmentTitles.ElementAt(2), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Laboratory},
+                    new Department { Title=departmentTitles.ElementAt(3), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Ambulatory},
+                    new Department { Title=departmentTitles.ElementAt(3), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Stationary},
+                };
                 List<Belay> belays = new List<Belay>
                 {
                     new Belay {Title="Росгосстрах-медицина"},
@@ -36,39 +44,37 @@ namespace Hospital.EntityFramework
                     new Belay {Title="МАКС-М"},
                     new Belay {Title="АльфаСтрахование-ОМС"}
                 };
+                List<Staff> staffs = new List<Staff>
+                {
+                    new Staff { FirstName = "Авдыкова", MidName = "Людмила", LastName = "Захаровна", Department= departments.ElementAt(new Random().Next(departments.Count)),  Gender=Gender.female, Password="123", PhoneNumber=89991231190, Adress=adresses.ElementAt(new Random().Next(adresses.Count))},
+                    new Staff { FirstName = "Ситников", MidName = "Анатолий", LastName = "Радимович", Department= departments.ElementAt(new Random().Next(departments.Count)),  Gender=Gender.male, Password="123", PhoneNumber=89223348043, Adress=adresses.ElementAt(new Random().Next(adresses.Count))},
+                    new Staff { FirstName = "Павлов", MidName = "Михаил", LastName = "Николаевич", Department= departments.ElementAt(new Random().Next(departments.Count)),  Gender=Gender.male, Password="123", PhoneNumber=89223348043, Adress=adresses.ElementAt(new Random().Next(adresses.Count))},
+                    new Staff { FirstName = "Жуков", MidName = "Терентий", LastName = "Георгиевич", Department= departments.ElementAt(new Random().Next(departments.Count)),  Gender=Gender.male, Password="123", PhoneNumber=89223348043, Adress=adresses.ElementAt(new Random().Next(adresses.Count))}
+                };
                 List<Patient> patients = new List<Patient>
                 {
                     new Patient { FirstName = "Очень", MidName = "Больной", LastName = "Человек", Gender = Gender.female, HasChild = true, Belay = belays.ElementAt(0), BelayCode = 12345678, Adress=adresses.ElementAt(new Random().Next(adresses.Count))},
                     new Patient { FirstName = "Очень", MidName = "Твердая", LastName = "Воля", Gender = Gender.female, Belay = belays.ElementAt(1), BelayCode=88888888, Adress=adresses.ElementAt(new Random().Next(adresses.Count))}
 
                 };
-                List<Staff> staffs = new List<Staff>
-                {
-                    new Staff { FirstName = "Ресепшен", MidName = "Вашу", LastName = "Мать",  Gender=Gender.female, Password="123", PhoneNumber=89991231190, Adress=adresses.ElementAt(new Random().Next(adresses.Count))},
-                    new Staff { FirstName = "Доктор", MidName = "Соколов", LastName = "Премудрый", Password="123", PhoneNumber=89223348043, Adress=adresses.ElementAt(new Random().Next(adresses.Count))}
-                };
-                List<Department> departments = new List<Department>
-                {
-                    new Department { Title=departmentTitles.ElementAt(0), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Ambulatory, Manager=staffs.ElementAt(new Random().Next(staffs.Count)) },
-                    new Department { Title=departmentTitles.ElementAt(1), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Stationary, Manager=staffs.ElementAt(new Random().Next(staffs.Count)) },
-                    new Department { Title=departmentTitles.ElementAt(2), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Laboratory, Manager=staffs.ElementAt(new Random().Next(staffs.Count)) },
-                    new Department { Title=departmentTitles.ElementAt(3), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Ambulatory, Manager=staffs.ElementAt(new Random().Next(staffs.Count)) },
-                    new Department { Title=departmentTitles.ElementAt(3), Adress = adresses.ElementAt(new Random().Next(adresses.Count)), Type=DepartmentType.Stationary, Manager=staffs.ElementAt(new Random().Next(staffs.Count)) },
-                };
                 List<Change> changes = new List<Change>
                 {
-                    new Change { ChangeTitle=ChangeTitle.Первая, TimeStart=DateTime.Parse("8:00"), TimeSpan=TimeSpan.FromHours(6), Department=departments.ElementAt(0)},
-                    new Change { ChangeTitle=ChangeTitle.Вторая, TimeStart=DateTime.Parse("13:00"), TimeSpan=TimeSpan.FromHours(6), Department=departments.ElementAt(0)},
-                    new Change { ChangeTitle=ChangeTitle.Ночная, TimeStart=DateTime.Parse("19:00"), TimeSpan=TimeSpan.FromHours(12), Department=departments.ElementAt(0)}
+                    new Change(new DateTime(2020,11,26,8,0,0),new DateTime(2020,11,26,13,0,0), TimeSpan.FromMinutes(30)) { Staff = staffs.ElementAt(0) },
+                    new Change(new DateTime(2020,11,27,13,0,0),new DateTime(2020,11,27,18,0,0), TimeSpan.FromMinutes(30)){ Staff = staffs.ElementAt(0) },
+                    new Change(new DateTime(2020,11,28,8,0,0),new DateTime(2020,11,28,13,0,0), TimeSpan.FromMinutes(30)) { Staff = staffs.ElementAt(0) },
+                    new Change(new DateTime(2020,11,28,13,0,0),new DateTime(2020,11,28,18,0,0), TimeSpan.FromMinutes(30)) { Staff = staffs.ElementAt(0) },
                 };
 
                 List<MedCard> medCards = new List<MedCard>
                 {
                     new MedCard { Doctor=staffs.ElementAt(new Random().Next(staffs.Count) )}
                 };
+
                 List<Entry> entries = new List<Entry>
                 {
-                    new Entry {MedCard=medCards.FirstOrDefault(), Registrator=staffs.ElementAt(new Random().Next(staffs.Count)), DoctorDestination=staffs.ElementAt(new Random().Next(staffs.Count)), EntryStatus=EntryStatus.Open, Patient=patients.ElementAt(new Random().Next(patients.Count)), TargetDateTime=DateTime.Now}
+                    new Entry {MedCard=medCards.FirstOrDefault(), Registrator=staffs.ElementAt(new Random().Next(staffs.Count)), DoctorDestination=staffs.ElementAt(0), EntryStatus=EntryStatus.Open, Patient=patients.ElementAt(new Random().Next(patients.Count)), TargetDateTime=new DateTime(2020,11,26,10,0,0)},
+                    new Entry {Registrator=staffs.ElementAt(new Random().Next(staffs.Count)), DoctorDestination=staffs.ElementAt(0), EntryStatus=EntryStatus.Open, Patient=patients.ElementAt(new Random().Next(patients.Count)), TargetDateTime=new DateTime(2020,11,26,11,0,0)},
+                    new Entry {Registrator=staffs.ElementAt(new Random().Next(staffs.Count)), DoctorDestination=staffs.ElementAt(0), EntryStatus=EntryStatus.Open, Patient=patients.ElementAt(new Random().Next(patients.Count)), TargetDateTime=new DateTime(2020,11,26,11,30,0)}
                 };
 
                 List<TestType> testTypes = new List<TestType>
@@ -571,11 +577,11 @@ namespace Hospital.EntityFramework
                 };
 
                 db.DepartmentTitles.AddRange(departmentTitles);
-                db.Changes.AddRange(changes);
                 db.Departments.AddRange(departments);
                 db.Belays.AddRange(belays);
                 db.Patients.AddRange(patients);
                 db.Staffs.AddRange(staffs);
+                db.Changes.AddRange(changes);
                 db.MedCards.AddRange(medCards);
                 db.Entries.AddRange(entries);
 
