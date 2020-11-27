@@ -26,21 +26,24 @@
             </DataGrid.InputBindings>
             
             <DataGrid.Columns>
-					<DataGridTextColumn Binding="{Binding FirstName}" Header="ФАМИЛИЯ"/>
-					<DataGridTextColumn Binding="{Binding MidName}" Header="ИМЯ"/>
-					<DataGridTextColumn Binding="{Binding LastName}" Header="ОТЧЕСТВО"/>
-					<DataGridTextColumn Binding="{Binding Qualification}" Header="СПЕЦИАЛЬНОСТЬ"/>
-					<DataGridTextColumn Binding="{Binding Department.Title.Title}" Header="ОТЕДЕЛЕНИЕ" />
+					<DataGridTextColumn Binding="{Binding DoctorDestination.FirstName}" Header="ФАМИЛИЯ"/>
+                <DataGridTextColumn Binding="{Binding DoctorDestination.MidName}" Header="ИМЯ"/>
+                <DataGridTextColumn Binding="{Binding DoctorDestination.LastName}" Header="ОТЧЕСТВО"/>
+                <DataGridTextColumn Binding="{Binding DoctorDestination.Qualification}" Header="СПЕЦИАЛЬНОСТЬ"/>
+                <DataGridTextColumn Binding="{Binding DoctorDestination.Department.Title.Title}" Header="ОТЕДЕЛЕНИЕ" />
                 <DataGridTemplateColumn Header="АДРЕС">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="{Binding Department.Adress.Street}"/>
-                                <TextBlock Text="{Binding Department.Adress.Number}" Margin="4,0"/>
+                                <TextBlock Text="{Binding DoctorDestination.Department.Adress.Street}"/>
+                                <TextBlock Text="{Binding DoctorDestination.Department.Adress.Number}" Margin="4,0"/>
                             </StackPanel>
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                <DataGridTextColumn Binding="{Binding TargetDateTime.Day}" Header="ДАТА"/>
+                <DataGridTextColumn Binding="{Binding TargetDateTime.TimeOfDay}" Header="ВРЕМЯ"/>
+                <DataGridTextColumn Binding="{Binding EntryStatus}" Header="СТАТУС"/>
             </DataGrid.Columns>
 		</DataGrid>
             

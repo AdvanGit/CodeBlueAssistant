@@ -2,7 +2,7 @@
 
 namespace Hospital.Domain.Model
 {
-    public enum EntryStatus { Open, Closed, OutOfDate }
+    public enum EntryStatus { Open, Closed, OutOfDate, Await }
 
     public class Entry : DomainObject
     {

@@ -34,7 +34,7 @@ namespace Hospital.UI.ViewModels
         public Patient EditingPatient { get => _editingPatient; set { _editingPatient = value; OnPropertyChanged(nameof(EditingPatient)); } }
         public Staff SelectedStaff { get => _selectedStaff; set { _selectedStaff = value; OnPropertyChanged(nameof(SelectedStaff)); } }
 
-        public ObservableCollection<Staff> Doctors { get; } = new ObservableCollection<Staff>();
+        public ObservableCollection<Entry> Doctors { get; } = new ObservableCollection<Entry>();
         public ObservableCollection<Patient> Patients { get; } = new ObservableCollection<Patient>();
         public ObservableCollection<Belay> Belays { get; } = new ObservableCollection<Belay>();
         public ObservableCollection<Entry> Entries { get; } = new ObservableCollection<Entry>();
@@ -50,7 +50,7 @@ namespace Hospital.UI.ViewModels
         private RelayCommand _createPatient;
         private RelayCommand _savePatient;
 
-        public RelayCommand InsertData { get => _insertData ??= new RelayCommand(async obj => await GetData()); }
+        public RelayCommand InsertData { get => _insertData ??= new RelayCommand(async obj => await GetFreeEntries()); }
         public RelayCommand EditUser
         {
             get => _editUser ??= new RelayCommand(async obj =>
@@ -82,15 +82,56 @@ namespace Hospital.UI.ViewModels
         {
             using (HospitalDbContext db = new HospitalDbContextFactory().CreateDbContext())
             {
-                Doctors.Clear();
-                var _doctors = await db.Staffs.Include(s => s.Department).ThenInclude(d => d.Title).ToListAsync();
-                foreach (Staff staff in _doctors) Doctors.Add(staff);
-
                 Patients.Clear();
                 var _patients = await db.Patients.Include(p => p.Belay).ToListAsync();
                 foreach (Patient patient in _patients) Patients.Add(patient);
             }
         }
+
+        private async Task GetFreeEntries()
+        {
+            Doctors.Clear();
+            using (HospitalDbContext db = new HospitalDbContextFactory().CreateDbContext())
+            {
+                List<Change> allChanges = await db.Changes
+                    .Include(c=>c.Staff).ThenInclude(s=>s.Department).ThenInclude(d=>d.Title)
+                    .ToListAsync();
+
+                for (int i = 0; i < allChanges.Count; i++)
+                {
+                    Change change = allChanges[i];
+
+                    List<Entry> emptyEntries = new List<Entry>();
+                    foreach (DateTime time in change.GetTimes()) emptyEntries
+                            .Add(new Entry { CreateDateTime = DateTime.Now, TargetDateTime = time, DoctorDestination=change.Staff });
+                    
+                    List<Entry> entries = await db.Entries
+                        .Where(e=>e.DoctorDestination == change.Staff)
+                        .Where(e=>e.TargetDateTime.Date == change.DateTimeStart.Date)
+                        .ToListAsync();
+
+                    emptyEntries.AddRange(entries);
+
+                    var result = emptyEntries
+                        .OrderBy(e => e.TargetDateTime)
+                        .GroupBy(e => e.TargetDateTime)
+                        .Select(e => e.Last())
+                        .Where(e => e.EntryStatus == EntryStatus.Open)
+                        .GroupBy(r => r.DoctorDestination)
+                        .Select(r => r.FirstOrDefault());
+
+                    if (result.Count() != 0)
+                    {
+                        allChanges.RemoveAll(c => c.Staff == change.Staff);
+                        i--;
+                    }
+
+                    foreach (Entry entry in result) Doctors.Add(entry);
+                }
+
+            }
+        }
+
         private async Task GetBelays()
         {
             if (Belays.Count == 0)
