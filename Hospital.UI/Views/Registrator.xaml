@@ -5,15 +5,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:local="clr-namespace:Hospital.UI.Views"
-      xmlns:data="clr-namespace:Hospital.UI.ViewModels"
-      xmlns:controls="clr-namespace:Hospital.UI.Controls"
-      xmlns:command="clr-namespace:Hospital.UI.Services"
+      xmlns:vm="clr-namespace:Hospital.UI.ViewModels.RegistratorViewModel"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800" >
 
     <UserControl.DataContext>
-        <data:RegistratorViewModel/>
+        <vm:RegistratorViewModel/>
     </UserControl.DataContext>
+
     
     <Grid>
         <Grid.ColumnDefinitions>

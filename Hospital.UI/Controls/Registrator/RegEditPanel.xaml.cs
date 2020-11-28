@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-namespace Hospital.UI.Controls
+namespace Hospital.UI.Controls.Registrator
 {
     /// <summary>
     /// Логика взаимодействия для RegEditPanel.xaml

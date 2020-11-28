@@ -1,6 +1,9 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:ser="clr-namespace:Hospital.UI.Services"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
+    <ser:ToUpperCaseConverter x:Key="ToUpperCaseConverter"/>
+
     <Style TargetType="ListBoxItem" x:Key="TitleListBoxItem">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Padding" Value="10,5"/>
