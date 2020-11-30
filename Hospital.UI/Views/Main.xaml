@@ -15,7 +15,7 @@
 		WindowTitleBrush="White"
 		OverrideDefaultWindowCommandsBrush="Black"
 		TitleForeground="Black"      
-		TitleAlignment="Center"
+		TitleAlignment="Center" 
 		Title="Hospital" Height="720" Width="1280">
    
 	<mah:MetroWindow.LeftWindowCommands>

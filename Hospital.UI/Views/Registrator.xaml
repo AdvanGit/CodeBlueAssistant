@@ -49,8 +49,8 @@
             
         </Grid>
         
-        <Grid Grid.Column="1" Background="LightBlue">
-            <mah:TransitioningContentControl Content="{Binding CurrentRegPanel}" Transition="LeftReplace"/>
+        <Grid Grid.Column="1">
+            <mah:TransitioningContentControl Content="{Binding CurrentRegPanel}" Transition="LeftReplace" Background="{StaticResource BrushPrimaryPanel}"/>
         </Grid>
         
         <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Left" BorderThickness="2" BorderBrush="Red"/>

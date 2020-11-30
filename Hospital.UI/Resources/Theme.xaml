@@ -1,0 +1,22 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <Color x:Key="ColorPrimaryPanel">#F1F1F1</Color>
+    <Color x:Key="ColorPrimaryBorderLight">#D7D7D7</Color>
+    <Color x:Key="ColorPrimaryBorderDark">#AAAAAA</Color>
+    <Color x:Key="ColorTableHeader">#D7D7D7</Color>
+    <Color x:Key="ColorPrimaryPanelTitle">#949FB0</Color>
+    <Color x:Key="ColorBackgroundPaper">#FFFFFF</Color>
+    <Color x:Key="ColorTableRowAlternationBackgroud">#F2F2F2</Color>
+    <Color x:Key="ColorForegroundMid">#555555</Color>
+    
+    <SolidColorBrush x:Key="BrushPrimaryPanel">#F2F2F2</SolidColorBrush>
+    <SolidColorBrush x:Key="BrushPrimaryBorderLight">#D7D7D7</SolidColorBrush>
+    <SolidColorBrush x:Key="BrushPrimaryBorderDark">#AAAAAA</SolidColorBrush>
+    <SolidColorBrush x:Key="BrushTableHeader">#D7D7D7</SolidColorBrush>
+    <SolidColorBrush x:Key="BrushPrimaryPanelTitle">#949FB0</SolidColorBrush>
+    <SolidColorBrush x:Key="BrushBackgroundPaper">#FFFFFF</SolidColorBrush>
+    <SolidColorBrush x:Key="BrushTableRowAlternationBackgroud">#F2F2F2</SolidColorBrush>
+    <SolidColorBrush x:Key="BorderForegroundMid">#555555</SolidColorBrush>
+
+</ResourceDictionary>
