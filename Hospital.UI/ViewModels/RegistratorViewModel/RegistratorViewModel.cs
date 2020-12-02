@@ -19,17 +19,19 @@ namespace Hospital.UI.ViewModels.RegistratorViewModel
         public RegistratorViewModel()
         {
             CurrentRegTable = RegTables[0];
-            CurrentRegPanel = RegPanel;
+            CurrentPatientState = RegPatientTable;
         }
 
         private UserControl _currentRegTable;
-        private UserControl _currentRegPanel;
+        private UserControl _currentPatientState;
         public UserControl CurrentRegTable { get => _currentRegTable; set { _currentRegTable = value; OnPropertyChanged(nameof(CurrentRegTable)); } }
-        public UserControl CurrentRegPanel { get => _currentRegPanel; set { _currentRegPanel = value; OnPropertyChanged(nameof(CurrentRegPanel)); } }
-        public UserControl RegPanel { get; } = new RegEntryPanel();
-        public List<UserControl> RegTables { get; } = new List<UserControl> { new Controls.Registrator.RegDoctorTable(), new Controls.Registrator.RegPatientTable() };
+        public UserControl CurrentPatientState { get => _currentPatientState; set { _currentPatientState = value; OnPropertyChanged(nameof(CurrentPatientState)); } }
+
+        public UserControl RegPatientTable { get; } = new RegPatientTable();
+        public List<UserControl> RegTables { get; } = new List<UserControl> { new Controls.Registrator.RegDoctorTable(), new Controls.Registrator.RegTimeTable() };
 
         private readonly GenericDataServices<Patient> dataServicesPatient = new GenericDataServices<Patient>(new HospitalDbContextFactory());
+        private readonly GenericDataServices<Entry> dataServiceEntry = new GenericDataServices<Entry>(new HospitalDbContextFactory());
 
         private Patient _selectedPatient;
         private Patient _editingPatient;
@@ -46,10 +48,12 @@ namespace Hospital.UI.ViewModels.RegistratorViewModel
         private RelayCommand _selectRow;
         private RelayCommand _selectEntry;
         private RelayCommand _insertData;
-        private RelayCommand _editUser;
+        private RelayCommand _editPatient;
         private RelayCommand _editCancel;
         private RelayCommand _createPatient;
         private RelayCommand _savePatient;
+        private RelayCommand _pageBack;
+        private RelayCommand _createEntry;
 
         public RelayCommand SelectRow
         {
@@ -60,6 +64,7 @@ namespace Hospital.UI.ViewModels.RegistratorViewModel
                     {
                         SelectedEntry = (Entry)obj;
                         await GetEntries(((Entry)obj).DoctorDestination, ((Entry)obj).TargetDateTime);
+                        CurrentRegTable = RegTables[1];
                     }
                     else if (obj.GetType() == typeof(Patient)) SelectedPatient = (Patient)obj;
             });
@@ -72,30 +77,40 @@ namespace Hospital.UI.ViewModels.RegistratorViewModel
             });
         }
         public RelayCommand InsertData { get => _insertData ??= new RelayCommand(async obj => { await GetPatients(); await GetFreeEntries(); }); }
-        public RelayCommand EditUser
+        public RelayCommand EditPatient
         {
-            get => _editUser ??= new RelayCommand(async obj =>
+            get => _editPatient ??= new RelayCommand(async obj =>
             {
                 EditingPatient = (Patient)SelectedPatient.Clone();
-
-                CurrentRegPanel = new RegEditPanel();
+                CurrentPatientState = new RegEditPanel();
                 await GetBelays();
             });
         }
-        public RelayCommand EditCancel { get => _editCancel ??= new RelayCommand(obj => CurrentRegPanel = RegPanel); }
+        public RelayCommand EditCancel { get => _editCancel ??= new RelayCommand(obj => CurrentPatientState = RegPatientTable); }
         public RelayCommand CreatePatient
         {
-            get => _createPatient ??= new RelayCommand(async obj => { EditingPatient = new Patient(); CurrentRegPanel = new RegEditPanel(); await GetBelays(); });
+            get => _createPatient ??= new RelayCommand(async obj => { EditingPatient = new Patient(); CurrentPatientState = new RegEditPanel(); await GetBelays(); });
         }
         public RelayCommand SavePatient
         {
             get => _savePatient ??= new RelayCommand(async obj =>
-{
-await dataServicesPatient.Update(EditingPatient.Id, EditingPatient);
-CurrentRegPanel = RegPanel;
-SelectedPatient = EditingPatient;
-});
+            {
+                await dataServicesPatient.Update(EditingPatient.Id, EditingPatient);
+                CurrentPatientState = RegPatientTable;
+                SelectedPatient = EditingPatient;
+            });
         }
+        public RelayCommand PageBack { get => _pageBack ??= new RelayCommand(obj => CurrentRegTable = RegTables[0]); }
+        public RelayCommand CreateEntry { get => _createEntry ??= new RelayCommand(async obj =>
+        {
+            SelectedEntry.Patient = SelectedPatient;
+            SelectedEntry.EntryStatus = EntryStatus.Await;
+            await dataServiceEntry.Update(SelectedEntry.Id, SelectedEntry);
+            SelectedEntry = null;
+            //Entries.Remove(Entries.Where(e => e.TargetDateTime == SelectedEntry.TargetDateTime).FirstOrDefault());
+            //Entries.Add(SelectedEntry);
+        }); }
+
 
         private async Task GetFreeEntries()
         {
@@ -112,7 +127,7 @@ SelectedPatient = EditingPatient;
 
                     List<Entry> emptyEntries = new List<Entry>();
                     foreach (DateTime time in change.GetTimes()) emptyEntries
-                            .Add(new Entry { CreateDateTime = DateTime.Now, TargetDateTime = time, DoctorDestination = change.Staff });
+                            .Add(new Entry { CreateDateTime = DateTime.Now, TargetDateTime = time, DoctorDestination = change.Staff});
 
                     List<Entry> entries = await db.Entries
                         .Where(e => e.DoctorDestination == change.Staff)
@@ -150,17 +165,22 @@ SelectedPatient = EditingPatient;
                     .Where(e => e.DoctorDestination == selectedStaff)
                     .Where(e => e.TargetDateTime.Date == date.Date)
                     .Include(e => e.Patient)
+                    .Include(e=>e.Registrator)
+                    .Include(e=>e.MedCard)
                     .ToListAsync();
                 List<Entry> emptyEntries = new List<Entry>();
 
                 foreach (Change change in db.Changes
-                    .Include(c=>c.Staff).ThenInclude(s=>s.Department).ThenInclude(d=>d.Title)
+                    .Include(c => c.Staff).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                     .Where(c => c.Staff == selectedStaff)
                     .Where(c => c.DateTimeStart.Date == date.Date)
                     .ToList())
-                    foreach (DateTime time in change.GetTimes()) emptyEntries.Add(new Entry 
+                    foreach (DateTime time in change.GetTimes()) emptyEntries.Add(new Entry
                     {
-                        CreateDateTime = DateTime.Now, TargetDateTime = time, DoctorDestination=change.Staff
+                        CreateDateTime = DateTime.Now,
+                        TargetDateTime = time,
+                        DoctorDestination = change.Staff,
+                        Registrator = change.Staff, //заглушка
                     });
 
                 emptyEntries.AddRange(entries);

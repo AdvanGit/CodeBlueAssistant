@@ -3,6 +3,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
 
     <ser:ToUpperCaseConverter x:Key="ToUpperCaseConverter"/>
+    <ser:ObjectEqualsToBoolConverter x:Key="ObjectEqualsToBoolConverter"/>
 
     <Style TargetType="ListBoxItem" x:Key="TitleListBoxItem">
         <Setter Property="Background" Value="Transparent"/>
@@ -73,43 +74,58 @@
         <Setter Property="Padding" Value="10,3"/>
     </Style>
 
-
     <!--Data-Grid-->
 
+    <Style x:Key="TableRow" TargetType="{x:Type DataGridRow}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{DynamicResource BrushPrimaryBorderLight}"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
     
+    <Style x:Key="TableCell" TargetType="{x:Type DataGridCell}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Grid Background="{TemplateBinding Background}" Height="{TemplateBinding Height}">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <TextBlock Foreground="{TemplateBinding Foreground}"/>
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="20,0"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrushForegroundDark}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
+        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <Style TargetType="{x:Type DataGrid}" x:Key="TableCommon" BasedOn="{StaticResource MahApps.Styles.DataGrid}">
         <Setter Property="AlternatingRowBackground" Value="{DynamicResource BrushTableRowAlternationBackgroud}"/>
         <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="SelectionMode" Value="Single"/>
         <Setter Property="IsReadOnly" Value="True"/>
+        <Setter Property="SelectionUnit" Value="FullRow"/>
+        <Setter Property="SelectionMode" Value="Single"/>
+        <Setter Property="IsSynchronizedWithCurrentItem" Value="True"/>
+        <Setter Property="HeadersVisibility" Value="Column"/>
         <Setter Property="GridLinesVisibility" Value="Horizontal"/>
         <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
         <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
-           
-        <Setter Property="RowStyle">
-            <Setter.Value>
-                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource MahApps.Styles.DataGridRow}">
-                    <Setter Property="FontSize" Value="15"/>
-                    <Setter Property="Height" Value="35"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
-                </Style>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="CellStyle">
-            <Setter.Value>
-                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MahApps.Styles.DataGridCell}">
-                    <Setter Property="Padding" Value="5"/>
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="BorderBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
-                    <Setter Property="BorderThickness" Value="0,0,1,0"/>
-                    <Style.Triggers>
-                        <Trigger Property="IsSelected" Value="True">
-                            <Setter Property="BorderBrush" Value="Transparent"/>
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Setter.Value>
-        </Setter>
+        <Setter Property="CellStyle" Value="{StaticResource TableCell}"/>
+        <Setter Property="RowStyle" Value="{StaticResource TableRow}"/>
         <Setter Property="ColumnHeaderStyle">
             <Setter.Value>
                 <Style TargetType="{x:Type DataGridColumnHeader}">
@@ -119,7 +135,7 @@
                     <Setter Property="Padding" Value="10,0"/>
                     <Setter Property="FontSize" Value="12"/>
                     <Setter Property="FontWeight" Value="Bold"/>
-                    <Setter Property="Foreground" Value="{DynamicResource  BorderForegroundMid}"/>
+                    <Setter Property="Foreground" Value="{DynamicResource  BrushForegroundLight}"/>
                     <Setter Property="Background" Value="{DynamicResource BrushTableHeader}"/>
                 </Style>
             </Setter.Value>

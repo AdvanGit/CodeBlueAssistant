@@ -4,7 +4,7 @@
 			 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:local="clr-namespace:Hospital.UI.Controls.Registrator"
-             xmlns:services="clr-namespace:Hospital.UI.Services"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:vm="clr-namespace:Hospital.UI.ViewModels.RegistratorViewModel"
 			 mc:Ignorable="d" 
 			 d:DesignHeight="450" d:DesignWidth="800">
@@ -13,17 +13,29 @@
         <vm:RegistratorViewModel/>
     </UserControl.DataContext>-->
 
-    <UserControl.Resources>
-        <services:RowDisablingConverter x:Key="MyRowConverter"/>
-    </UserControl.Resources>
-
-
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <DataGrid  ItemsSource="{Binding Doctors}" Style="{StaticResource TableCommon}">
+        <Border Grid.Row="0" Background="{StaticResource BrushBackgroundPaper}" BorderBrush="{StaticResource BrushTableSelected}" BorderThickness="0,0,0,2"/>
+        <Border Grid.Row="0" BorderBrush="{StaticResource BrushPrimaryBorderLight}" BorderThickness="0,1,0,0"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <StackPanel.Resources>
+                <Style TargetType="{x:Type TextBlock}">
+                    <Setter Property="FontSize" Value="18"/>
+                    <Setter Property="Padding" Value="3"/>
+                    <Setter Property="VerticalAlignment" Value="Center"/>
+                </Style>
+            </StackPanel.Resources>
+            <Button Content="Фильтр" Command="{Binding InsertData}"/>
+            <TextBox MinWidth="150" Height="30" Margin="15,0"  FontSize="14"
+                         mah:TextBoxHelper.Watermark="Поиск..."
+                         mah:TextBoxHelper.SelectAllOnFocus="True"
+                         mah:TextBoxHelper.ClearTextButton="True"/>
+        </StackPanel>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding Doctors}" Style="{StaticResource TableCommon}" ColumnWidth="*" >
             <DataGrid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding SelectRow}" 
                               CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path=SelectedItem}" />
@@ -31,9 +43,11 @@
                             CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path=SelectedItem}"/>
             </DataGrid.InputBindings>
             <DataGrid.Columns>
-                <DataGridTextColumn Binding="{Binding DoctorDestination.FirstName}" Header="ФАМИЛИЯ"/>
-                <DataGridTextColumn Binding="{Binding DoctorDestination.MidName}" Header="ИМЯ"/>
-                <DataGridTextColumn Binding="{Binding DoctorDestination.LastName}" Header="ОТЧЕСТВО"/>
+                <DataGridTextColumn Binding="{Binding TargetDateTime, StringFormat='dd/MM'}" Header="ДАТА" Width="Auto" />
+                <DataGridTextColumn Binding="{Binding TargetDateTime, StringFormat='HH:mm'}" Header="ВРЕМЯ" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding DoctorDestination.FirstName}" Header="ФАМИЛИЯ" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding DoctorDestination.MidName}" Header="ИМЯ" Width="Auto"/>
+                <DataGridTextColumn Binding="{Binding DoctorDestination.LastName}" Header="ОТЧЕСТВО" Width="Auto"/>
                 <DataGridTextColumn Binding="{Binding DoctorDestination.Qualification}" Header="СПЕЦИАЛЬНОСТЬ"/>
                 <DataGridTextColumn Binding="{Binding DoctorDestination.Department.Title.Title}" Header="ОТЕДЕЛЕНИЕ" />
                 <DataGridTemplateColumn Header="АДРЕС">
@@ -46,58 +60,8 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
-                <DataGridTextColumn Binding="{Binding TargetDateTime.Day}" Header="ДАТА"/>
-                <DataGridTextColumn Binding="{Binding TargetDateTime.TimeOfDay}" Header="ВРЕМЯ"/>
-                <DataGridTextColumn Binding="{Binding EntryStatus}" Header="СТАТУС"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <Grid Grid.Row="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="40"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Border Grid.Row="0" Background="Gray"/>
-            <StackPanel Grid.Row="0" Orientation="Horizontal">
-                <TextBlock Text="{Binding SelectedEntry.DoctorDestination.FirstName}"/>
-                <TextBlock Text="{Binding SelectedEntry.DoctorDestination.MidName}"/>
-                <TextBlock Text="{Binding SelectedEntry.DoctorDestination.LastName}"/>
-            </StackPanel>
-            <DataGrid Grid.Row="1" ItemsSource="{Binding Entries}" Style="{StaticResource TableCommon}">
-                <DataGrid.RowStyle>
-                    <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource MahApps.Styles.DataGridRow}">
-                        <Setter Property="FontSize" Value="15"/>
-                        <Setter Property="Height" Value="35"/>
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=EntryStatus, Converter={StaticResource MyRowConverter}}" Value="True">
-                                <Setter Property="Foreground" Value="Gray"/>
-                                <Setter Property="Background" Value="{DynamicResource BrushPrimaryBorderLight}"/>
-                                <!--<Setter Property="IsHitTestVisible" Value="False"/>-->
-                                <Setter Property="IsEnabled" Value="False"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </DataGrid.RowStyle>
-                <DataGrid.InputBindings>
-                    <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding SelectEntry}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path=SelectedItem}" />
-                    <KeyBinding Key="Enter" Command="{Binding SelectEntry}" 
-                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path=SelectedItem}"/>
-                </DataGrid.InputBindings>
-                <DataGrid.Columns>
-                    <DataGridTextColumn Header="test_name" Binding="{Binding DoctorDestination.FirstName}"/>
-                    <DataGridTextColumn Header="ДАТА" Binding="{Binding TargetDateTime}"/>
-                    <DataGridTextColumn Header="ВРЕМЯ" Binding="{Binding TargetDateTime}"/>
-                    <DataGridTextColumn Header="ФАМИЛИЯ" Binding="{Binding Patient.FirstName}"/>
-                    <DataGridTextColumn Header="ИМЯ" Binding="{Binding Patient.MidName}"/>
-                    <DataGridTextColumn Header="ОТЧЕСТВО" Binding="{Binding Patient.LastName}"/>
-                    <DataGridTextColumn Header="СТАТУС" Binding="{Binding EntryStatus}"/>
-                    <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Patient.PhoneNumber}"/>
-                </DataGrid.Columns>
-            </DataGrid>
-        </Grid>
-
-        <GridSplitter Grid.Row="1" ResizeDirection="Rows" VerticalAlignment="Top" BorderBrush="Red" BorderThickness="2"/>
     </Grid>
-
 </UserControl>

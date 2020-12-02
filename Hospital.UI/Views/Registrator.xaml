@@ -13,46 +13,13 @@
         <vm:RegistratorViewModel/>
     </UserControl.DataContext>
 
-    
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" MinWidth="200" MaxWidth="400"/>
-        </Grid.ColumnDefinitions>
-
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35" />
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Border Grid.Row="0" Background="Gray"/>
-            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-                <ListBox  ItemsSource="{Binding RegTables}" SelectedItem="{Binding CurrentRegTable}">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Label}"/>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-                <Button Content="Фильтр" Command="{Binding InsertData}"/>
-                <TextBox Text="Поиск"/>
-            </StackPanel>
-            <Button Content="РЕГИСТРАЦИЯ" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding CreatePatient}"/>
-
-            <ContentControl Content="{Binding CurrentRegTable}" Grid.Row="1"/>
-            
-        </Grid>
-        
-        <Grid Grid.Column="1">
-            <mah:TransitioningContentControl Content="{Binding CurrentRegPanel}" Transition="LeftReplace" Background="{StaticResource BrushPrimaryPanel}"/>
-        </Grid>
-        
-        <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Left" BorderThickness="2" BorderBrush="Red"/>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <mah:TransitioningContentControl Grid.Row="0"  Content="{Binding CurrentRegTable}" Transition="LeftReplace"/>
+        <mah:TransitioningContentControl Grid.Row="1" Content="{Binding CurrentPatientState}" Transition="LeftReplace"/>
+        <GridSplitter Grid.Row="1" ResizeDirection="Rows" VerticalAlignment="Top" BorderBrush="Transparent" BorderThickness="1"/>
     </Grid>
 </UserControl>

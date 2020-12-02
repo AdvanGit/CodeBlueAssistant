@@ -46,5 +46,6 @@
 
 	<Grid>
 		<ContentControl Content="{Binding CurrentPage}"/>
-	</Grid>
+        <Border BorderThickness="0,1,0,0" VerticalAlignment="Top" BorderBrush="{StaticResource BrushPrimaryBorderLight}"/>
+    </Grid>
 </mah:MetroWindow>

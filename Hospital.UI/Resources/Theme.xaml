@@ -8,15 +8,30 @@
     <Color x:Key="ColorPrimaryPanelTitle">#949FB0</Color>
     <Color x:Key="ColorBackgroundPaper">#FFFFFF</Color>
     <Color x:Key="ColorTableRowAlternationBackgroud">#F2F2F2</Color>
-    <Color x:Key="ColorForegroundMid">#555555</Color>
-    
-    <SolidColorBrush x:Key="BrushPrimaryPanel">#F2F2F2</SolidColorBrush>
-    <SolidColorBrush x:Key="BrushPrimaryBorderLight">#D7D7D7</SolidColorBrush>
-    <SolidColorBrush x:Key="BrushPrimaryBorderDark">#AAAAAA</SolidColorBrush>
-    <SolidColorBrush x:Key="BrushTableHeader">#D7D7D7</SolidColorBrush>
-    <SolidColorBrush x:Key="BrushPrimaryPanelTitle">#949FB0</SolidColorBrush>
-    <SolidColorBrush x:Key="BrushBackgroundPaper">#FFFFFF</SolidColorBrush>
-    <SolidColorBrush x:Key="BrushTableRowAlternationBackgroud">#F2F2F2</SolidColorBrush>
-    <SolidColorBrush x:Key="BorderForegroundMid">#555555</SolidColorBrush>
+    <Color x:Key="ColorForegroundLight">#555555</Color>
+    <Color x:Key="ColorForegroundMid">#333333</Color>
+    <Color x:Key="ColorForegroundDark">#111111</Color>
+    <Color x:Key="ColorAccentLight">#02A7F0</Color>
+    <Color x:Key="ColorAccentHighlight">#81D3F8</Color>
+    <Color x:Key="ColorAccentInvert">#F59A23</Color>
+    <Color x:Key="ColorAccentGreen">#70B603</Color>
+    <Color x:Key="ColorAccentRed">#D9001B</Color>
+
+    <SolidColorBrush x:Key="BrushPrimaryPanel" Color="{DynamicResource ColorPrimaryPanel}"/>
+    <SolidColorBrush x:Key="BrushPrimaryBorderLight" Color="{DynamicResource ColorPrimaryBorderLight}"/>
+    <SolidColorBrush x:Key="BrushPrimaryBorderDark" Color="{DynamicResource ColorPrimaryBorderDark}"/>
+    <SolidColorBrush x:Key="BrushTableHeader" Color="{DynamicResource ColorTableHeader}"/>
+    <SolidColorBrush x:Key="BrushPrimaryPanelTitle" Color="{DynamicResource ColorPrimaryPanelTitle}"/>
+    <SolidColorBrush x:Key="BrushBackgroundPaper" Color="{DynamicResource ColorBackgroundPaper}"/>
+    <SolidColorBrush x:Key="BrushTableRowAlternationBackgroud" Color="{DynamicResource ColorTableRowAlternationBackgroud}"/>
+    <SolidColorBrush x:Key="BrushForegroundLight" Color="{DynamicResource ColorForegroundLight}"/>
+    <SolidColorBrush x:Key="BrushForegroundMid" Color="{DynamicResource ColorForegroundMid}"/>
+    <SolidColorBrush x:Key="BrushForegroundDark" Color="{DynamicResource ColorForegroundDark}"/>
+    <SolidColorBrush x:Key="BrushTableSelected" Color="{DynamicResource ColorAccentLight}"/>
+    <SolidColorBrush x:Key="BrushTableSelectedLight" Color="{DynamicResource ColorAccentHighlight}"/>
+    <SolidColorBrush x:Key="BrushAccentInvert" Color="{DynamicResource ColorAccentInvert}"/>
+    <SolidColorBrush x:Key="BrushAccentPositive" Color="{DynamicResource ColorAccentGreen}"/>
+    <SolidColorBrush x:Key="BrushAccentNegative" Color="{DynamicResource ColorAccentRed}" Opacity=".2"/>
+
 
 </ResourceDictionary>
