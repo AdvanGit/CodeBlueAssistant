@@ -14,11 +14,11 @@ using System.Windows.Shapes;
 namespace Hospital.UI.Controls.Registrator
 {
     /// <summary>
-    /// Логика взаимодействия для RegTimeTable.xaml
+    /// Логика взаимодействия для RegEntryTable.xaml
     /// </summary>
-    public partial class RegTimeTable : UserControl
+    public partial class RegEntryTable : UserControl
     {
-        public RegTimeTable()
+        public RegEntryTable()
         {
             InitializeComponent();
         }
