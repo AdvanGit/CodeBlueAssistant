@@ -35,5 +35,6 @@
     <SolidColorBrush x:Key="BrushAccentPositive" Color="{DynamicResource ColorAccentGreen}"/>
     <SolidColorBrush x:Key="BrushAccentNegative" Color="{DynamicResource ColorAccentRed}" Opacity=".2"/>
 
+    <DropShadowEffect x:Key="EffectShadowDown" BlurRadius="5" Direction="270" Opacity="0.2" ShadowDepth="3" Color="Black"  />
 
 </ResourceDictionary>

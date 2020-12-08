@@ -4,54 +4,112 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hospital.UI.Controls.Registrator"
-                   xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
              mc:Ignorable="d" 
-             d:DesignHeight="110.229" d:DesignWidth="1080">
+             d:DesignHeight="74.049" d:DesignWidth="1080">
 
     <UserControl.Resources>
         <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource RegistratorSearchTab}"/>
     </UserControl.Resources>
 
-    <Grid Margin="0,5">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
-            <RowDefinition Height="35"/>
-        </Grid.RowDefinitions>
+    <Grid Margin="0,5" Height="35">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <ListBox Grid.Row="0" Grid.Column="0" HorizontalAlignment="Left" HorizontalContentAlignment="Center" Background="Transparent">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBoxItem Content="Первая запись" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}" IsSelected="True"/>
-            <ListBoxItem Content="Дата"/>
-        </ListBox>
-
-        <ListBox Grid.Row="0" Grid.Column="0" HorizontalAlignment="Right" HorizontalContentAlignment="Center" FontWeight="Bold" Background="Transparent">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal"/>
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBoxItem Content="ДОКТОРА" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}" IsSelected="True"/>
-            <ListBoxItem Content="ПАЦИЕНТЫ"/>
-        </ListBox>
-
-        <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding SearchValue}"
-                 mah:TextBoxHelper.ClearTextButton="True"
+        <TextBox Grid.Column="0" Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"
+                 x:Name="TextBoxSearch"
                  mah:TextBoxHelper.SelectAllOnFocus="True"
-                 mah:TextBoxHelper.Watermark="Поиск..." 
+                 mah:TextBoxHelper.Watermark="Поиск..."
                  mah:ControlsHelper.CornerRadius="2,0,0,2"
-                 mah:ControlsHelper.MouseOverBorderBrush="{DynamicResource BrushAccent2}"
-                 mah:ControlsHelper.FocusBorderBrush="{DynamicResource BrushAccent1}"
-                 VerticalContentAlignment="Center" FontSize="15" Padding="35,0" BorderThickness="2,2,0,2"/>
+                 VerticalContentAlignment="Center" FontSize="15" Padding="30,0" BorderThickness="2,2,0,2">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding FindByString}"/>
+            </TextBox.InputBindings>
+            <TextBox.Style>
+                <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MahApps.Styles.TextBox}">
+                    <Setter Property="BorderBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
+                    <Style.Triggers>
+                        <DataTrigger  Binding="{Binding ElementName=TabPatient, Path=IsSelected}" Value="True">
+                            <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource BrushAccentPositive}"/>
+                            <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource BrushAccentPositive}"/>
+                        </DataTrigger>
+                        <DataTrigger  Binding="{Binding ElementName=TabDoctor, Path=IsSelected}" Value="True">
+                            <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{DynamicResource BrushAccent2}"/>
+                            <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{DynamicResource BrushAccent1}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBox.Style>
+        </TextBox>
+
+        <CheckBox Content="{iconPacks:Material Kind=FilterOutline, Height=18}" IsEnabled="{Binding ElementName=TabDoctor, Path=IsSelected}" Margin="4" Padding="6,0" HorizontalAlignment="Left" Name="SearchBarPopupButton">
+            <CheckBox.Style>
+                <Style TargetType="{x:Type CheckBox}">
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource BrushAccent1}"/>
+                            <Setter Property="Background" Value="{DynamicResource BrushPrimaryPanel}"/>
+                            <Setter Property="Cursor" Value="Hand"/>
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource BrushAccent1}"/>
+                            <Setter Property="Background" Value="{DynamicResource BrushPrimaryBorderLight}"/>
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter Property="Foreground" Value="{DynamicResource BrushAccent1}"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3"/>
+                        </Trigger>
+                    </Style.Triggers>
+                    <Setter Property="Foreground" Value="{DynamicResource BrushPrimaryBorderDark}"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type CheckBox}">
+                                <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="3">
+                                    <ContentPresenter Content="{TemplateBinding Content}"
+                                                          VerticalAlignment="Center"
+                                                          HorizontalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </CheckBox.Style>
+        </CheckBox>
+        <Popup IsOpen="{Binding ElementName=SearchBarPopupButton, Path=IsChecked}" PlacementTarget="{Binding ElementName=SearchBarPopupButton}" StaysOpen="False">
+            <Border Background="Red" Width="100" Height="100"/>
+        </Popup>
+
+        <ListBox Grid.Column="0" HorizontalAlignment="Right" Margin="0,4" FontWeight="Bold" Background="{StaticResource BrushBackgroundPaper}">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"/>
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBoxItem Content="ДОКТОРА" x:Name="TabDoctor" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}" IsSelected="True"/>
+            <ListBoxItem Content="ПАЦИЕНТЫ" x:Name="TabPatient" >
+                <ListBoxItem.Style>
+                    <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource RegistratorSearchTab}">
+                        <Style.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource BrushAccentPositive}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Foreground" Value="{DynamicResource BrushAccentPositive}"/>
+                                <Setter Property="Background" Value="{DynamicResource BrushPrimaryPanel}" />
+                                <Setter Property="Cursor" Value="Hand"/>
+                            </Trigger>
+                        </Style.Triggers>
+                    </Style>
+                </ListBoxItem.Style>
+            </ListBoxItem>
+        </ListBox>
 
         <Button Grid.Row="1" Grid.Column="1" Style="{StaticResource RegistratorSearchBarButton}" Width="120" Content="ПОИСК" Command="{Binding FindByString}"/>
+
     </Grid>
 </UserControl>
