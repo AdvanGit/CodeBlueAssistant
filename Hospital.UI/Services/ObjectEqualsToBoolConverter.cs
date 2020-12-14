@@ -1,8 +1,5 @@
-﻿using Hospital.Domain.Model;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Globalization;
-using System.Text;
 using System.Windows.Data;
 
 namespace Hospital.UI.Services

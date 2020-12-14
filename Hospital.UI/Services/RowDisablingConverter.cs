@@ -1,11 +1,11 @@
-﻿using Hospital.Domain.Model;
+﻿using Hospital.Domain.Model;  //not mvvm
 using System;
 using System.Globalization;
 using System.Windows.Data;
 
 namespace Hospital.UI.Services
 {
-    class RowDisablingConverter : IValueConverter
+    class RowDisablingConverter : IValueConverter 
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

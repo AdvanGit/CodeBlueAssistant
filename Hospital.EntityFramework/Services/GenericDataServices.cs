@@ -1,11 +1,12 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.Domain.Services;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
+using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Threading.Tasks;
 
-namespace Hospital.EntityFramework
+namespace Hospital.EntityFramework.Services
 {
     public class GenericDataServices<T> : IDataServices<T> where T : DomainObject
     {
@@ -20,7 +21,7 @@ namespace Hospital.EntityFramework
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                EntityEntry<T> _entity = await db.Set<T>().AddAsync(entity);
+                var _entity = await db.Set<T>().AddAsync(entity);
                 await db.SaveChangesAsync();
                 return _entity.Entity;
             }

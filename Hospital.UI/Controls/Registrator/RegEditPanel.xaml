@@ -5,14 +5,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hospital.UI.Controls.Registrator"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:vm="clr-namespace:Hospital.UI.ViewModels"
              xmlns:domain="clr-namespace:Hospital.Domain.Model;assembly=Hospital.Domain"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="720" d:DesignWidth="350">
-    <!--<UserControl.DataContext>
-        <vm:RegistratorViewModel/>
-    </UserControl.DataContext>-->
     
     <UserControl.Resources>
         <ObjectDataProvider x:Key="genderEnum" MethodName="GetValues"

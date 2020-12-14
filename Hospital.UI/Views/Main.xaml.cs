@@ -1,4 +1,4 @@
-﻿using Hospital.UI.ViewModels;
+﻿using Hospital.ViewModel;
 using MahApps.Metro.Controls;
 using System.Collections.Generic;
 using System.Windows;
@@ -31,7 +31,7 @@ namespace Hospital.UI.Views
         public static readonly DependencyProperty CurrentPageProperty =
             DependencyProperty.Register("CurrentPage", typeof(UserControl), typeof(Main));
 
-        private void _getControls (UserAccess userAccess)
+        private void _getControls(UserAccess userAccess)
         {
             switch (userAccess)
             {

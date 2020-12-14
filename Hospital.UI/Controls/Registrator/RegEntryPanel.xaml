@@ -4,12 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hospital.UI.Controls.Registrator"
-             xmlns:vm="clr-namespace:Hospital.UI.ViewModels.RegistratorViewModel"
              mc:Ignorable="d"
              d:DesignHeight="720" d:DesignWidth="350">
-    <!--<UserControl.DataContext>
-        <vm:RegistratorViewModel/>
-    </UserControl.DataContext>-->
 
     <Grid>
         <Grid.RowDefinitions>

@@ -1,4 +1,6 @@
-﻿using System.Windows.Controls;
+﻿using Hospital.ViewModel;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace Hospital.UI.Views
 {
@@ -7,12 +9,25 @@ namespace Hospital.UI.Views
     /// </summary>
     public partial class Registrator : UserControl
     {
-        public static string Label { get; private set; }
-        
         public Registrator()
         {
-            Label = "Регистратура";
             InitializeComponent();
+            DataContext = new RegistratorViewModel();
+            CurrentControl = new Controls.Registrator.RegDoctorTable();
+         
         }
+
+        public static string Label { get; } = "Регистратура";
+
+        public UserControl CurrentControl
+        {
+            get { return (UserControl)GetValue(CurrentControlProperty); }
+            set { SetValue(CurrentControlProperty, value); }
+        }
+
+        public static readonly DependencyProperty CurrentControlProperty =
+            DependencyProperty.Register("CurrentControl", typeof(UserControl), typeof(Registrator));
+
+
     }
 }
