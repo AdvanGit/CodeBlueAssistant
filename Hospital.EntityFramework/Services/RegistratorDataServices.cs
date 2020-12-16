@@ -83,7 +83,38 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
+        public async Task<IEnumerable<Entry>> GetEntries(Staff selectedStaff, DateTime date)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
 
+                List<Entry> entries = await db.Entries
+                    .AsQueryable()
+                    .Where(e => e.DoctorDestination == selectedStaff)
+                    .Where(e => e.TargetDateTime.Date == date.Date)
+                    .Include(e => e.Patient)
+                    .Include(e=>e.Registrator)
+                    .Include(e=>e.MedCard)
+                    .ToListAsync();
+                List<Entry> result = new List<Entry>();
+
+                foreach (Change change in db.Changes
+                    .Include(c => c.Staff).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
+                    .Where(c => c.Staff == selectedStaff)
+                    .Where(c => c.DateTimeStart.Date == date.Date)
+                    .ToList())
+                    foreach (DateTime time in change.GetTimes()) result.Add(new Entry
+                    {
+                        CreateDateTime = DateTime.Now,
+                        TargetDateTime = time,
+                        DoctorDestination = change.Staff,
+                        Registrator = change.Staff, //заглушка
+                    });
+
+                result.AddRange(entries);
+                return result.OrderBy(e => e.TargetDateTime).GroupBy(e => e.TargetDateTime).Select(e => e.Last());
+            }
+        }
 
     }
 }
