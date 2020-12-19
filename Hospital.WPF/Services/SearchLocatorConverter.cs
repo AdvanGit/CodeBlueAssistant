@@ -6,13 +6,13 @@ using System.Windows.Data;
 
 namespace Hospital.WPF.Services
 {
-    public class MultiCommandConverter : IMultiValueConverter
+    class SearchLocatorConverter : IMultiValueConverter
     {
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            List<object> _commands = new List<object>(values);
-            return new RelayCommand(GetCompoundExecute(_commands), GetCompoundCanExecute(_commands));
+            if ( (int)values[0] == 0 ) return new RelayCommand(GetCompoundExecute(values[1]), GetCompoundCanExecute(values[1]));
+            else return new RelayCommand(GetCompoundExecute(values[2]), GetCompoundCanExecute(values[2]));
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)
@@ -20,26 +20,22 @@ namespace Hospital.WPF.Services
             return null;
         }
 
-        private Action<object> GetCompoundExecute(List<object> _commands)
+        private Action<object> GetCompoundExecute(object command)
         {
             return (parameter) =>
             {
-                foreach (RelayCommand command in _commands)
-                {
                     if (command != default(RelayCommand))
-                        command.Execute(parameter);
-                }
+                        ((RelayCommand)command).Execute(parameter);
             };
         }
 
-        private Func<object, bool> GetCompoundCanExecute(List<object> _commands)
+        private Func<object, bool> GetCompoundCanExecute(object command)
         {
             return (parameter) =>
             {
                 bool res = true;
-                foreach (RelayCommand command in _commands)
                     if (command != default(RelayCommand))
-                        res &= command.CanExecute(parameter);
+                        res &= ((RelayCommand)command).CanExecute(parameter);
                 return res;
             };
         }

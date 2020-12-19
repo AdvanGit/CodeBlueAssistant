@@ -1,8 +1,10 @@
 ﻿<UserControl x:Class="Hospital.WPF.Controls.Registrator.RegEntryTable"
+             x:Name="EntryControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
              mc:Ignorable="d" 
              xmlns:services="clr-namespace:Hospital.WPF.Services"
@@ -11,11 +13,6 @@
     <UserControl.Resources>
         <services:RowDisablingConverter x:Key="MyRowConverter"/>
     </UserControl.Resources>
-
-    <!--<UserControl.DataContext>
-        <vm:RegistratorViewModel/>
-    </UserControl.DataContext>-->
-
 
     <Grid>
         <Grid>
@@ -26,16 +23,23 @@
             
             <Border Grid.Row="0" Background="{StaticResource BrushBackgroundPaper}" BorderBrush="{StaticResource BrushTableSelected}" BorderThickness="0,0,0,2"/>
             <StackPanel Orientation="Horizontal" Grid.Row="0">
-                <Button Content="Back" Command="{Binding PageBack}"/>
+                <Button Content="Back" Command="{Binding Path=SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
             </StackPanel>
             
             <DataGrid Grid.Row="1" ItemsSource="{Binding Entries}" Style="{StaticResource TableCommon}" ColumnWidth="*">
+
                 <DataGrid.InputBindings>
-                    <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding SelectEntry}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path=SelectedItem}" />
-                    <KeyBinding Key="Enter" Command="{Binding SelectEntry}" 
-                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path=SelectedItem}"/>
+                    <MouseBinding MouseAction="LeftDoubleClick" CommandParameter="{Binding Path=SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}" >
+                        <MouseBinding.Command>
+                            <MultiBinding  Converter="{StaticResource MultiCommandConverter}">
+                                <Binding Path="SelectEntry"/>
+                                <Binding Path="FocusSearchPatient" RelativeSource="{RelativeSource AncestorType={x:Type view:Registrator}}"/>
+                                <Binding Path="SetPatient" RelativeSource="{RelativeSource AncestorType={x:Type view:Registrator}}"/>
+                            </MultiBinding>
+                        </MouseBinding.Command>
+                    </MouseBinding>
                 </DataGrid.InputBindings>
+
                 <DataGrid.RowStyle>
                     <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource TableRow}">
                         <Style.Triggers>
@@ -72,6 +76,7 @@
                         </Style.Triggers>
                     </Style>
                 </DataGrid.CellStyle>
+
                 <DataGrid.Columns>
                     <DataGridTextColumn Header="ДАТА" Binding="{Binding TargetDateTime, StringFormat='dd/MM'}" Width="Auto"/>
                     <DataGridTextColumn Header="ВРЕМЯ" Binding="{Binding TargetDateTime, StringFormat='HH:mm'}" Width="Auto"/>

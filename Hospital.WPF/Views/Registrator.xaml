@@ -6,9 +6,14 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:local="clr-namespace:Hospital.WPF.Views"
+      xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
       xmlns:controls="clr-namespace:Hospital.WPF.Controls.Registrator"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1280">
+
+    <UserControl.DataContext>
+        <vm:RegistratorViewModel/>
+    </UserControl.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -19,13 +24,26 @@
         <Grid Grid.RowSpan="2" MinWidth="1080" MaxWidth="1400" HorizontalAlignment="Stretch" Margin="20,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="90"/>
+                <RowDefinition Height="180"/>
                 <RowDefinition/>
                 <RowDefinition Height="20"/>
             </Grid.RowDefinitions>
 
-            <controls:RegSearchBar Grid.Row="0"/>
-            
-            <mah:TransitioningContentControl Grid.Row="1" Margin="0,20" Content="{Binding ElementName=RegistratorView, Path=CurrentControl}"/>
+            <controls:RegSearchBar Grid.Row="0" x:Name="SearchBar"/>
+
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="{Binding SelectedEntry.DoctorDestination.FirstName}" Grid.Column="0"/>
+                <TextBlock Text="{Binding SelectedPatient.FirstName}" Grid.Column="1"/>
+                <TextBlock Text="{Binding SelectedEntry.TargetDateTime}" Grid.Column="2"/>
+
+            </Grid>
+
+            <mah:TransitioningContentControl Grid.Row="2" Content="{Binding ElementName=RegistratorView, Path=CurrentControl}" Transition="Right" VerticalAlignment="Top"/>
 
         </Grid>
     </Grid>

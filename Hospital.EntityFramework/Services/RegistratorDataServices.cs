@@ -17,7 +17,7 @@ namespace Hospital.EntityFramework.Services
             _contextFactory = contextFactory;
         }
 
-        public async Task<IEnumerable<Entry>> FindByString(string _string)
+        public async Task<IEnumerable<Entry>> FindDoctor(string _string)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
@@ -83,6 +83,26 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
+        public async Task<IEnumerable<Patient>> FindPatient(string _string)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                string[] words = Regex.Replace(_string, @"\s+", " ").Split(' ');
+
+                return await db.Patients.Include(p => p.Belay)
+                    .AsAsyncEnumerable()
+                    .Where(p =>
+                       ((
+                           (words.Any(word => p.FirstName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
+                           (words.Any(word => p.MidName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
+                           (words.Any(word => p.LastName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
+                           (words.Any(word => (p.PhoneNumber != 0) && (p.PhoneNumber.ToString().Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0)
+                           >= words.Count())
+                      ))
+                    .ToListAsync();
+            }
+        }
+
         public async Task<IEnumerable<Entry>> GetEntries(Staff selectedStaff, DateTime date)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
@@ -93,8 +113,8 @@ namespace Hospital.EntityFramework.Services
                     .Where(e => e.DoctorDestination == selectedStaff)
                     .Where(e => e.TargetDateTime.Date == date.Date)
                     .Include(e => e.Patient)
-                    .Include(e=>e.Registrator)
-                    .Include(e=>e.MedCard)
+                    .Include(e => e.Registrator)
+                    .Include(e => e.MedCard)
                     .ToListAsync();
                 List<Entry> result = new List<Entry>();
 

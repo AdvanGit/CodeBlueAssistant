@@ -17,15 +17,15 @@
         <Border Grid.Row="0" Background="{StaticResource BrushBackgroundPaper}" BorderBrush="{StaticResource BrushPrimaryBorderLight}" BorderThickness="0,1,0,0"/>
         <Border Grid.Row="0" BorderBrush="{StaticResource BrushTableSelected}" BorderThickness="0,0,0,2"/>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button Content="Фильтр" Command="{Binding InsertData}"/>
+            <Button Content="Фильтр"/>
             <TextBox MinWidth="150" Height="30" Margin="15,0"  FontSize="14"
                          mah:TextBoxHelper.Watermark="Поиск..."
                          mah:TextBoxHelper.SelectAllOnFocus="True"
                          mah:TextBoxHelper.ClearTextButton="True"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
-            <Button Content="РЕГИСТРАЦИЯ" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding CreatePatient}"/>
-            <Button Content="РЕДАКТИРОВАТЬ" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding EditPatient}"/>
+            <Button Content="РЕГИСТРАЦИЯ" Grid.Row="0" HorizontalAlignment="Right"/>
+            <Button Content="РЕДАКТИРОВАТЬ" Grid.Row="0" HorizontalAlignment="Right"/>
         </StackPanel>
 
         <DataGrid Grid.Row="1" ItemsSource="{Binding Patients}" Style="{StaticResource TableCommon}">
@@ -61,14 +61,6 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.CellStyle>
-
-
-            <DataGrid.InputBindings>
-                <MouseBinding MouseAction="LeftDoubleClick"  Command="{Binding SelectRow}"
-                              CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path=SelectedItem}" />
-                <KeyBinding Key="Enter" Command="{Binding SelectRow}" 
-                            CommandParameter="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}, Path=SelectedItem}"/>
-            </DataGrid.InputBindings>
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>

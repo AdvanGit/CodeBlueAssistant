@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:ser="clr-namespace:Hospital.WPF.Services"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls">
 
     <ser:ToUpperCaseConverter x:Key="ToUpperCaseConverter"/>
     <ser:ObjectEqualsToBoolConverter x:Key="ObjectEqualsToBoolConverter"/>
