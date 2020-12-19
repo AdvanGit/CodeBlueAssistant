@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="Hospital.WPF.Controls.Registrator.RegEntryCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
+             xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
+             mc:Ignorable="d" 
+             d:DesignHeight="140" d:DesignWidth="350">
+    <!--<UserControl.DataContext>
+        <vm:RegistratorViewModel/>
+    </UserControl.DataContext>-->
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource BrushForegroundDark}"/>
+            <Setter Property="FontSize" Value="15"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border Background="{DynamicResource BrushBackgroundPaper}" Grid.ColumnSpan="2" Effect="{StaticResource ShadowCard}" CornerRadius="2" />
+        <Border Background="{StaticResource BrushPrimaryPanelTitle}" Grid.Column="0" CornerRadius="2,0,0,2" />
+        <TextBlock Text="З А П И С Ь" FontSize="12"  Foreground="White" Margin="0,10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <TextBlock.LayoutTransform>
+                <RotateTransform Angle="-90"/>
+            </TextBlock.LayoutTransform>
+        </TextBlock>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5">
+            <TextBlock Text="{Binding SelectedEntry.TargetDateTime, StringFormat=dd MMMM yyyy, ConverterCulture='ru-RU'}" FontSize="22"/>
+            <TextBlock Text="{Binding SelectedEntry.TargetDateTime, StringFormat=dddd, ConverterCulture='ru-RU'}" FontSize="18" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10,5" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <TextBlock Text="{Binding SelectedEntry.DoctorDestination.FirstName, Converter={StaticResource ToUpperCaseConverter}}"
+                       HorizontalAlignment="Right" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+            <StackPanel Orientation="Horizontal" Margin="0,-4,0,0">
+                <TextBlock Text="{Binding SelectedEntry.DoctorDestination.MidName}"  Foreground="{DynamicResource BrushForegroundVeryLight}" Margin="5,0" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding SelectedEntry.DoctorDestination.LastName}"  Foreground="{DynamicResource BrushForegroundVeryLight}"  HorizontalAlignment="Right" />
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10,5" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <TextBlock Text="{Binding SelectedPatient.FirstName, Converter={StaticResource ToUpperCaseConverter}}"
+                        Foreground="{DynamicResource BrushForegroundVeryLight}" HorizontalAlignment="Right"/>
+            <StackPanel Orientation="Horizontal" Margin="0,-4,0,0">
+                <TextBlock Text="{Binding SelectedPatient.MidName}" Margin="5,0"  Foreground="{DynamicResource BrushForegroundVeryLight}" HorizontalAlignment="Right"/>
+                <TextBlock Text="{Binding SelectedPatient.LastName}"  Foreground="{DynamicResource BrushForegroundVeryLight}" HorizontalAlignment="Right"/>
+            </StackPanel>
+        </StackPanel>
+
+
+        <TextBlock Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="{Binding SelectedEntry.TargetDateTime, StringFormat=HH:mm}" FontSize="30" Margin="10,5"/>
+
+        <Button Content="РЕДАКТИРОВАТЬ" FontSize="15" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource MahApps.Styles.Button.ToolBar}"/>
+    </Grid>
+</UserControl>

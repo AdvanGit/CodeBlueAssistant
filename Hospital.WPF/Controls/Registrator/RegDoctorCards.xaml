@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="Hospital.WPF.Controls.Registrator.RegDoctorCards"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
+             mc:Ignorable="d" 
+             d:DesignHeight="140" d:DesignWidth="350">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource BrushForegroundDark}"/>
+        </Style>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border Background="{DynamicResource BrushBackgroundPaper}" Grid.ColumnSpan="2" Effect="{StaticResource ShadowCard}" CornerRadius="2" />
+        <Border Background="{StaticResource BrushAccent1}" Grid.Column="0" CornerRadius="2,0,0,2" />
+        <TextBlock Text="Д О К Т О Р" FontSize="12"  Foreground="White" Margin="0,10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <TextBlock.LayoutTransform>
+                <RotateTransform Angle="-90"/>
+            </TextBlock.LayoutTransform>
+        </TextBlock>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5">
+            <TextBlock Text="{Binding SelectedEntry.DoctorDestination.FirstName, Converter={StaticResource ToUpperCaseConverter}}" FontSize="22"/>
+            <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding SelectedEntry.DoctorDestination.MidName}" FontSize="18"/>
+            <TextBlock Text="{Binding SelectedEntry.DoctorDestination.LastName}" Margin="5,0" FontSize="18"/>
+            </StackPanel>
+        </StackPanel>
+
+        <TextBlock Text="{Binding SelectedEntry.DoctorDestination.Department.Title.Title}"  Foreground="{DynamicResource BrushForegroundVeryLight}"
+                   Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="15" Margin="10,5"/>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10">
+            <TextBlock Text="{Binding SelectedEntry.DoctorDestination.Qualification}" FontSize="15" Margin="0,5" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+            <StackPanel Orientation="Horizontal">
+            <TextBlock Text="{Binding SelectedEntry.DoctorDestination.Department.Adress.Street, StringFormat=Ул. {0}}" FontSize="16"/>
+            <TextBlock Text="{Binding SelectedEntry.DoctorDestination.Department.Adress.Number, StringFormat=д.{0}}" FontSize="16" Margin="5,0"/>
+            </StackPanel>
+        </StackPanel>
+
+        <TextBlock Grid.Column="1" Text="{Binding SelectedEntry.DoctorDestination.Cabinet, StringFormat=Кабинет {0}}" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="10" FontSize="16"/>
+    </Grid>
+</UserControl>

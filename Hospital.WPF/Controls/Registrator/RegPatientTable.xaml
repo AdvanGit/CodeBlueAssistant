@@ -3,40 +3,43 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="35"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
 
         <Border Grid.Row="0" Background="{StaticResource BrushBackgroundPaper}" BorderBrush="{StaticResource BrushPrimaryBorderLight}" BorderThickness="0,1,0,0"/>
         <Border Grid.Row="0" BorderBrush="{StaticResource BrushTableSelected}" BorderThickness="0,0,0,2"/>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button Content="Фильтр"/>
-            <TextBox MinWidth="150" Height="30" Margin="15,0"  FontSize="14"
-                         mah:TextBoxHelper.Watermark="Поиск..."
-                         mah:TextBoxHelper.SelectAllOnFocus="True"
-                         mah:TextBoxHelper.ClearTextButton="True"/>
+            <Button Content="Фильтр" Command="{Binding Path=SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}" CommandParameter="Entry"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
-            <Button Content="РЕГИСТРАЦИЯ" Grid.Row="0" HorizontalAlignment="Right"/>
-            <Button Content="РЕДАКТИРОВАТЬ" Grid.Row="0" HorizontalAlignment="Right"/>
+            <Button Content="РЕГИСТРАЦИЯ" Grid.Row="0" HorizontalAlignment="Right" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}, Path=SetBody}" CommandParameter="Edit"/>
         </StackPanel>
 
         <DataGrid Grid.Row="1" ItemsSource="{Binding Patients}" Style="{StaticResource TableCommon}">
+            <b:Interaction.Triggers>
+                <b:EventTrigger EventName="MouseDoubleClick">
+                    <b:InvokeCommandAction Command="{Binding SelectPatient}" CommandParameter="{Binding Path=SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"/>
+                </b:EventTrigger>
+            </b:Interaction.Triggers>
+            
             <DataGrid.RowStyle>
                 <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource TableRow}">
                     <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource ObjectEqualsToBoolConverter}">
-                                    <Binding Path="Id"/>
-                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}" Path="DataContext.SelectedPatient.Id"/>
+                                    <Binding/>
+                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}" Path="DataContext.SelectedPatient"/>
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <Setter Property="Background" Value="{StaticResource BrushTableSelected}"/>
@@ -44,15 +47,14 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.RowStyle>
-
             <DataGrid.CellStyle>
                 <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource TableCell}">
                     <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
                                 <MultiBinding Converter="{StaticResource ObjectEqualsToBoolConverter}">
-                                    <Binding Path="Id"/>
-                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}" Path="DataContext.SelectedPatient.Id"/>
+                                    <Binding/>
+                                    <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}" Path="DataContext.SelectedPatient"/>
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <Setter Property="Foreground" Value="{StaticResource BrushBackgroundPaper}"/>
@@ -61,7 +63,6 @@
                     </Style.Triggers>
                 </Style>
             </DataGrid.CellStyle>
-
             <DataGrid.Columns>
                 <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                 <DataGridTextColumn Header="ФАМИЛИЯ" Binding="{Binding FirstName}"/>

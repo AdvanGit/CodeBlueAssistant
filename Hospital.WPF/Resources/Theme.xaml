@@ -5,9 +5,10 @@
     <Color x:Key="ColorPrimaryBorderLight">#D7D7D7</Color>
     <Color x:Key="ColorPrimaryBorderDark">#AAAAAA</Color>
     <Color x:Key="ColorTableHeader">#D7D7D7</Color>
-    <Color x:Key="ColorPrimaryPanelTitle">#949FB0</Color>
+    <Color x:Key="ColorPrimaryPanelTitle">#797979</Color>
     <Color x:Key="ColorBackgroundPaper">#FFFFFF</Color>
     <Color x:Key="ColorTableRowAlternationBackgroud">#F2F2F2</Color>
+    <Color x:Key="ColorForegroundVeryLight">#797979</Color>
     <Color x:Key="ColorForegroundLight">#555555</Color>
     <Color x:Key="ColorForegroundMid">#333333</Color>
     <Color x:Key="ColorForegroundDark">#111111</Color>
@@ -24,6 +25,7 @@
     <SolidColorBrush x:Key="BrushPrimaryPanelTitle" Color="{DynamicResource ColorPrimaryPanelTitle}"/>
     <SolidColorBrush x:Key="BrushBackgroundPaper" Color="{DynamicResource ColorBackgroundPaper}"/>
     <SolidColorBrush x:Key="BrushTableRowAlternationBackgroud" Color="{DynamicResource ColorTableRowAlternationBackgroud}"/>
+    <SolidColorBrush x:Key="BrushForegroundVeryLight" Color="{DynamicResource ColorForegroundVeryLight}"/>
     <SolidColorBrush x:Key="BrushForegroundLight" Color="{DynamicResource ColorForegroundLight}"/>
     <SolidColorBrush x:Key="BrushForegroundMid" Color="{DynamicResource ColorForegroundMid}"/>
     <SolidColorBrush x:Key="BrushForegroundDark" Color="{DynamicResource ColorForegroundDark}"/>
@@ -36,5 +38,7 @@
     <SolidColorBrush x:Key="BrushAccentNegative" Color="{DynamicResource ColorAccentRed}" Opacity=".2"/>
 
     <DropShadowEffect x:Key="EffectShadowDown" BlurRadius="5" Direction="270" Opacity="0.2" ShadowDepth="3" Color="Black"  />
+    <DropShadowEffect x:Key="ShadowCard" BlurRadius="12" Opacity="0.4" ShadowDepth="1" Color="Black"  />
+
 
 </ResourceDictionary>

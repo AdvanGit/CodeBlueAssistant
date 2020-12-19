@@ -1,5 +1,6 @@
 ﻿using Hospital.ViewModel.Services;
 using Hospital.WPF.Controls.Registrator;
+using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +10,13 @@ namespace Hospital.WPF.Views
 {
     public partial class Registrator : UserControl
     {
-        private readonly List<UserControl> _bodies = new List<UserControl> { new RegDoctorTable(), new RegEntryTable(), new RegPatientTable() };
+        private readonly List<UserControl> _bodies = new List<UserControl> 
+        {
+            new RegDoctorTable(),
+            new RegEntryTable(),
+            new RegPatientTable(),
+            new RegEditPanel()
+        };
         public static string Label { get; } = "Регистратура";
 
         public Registrator()
@@ -20,10 +27,31 @@ namespace Hospital.WPF.Views
             foreach (UserControl control in _bodies) RegistratorView.AddLogicalChild(control);
 
             CurrentControl = _bodies[0];
-            SetBody = new RelayCommand(obj => CurrentControl = _bodies[0]);
-            SetEntry = new RelayCommand(obj => CurrentControl = _bodies[1]);
-            SetPatient = new RelayCommand(obj => CurrentControl = _bodies[2]);
-            FocusSearchPatient = new RelayCommand(obj => { SearchBar.TextBoxSearch.Focus(); SearchBar.TabPatient.IsSelected = true; });
+
+            SetBody = new RelayCommand(parameter =>
+            { 
+                if (parameter != null)
+                {
+                    switch (parameter.ToString())
+                    {
+                        case "Doctor": CurrentControl = _bodies[0]; break;
+                        case "Entry": CurrentControl = _bodies[1]; break;
+                        case "Patient": CurrentControl = _bodies[2]; break;
+                        case "Edit": CurrentControl = _bodies[3]; break;
+                        default: break;
+                    }
+                }
+            });
+
+            SetFocusPatient = new RelayCommand(obj =>
+            {
+                if ( obj != null )
+                {
+                    SearchBar.TextBoxSearch.Focus();
+                    SearchBar.TabPatient.IsSelected = true;
+                    CurrentControl = _bodies[2];
+                }
+            });
         }
 
         public UserControl CurrentControl
@@ -39,23 +67,13 @@ namespace Hospital.WPF.Views
             set { SetValue(SetBodyProperty, value); }
         }
         public static readonly DependencyProperty SetBodyProperty = DependencyProperty.Register("SetBody", typeof(ICommand), typeof(Registrator));
-        public ICommand SetEntry
+        public ICommand SetFocusPatient
         {
-            get { return (ICommand)GetValue(SetEntryProperty); }
-            set { SetValue(SetEntryProperty, value); }
+            get { return (ICommand)GetValue(SetFocusPatientProperty); }
+            set { SetValue(SetFocusPatientProperty, value); }
         }
-        public static readonly DependencyProperty SetEntryProperty = DependencyProperty.Register("SetEntry", typeof(ICommand), typeof(Registrator));
-        public ICommand SetPatient
-        {
-            get { return (ICommand)GetValue(SetPatientProperty); }
-            set { SetValue(SetPatientProperty, value); }
-        }
-        public static readonly DependencyProperty SetPatientProperty = DependencyProperty.Register("SetPatient", typeof(ICommand), typeof(Registrator));
-        public ICommand FocusSearchPatient
-        {
-            get { return (ICommand)GetValue(FocusSearchPatientProperty); }
-            set { SetValue(FocusSearchPatientProperty, value); }
-        }
-        public static readonly DependencyProperty FocusSearchPatientProperty = DependencyProperty.Register("FocusSearchPatient", typeof(ICommand), typeof(Registrator));
+        public static readonly DependencyProperty SetFocusPatientProperty = DependencyProperty.Register("SetFocusPatient", typeof(ICommand), typeof(Registrator));
+
+
     }
 }

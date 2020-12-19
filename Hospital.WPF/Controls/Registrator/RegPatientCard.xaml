@@ -1,0 +1,51 @@
+﻿<UserControl x:Class="Hospital.WPF.Controls.Registrator.RegPatientCard"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
+             xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
+             mc:Ignorable="d" 
+             d:DesignHeight="140" d:DesignWidth="350">
+    <!--<UserControl.DataContext>
+        <vm:RegistratorViewModel/>
+    </UserControl.DataContext>-->
+    
+    <UserControl.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="{DynamicResource BrushForegroundDark}"/>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="25"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Border Background="{DynamicResource BrushBackgroundPaper}" Grid.ColumnSpan="2" Effect="{StaticResource ShadowCard}" CornerRadius="2" />
+        <Border Background="{StaticResource BrushAccentPositive}" Grid.Column="0" CornerRadius="2,0,0,2" />
+        <TextBlock Text="П А Ц И Е Н Т" FontSize="12"  Foreground="White" Margin="0,10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+            <TextBlock.LayoutTransform>
+                <RotateTransform Angle="-90"/>
+            </TextBlock.LayoutTransform>
+        </TextBlock>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="10,5">
+            <TextBlock Text="{Binding SelectedPatient.FirstName, Converter={StaticResource ToUpperCaseConverter}}" FontSize="22"/>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding SelectedPatient.MidName}" FontSize="18"/>
+                <TextBlock Text="{Binding SelectedPatient.LastName}" Margin="5,0" FontSize="18"/>
+            </StackPanel>
+        </StackPanel>
+
+        <TextBlock Text="{Binding SelectedPatient.BirthDay, StringFormat=dd.MM.yyyy}"  Foreground="{DynamicResource BrushForegroundVeryLight}"
+                   Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" FontSize="15" Margin="10,5"/>
+
+        <StackPanel Orientation="Vertical" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="10">
+            <TextBlock Text="{Binding SelectedPatient.Belay.Title, StringFormat=ОМС: {0}}" FontSize="15" Margin="0,5" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                <TextBlock Text="{Binding SelectedPatient.PhoneNumber, StringFormat=тел. {0}}" FontSize="16"/>
+        </StackPanel>
+
+        <Button Content="РЕДАКТИРОВАТЬ" FontSize="15" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource MahApps.Styles.Button.ToolBar}"/>
+    </Grid>
+</UserControl>

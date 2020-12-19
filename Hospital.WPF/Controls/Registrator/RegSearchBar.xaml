@@ -9,7 +9,6 @@
              xmlns:ser="clr-namespace:Hospital.WPF.Services"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:iconPacks="http://metro.mahapps.com/winfx/xaml/iconpacks"
-             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              mc:Ignorable="d" 
              d:DesignHeight="74.049" d:DesignWidth="1080">
 
@@ -46,14 +45,6 @@
                     </Style.Triggers>
                 </Style>
             </TextBox.Style>
-            <i:Interaction.Triggers>
-                <i:DataTrigger Binding="{Binding ElementName=TabDoctor, Path=IsSelected}" Value="True">
-                    <i:InvokeCommandAction Command="{Binding Path=SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
-                </i:DataTrigger>
-                <i:DataTrigger Binding="{Binding ElementName=TabPatient, Path=IsSelected}" Value="True">
-                    <i:InvokeCommandAction Command="{Binding Path=SetPatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
-                </i:DataTrigger>
-            </i:Interaction.Triggers>
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter">
                     <KeyBinding.Command>
@@ -112,8 +103,15 @@
                     <StackPanel Orientation="Horizontal"/>
                 </ItemsPanelTemplate>
             </ListBox.ItemsPanel>
-            <ListBoxItem Content="ДОКТОРА" x:Name="TabDoctor" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}" IsSelected="True"/>
+            <ListBoxItem Content="ДОКТОРА" x:Name="TabDoctor" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}" IsSelected="True">
+                <ListBoxItem.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding Path=SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}" CommandParameter="Doctor"/>
+                </ListBoxItem.InputBindings>
+            </ListBoxItem>
             <ListBoxItem Content="ПАЦИЕНТЫ" x:Name="TabPatient" >
+                <ListBoxItem.InputBindings>
+                    <MouseBinding MouseAction="LeftClick" Command="{Binding Path=SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}" CommandParameter="Patient"/>
+                </ListBoxItem.InputBindings>
                 <ListBoxItem.Style>
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource RegistratorSearchTab}">
                         <Style.Triggers>
