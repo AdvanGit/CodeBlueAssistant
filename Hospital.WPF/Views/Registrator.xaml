@@ -6,14 +6,9 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:local="clr-namespace:Hospital.WPF.Views"
-      xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
       xmlns:controls="clr-namespace:Hospital.WPF.Controls.Registrator"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="1280">
-
-    <UserControl.DataContext>
-        <vm:RegistratorViewModel/>
-    </UserControl.DataContext>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -45,8 +40,9 @@
 
             </Grid>
 
-            <mah:TransitioningContentControl Grid.Row="2" Content="{Binding ElementName=RegistratorView, Path=CurrentControl}" Transition="Right" VerticalAlignment="Top"/>
+            <mah:TransitioningContentControl Grid.Row="2" Content="{Binding ElementName=RegistratorView, Path=Navigator.CurrentBody}" Transition="Right" VerticalAlignment="Top"/>
 
         </Grid>
     </Grid>
+    
 </UserControl>

@@ -1,5 +1,8 @@
-﻿using Hospital.ViewModel.Services;
+﻿using Hospital.ViewModel;
+using Hospital.ViewModel.Services;
+using Hospital.WPF.Commands;
 using Hospital.WPF.Controls.Registrator;
+using Hospital.WPF.Navigators;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +12,7 @@ namespace Hospital.WPF.Views
 {
     public partial class Registrator : UserControl
     {
-        private readonly List<UserControl> _bodies = new List<UserControl>
+        private readonly List<UserControl> bodies = new List<UserControl>
         {
             new RegDoctorTable(),
             new RegEntryTable(),
@@ -18,29 +21,32 @@ namespace Hospital.WPF.Views
         };
         public static string Label { get; } = "Регистратура";
 
+        private static RegistratorViewModel registratorViewModel = new RegistratorViewModel();
+        public RegistratorNavigator Navigator { get; } = new RegistratorNavigator();
+        public RegistratorCommand Command { get; private set; }
+
         public Registrator()
         {
             InitializeComponent();
-            //DataContext = new RegistratorViewModel();
 
-            foreach (UserControl control in _bodies) RegistratorView.AddLogicalChild(control);
+            DataContext = registratorViewModel;
+            Command = new RegistratorCommand(registratorViewModel, this);
 
-            CurrentControl = _bodies[0];
+            CurrentControl = bodies[0];
 
-            SetEntry = new RelayCommand(parameter => CurrentControl = _bodies[1]);
-            SetDoctor = new RelayCommand(parameter => { CurrentControl = _bodies[0]; SearchBar.TabDoctor.IsSelected = true; });
-            SetEdit = new RelayCommand(parameter => CurrentControl = _bodies[3]);
-            SetPatient = new RelayCommand(parameter => { CurrentControl = _bodies[2]; SearchBar.TabPatient.IsSelected = true; });
+            SetEntry = new RelayCommand(parameter => CurrentControl = bodies[1]);
+            SetDoctor = new RelayCommand(parameter => { CurrentControl = bodies[0]; SearchBar.TabDoctor.IsSelected = true; });
+            SetEdit = new RelayCommand(parameter => CurrentControl = bodies[3]);
+            SetPatient = new RelayCommand(parameter => { CurrentControl = bodies[2]; SearchBar.TabPatient.IsSelected = true; });
             SetFocusPatient = new RelayCommand(parameter =>
             {
                 if (parameter != null)
                 {
                     SearchBar.TextBoxSearch.Focus();
                     SearchBar.TabPatient.IsSelected = true;
-                    CurrentControl = _bodies[2];
+                    CurrentControl = bodies[2];
                 }
             });
-
         }
 
         public UserControl CurrentControl

@@ -8,14 +8,6 @@ namespace Hospital.ViewModel
     public class MainViewModel : INotifyPropertyChanged
 
     {
-        //private RelayCommand _createData;
-
-        //public RelayCommand CreateData
-        //{
-        //    get => _createData ?? (_createData = new RelayCommand(obj =>
-        //        { Task.Run(() => (new ContentCreate(new HospitalDbContextFactory()))); }));
-        //}
-
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged(string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }

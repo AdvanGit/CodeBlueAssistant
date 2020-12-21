@@ -14,7 +14,7 @@
 
     <UserControl.Resources>
         <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource RegistratorSearchTab}"/>
-        <ser:SearchLocatorConverter x:Key="SearchConverter"/>
+        <ser:SearchExecuter x:Key="SearchExecuter"/>
     </UserControl.Resources>
 
 
@@ -48,10 +48,10 @@
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter">
                     <KeyBinding.Command>
-                        <MultiBinding Converter="{StaticResource SearchConverter}">
+                        <MultiBinding Converter="{StaticResource SearchExecuter}">
                             <Binding Path="SelectedIndex" ElementName="TabSearch"/>
-                            <Binding Path="FindDoctor"/>
-                            <Binding Path="FindPatient"/>
+                            <Binding Path="Command.FindDoctor"  RelativeSource="{RelativeSource AncestorType={x:Type view:Registrator}}"/>
+                            <Binding Path="Command.FindPatient"  RelativeSource="{RelativeSource AncestorType={x:Type view:Registrator}}"/>
                         </MultiBinding>
                     </KeyBinding.Command>
                 </KeyBinding>
@@ -105,12 +105,16 @@
             </ListBox.ItemsPanel>
             <ListBoxItem Content="ДОКТОРА" x:Name="TabDoctor" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}" IsSelected="True">
                 <ListBoxItem.InputBindings>
-                    <MouseBinding MouseAction="LeftClick" Command="{Binding Path=SetDoctor, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
+                    <MouseBinding MouseAction="LeftClick"
+                                  Command="{Binding Path=Command.SetSearchTab, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                                  CommandParameter="Doctors"/>
                 </ListBoxItem.InputBindings>
             </ListBoxItem>
             <ListBoxItem Content="ПАЦИЕНТЫ" x:Name="TabPatient" >
                 <ListBoxItem.InputBindings>
-                    <MouseBinding MouseAction="LeftClick" Command="{Binding Path=SetPatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
+                    <MouseBinding MouseAction="LeftClick"
+                                  Command="{Binding Path=Command.SetSearchTab, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                                  CommandParameter="Patients"/>
                 </ListBoxItem.InputBindings>
                 <ListBoxItem.Style>
                     <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource RegistratorSearchTab}">
@@ -131,10 +135,10 @@
 
         <Button Grid.Row="1" Grid.Column="1" Width="120" Content="ПОИСК" x:Name="ButtonSearch" Style="{StaticResource RegistratorSearchBarButton}">
             <Button.Command>
-                <MultiBinding Converter="{StaticResource SearchConverter}">
+                <MultiBinding Converter="{StaticResource SearchExecuter}">
                     <Binding Path="SelectedIndex" ElementName="TabSearch"/>
-                    <Binding Path="FindDoctor"/>
-                    <Binding Path="FindPatient"/>
+                    <Binding Path="Command.FindDoctor" RelativeSource="{RelativeSource AncestorType={x:Type view:Registrator}}"/>
+                    <Binding Path="Command.FindPatient" RelativeSource="{RelativeSource AncestorType={x:Type view:Registrator}}"/>
                 </MultiBinding>
             </Button.Command>
         </Button>
