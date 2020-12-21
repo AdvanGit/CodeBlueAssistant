@@ -17,10 +17,11 @@ namespace Hospital.ViewModel
 
         private Entry _selectedEntry;
         public Entry SelectedEntry { get => _selectedEntry; set { _selectedEntry = value; OnPropertyChanged(nameof(SelectedEntry)); } }
-        public bool EntryLocker { get; private set; }
 
         private Patient _selectedPatient;
         public Patient SelectedPatient { get => _selectedPatient; set { _selectedPatient = value; OnPropertyChanged(nameof(SelectedPatient)); } }
+        private Patient _editingPatient;
+        public Patient EditingPatient { get => _editingPatient; set { _editingPatient = value; OnPropertyChanged(nameof(EditingPatient)); } }
 
         public ObservableCollection<Entry> Doctors { get; } = new ObservableCollection<Entry>();
         public ObservableCollection<Entry> Entries { get; } = new ObservableCollection<Entry>();
@@ -30,6 +31,7 @@ namespace Hospital.ViewModel
         private RelayCommand _selectPatient;
         private RelayCommand _findDoctor;
         private RelayCommand _findPatient;
+        private RelayCommand _editPatient;
 
         public RelayCommand SelectEntry
         {
@@ -39,6 +41,7 @@ namespace Hospital.ViewModel
             });
         }
         public RelayCommand SelectPatient { get => _selectPatient ??= new RelayCommand(obj => { if (obj != null) SelectedPatient = (Patient)obj; }); }
+        public RelayCommand EditPatient { get => _editPatient ??= new RelayCommand(obj => EditingPatient = SelectedPatient , obj => SelectedPatient != null); }
         public RelayCommand FindDoctor { get => _findDoctor ??= new RelayCommand(async obj => { if (SearchValue != null && SearchValue != "") await SearchDoctor(); }); }
         public RelayCommand FindPatient { get => _findPatient ??= new RelayCommand(async obj => { if (SearchValue != null && SearchValue != "") await SearchPatient(); }); }
 

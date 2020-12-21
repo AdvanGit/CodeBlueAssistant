@@ -23,7 +23,7 @@
             
             <Border Grid.Row="0" Background="{StaticResource BrushBackgroundPaper}" BorderBrush="{StaticResource BrushTableSelected}" BorderThickness="0,0,0,2"/>
             <StackPanel Orientation="Horizontal" Grid.Row="0">
-                <Button Content="Back" Command="{Binding Path=SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}" CommandParameter="Doctor"/>
+                <Button Content="Back" Command="{Binding Path=SetDoctor, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
             </StackPanel>
 
             <DataGrid Grid.Row="1" ItemsSource="{Binding Entries}" Style="{StaticResource TableCommon}" ColumnWidth="*">

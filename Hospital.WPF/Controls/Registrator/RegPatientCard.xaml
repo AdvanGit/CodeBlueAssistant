@@ -46,6 +46,8 @@
                 <TextBlock Text="{Binding SelectedPatient.PhoneNumber, StringFormat=тел. {0}}" FontSize="16"/>
         </StackPanel>
 
-        <Button Content="РЕДАКТИРОВАТЬ" FontSize="15" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource MahApps.Styles.Button.ToolBar}"/>
+        <Button Content="РЕДАКТИРОВАТЬ"
+                FontSize="15" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource MahApps.Styles.Button.ToolBar}"
+                Command="{Binding EditPatient}"/>
     </Grid>
 </UserControl>

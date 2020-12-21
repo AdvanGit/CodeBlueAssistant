@@ -1,6 +1,5 @@
 ﻿using Hospital.ViewModel.Services;
 using Hospital.WPF.Controls.Registrator;
-using System.Collections;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,7 +9,7 @@ namespace Hospital.WPF.Views
 {
     public partial class Registrator : UserControl
     {
-        private readonly List<UserControl> _bodies = new List<UserControl> 
+        private readonly List<UserControl> _bodies = new List<UserControl>
         {
             new RegDoctorTable(),
             new RegEntryTable(),
@@ -28,30 +27,20 @@ namespace Hospital.WPF.Views
 
             CurrentControl = _bodies[0];
 
-            SetBody = new RelayCommand(parameter =>
-            { 
-                if (parameter != null)
-                {
-                    switch (parameter.ToString())
-                    {
-                        case "Doctor": CurrentControl = _bodies[0]; break;
-                        case "Entry": CurrentControl = _bodies[1]; break;
-                        case "Patient": CurrentControl = _bodies[2]; break;
-                        case "Edit": CurrentControl = _bodies[3]; break;
-                        default: break;
-                    }
-                }
-            });
-
-            SetFocusPatient = new RelayCommand(obj =>
+            SetEntry = new RelayCommand(parameter => CurrentControl = _bodies[1]);
+            SetDoctor = new RelayCommand(parameter => { CurrentControl = _bodies[0]; SearchBar.TabDoctor.IsSelected = true; });
+            SetEdit = new RelayCommand(parameter => CurrentControl = _bodies[3]);
+            SetPatient = new RelayCommand(parameter => { CurrentControl = _bodies[2]; SearchBar.TabPatient.IsSelected = true; });
+            SetFocusPatient = new RelayCommand(parameter =>
             {
-                if ( obj != null )
+                if (parameter != null)
                 {
                     SearchBar.TextBoxSearch.Focus();
                     SearchBar.TabPatient.IsSelected = true;
                     CurrentControl = _bodies[2];
                 }
             });
+
         }
 
         public UserControl CurrentControl
@@ -61,18 +50,38 @@ namespace Hospital.WPF.Views
         }
         public static readonly DependencyProperty CurrentControlProperty = DependencyProperty.Register("CurrentControl", typeof(UserControl), typeof(Registrator));
 
-        public ICommand SetBody
-        {
-            get { return (ICommand)GetValue(SetBodyProperty); }
-            set { SetValue(SetBodyProperty, value); }
-        }
-        public static readonly DependencyProperty SetBodyProperty = DependencyProperty.Register("SetBody", typeof(ICommand), typeof(Registrator));
         public ICommand SetFocusPatient
         {
             get { return (ICommand)GetValue(SetFocusPatientProperty); }
             set { SetValue(SetFocusPatientProperty, value); }
         }
         public static readonly DependencyProperty SetFocusPatientProperty = DependencyProperty.Register("SetFocusPatient", typeof(ICommand), typeof(Registrator));
+        public ICommand SetEntry
+        {
+            get { return (ICommand)GetValue(SetEntryProperty); }
+            set { SetValue(SetEntryProperty, value); }
+        }
+        public static readonly DependencyProperty SetEntryProperty = DependencyProperty.Register("SetEntry", typeof(ICommand), typeof(Registrator));
+        public ICommand SetDoctor
+        {
+            get { return (ICommand)GetValue(SetDoctorProperty); }
+            set { SetValue(SetDoctorProperty, value); }
+        }
+        public static readonly DependencyProperty SetDoctorProperty = DependencyProperty.Register("SetDoctor", typeof(ICommand), typeof(Registrator));
+        public ICommand SetEdit
+        {
+            get { return (ICommand)GetValue(SetEditProperty); }
+            set { SetValue(SetEditProperty, value); }
+        }
+        public static readonly DependencyProperty SetEditProperty = DependencyProperty.Register("SetEdit", typeof(ICommand), typeof(Registrator));
+        public ICommand SetPatient
+        {
+            get { return (ICommand)GetValue(SetPatientProperty); }
+            set { SetValue(SetPatientProperty, value); }
+        }
+        public static readonly DependencyProperty SetPatientProperty = DependencyProperty.Register("SetPatient", typeof(ICommand), typeof(Registrator));
+
+
 
 
     }
