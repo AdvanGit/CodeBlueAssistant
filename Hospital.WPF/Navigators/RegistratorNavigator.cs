@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace Hospital.WPF.Navigators
 {
-    public class RegistratorNavigator : INotifyPropertyChanged
+    public class RegistratorNavigator : UserControl, INotifyPropertyChanged
     {
         private UserControl _currentBody;
         public UserControl CurrentBody { get => _currentBody; set { _currentBody = value; OnPropertyChanged(nameof(CurrentBody)); }}
@@ -19,11 +19,6 @@ namespace Hospital.WPF.Navigators
             new RegEditPanel()
         };
 
-        public RegistratorNavigator()
-        {
-            CurrentBody = bodies[0];
-        }
-
         public void SetBody(string bodyName)
         {
             switch (bodyName)
@@ -34,6 +29,10 @@ namespace Hospital.WPF.Navigators
                 case "Edit": CurrentBody = bodies[3]; return;
                 default: break;
             }
+        }
+        public List<UserControl> GetBodies()
+        {
+            return bodies;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -27,14 +27,14 @@ namespace Hospital.ViewModel
         public ObservableCollection<Entry> Entries { get; } = new ObservableCollection<Entry>();
         public ObservableCollection<Patient> Patients { get; } = new ObservableCollection<Patient>();
 
-        private RelayCommand _selectEntry;
-        private RelayCommand _selectPatient;
+        //private RelayCommand _selectEntry;
+        //private RelayCommand _selectPatient;
         //private RelayCommand _findDoctor;
         //private RelayCommand _findPatient;
         private RelayCommand _editPatient;
 
-        public RelayCommand SelectEntry { get => _selectEntry ??= new RelayCommand(async obj => { if (obj != null) await GetEntriesBy(obj); }); }
-        public RelayCommand SelectPatient { get => _selectPatient ??= new RelayCommand(obj => { if (obj != null) SelectedPatient = (Patient)obj; }); }
+        //public RelayCommand SelectEntry { get => _selectEntry ??= new RelayCommand(async obj => { if (obj != null) await GetEntries(obj); }); }
+        //public RelayCommand SelectPatient { get => _selectPatient ??= new RelayCommand(obj => { if (obj != null) SelectedPatient = (Patient)obj; }); }
         public RelayCommand EditPatient { get => _editPatient ??= new RelayCommand(execute: p => EditingPatient = SelectedPatient, canExecute: p => { return SelectedPatient != null; }); }
         //public RelayCommand FindDoctor { get => _findDoctor ??= new RelayCommand(async obj => { if (SearchValue != null && SearchValue != "") await SearchDoctor(SearchValue); }); }
         //public RelayCommand FindPatient { get => _findPatient ??= new RelayCommand(async obj => { if (SearchValue != null && SearchValue != "") await SearchPatient(SearchValue); }); }
@@ -57,12 +57,20 @@ namespace Hospital.ViewModel
                 foreach (Entry entry in result) Doctors.Add(entry);
             }
         }
-        public async Task GetEntriesBy(object obj)
+        public async Task GetEntries(object obj)
         {
-            SelectedEntry = (Entry)obj;
-            Entries.Clear();
-            IEnumerable<Entry> result = await registratorDataServices.GetEntries(SelectedEntry.DoctorDestination, (SelectedEntry.TargetDateTime));
-            foreach (Entry entry in result) Entries.Add(entry);
+            if (obj != null)
+            {
+                SelectedEntry = (Entry)obj;
+                Entries.Clear();
+                IEnumerable<Entry> result = await registratorDataServices.GetEntries(SelectedEntry.DoctorDestination, (SelectedEntry.TargetDateTime));
+                foreach (Entry entry in result) Entries.Add(entry);
+            }
+        }
+        public void SelectEntity(object entity)
+        {
+            if (entity != null && entity.GetType() == typeof(Patient)) SelectedPatient = (Patient)entity;
+            else if (entity != null && entity.GetType() == typeof(Entry)) SelectedEntry = (Entry)entity;
         }
     }
 }

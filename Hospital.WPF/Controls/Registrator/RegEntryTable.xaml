@@ -23,19 +23,16 @@
             
             <Border Grid.Row="0" Background="{StaticResource BrushBackgroundPaper}" BorderBrush="{StaticResource BrushTableSelected}" BorderThickness="0,0,0,2"/>
             <StackPanel Orientation="Horizontal" Grid.Row="0">
-                <Button Content="Back" Command="{Binding Path=SetDoctor, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
+                <Button Content="Back" 
+                        Command="{Binding Path=Command.SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                        CommandParameter="Doctors"/>
             </StackPanel>
 
             <DataGrid Grid.Row="1" ItemsSource="{Binding Entries}" Style="{StaticResource TableCommon}" ColumnWidth="*">
                 <DataGrid.InputBindings>
-                    <MouseBinding MouseAction="LeftDoubleClick" CommandParameter="{Binding Path=SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
-                        <MouseBinding.Command>
-                            <MultiBinding Converter="{StaticResource MultiCommandConverter}">
-                                <Binding RelativeSource="{RelativeSource AncestorType={x:Type view:Registrator}}" Path="SetFocusPatient"/>
-                                <Binding Path="SelectEntry"/>
-                            </MultiBinding>
-                        </MouseBinding.Command>
-                        
+                    <MouseBinding MouseAction="LeftDoubleClick"
+                                  Command="{Binding Path=Command.SelectEntry, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                                  CommandParameter="{Binding Path=SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}">
                     </MouseBinding>
                 </DataGrid.InputBindings>
                 <DataGrid.RowStyle>

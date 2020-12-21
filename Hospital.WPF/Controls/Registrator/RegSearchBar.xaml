@@ -24,7 +24,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
-        <TextBox Grid.Column="0" Text="{Binding SearchValue, UpdateSourceTrigger=PropertyChanged}"
+        <TextBox Grid.Column="0"
                  x:Name="TextBoxSearch" 
                  mah:TextBoxHelper.SelectAllOnFocus="True"
                  mah:TextBoxHelper.Watermark="Поиск..."
