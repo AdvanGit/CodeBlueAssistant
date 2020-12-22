@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
              xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
+             xmlns:view="clr-namespace:Hospital.WPF.Views"
              mc:Ignorable="d" 
              d:DesignHeight="140" d:DesignWidth="350">
     <!--<UserControl.DataContext>
@@ -48,6 +49,7 @@
 
         <Button Content="РЕДАКТИРОВАТЬ"
                 FontSize="15" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource MahApps.Styles.Button.ToolBar}"
-                Command="{Binding EditPatient}"/>
+                Command="{Binding Path=Command.EditPatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                CommandParameter="false"/>
     </Grid>
 </UserControl>

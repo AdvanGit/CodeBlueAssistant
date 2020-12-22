@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
+             xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
              mc:Ignorable="d" 
              d:DesignHeight="140" d:DesignWidth="350">
@@ -57,6 +58,7 @@
 
         <TextBlock Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="{Binding SelectedEntry.TargetDateTime, StringFormat=HH:mm}" FontSize="30" Margin="10,5"/>
 
-        <Button Content="СОХРАНИТЬ" FontSize="15" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource MahApps.Styles.Button.ToolBar}"/>
+        <Button Content="СОХРАНИТЬ" FontSize="15" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource MahApps.Styles.Button.ToolBar}"
+                Command="{Binding Path=Command.CreateEntry, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
     </Grid>
 </UserControl>

@@ -5,7 +5,6 @@
 
     <ser:ToUpperCaseConverter x:Key="ToUpperCaseConverter"/>
     <ser:ObjectEqualsToBoolConverter x:Key="ObjectEqualsToBoolConverter"/>
-    <ser:MultiCommandConverter x:Key="MultiCommandConverter"/>
     <ser:MultiCommandExecuter x:Key="MultiCommandExecuter"/>
 
     <Style TargetType="ListBoxItem" x:Key="TitleListBoxItem">

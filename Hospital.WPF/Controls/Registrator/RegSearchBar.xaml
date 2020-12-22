@@ -106,14 +106,14 @@
             <ListBoxItem Content="ДОКТОРА" x:Name="TabDoctor" BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}" IsSelected="True">
                 <ListBoxItem.InputBindings>
                     <MouseBinding MouseAction="LeftClick"
-                                  Command="{Binding Path=Command.SetSearchTab, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                                  Command="{Binding Path=Command.SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
                                   CommandParameter="Doctors"/>
                 </ListBoxItem.InputBindings>
             </ListBoxItem>
             <ListBoxItem Content="ПАЦИЕНТЫ" x:Name="TabPatient" >
                 <ListBoxItem.InputBindings>
                     <MouseBinding MouseAction="LeftClick"
-                                  Command="{Binding Path=Command.SetSearchTab, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                                  Command="{Binding Path=Command.SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
                                   CommandParameter="Patients"/>
                 </ListBoxItem.InputBindings>
                 <ListBoxItem.Style>

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
+             xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:domain="clr-namespace:Hospital.Domain.Model;assembly=Hospital.Domain"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -99,8 +100,11 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="Отмена" Grid.Row="2" Grid.Column="0" Margin="20,15,10,15" Command="{Binding EditCancel}"/>
-            <Button Content="СОХРАНИТЬ" Grid.Row="2" Grid.Column="1" Margin="10,15,20,15" Command="{Binding SavePatient}"/>
+            <Button Content="Отмена" Grid.Row="2" Grid.Column="0" Margin="20,15,10,15"
+                    Command="{Binding Path=Command.SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                    CommandParameter="Patients"/>
+            <Button Content="СОХРАНИТЬ" Grid.Row="2" Grid.Column="1" Margin="10,15,20,15"
+                    Command="{Binding Path=Command.SavePatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
         </Grid>
     </Grid>
 </UserControl>

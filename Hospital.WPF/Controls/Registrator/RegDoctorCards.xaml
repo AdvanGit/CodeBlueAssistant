@@ -26,7 +26,7 @@
                 mah:ControlsHelper.FocusBorderThickness="0"
                     Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}, Path=Command.SetBody}"
                     CommandParameter="Doctors"/>
-        <TextBlock Text="Д О К Т О Р" FontSize="12"  Foreground="White" Margin="0,10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+        <TextBlock Text="Д О К Т О Р" FontSize="12" IsHitTestVisible="False"  Foreground="White" Margin="0,10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
             <TextBlock.LayoutTransform>
                 <RotateTransform Angle="-90"/>
             </TextBlock.LayoutTransform>
