@@ -5,6 +5,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
+             xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
              xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:ser="clr-namespace:Hospital.WPF.Services"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
@@ -17,6 +18,9 @@
         <ser:SearchExecuter x:Key="SearchExecuter"/>
     </UserControl.Resources>
 
+    <!--<UserControl.DataContext>
+        <vm:RegistratorViewModel/>
+    </UserControl.DataContext>-->
 
     <Grid Margin="0,5" Height="35">
         <Grid.ColumnDefinitions>
@@ -93,11 +97,39 @@
                 </Style>
             </CheckBox.Style>
         </CheckBox>
-        <Popup IsOpen="{Binding ElementName=SearchBarPopupButton, Path=IsChecked}" PlacementTarget="{Binding ElementName=SearchBarPopupButton}" StaysOpen="False">
-            <Border Background="Red" Width="100" Height="100"/>
+        <Popup AllowsTransparency="True" IsOpen="{Binding ElementName=SearchBarPopupButton, Path=IsChecked}" PlacementTarget="{Binding ElementName=SearchBarPopupButton}" StaysOpen="False">
+            <Grid Margin="10">
+                <Border Effect="{StaticResource ShadowCard}" CornerRadius="0,10,10,10"
+                        Background="{DynamicResource BrushBackgroundPaper}"/>
+                <StackPanel Orientation="Vertical" Margin="15">
+                    <mah:ToggleSwitch Content="Только свободные" IsOn="{Binding Filter.IsFree}"/>
+                    <mah:ToggleSwitch Content="Только ближайшие" IsOn="{Binding Filter.IsGroup}"/>
+                    <mah:ToggleSwitch Content="Дата" Name="DateSwitcher" IsOn="{Binding Filter.IsDate }"/>
+                    <mah:ToggleSwitch Content="ФИО" IsOn="{Binding Filter.IsName}"/>
+                    <mah:ToggleSwitch Content="Специальность" IsOn="{Binding Filter.IsQualification}"/>
+                    <mah:ToggleSwitch Content="Отделение" IsOn="{Binding Filter.IsDepartment}"/>
+                    <mah:ToggleSwitch Content="Адрес" IsOn="{Binding Filter.IsAdress}"/>
+                </StackPanel>
+            </Grid>
         </Popup>
 
-        <ListBox Grid.Column="0" HorizontalAlignment="Right" x:Name="TabSearch" Margin="0,4" FontWeight="Bold" Background="{StaticResource BrushBackgroundPaper}">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+            <DatePicker Grid.Column="0" Margin="0,5" VerticalContentAlignment="Center" FontSize="14" FontWeight="Bold" Width="115"
+                        Foreground="{DynamicResource BrushForegroundLight}"
+                        BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Background="Transparent" 
+                        mah:TextBoxHelper.ButtonsAlignment="Left"
+                        mah:TextBoxHelper.ButtonWidth="24"
+                        mah:TextBoxHelper.Watermark="Дата"
+                        mah:ControlsHelper.FocusBorderBrush="{DynamicResource BrushPrimaryBorderDark}"
+                        SelectedDate="{Binding Filter.DateTime}">
+                <DatePicker.Visibility>
+                    <MultiBinding Converter="{StaticResource MultiBooleanToVisibilityConverter}">
+                        <Binding ElementName="DateSwitcher" Path="IsOn"/>
+                        <Binding ElementName="TabDoctor" Path="IsSelected"/>
+                    </MultiBinding>
+                </DatePicker.Visibility>
+            </DatePicker>
+            <ListBox Grid.Column="0" x:Name="TabSearch" Margin="0,4" FontWeight="Bold" Background="{StaticResource BrushBackgroundPaper}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <StackPanel Orientation="Horizontal"/>
@@ -132,8 +164,9 @@
                 </ListBoxItem.Style>
             </ListBoxItem>
         </ListBox>
+        </StackPanel>
 
-        <Button Grid.Row="1" Grid.Column="1" Width="120" Content="ПОИСК" x:Name="ButtonSearch" Style="{StaticResource RegistratorSearchBarButton}">
+        <Button Grid.Column="1" Width="120" Content="ПОИСК" x:Name="ButtonSearch" Style="{StaticResource RegistratorSearchBarButton}">
             <Button.Command>
                 <MultiBinding Converter="{StaticResource SearchExecuter}">
                     <Binding Path="SelectedIndex" ElementName="TabSearch"/>

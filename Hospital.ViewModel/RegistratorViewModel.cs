@@ -1,6 +1,8 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.EntityFramework;
+using Hospital.EntityFramework.Filters;
 using Hospital.EntityFramework.Services;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
@@ -27,6 +29,9 @@ namespace Hospital.ViewModel
         public ObservableCollection<Patient> Patients { get; } = new ObservableCollection<Patient>();
         public ObservableCollection<Belay> Belays { get; } = new ObservableCollection<Belay>();
 
+        private RegistratorFilter _filter = new RegistratorFilter() { IsName = true, IsFree = true, IsGroup=true, IsDepartment = true, IsAdress = true, IsQualification = true, IsDate = false, DateTime = DateTime.Now };
+        public RegistratorFilter Filter { get => _filter; set { _filter = value; OnPropertyChanged(nameof(Filter)); } } 
+
         public async Task SearchPatient(string value)
         {
             if (value != null && value != "")
@@ -41,7 +46,7 @@ namespace Hospital.ViewModel
             if (value != null && value != "")
             {
                 Doctors.Clear();
-                IEnumerable<Entry> result = await registratorDataServices.FindDoctor(value);
+                IEnumerable<Entry> result = await registratorDataServices.FindDoctor(value, _filter);
                 foreach (Entry entry in result) Doctors.Add(entry);
             }
         }
@@ -73,11 +78,12 @@ namespace Hospital.ViewModel
         public async Task CreateEntry()
         {
                 SelectedEntry.Patient = SelectedPatient;
+                SelectedEntry.Registrator = SelectedEntry.DoctorDestination; //---заглушка отсутсвия данных аккаунта
                 SelectedEntry.EntryStatus = EntryStatus.Await;
                 await genericDataServicesEntry.Update(SelectedEntry.Id, SelectedEntry);
                 SelectedEntry = null;
                 SelectedPatient = null;
-        }
+        } //check on exist
 
         public void SelectEntity(object entity)
         {

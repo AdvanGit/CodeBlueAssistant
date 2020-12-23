@@ -1,4 +1,5 @@
 ﻿using Hospital.Domain.Model;
+using Hospital.EntityFramework.Filters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,7 @@ namespace Hospital.EntityFramework.Services
             _contextFactory = contextFactory;
         }
 
-        public async Task<IEnumerable<Entry>> FindDoctor(string _string)
+        public async Task<IEnumerable<Entry>> FindDoctor(string _string, RegistratorFilter filter)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
@@ -29,16 +30,15 @@ namespace Hospital.EntityFramework.Services
                 var allChanges = await db.Changes
                     .Include(c => c.Staff).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                     .AsAsyncEnumerable()
-                    .Where(c =>
-                       ((
-                            (words.Any(word => c.Staff.FirstName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
-                            (words.Any(word => c.Staff.MidName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
-                            (words.Any(word => c.Staff.LastName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
-                            (words.Any(word => (c.Staff.Qualification != null) && (c.Staff.Qualification.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0) +
-                            (words.Any(word => (c.Staff.Department.Title.Title != null) && (c.Staff.Department.Title.Title.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0) +
-                            (words.Any(word => (c.Staff.Department.Adress.Street != null) && (c.Staff.Department.Adress.Street.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0)
-                            >= words.Count())
-                       ))
+                    .Where(c => (filter.IsDate ? (c.DateTimeStart.Date == filter.DateTime.Date) : (true))) //true => c.DatetimeStart.Date >= filter.DateTime.Date
+                    .Where(c => (
+                            ((filter.IsName) ? ((words.Any(word => c.Staff.FirstName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
+                                                (words.Any(word => c.Staff.MidName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
+                                                (words.Any(word => c.Staff.LastName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0)) : 0) +
+                            ((filter.IsQualification) ? (words.Any(word => (c.Staff.Qualification != null) && (c.Staff.Qualification.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0):0) +
+                            ((filter.IsDepartment) ? (words.Any(word => (c.Staff.Department.Title.Title != null) && (c.Staff.Department.Title.Title.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0): 0) +
+                            ((filter.IsAdress) ? (words.Any(word => (c.Staff.Department.Adress.Street != null) && (c.Staff.Department.Adress.Street.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0): 0)
+                            >= words.Count()))
                     .ToListAsync();
 
                 //перевод смен в записи и сопоставление с таблицей записей
@@ -65,12 +65,12 @@ namespace Hospital.EntityFramework.Services
                         .OrderBy(e => e.TargetDateTime)
                         .GroupBy(e => e.TargetDateTime)
                         .Select(e => e.Last())
-                        .Where(e => e.EntryStatus == EntryStatus.Open)
+                        .Where(e => (filter.IsFree) ? e.EntryStatus == EntryStatus.Open : true ) 
                         .GroupBy(r => r.DoctorDestination)
                         .Select(r => r.FirstOrDefault());
 
                     //если записи найдены, то все последующие смены этого доктора удаляются из очереди
-                    if (_result.Count() != 0)
+                    if (filter.IsGroup && _result.Count() != 0)
                     {
                         allChanges.RemoveAll(c => c.Staff == change.Staff);
                         i--;
