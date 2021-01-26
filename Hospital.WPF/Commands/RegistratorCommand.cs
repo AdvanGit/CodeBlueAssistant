@@ -55,23 +55,23 @@ namespace Hospital.WPF.Commands
                 }
             });
             _editPatient = new Command(async obj =>
-                {
-                    if (obj.ToString() == "true") viewModel.EditPatient(true);
-                    else viewModel.EditPatient(false);
-                    view.Navigator.SetBody("Edit");
-                    await viewModel.GetBelays();
-                }, obj =>
-                {
-                    if (obj.ToString() == "true") return true;
-                    else return viewModel.SelectedPatient != null;
-                });
+            {
+                if (obj.ToString() == "true") viewModel.EditPatient(true);
+                else viewModel.EditPatient(false);
+                view.Navigator.SetBody("Edit");
+                await viewModel.GetBelays();
+            }, obj =>
+            {
+                if (obj.ToString() == "true") return true;
+                else return viewModel.SelectedPatient != null;
+            });
             _savePatient = new Command(async obj =>
             {
                 var command = viewModel.SavePatient();
                 await command;
                 if (command.IsCompletedSuccessfully) view.Navigator.SetBody("Patients");
             });
-            _createEntry = new Command(async obj => await viewModel.CreateEntry(), obj => { return (viewModel.SelectedEntry != null && viewModel.SelectedPatient != null); } );
+            _createEntry = new Command(async obj => await viewModel.CreateEntry(), obj => { return (viewModel.SelectedEntry != null && viewModel.SelectedPatient != null); });
         }
     }
 }

@@ -26,8 +26,8 @@ namespace Hospital.EntityFramework.Services
                 string[] words = Regex.Replace(_string, @"\s+", " ").Split(' ');
                 List<Entry> result = new List<Entry>();
 
-                // поиск по стороке
-                var allChanges = await db.Changes
+                // linq ищет количество совпадений, если их столько же, сколько слов в запросе, или больше, то добавляет запись в результат
+                List<Change> allChanges = await db.Changes
                     .Include(c => c.Staff).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                     .AsAsyncEnumerable()
                     .Where(c => (filter.IsDate ? (c.DateTimeStart.Date == filter.DateTime.Date) : (true))) //true => c.DatetimeStart.Date >= filter.DateTime.Date
@@ -35,9 +35,9 @@ namespace Hospital.EntityFramework.Services
                             ((filter.IsName) ? ((words.Any(word => c.Staff.FirstName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
                                                 (words.Any(word => c.Staff.MidName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
                                                 (words.Any(word => c.Staff.LastName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0)) : 0) +
-                            ((filter.IsQualification) ? (words.Any(word => (c.Staff.Qualification != null) && (c.Staff.Qualification.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0):0) +
-                            ((filter.IsDepartment) ? (words.Any(word => (c.Staff.Department.Title.Title != null) && (c.Staff.Department.Title.Title.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0): 0) +
-                            ((filter.IsAdress) ? (words.Any(word => (c.Staff.Department.Adress.Street != null) && (c.Staff.Department.Adress.Street.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0): 0)
+                            ((filter.IsQualification) ? (words.Any(word => (c.Staff.Qualification != null) && (c.Staff.Qualification.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0) : 0) +
+                            ((filter.IsDepartment) ? (words.Any(word => (c.Staff.Department.Title.Title != null) && (c.Staff.Department.Title.Title.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0) : 0) +
+                            ((filter.IsAdress) ? (words.Any(word => (c.Staff.Department.Adress.Street != null) && (c.Staff.Department.Adress.Street.Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0) : 0)
                             >= words.Count()))
                     .ToListAsync();
 
@@ -46,12 +46,12 @@ namespace Hospital.EntityFramework.Services
                 {
                     Change change = allChanges[i];
 
-                    //генерация виртуальных записей на основе смены
+                    //генерация виртуальных записей на текущую смену
                     List<Entry> emptyEntries = new List<Entry>();
                     foreach (DateTime time in change.GetTimes()) emptyEntries
-                            .Add(new Entry { CreateDateTime = DateTime.Now, TargetDateTime = time, DoctorDestination = change.Staff });
+                            .Add(new Entry { EntryStatus = EntryStatus.Open, CreateDateTime = DateTime.Now, TargetDateTime = time, DoctorDestination = change.Staff });
 
-                    //поиск существующих записей на основе смены
+                    //поиск существующих записей на текущую смену
                     List<Entry> entries = await db.Entries.AsQueryable()
                         .Where(e => e.DoctorDestination == change.Staff)
                         .Where(e => e.TargetDateTime.Date == change.DateTimeStart.Date)
@@ -62,17 +62,17 @@ namespace Hospital.EntityFramework.Services
 
                     //группировка с заменой совпадений
                     var _result = emptyEntries
-                        .OrderBy(e => e.TargetDateTime)
+                        //.OrderBy(e => e.TargetDateTime)
                         .GroupBy(e => e.TargetDateTime)
                         .Select(e => e.Last())
-                        .Where(e => (filter.IsFree) ? e.EntryStatus == EntryStatus.Open : true ) 
+                        .Where(e => (filter.IsFree) ? e.EntryStatus == EntryStatus.Open : true)
                         .GroupBy(r => r.DoctorDestination)
-                        .Select(r => r.FirstOrDefault());
+                        .Select(r => r.First());
 
                     //если записи найдены, то все последующие смены этого доктора удаляются из очереди
                     if (filter.IsGroup && _result.Count() != 0)
                     {
-                        allChanges.RemoveAll(c => c.Staff == change.Staff);
+                        allChanges.RemoveAll(c => (c.Staff == change.Staff && c.DateTimeStart >= change.DateTimeStart));
                         i--;
                     }
 

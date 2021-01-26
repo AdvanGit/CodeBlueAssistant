@@ -9,6 +9,20 @@
       d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
-        <TextBlock Text="test ambulatory"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition MinWidth="230" MaxWidth="400" Width="0.2*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <StackPanel Orientation="Vertical">
+            <Expander Header="Имя Фамилия Отчество" IsExpanded="True">
+                <TextBlock Text="LoremIpsum"/>
+            </Expander>
+            <ListBox>
+                <ListBoxItem Content="Диагностика"/>
+                <ListBoxItem Content="Карта"/>
+                <ListBoxItem Content="Сводка"/>
+                <ListBoxItem Content="Отчет"/>
+            </ListBox>
+        </StackPanel>
     </Grid>
 </UserControl>

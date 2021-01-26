@@ -29,7 +29,10 @@ namespace Hospital.ViewModel
         public ObservableCollection<Patient> Patients { get; } = new ObservableCollection<Patient>();
         public ObservableCollection<Belay> Belays { get; } = new ObservableCollection<Belay>();
 
-        private RegistratorFilter _filter = new RegistratorFilter() { IsName = true, IsFree = true, IsGroup=true, IsDepartment = true, IsAdress = true, IsQualification = true, IsDate = false, DateTime = DateTime.Now };
+        private RegistratorFilter _filter = new RegistratorFilter() 
+        {
+            IsName = true, IsFree = true, IsGroup=true, IsDepartment = true, IsAdress = true, IsQualification = true, DateTime = DateTime.Now 
+        };
         public RegistratorFilter Filter { get => _filter; set { _filter = value; OnPropertyChanged(nameof(Filter)); } } 
 
         public async Task SearchPatient(string value)
