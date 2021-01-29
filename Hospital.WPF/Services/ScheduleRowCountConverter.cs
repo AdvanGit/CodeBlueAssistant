@@ -11,7 +11,7 @@ namespace Hospital.WPF.Services
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
             double result;
-            result = ((double)values[0] / (int)values[1]) - 120;
+            result = ((double)values[0] / (int)values[1]) - 115;
             if (result > 130) return result;
             else return (double)130;
         }

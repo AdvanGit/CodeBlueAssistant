@@ -19,6 +19,9 @@ namespace Hospital.ViewModel
         public DateTime SelectedDate { get => _selectedDate; set { _selectedDate = value; OnPropertyChanged(nameof(SelectedDate)); GetEntry(staffId, value); } }
         private DateTime _selectedDate;
 
+        private Entry _currentEntry;
+        public Entry CurrentEntry { get => _currentEntry; set { _currentEntry = value; OnPropertyChanged(nameof(CurrentEntry)); } }
+
         public ObservableCollection<Entry> Entries { get; } = new ObservableCollection<Entry>();
 
         public ScheduleViewModel()

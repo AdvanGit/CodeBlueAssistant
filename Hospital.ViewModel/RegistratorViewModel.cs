@@ -86,7 +86,9 @@ namespace Hospital.ViewModel
                 await genericDataServicesEntry.Update(SelectedEntry.Id, SelectedEntry);
                 SelectedEntry = null;
                 SelectedPatient = null;
-        } //check on exist
+        } //check on exist баг создания записи, если уже есть запись на текущее время. вследствии механизма автоматического выбора. сделать проверку, и предложение заменить, проапдейтить запись
+
+
 
         public void SelectEntity(object entity)
         {
