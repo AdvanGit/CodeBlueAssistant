@@ -7,6 +7,7 @@
     <ser:ObjectEqualsToBoolConverter x:Key="ObjectEqualsToBoolConverter"/>
     <ser:MultiCommandExecuter x:Key="MultiCommandExecuter"/>
     <ser:MultiBooleanToVisibilityConverter x:Key="MultiBooleanToVisibilityConverter"/>
+    <ser:DateToAgeConverter x:Key="DateToAgeConverter"/>
 
     <SolidColorBrush x:Key="Expander.Static.Arrow.Stroke" Color="#FF333333"/>
     <SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="#FF000000"/>
@@ -58,7 +59,19 @@
     <ControlTemplate x:Key="ExpanderTemplate" TargetType="{x:Type Expander}">
         <Border Background="{TemplateBinding Background}" BorderThickness="{TemplateBinding BorderThickness}" BorderBrush="{TemplateBinding BorderBrush}" SnapsToDevicePixels="true">
             <DockPanel>
-                <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" DockPanel.Dock="Top" FontStyle="{TemplateBinding FontStyle}" FontStretch="{TemplateBinding FontStretch}" FontWeight="{TemplateBinding FontWeight}" FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}" FontFamily="{TemplateBinding FontFamily}" Foreground="{TemplateBinding Foreground}" FontSize="{TemplateBinding FontSize}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" MinHeight="0" MinWidth="0" Margin="0" Padding="6" Style="{StaticResource ExpanderDownHeaderStyle}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                <ToggleButton x:Name="HeaderSite" ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}" ContentTemplateSelector="{TemplateBinding HeaderTemplateSelector}" DockPanel.Dock="Top"
+                              FontStyle="{TemplateBinding FontStyle}"
+                              FontStretch="{TemplateBinding FontStretch}"
+                              FontWeight="{TemplateBinding FontWeight}"
+                              FocusVisualStyle="{StaticResource ExpanderHeaderFocusVisual}"
+                              FontFamily="{TemplateBinding FontFamily}"
+                              Foreground="{TemplateBinding Foreground}"
+                              FontSize="{TemplateBinding FontSize}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                              MinHeight="0" MinWidth="0" Margin="0" Padding="4"
+                              Style="{StaticResource ExpanderDownHeaderStyle}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                 <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false"
                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="0" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" Visibility="Collapsed"/>
             </DockPanel>
