@@ -1,5 +1,4 @@
 ﻿using Hospital.WPF.Controls.Registrator;
-using Hospital.WPF.Views;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Controls;
@@ -9,7 +8,7 @@ namespace Hospital.WPF.Navigators
     public class RegistratorNavigator : UserControl, INotifyPropertyChanged
     {
         private UserControl _currentBody;
-        public UserControl CurrentBody { get => _currentBody; set { _currentBody = value; OnPropertyChanged(nameof(CurrentBody)); }}
+        public UserControl CurrentBody { get => _currentBody; set { _currentBody = value; OnPropertyChanged(nameof(CurrentBody)); } }
 
         private readonly List<UserControl> bodies = new List<UserControl>
         {

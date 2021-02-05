@@ -2,12 +2,12 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Schedule"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             mc:Ignorable="d" Foreground="{StaticResource BrushForegroundMid}"
-             d:DesignHeight="524.011" d:DesignWidth="341.58">
+             mc:Ignorable="d" Foreground="{StaticResource BrushForegroundMid}" d:DesignWidth="341.58" d:DesignHeight="648">
 
     <!--<UserControl.DataContext> <vm:ScheduleViewModel/> </UserControl.DataContext>-->
     <UserControl.Resources>
@@ -18,11 +18,12 @@
             <Setter Property="Foreground" Value="{StaticResource BrushForegroundMid}"/>
         </Style>
     </UserControl.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="95"/>
-            <RowDefinition/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
         </Grid.RowDefinitions>
         <Border Background="{DynamicResource BrushBackgroundPaper}" Grid.Row="0"/>
         <Border Background="{DynamicResource BrushAccentPositive}" Grid.Row="0" Height="3" VerticalAlignment="Bottom"/>
@@ -164,7 +165,7 @@
                         <TextBlock Text="Адрес:" Grid.Column="0" Grid.Row="5"/>
 
                         <Border Width="1" Grid.Column="0" Grid.RowSpan="6" Background="{DynamicResource BrushPrimaryBorderLight}" HorizontalAlignment="Right"/>
-                        
+
                         <TextBlock Text="{Binding CurrentEntry.Patient.BirthDay, Converter={StaticResource DateToAgeConverter}}" Grid.Column="1" Grid.Row="0" Padding="10,0"/>
                         <TextBlock Text="не реализовано" Grid.Column="1" Grid.Row="1"/>
                         <TextBlock Grid.Column="1" Grid.Row="2">
@@ -224,6 +225,8 @@
                 </StackPanel>
             </Expander>
         </StackPanel>
-        
+
+        <Button Content="Открыть" Margin="15,10" Grid.Row="3" />
+
     </Grid>
 </UserControl>

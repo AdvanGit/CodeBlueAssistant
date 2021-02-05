@@ -1,28 +1,26 @@
-﻿<UserControl x:Class="Hospital.WPF.Views.Ambulatory"
+﻿<UserControl x:Class="Hospital.WPF.Views.Ambulatory" x:Name="AmbulatoryView"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Hospital.WPF.Views"
+      xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
+      xmlns:controls="clr-namespace:Hospital.WPF.Controls.Ambulatory"
       mc:Ignorable="d" 
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       d:DesignHeight="450" d:DesignWidth="800">
+
+    <!--<UserControl.DataContext> <vm:AmbulatoryViewModel/> </UserControl.DataContext>-->
 
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="230" MaxWidth="400" Width="0.2*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <StackPanel Orientation="Vertical">
-            <Expander Header="Имя Фамилия Отчество" IsExpanded="True">
-                <TextBlock Text="LoremIpsum"/>
-            </Expander>
-            <ListBox>
-                <ListBoxItem Content="Диагностика"/>
-                <ListBoxItem Content="Карта"/>
-                <ListBoxItem Content="Сводка"/>
-                <ListBoxItem Content="Отчет"/>
-            </ListBox>
-        </StackPanel>
+        <ContentControl Grid.Column="0">
+            <controls:AmbMenuPanel Background="{DynamicResource BrushPrimaryPanel}"/>
+        </ContentControl>
+        <ContentControl Grid.Column="1"  Content="{Binding ElementName=AmbulatoryView, Path=Navigator.CurrentBody}"/>
+        <GridSplitter Grid.Column="1" BorderThickness="2" BorderBrush="Transparent" HorizontalAlignment="Left"/>
     </Grid>
 </UserControl>

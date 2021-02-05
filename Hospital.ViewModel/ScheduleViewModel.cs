@@ -12,7 +12,6 @@ namespace Hospital.ViewModel
     public class ScheduleViewModel : MainViewModel
     {
         private ScheduleDataServices scheduleDataServices = new ScheduleDataServices(new HospitalDbContextFactory());
-        private GenericDataServices<Staff> dataServicesStaff = new GenericDataServices<Staff>(new HospitalDbContextFactory());
 
         private int staffId=2;
 
