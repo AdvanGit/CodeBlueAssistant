@@ -4,18 +4,20 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:view="clr-namespace:Hospital.WPF.Views"
+             xmlns:controls="clr-namespace:Hospital.WPF.Controls.Ambulatory"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
              mc:Ignorable="d" 
              d:DesignHeight="540.748" d:DesignWidth="305.094">
+
     <Grid>
         <StackPanel Orientation="Vertical" >
-            <Expander IsExpanded="True"
+            <Expander IsExpanded="True" Foreground="{DynamicResource BrushForegroundMid}"
                       Template="{DynamicResource ExpanderAmbulatory}"
                       HorizontalContentAlignment="Center"
-                      BorderThickness="0"
+                      BorderThickness="0" Padding="15"
                       Background="Transparent">
                 <Expander.Header>
-                    <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center" FontSize="20">
+                    <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center" FontSize="25">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} {1} {2}">
                                 <Binding Path="CurrentEntry.Patient.FirstName"/>
@@ -25,46 +27,48 @@
                         </TextBlock.Text>
                     </TextBlock>
                 </Expander.Header>
-                <TextBlock Text="LoremIpsum"/>
+                <TextBlock Text="LoremIpsum" Padding="15"/>
             </Expander>
             
-            <ListBox x:Name="TabMenu" Background="Transparent">
+            <ListBox x:Name="TabMenu" Background="Transparent" IsSynchronizedWithCurrentItem="True"
+                     ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=view:Ambulatory}, Path=Navigator.GetControls}"
+                     SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=view:Ambulatory}, Path=Navigator.CurrentBody}">
                 <ListBox.Resources>
                     <Style TargetType="ListBoxItem">
+                        <Setter Property="Padding" Value="0"/>
+                        <Setter Property="BorderThickness"  Value="0"/>
                         <Setter Property="Template" Value="{DynamicResource ListBoxItemAmbMenu}"/>
                     </Style>
                 </ListBox.Resources>
-                
-                <ListBoxItem x:Name="lb_item1" Padding="0">
-                    <Expander  Header="Диагностика" IsExpanded="{Binding ElementName=lb_item1, Path=IsSelected}"
-                               IsHitTestVisible="False"
-                               Template="{DynamicResource ExpanderAmbulatory}"
-                               BorderThickness="0" HorizontalContentAlignment="Center" Padding="10" FontSize="20">
-                        <TextBlock Text="test2"/>
-                    </Expander>
-                </ListBoxItem>
-                <ListBoxItem x:Name="lb_item2" Padding="0">
-                    <Expander Header="Карта" IsExpanded="{Binding ElementName=lb_item2, Path=IsSelected}"
-                              Template="{DynamicResource ExpanderAmbulatory}" IsHitTestVisible="False"
-                              BorderThickness="0" HorizontalContentAlignment="Center" Padding="10" FontSize="20">
-                        <TextBlock Text="test3"/>
-                    </Expander>
-                </ListBoxItem>
-                <ListBoxItem x:Name="lb_item3" Padding="0">
-                    <Expander Header="Сводка" IsExpanded="{Binding ElementName=lb_item3, Path=IsSelected}"
-                             Template="{DynamicResource ExpanderAmbulatory}"
-                               BorderThickness="0" HorizontalContentAlignment="Center" Padding="10" FontSize="20"> 
-                        <TextBlock Text="test4"/>
-                    </Expander>
-                </ListBoxItem>
-                <ListBoxItem x:Name="lb_item4" Padding="0">
-                    <Expander Header="Отчет" IsExpanded="{Binding ElementName=lb_item4, Path=IsSelected}"
-                              Template="{DynamicResource ExpanderAmbulatory}"
-                               BorderThickness="0" HorizontalContentAlignment="Center" Padding="10" FontSize="20">
-                        <TextBlock Text="test3"/>
-                    </Expander>
-                </ListBoxItem>
+
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Expander x:Name="ExpanderMenu" Template="{StaticResource ExpanderAmbulatory}" Header="{Binding Title}"
+                                  Foreground="{DynamicResource BrushForegroundMid}"
+                                  IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}"
+                                  IsHitTestVisible="False" BorderThickness="0,1,0,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}"
+                                  Padding="10" HorizontalContentAlignment="Center" FontSize="20">
+                        </Expander>
+                        <DataTemplate.Triggers>
+                            <DataTrigger Binding="{Binding Title}" Value="Диагностика">
+                                <Setter TargetName="ExpanderMenu" Property="Content">
+                                    <Setter.Value>
+                                        <TextBlock Text="test"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding Title}" Value="Карта">
+                                <Setter TargetName="ExpanderMenu" Property="Content">
+                                    <Setter.Value>
+                                        <TextBlock Text="test 2"/>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </DataTemplate.Triggers>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
+            <Border Background="{DynamicResource BrushPrimaryBorderLight}" Height="1" VerticalAlignment="Top"/>
         </StackPanel>
 
     </Grid>

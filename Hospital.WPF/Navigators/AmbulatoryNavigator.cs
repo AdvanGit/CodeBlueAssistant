@@ -15,6 +15,7 @@ namespace Hospital.WPF.Navigators
         {
             new AmbDiagnostic(),
             new AmbMedCard(),
+            new AmbReport()
         };
 
         public void SetBody(string bodyName)
@@ -23,6 +24,7 @@ namespace Hospital.WPF.Navigators
             {
                 case "MedCard": CurrentBody = bodies[0]; return;
                 case "Diagnostic": CurrentBody = bodies[1]; return;
+                case "Report": CurrentBody = bodies[2]; return;
                 default: break;
             }
         }

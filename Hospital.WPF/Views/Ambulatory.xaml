@@ -18,7 +18,8 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <ContentControl Grid.Column="0">
-            <controls:AmbMenuPanel Background="{DynamicResource BrushPrimaryPanel}"/>
+            <controls:AmbMenuPanel Background="{DynamicResource BrushPrimaryPanel}"
+                                   BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}"/>
         </ContentControl>
         <ContentControl Grid.Column="1"  Content="{Binding ElementName=AmbulatoryView, Path=Navigator.CurrentBody}"/>
         <GridSplitter Grid.Column="1" BorderThickness="2" BorderBrush="Transparent" HorizontalAlignment="Left"/>
