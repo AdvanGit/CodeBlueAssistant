@@ -4,16 +4,22 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:view="clr-namespace:Hospital.WPF.Views"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:controls="clr-namespace:Hospital.WPF.Controls.Ambulatory"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
+             xmlns:icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
+             xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="540.748" d:DesignWidth="305.094">
 
+    <UserControl.DataContext> <vm:AmbulatoryViewModel/> </UserControl.DataContext>
+
     <Grid>
         <StackPanel Orientation="Vertical" >
+            
             <Expander IsExpanded="True" Foreground="{DynamicResource BrushForegroundMid}"
                       Template="{DynamicResource ExpanderAmbulatory}"
-                      HorizontalContentAlignment="Center"
+                      HorizontalAlignment="Stretch"
                       BorderThickness="0" Padding="15"
                       Background="Transparent">
                 <Expander.Header>
@@ -27,7 +33,89 @@
                         </TextBlock.Text>
                     </TextBlock>
                 </Expander.Header>
-                <TextBlock Text="LoremIpsum" Padding="15"/>
+                <Grid Margin="20,0,20,10">
+                    <Grid.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+                            <Setter Property="Foreground" Value="{DynamicResource BrushForegroundMid}"/>
+                            <Setter Property="FontSize" Value="14"/>
+                        </Style>
+                        <Style TargetType="icon:PackIconMaterial">
+                            <Setter Property="VerticalAlignment" Value="Center"/>
+                            <Setter Property="Width" Value="16"/>
+                            <Setter Property="Height" Value="16"/>
+                        </Style>
+                    </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <icon:PackIconMaterial Kind="Alarm" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Center" Width="25" Height="25"/>
+                    <StackPanel Orientation="Vertical" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Center">
+                        <TextBlock Text="{Binding CurrentEntry.TargetDateTime, StringFormat=HH:mm}" VerticalAlignment="Center" Margin="30,0,10,0" HorizontalAlignment="Center"  FontSize="30"/>
+                        <TextBlock Text="{Binding CurrentEntry.TargetDateTime, StringFormat=dd.MM.yyyy}" Margin="30,-5,10,0" HorizontalAlignment="Center"/>
+                    </StackPanel>
+
+                    <StackPanel  Grid.RowSpan="2" Grid.Column="1">
+                        <TextBlock Text="{Binding CurrentEntry.Registrator.FirstName}" Margin="0,0,0,2"/>
+                        <TextBlock Text="{Binding CurrentEntry.Registrator.Department.Title.Title}" Margin="0,2"/>
+                        <TextBlock Text="{Binding CurrentEntry.EntryStatus}" Padding="0,2,0,0"/>
+                    </StackPanel>
+                        
+                    <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{DynamicResource BrushPrimaryBorderLight}" Height="1" Margin="0,5"/>
+                    
+                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
+                        <icon:PackIconMaterial BorderThickness="0" VerticalAlignment="Center" Height="18" Width="18" >
+                            <icon:PackIconMaterial.Style>
+                                <Style TargetType="icon:PackIconMaterial">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentEntry.Patient.Gender}" Value="male">
+                                            <Setter Property="Kind" Value="GenderMale"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding CurrentEntry.Patient.Gender}" Value="female">
+                                            <Setter Property="Kind" Value="GenderFemale"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </icon:PackIconMaterial.Style>
+                        </icon:PackIconMaterial>
+                        <TextBlock Padding="10,2">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0:dd.MM.yy} ({1})">
+                                    <Binding Path="CurrentEntry.Patient.BirthDay"/>
+                                    <Binding Path="CurrentEntry.Patient.BirthDay" Converter="{StaticResource DateToAgeConverter}"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
+                        <icon:PackIconMaterial Kind="Phone"/>
+                        <TextBlock Text="{Binding CurrentEntry.Patient.PhoneNumber}" Padding="10,2"/>
+                    </StackPanel>
+                    
+                    <Border Grid.Row="4" Grid.ColumnSpan="2" Background="{DynamicResource BrushPrimaryBorderLight}" Height="1" Margin="0,5"/>
+
+                    <icon:PackIconMaterial Kind="Home" Grid.ColumnSpan="2" Grid.Row="5"/>
+                        <TextBlock Margin="25,2,0,2" TextWrapping="WrapWithOverflow" Grid.ColumnSpan="2" Grid.Row="5">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}г.{0} ул. {1} д.{2} кв.{3}">
+                                    <Binding Path="CurrentEntry.Patient.Adress.City"/>
+                                    <Binding Path="CurrentEntry.Patient.Adress.Street"/>
+                                    <Binding Path="CurrentEntry.Patient.Adress.Number"/>
+                                    <Binding Path="CurrentEntry.Patient.Adress.Room"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                </Grid>
             </Expander>
             
             <ListBox x:Name="TabMenu" Background="Transparent" IsSynchronizedWithCurrentItem="True"

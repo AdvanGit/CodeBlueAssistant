@@ -4,9 +4,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
+             xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.DataContext> <vm:AmbulatoryViewModel/> </UserControl.DataContext>
+    
     <Grid>
-        <TextBlock Text="diag"/>
+        <Expander Header="Физикальная диагноска" IsExpanded="True">
+            <DataGrid ItemsSource="{Binding TestData}"/>
+
+        </Expander>
     </Grid>
 </UserControl>

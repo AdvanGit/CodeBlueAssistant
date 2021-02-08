@@ -32,5 +32,18 @@ namespace Hospital.EntityFramework.Services
                 return result;
             }
         }
+
+        public async Task<List<TestData>> GetTestData(int medCardId)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                List<TestData> result = await db.TestDatas
+                    .AsQueryable()
+                    .Where(t => t.MedCard.Id == medCardId)
+                    .ToListAsync();
+                return result;
+            }
+        }
+
     }
 }

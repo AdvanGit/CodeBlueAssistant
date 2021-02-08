@@ -1,6 +1,8 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
+using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Hospital.ViewModel
 {
@@ -11,14 +13,37 @@ namespace Hospital.ViewModel
         private Entry _currentEntry;
         public Entry CurrentEntry { get => _currentEntry; set { _currentEntry = value; OnPropertyChanged(nameof(CurrentEntry)); } }
 
+        public ObservableCollection<TestData> TestData { get; set; } = new ObservableCollection<TestData>();
+
         public AmbulatoryViewModel()
         {
-            GetEntry(1);
+            GetData(3);
         }
 
-        private async void GetEntry(int entryId)
+        private async void GetData(int entryId)
         {
-            CurrentEntry = await ambulatoryDataService.GetEntriesById(1);
+            Task<Entry> taskEntry = ambulatoryDataService.GetEntriesById(entryId);
+            CurrentEntry = await taskEntry;
+            if (taskEntry.IsCompleted)
+            {
+                if (CurrentEntry.MedCardId != null)
+                {
+                    var res = await ambulatoryDataService.GetTestData(CurrentEntry.MedCard.Id);
+                    TestData.Clear();
+                    foreach (TestData test in res)
+                    {
+                        TestData.Add(test);
+                    }
+                }
+
+
+
+
+
+            }
+
+
         }
+
     }
 }
