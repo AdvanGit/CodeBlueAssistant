@@ -9,16 +9,43 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext> <vm:AmbulatoryViewModel/> </UserControl.DataContext>
+
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="cvsLabDiag" Source="{Binding LabTestData}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Test.TestType"/>
+            </CollectionViewSource.GroupDescriptions>    
+        </CollectionViewSource>
+        <!--<Style TargetType="{x:Type Expander}">
+            <Setter Property="Padding" Value="6"/>
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Foreground" Value="{DynamicResource BrushForegroundLight}"/>
+        </Style>-->
+    </UserControl.Resources>
     
     <Grid>
         <StackPanel Orientation="Vertical">
-            <Expander Header="Физикальная диагноска" IsExpanded="True">
-                <DataGrid ItemsSource="{Binding PhysicalTestData}"/>
+            
+            <Expander Header="ФИЗИКАЛЬНАЯ ДИАГНОСТИКА" IsExpanded="True" Template="{StaticResource ExpanderDiagTable}">
+                <DataGrid ItemsSource="{Binding PhysicalTestData}" 
+                          Style="{StaticResource TableCommon}" CanUserAddRows="False" AutoGenerateColumns="False" BorderThickness="0,2,0,0">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="КОД" Binding="{Binding Test.Id}"/>
+                        <DataGridTextColumn Header="НАЗВАНИЕ" Binding="{Binding Test.ShortTitle}"/>
+                        <DataGridTextColumn Header="ОПЦИЯ" Binding="{Binding Option}"/>
+                        <DataGridTextColumn Header="РЕЗУЛЬТАТ" Binding="{Binding Value}"/>
+                        <DataGridTextColumn Header="НОРМА" Binding="{Binding Test.NormalValues}"/>
+                        <DataGridCheckBoxColumn Header="СИМПТОМ" Binding="{Binding IsSymptom}"/>
+                        <DataGridTextColumn Header="ДАТА" Binding="{Binding DateResult}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Expander>
-            <Expander Header="Лабараторная диагностика" IsExpanded="True">
-                
-                <DataGrid ItemsSource="{Binding LabTestData}" AutoGenerateColumns="False">
-                    
+            
+            <Expander Header="ЛАБАРАТОРНАЯ ДИАГНОСТИКА" IsExpanded="True" Template="{StaticResource ExpanderDiagTable}">
+                <DataGrid ItemsSource="{Binding Source={StaticResource cvsLabDiag}}" AutoGenerateColumns="False" BorderThickness="0,2,0,0"
+                          Style="{StaticResource TableCommon}" CanUserAddRows="False">
                     <DataGrid.GroupStyle>
                         <GroupStyle>
                             <GroupStyle.ContainerStyle>
@@ -26,9 +53,9 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                <Expander IsEnabled="True">
+                                                <Expander IsEnabled="True" Template="{StaticResource ExpanderDiagLabTable}">
                                                     <Expander.Header>
-                                                        <TextBlock Text="{Binding Path=Id}"/>
+                                                        <TextBlock Text="{Binding Path=Name.Title}" FontSize="15" Foreground="{DynamicResource BrushForegroundLight}"/>
                                                     </Expander.Header>
                                                     <Expander.Content>
                                                         <ItemsPresenter/>
@@ -41,27 +68,25 @@
                             </GroupStyle.ContainerStyle>
                         </GroupStyle>
                     </DataGrid.GroupStyle>
-                    
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Id" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
                         <DataGridTextColumn Header="КОД" Binding="{Binding Test.Id}"/>
-                        <DataGridTextColumn Header="Type" Binding="{Binding Test.TestType.Title}"/>
                         <DataGridTextColumn Header="НАЗВАНИЕ" Binding="{Binding Test.ShortTitle}"/>
                         <DataGridTextColumn Header="ОПЦИЯ" Binding="{Binding Option}"/>
                         <DataGridTextColumn Header="РЕЗУЛЬТАТ" Binding="{Binding Value}"/>
                         <DataGridTextColumn Header="НОМРА" Binding="{Binding Test.NormalValues}"/>
                         <DataGridCheckBoxColumn Header="СИМПТОМ"  Binding="{Binding IsSymptom}"/>
+                        <DataGridTextColumn Header="СТАТУС" Binding="{Binding Test.Status}"/>
                         <DataGridTextColumn Header="ДАТА" Binding="{Binding DateResult, StringFormat=dd.MM.yy HH:mm}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-                
             </Expander>
-            <Expander Header="Инструментальная диагностика" IsExpanded="True">
-                <DataGrid ItemsSource="{Binding ToolTestData}"/>
+            
+            <Expander Header="ИНСТРУМЕНТАЛЬНАЯ ДИАГНОСТИКА" IsExpanded="True" Template="{StaticResource ExpanderDiagTable}">
+                <DataGrid ItemsSource="{Binding ToolTestData}" CanUserAddRows="False" Style="{StaticResource TableCommon}" BorderThickness="0,2,0,0"/>
             </Expander>
 
         </StackPanel>
-        
         
     </Grid>
 </UserControl>
