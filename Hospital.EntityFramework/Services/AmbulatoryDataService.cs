@@ -38,6 +38,7 @@ namespace Hospital.EntityFramework.Services
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 List<TestData> result = await db.TestDatas
+                    .Include(t=>t.Test).ThenInclude(t=>t.TestType)
                     .AsQueryable()
                     .Where(t => t.MedCard.Id == medCardId)
                     .ToListAsync();
