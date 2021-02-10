@@ -233,9 +233,9 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Border Padding="{TemplateBinding Padding}"
+                    <Border Padding="{TemplateBinding Padding}" x:Name="b_ExpanderMethod"
                             Background="{DynamicResource BrushBackgroundPaper}"
-                            BorderThickness="0,0,0,0"
+                            BorderThickness="0,0,0,1"
                             BorderBrush="{DynamicResource BrushPrimaryBorderLight}">
                         <Grid SnapsToDevicePixels="False">
                             <Grid.ColumnDefinitions>
@@ -261,6 +261,8 @@
                         <Trigger Property="IsChecked" Value="true">
                             <Setter Property="Data" TargetName="arrow" Value="{StaticResource treeIconDown}"/>
                             <Setter Property="Fill" TargetName="arrow" Value="{DynamicResource BrushAccent1}"/>
+                            <Setter TargetName="b_ExpanderMethod" Property="BorderThickness" Value="0,0,0,2"/>
+                            <Setter TargetName="b_ExpanderMethod" Property="BorderBrush" Value="{DynamicResource BrushAccent1}"/>
                         </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.Disabled.Arrow.Stroke}"/>
@@ -271,8 +273,8 @@
         </Setter>
     </Style>
     <ControlTemplate x:Key="ExpanderDiagTable" TargetType="{x:Type Expander}">
-        <Border x:Name="ExpBorder" Background="{TemplateBinding Background}" BorderBrush="{DynamicResource BrushPrimaryBorderLight}"
-                BorderThickness="0,0,0,1" SnapsToDevicePixels="true">
+        <Border x:Name="ExpBorder" Background="{TemplateBinding Background}"
+                BorderThickness="0" SnapsToDevicePixels="true">
             <DockPanel>
                 <ToggleButton x:Name="HeaderSite"
                               ContentTemplate="{TemplateBinding HeaderTemplate}"

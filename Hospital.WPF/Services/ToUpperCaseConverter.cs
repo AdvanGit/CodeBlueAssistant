@@ -8,9 +8,9 @@ namespace Hospital.WPF.Services
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null && value is string)
+            if (value != null)
             {
-                return ((string)value).ToUpper();
+                return (value.ToString()).ToUpper();
             }
             return value;
         }

@@ -5,47 +5,30 @@
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.DataContext> <vm:AmbulatoryViewModel/> </UserControl.DataContext>
 
     <UserControl.Resources>
-        <CollectionViewSource x:Key="cvsLabDiag" Source="{Binding LabTestData}">
+        <CollectionViewSource x:Key="cvsLabDiag" Source="{Binding TestData}">
             <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Test.TestType.TestMethod"/>
                 <PropertyGroupDescription PropertyName="Test.TestType"/>
-            </CollectionViewSource.GroupDescriptions>    
+            </CollectionViewSource.GroupDescriptions>
+            <!--<CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Test.TestType.TestMethod" Direction="Descending"/>
+                <scm:SortDescription PropertyName="Id"/>
+            </CollectionViewSource.SortDescriptions>-->
         </CollectionViewSource>
-        <!--<Style TargetType="{x:Type Expander}">
-            <Setter Property="Padding" Value="6"/>
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="FontWeight" Value="SemiBold"/>
-            <Setter Property="Foreground" Value="{DynamicResource BrushForegroundLight}"/>
-        </Style>-->
     </UserControl.Resources>
     
     <Grid>
         <StackPanel Orientation="Vertical">
-            
-            <Expander Header="ФИЗИКАЛЬНАЯ ДИАГНОСТИКА" IsExpanded="True" Template="{StaticResource ExpanderDiagTable}">
-                <DataGrid ItemsSource="{Binding PhysicalTestData}" 
-                          Style="{StaticResource TableCommon}" CanUserAddRows="False" AutoGenerateColumns="False" BorderThickness="0,2,0,0">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
-                        <DataGridTextColumn Header="КОД" Binding="{Binding Test.Id}"/>
-                        <DataGridTextColumn Header="НАЗВАНИЕ" Binding="{Binding Test.ShortTitle}"/>
-                        <DataGridTextColumn Header="ОПЦИЯ" Binding="{Binding Option}"/>
-                        <DataGridTextColumn Header="РЕЗУЛЬТАТ" Binding="{Binding Value}"/>
-                        <DataGridTextColumn Header="НОРМА" Binding="{Binding Test.NormalValues}"/>
-                        <DataGridCheckBoxColumn Header="СИМПТОМ" Binding="{Binding IsSymptom}"/>
-                        <DataGridTextColumn Header="ДАТА" Binding="{Binding DateResult}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Expander>
-            
-            <Expander Header="ЛАБАРАТОРНАЯ ДИАГНОСТИКА" IsExpanded="True" Template="{StaticResource ExpanderDiagTable}">
-                <DataGrid ItemsSource="{Binding Source={StaticResource cvsLabDiag}}" AutoGenerateColumns="False" BorderThickness="0,2,0,0"
-                          Style="{StaticResource TableCommon}" CanUserAddRows="False">
+
+            <DataGrid ItemsSource="{Binding Source={StaticResource cvsLabDiag}}" AutoGenerateColumns="False" Sorting="DataGrid_Sorting"
+                          Style="{StaticResource TableCommon}" CanUserSortColumns="True" CanUserAddRows="False" CanUserDeleteRows="False">
                     <DataGrid.GroupStyle>
                         <GroupStyle>
                             <GroupStyle.ContainerStyle>
@@ -53,7 +36,27 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="{x:Type GroupItem}">
-                                                <Expander IsEnabled="True" Template="{StaticResource ExpanderDiagLabTable}">
+                                                <Expander IsExpanded="True" Template="{StaticResource ExpanderDiagTable}">
+                                                    <Expander.Header>
+                                                        <TextBlock Text="{Binding Path=Name, Converter={StaticResource ToUpperCaseConverter}, StringFormat={}{0} ДИАГНОСТИКА}" FontSize="14" FontWeight="DemiBold" Foreground="{DynamicResource BrushForegroundLight}"/>
+                                                    </Expander.Header>
+                                                    <Expander.Content>
+                                                        <ItemsPresenter/>
+                                                    </Expander.Content>
+                                                </Expander>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type GroupItem}">
+                                                <Expander Template="{StaticResource ExpanderDiagLabTable}">
                                                     <Expander.Header>
                                                         <TextBlock Text="{Binding Path=Name.Title}" FontSize="15" Foreground="{DynamicResource BrushForegroundLight}"/>
                                                     </Expander.Header>
@@ -67,25 +70,21 @@
                                 </Style>
                             </GroupStyle.ContainerStyle>
                         </GroupStyle>
+
                     </DataGrid.GroupStyle>
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                        <DataGridTextColumn Header="ID" Binding="{Binding Id}" CanUserSort="True" SortMemberPath="Id"/>
                         <DataGridTextColumn Header="КОД" Binding="{Binding Test.Id}"/>
                         <DataGridTextColumn Header="НАЗВАНИЕ" Binding="{Binding Test.ShortTitle}"/>
                         <DataGridTextColumn Header="ОПЦИЯ" Binding="{Binding Option}"/>
                         <DataGridTextColumn Header="РЕЗУЛЬТАТ" Binding="{Binding Value}"/>
                         <DataGridTextColumn Header="НОМРА" Binding="{Binding Test.NormalValues}"/>
                         <DataGridCheckBoxColumn Header="СИМПТОМ"  Binding="{Binding IsSymptom}"/>
-                        <DataGridTextColumn Header="СТАТУС" Binding="{Binding Test.Status}"/>
+                        <DataGridTextColumn Header="СТАТУС" Binding="{Binding Status}"/>
                         <DataGridTextColumn Header="ДАТА" Binding="{Binding DateResult, StringFormat=dd.MM.yy HH:mm}"/>
                     </DataGrid.Columns>
                 </DataGrid>
-            </Expander>
             
-            <Expander Header="ИНСТРУМЕНТАЛЬНАЯ ДИАГНОСТИКА" IsExpanded="True" Template="{StaticResource ExpanderDiagTable}">
-                <DataGrid ItemsSource="{Binding ToolTestData}" CanUserAddRows="False" Style="{StaticResource TableCommon}" BorderThickness="0,2,0,0"/>
-            </Expander>
-
         </StackPanel>
         
     </Grid>
