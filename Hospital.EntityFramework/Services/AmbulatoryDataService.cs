@@ -24,7 +24,7 @@ namespace Hospital.EntityFramework.Services
                 Entry result = await db.Entries
                     .Include(e => e.DoctorDestination).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                     .Include(e => e.Patient)
-                    .Include(e => e.Registrator)
+                    .Include(e => e.Registrator).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                     .Include(e => e.MedCard).ThenInclude(m => m.Diagnosis)
                     .AsQueryable()
                     .Where(e => e.Id == entryId)
@@ -42,6 +42,18 @@ namespace Hospital.EntityFramework.Services
                     .Include(t=>t.StaffResult)
                     .AsQueryable()
                     .Where(t => t.MedCard.Id == medCardId)
+                    .ToListAsync();
+                return result;
+            }
+        }
+
+        public async Task<List<Test>> GetTestList(TestMethod testMethod)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                List<Test> result = await db.Tests
+                    .AsQueryable()
+                    .Where(t => t.TestType.TestMethod == testMethod)
                     .ToListAsync();
                 return result;
             }

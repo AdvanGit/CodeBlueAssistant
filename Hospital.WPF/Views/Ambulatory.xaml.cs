@@ -12,11 +12,13 @@ namespace Hospital.WPF.Views
         public AmbulatoryCommand Command { get; private set; }
         public AmbulatoryNavigator Navigator { get; } = new AmbulatoryNavigator();
 
+        private AmbulatoryViewModel ambulatoryViewModel = new AmbulatoryViewModel();
+
         public Ambulatory()
         {
             InitializeComponent();
-            DataContext = new AmbulatoryViewModel();
-            Command = new AmbulatoryCommand();
+            DataContext = ambulatoryViewModel;
+            Command = new AmbulatoryCommand(ambulatoryViewModel, AmbulatoryView);
 
             //foreach (UserControl userControl in Navigator.GetBodies()) { AmbulatoryView.AddLogicalChild(userControl); }
             Navigator.SetBody("MedCard");

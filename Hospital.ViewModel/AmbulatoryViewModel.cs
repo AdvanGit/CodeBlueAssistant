@@ -1,6 +1,9 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
@@ -14,17 +17,21 @@ namespace Hospital.ViewModel
         private Entry _currentEntry;
         public Entry CurrentEntry { get => _currentEntry; set { _currentEntry = value; OnPropertyChanged(nameof(CurrentEntry)); } }
 
-        public ObservableCollection<TestData> TestData { get; set; } = new ObservableCollection<TestData>();
-        public ObservableCollection<TestData> PhysicalDiagData { get; set; } = new ObservableCollection<TestData>();
-        public ObservableCollection<TestData> ToolDiagData { get; set; } = new ObservableCollection<TestData>();
+        private Test _selectedTest;
+        public Test SelectedTest { get => _selectedTest; set { _selectedTest = value; OnPropertyChanged(nameof(SelectedTest)); } }
 
-        public ObservableCollection<TestData> PhysicalDiagList { get ; set; } = new ObservableCollection<TestData>();
+        public ObservableCollection<TestData> TestData { get;} = new ObservableCollection<TestData>();
 
-        public ObservableCollection<TestData> LabDiagData { get; set; } = new ObservableCollection<TestData>();
+        public ObservableCollection<TestData> PhysicalDiagData { get; } = new ObservableCollection<TestData>();
+        public ObservableCollection<TestData> ToolDiagData { get; } = new ObservableCollection<TestData>();
+        public ObservableCollection<TestData> LabDiagData { get; } = new ObservableCollection<TestData>();
+
+        public ObservableCollection<Test> PhysicalTestList { get; } = new ObservableCollection<Test>();
 
         public AmbulatoryViewModel()
         {
             GetData(3);
+            GetTestList(TestMethod.Физикальная);
         }
 
         private async void GetData(int entryId)
@@ -69,9 +76,26 @@ namespace Hospital.ViewModel
             }
         }
 
-        private async void GetPhysicalDiagList()
+        private async void GetTestList(TestMethod testMethod)
         {
+            {
+                List<Test> result = await ambulatoryDataService.GetTestList(testMethod);
+                foreach (Test item in result) PhysicalTestList.Add(item);
+            }
+        }
 
+        public TestData CreatePhysDiag(Test test, string value = null, string option = null)
+        {
+            return new TestData 
+            { 
+                Test = test,
+                Value = value,
+                Option = option,
+                DateCreate = DateTime.Now,
+                DateResult = DateTime.Now,
+                MedCard = CurrentEntry.MedCard,
+                StaffResult = CurrentEntry.DoctorDestination
+            };
         }
     }
 }

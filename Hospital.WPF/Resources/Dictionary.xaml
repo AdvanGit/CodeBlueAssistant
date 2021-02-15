@@ -148,7 +148,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
-                    <Border Padding="{TemplateBinding Padding}"
+                    <Border Padding="{TemplateBinding Padding}" Name="exp_head_ambcommon"
                             Background="Transparent"
                             BorderThickness="0,0,0,0"
                             BorderBrush="Transparent">
@@ -159,6 +159,11 @@
                                               VerticalAlignment="Center"/>
                         </Grid>
                     </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="exp_head_ambcommon" Property="Background" Value="{DynamicResource BrushBackgroundPaper}"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

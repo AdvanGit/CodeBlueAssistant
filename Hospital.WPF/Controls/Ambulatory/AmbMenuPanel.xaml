@@ -20,102 +20,59 @@
             <Expander IsExpanded="True" Foreground="{DynamicResource BrushForegroundMid}"
                       Template="{DynamicResource ExpanderAmbulatory}"
                       HorizontalAlignment="Stretch"
-                      BorderThickness="0" Padding="15"
-                      Background="Transparent">
+                      BorderThickness="0" Padding="15">
                 <Expander.Header>
                     <TextBlock TextWrapping="WrapWithOverflow" TextAlignment="Center" FontSize="25">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0} {1} {2}">
-                                <Binding Path="CurrentEntry.Patient.FirstName"/>
+                                <Binding Path="CurrentEntry.Patient.FirstName" Converter="{StaticResource ToUpperCaseConverter}"/>
                                 <Binding Path="CurrentEntry.Patient.MidName"/>
                                 <Binding Path="CurrentEntry.Patient.LastName"/>
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
                 </Expander.Header>
-                <Grid Margin="20,0,20,10">
-                    <Grid.Resources>
-                        <Style TargetType="TextBlock">
-                            <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
-                            <Setter Property="Foreground" Value="{DynamicResource BrushForegroundMid}"/>
-                            <Setter Property="FontSize" Value="14"/>
-                        </Style>
-                        <Style TargetType="icon:PackIconMaterial">
-                            <Setter Property="VerticalAlignment" Value="Center"/>
-                            <Setter Property="Width" Value="16"/>
-                            <Setter Property="Height" Value="16"/>
-                        </Style>
-                    </Grid.Resources>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
+                <StackPanel Orientation="Vertical">
+                    <Border Background="{DynamicResource BrushAccent1}" Height="2"/>
+                    <Grid Margin="15">
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type TextBlock}">
+                                <Setter Property="FontSize" Value="15"/>
+                                <Setter Property="Padding" Value="3"/>
+                                <Setter Property="HorizontalAlignment" Value="Right"/>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="64"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <TextBlock Text="запись" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="время" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="дата" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="лицо" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="отдел" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
 
-                    <icon:PackIconMaterial Kind="Alarm" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Center" Width="25" Height="25"/>
-                    <StackPanel Orientation="Vertical" Grid.RowSpan="2" Grid.Column="0" VerticalAlignment="Center">
-                        <TextBlock Text="{Binding CurrentEntry.TargetDateTime, StringFormat=HH:mm}" VerticalAlignment="Center" Margin="30,0,10,0" HorizontalAlignment="Center"  FontSize="30"/>
-                        <TextBlock Text="{Binding CurrentEntry.TargetDateTime, StringFormat=dd.MM.yyyy}" Margin="30,-5,10,0" HorizontalAlignment="Center"/>
-                    </StackPanel>
-
-                    <StackPanel  Grid.RowSpan="2" Grid.Column="1">
-                        <TextBlock Text="{Binding CurrentEntry.Registrator.FirstName}" Margin="0,0,0,2"/>
-                        <TextBlock Text="{Binding CurrentEntry.Registrator.Department.Title.Title}" Margin="0,2"/>
-                        <TextBlock Text="{Binding CurrentEntry.EntryStatus}" Padding="0,2,0,0"/>
-                    </StackPanel>
+                        <TextBlock Text="{Binding CurrentEntry.Id}" Grid.Column="1" Grid.Row="0"/>
+                        <TextBlock Text="{Binding CurrentEntry.TargetDateTime, StringFormat=HH:mm}" Grid.Column="1" Grid.Row="1" FontWeight="DemiBold"/>
+                        <TextBlock Text="{Binding CurrentEntry.TargetDateTime, StringFormat=dd.MM.yyyy}" Grid.Column="1" Grid.Row="2"/>
+                        <TextBlock Text="{Binding CurrentEntry.Registrator.FirstName}" Grid.Column="1" Grid.Row="3"/>
+                        <TextBlock Text="{Binding CurrentEntry.Registrator.Department.Title.Title}" Grid.Column="1" Grid.Row="4"/>
                         
-                    <Border Grid.Row="2" Grid.ColumnSpan="2" Background="{DynamicResource BrushPrimaryBorderLight}" Height="1" Margin="0,5"/>
-                    
-                    <StackPanel Orientation="Horizontal" Grid.Column="0" Grid.Row="3">
-                        <icon:PackIconMaterial BorderThickness="0" VerticalAlignment="Center" Height="18" Width="18" >
-                            <icon:PackIconMaterial.Style>
-                                <Style TargetType="icon:PackIconMaterial">
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding CurrentEntry.Patient.Gender}" Value="male">
-                                            <Setter Property="Kind" Value="GenderMale"/>
-                                        </DataTrigger>
-                                        <DataTrigger Binding="{Binding CurrentEntry.Patient.Gender}" Value="female">
-                                            <Setter Property="Kind" Value="GenderFemale"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </icon:PackIconMaterial.Style>
-                        </icon:PackIconMaterial>
-                        <TextBlock Padding="10,2">
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}{0:dd.MM.yy} ({1})">
-                                    <Binding Path="CurrentEntry.Patient.BirthDay"/>
-                                    <Binding Path="CurrentEntry.Patient.BirthDay" Converter="{StaticResource DateToAgeConverter}"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3">
-                        <icon:PackIconMaterial Kind="Phone"/>
-                        <TextBlock Text="{Binding CurrentEntry.Patient.PhoneNumber}" Padding="10,2"/>
-                    </StackPanel>
-                    
-                    <Border Grid.Row="4" Grid.ColumnSpan="2" Background="{DynamicResource BrushPrimaryBorderLight}" Height="1" Margin="0,5"/>
+                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Column="1" Grid.Row="0" BorderThickness="0,0,0,1"/>
+                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Column="1" Grid.Row="1" BorderThickness="0,0,0,1"/>
+                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Column="1" Grid.Row="2" BorderThickness="0,0,0,1"/>
+                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Column="1" Grid.Row="3" BorderThickness="0,0,0,1"/>
+                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Column="1" Grid.Row="4" BorderThickness="0,0,0,1"/>
 
-                    <icon:PackIconMaterial Kind="Home" Grid.ColumnSpan="2" Grid.Row="5"/>
-                        <TextBlock Margin="25,2,0,2" TextWrapping="WrapWithOverflow" Grid.ColumnSpan="2" Grid.Row="5">
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}г.{0} ул. {1} д.{2} кв.{3}">
-                                    <Binding Path="CurrentEntry.Patient.Adress.City"/>
-                                    <Binding Path="CurrentEntry.Patient.Adress.Street"/>
-                                    <Binding Path="CurrentEntry.Patient.Adress.Number"/>
-                                    <Binding Path="CurrentEntry.Patient.Adress.Room"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-                </Grid>
+                    </Grid>
+                </StackPanel>
             </Expander>
             
             <ListBox x:Name="TabMenu" Background="Transparent" IsSynchronizedWithCurrentItem="True"
