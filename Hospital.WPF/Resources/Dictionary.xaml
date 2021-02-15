@@ -303,21 +303,19 @@
                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                   Visibility="Collapsed">
                     <ContentPresenter.LayoutTransform>
-                        <ScaleTransform ScaleY="0"/>
+                        <ScaleTransform ScaleY="1"/>
                     </ContentPresenter.LayoutTransform>
                 </ContentPresenter>
             </DockPanel>
         </Border>
         <ControlTemplate.Triggers>
-            <Trigger Property="IsExpanded" Value="true">
-                <Setter TargetName="ExpBorder" Property="BorderThickness" Value="0"/>
-                <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
-                <Trigger.EnterActions>
+            <Trigger Property="IsExpanded" Value="false">
+                                <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="ExpandSite"
                              Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
-                             To="1"
+                             To="0"
                              Duration="0:0:0.2"/>
                         </Storyboard>
                     </BeginStoryboard>
@@ -327,11 +325,16 @@
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="ExpandSite"
                              Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
-                             To="0"
+                             To="1"
                              Duration="0:0:0.2"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
+            </Trigger>
+            
+            <Trigger Property="IsExpanded" Value="true">
+                <Setter TargetName="ExpBorder" Property="BorderThickness" Value="0"/>
+                <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
@@ -408,20 +411,19 @@
                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                   Visibility="Collapsed">
                     <ContentPresenter.LayoutTransform>
-                        <ScaleTransform ScaleY="0"/>
+                        <ScaleTransform ScaleY="1"/>
                     </ContentPresenter.LayoutTransform>
                 </ContentPresenter>
             </DockPanel>
         </Border>
         <ControlTemplate.Triggers>
-            <Trigger Property="IsExpanded" Value="true">
-                <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
+            <Trigger Property="IsExpanded" Value="false">
                 <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="ExpandSite"
                              Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
-                             To="1"
+                             To="0"
                              Duration="0:0:0.2"/>
                         </Storyboard>
                     </BeginStoryboard>
@@ -431,11 +433,14 @@
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="ExpandSite"
                              Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
-                             To="0"
+                             To="1"
                              Duration="0:0:0.2"/>
                         </Storyboard>
                     </BeginStoryboard>
                 </Trigger.ExitActions>
+            </Trigger>
+            <Trigger Property="IsExpanded" Value="true">
+                <Setter Property="Visibility" TargetName="ExpandSite" Value="Visible"/>
             </Trigger>
             <Trigger Property="IsEnabled" Value="false">
                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>

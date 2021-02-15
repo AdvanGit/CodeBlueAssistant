@@ -33,7 +33,7 @@
                     </TextBlock>
                 </Expander.Header>
                 <StackPanel Orientation="Vertical">
-                    <Border Background="{DynamicResource BrushAccent1}" Height="2"/>
+                    <Border Background="{DynamicResource BrushAccent1}" Height="3"/>
                     <Grid Margin="15">
                         <Grid.Resources>
                             <Style TargetType="{x:Type TextBlock}">

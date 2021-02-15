@@ -20,7 +20,7 @@ namespace Hospital.ViewModel
         private Test _selectedTest;
         public Test SelectedTest { get => _selectedTest; set { _selectedTest = value; OnPropertyChanged(nameof(SelectedTest)); } }
 
-        public ObservableCollection<TestData> TestData { get;} = new ObservableCollection<TestData>();
+        //public ObservableCollection<TestData> TestData { get;} = new ObservableCollection<TestData>();
 
         public ObservableCollection<TestData> PhysicalDiagData { get; } = new ObservableCollection<TestData>();
         public ObservableCollection<TestData> ToolDiagData { get; } = new ObservableCollection<TestData>();
@@ -43,14 +43,14 @@ namespace Hospital.ViewModel
                 if (CurrentEntry.MedCardId != null)
                 {
                     var res = await ambulatoryDataService.GetTestData(CurrentEntry.MedCard.Id);
-                    TestData.Clear();
+                    //TestData.Clear();
                     PhysicalDiagData.Clear();
                     LabDiagData.Clear();
                     ToolDiagData.Clear();
 
                     foreach (TestData test in res)
                     {
-                        TestData.Add(test);
+                        //TestData.Add(test);
                         switch (test.Test.TestType.TestMethod)
                         {
                             case TestMethod.Физикальная:
