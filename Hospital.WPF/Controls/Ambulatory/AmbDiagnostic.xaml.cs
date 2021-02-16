@@ -24,13 +24,11 @@ namespace Hospital.WPF.Controls.Ambulatory
             if (e.Column.SortDirection == null || e.Column.SortDirection.Value == ListSortDirection.Ascending)
             {
                 e.Column.SortDirection = ListSortDirection.Descending;
-                colectionView.SortDescriptions.Add(new SortDescription("Test.TestType.TestMethod", ListSortDirection.Ascending));
                 colectionView.SortDescriptions.Add(new SortDescription(sortPath, ListSortDirection.Descending));
             }  
             else
             {
                 e.Column.SortDirection = ListSortDirection.Ascending;
-                colectionView.SortDescriptions.Add(new SortDescription("Test.TestType.TestMethod", ListSortDirection.Ascending));
                 colectionView.SortDescriptions.Add(new SortDescription(sortPath, ListSortDirection.Ascending));
             }
             e.Handled = true;

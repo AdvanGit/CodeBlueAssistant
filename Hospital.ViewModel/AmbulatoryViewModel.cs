@@ -9,18 +9,33 @@ using System.Threading.Tasks;
 
 namespace Hospital.ViewModel
 {
+    public class TestTemplate<T> : ObservableCollection<T>
+    {
+        public TestTemplate(string title)
+        {
+            _title = title;
+        }
+
+        private string _title;
+        public string Title { get => _title; set => _title = value;}
+    }
+
+
     public class AmbulatoryViewModel : MainViewModel
     {
 
-        private AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
+        private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
 
         private Entry _currentEntry;
         public Entry CurrentEntry { get => _currentEntry; set { _currentEntry = value; OnPropertyChanged(nameof(CurrentEntry)); } }
 
-        private Test _selectedTest;
-        public Test SelectedTest { get => _selectedTest; set { _selectedTest = value; OnPropertyChanged(nameof(SelectedTest)); } }
+        private TestTemplate<Test> _selectedTemplate;
+        public TestTemplate<Test> SelectedTemplate { get => _selectedTemplate;  set { _selectedTemplate = value; OnPropertyChanged(nameof(SelectedTemplate)); } }
 
-        //public ObservableCollection<TestData> TestData { get;} = new ObservableCollection<TestData>();
+        private Test _selectedTest;
+        public Test SelectedTest { get => _selectedTest; set { _selectedTest = value; TestOption = value.DefaultOption; OnPropertyChanged(nameof(SelectedTest)); } }
+        private string _testOption;
+        public string TestOption { get => _testOption; set { _testOption = value; OnPropertyChanged(nameof(TestOption)); } }
 
         public ObservableCollection<TestData> PhysicalDiagData { get; } = new ObservableCollection<TestData>();
         public ObservableCollection<TestData> ToolDiagData { get; } = new ObservableCollection<TestData>();
@@ -28,10 +43,13 @@ namespace Hospital.ViewModel
 
         public ObservableCollection<Test> PhysicalTestList { get; } = new ObservableCollection<Test>();
 
+        public ObservableCollection<TestTemplate<Test>> PhysicalTestTemplate { get; } = new ObservableCollection<TestTemplate<Test>>();
+
         public AmbulatoryViewModel()
         {
             GetData(3);
             GetTestList(TestMethod.Физикальная);
+
         }
 
         private async void GetData(int entryId)
@@ -43,14 +61,12 @@ namespace Hospital.ViewModel
                 if (CurrentEntry.MedCardId != null)
                 {
                     var res = await ambulatoryDataService.GetTestData(CurrentEntry.MedCard.Id);
-                    //TestData.Clear();
                     PhysicalDiagData.Clear();
                     LabDiagData.Clear();
                     ToolDiagData.Clear();
 
                     foreach (TestData test in res)
                     {
-                        //TestData.Add(test);
                         switch (test.Test.TestType.TestMethod)
                         {
                             case TestMethod.Физикальная:
@@ -78,10 +94,9 @@ namespace Hospital.ViewModel
 
         private async void GetTestList(TestMethod testMethod)
         {
-            {
                 List<Test> result = await ambulatoryDataService.GetTestList(testMethod);
                 foreach (Test item in result) PhysicalTestList.Add(item);
-            }
+                CreateTestDiagTemplate();
         }
 
         public TestData CreatePhysDiag(Test test, string value = null, string option = null)
@@ -91,11 +106,33 @@ namespace Hospital.ViewModel
                 Test = test,
                 Value = value,
                 Option = option,
+                Status = TestStatus.Редакция,
                 DateCreate = DateTime.Now,
                 DateResult = DateTime.Now,
                 MedCard = CurrentEntry.MedCard,
                 StaffResult = CurrentEntry.DoctorDestination
             };
+        }
+
+        private void CreateTestDiagTemplate()
+        {
+            var t = new TestTemplate<Test>("Первичный осмотр");
+            foreach (Test test in PhysicalTestList) t.Add(test);
+            PhysicalTestTemplate.Add(t);
+        }
+
+        public void AddTemplate()
+        {
+            foreach (Test test in SelectedTemplate) PhysicalDiagData.Add(new TestData
+            {
+                Test = test,
+                DateCreate = DateTime.Now,
+                DateResult = DateTime.Now,
+                Status = TestStatus.Редакция,
+                Option = test.DefaultOption,
+                MedCard = CurrentEntry.MedCard,
+                StaffResult = CurrentEntry.DoctorDestination
+            });
         }
     }
 }

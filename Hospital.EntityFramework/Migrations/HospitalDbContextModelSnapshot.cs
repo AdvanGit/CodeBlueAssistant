@@ -731,6 +731,9 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
+                    b.Property<string>("DefaultOption")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Measure")
                         .HasColumnType("nvarchar(max)");
 

@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 namespace Hospital.Domain.Model
 {
     public enum TestMethod { Физикальная, Лабараторная, Инструментальная }
-    public enum TestStatus { Ожидание, Готов, Неявка }
+    public enum TestStatus { Ожидание, Готов, Неявка, Редакция, Резерв}
 
     public class TestData : DomainObject
     {
@@ -37,14 +37,17 @@ namespace Hospital.Domain.Model
         private string _shortTitle;
         private string _measure;
         private TestType _testType;
+        private string _defaulOption;
 
         public ObservableCollection<TestNormalValue> NormalValues { get; set; }
 
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
         public string ShortTitle { get => _shortTitle; set { _shortTitle = value; OnPropertyChanged("ShortTitle"); } }
 
+        public string DefaultOption { get => _defaulOption; set { _defaulOption = value; OnPropertyChanged(nameof(DefaultOption)); } }
         public string Measure { get => _measure; set { _measure = value; OnPropertyChanged("Measure"); } }
         public TestType TestType { get => _testType; set { _testType = value; OnPropertyChanged("TestType"); } }
+
     }
 
     public class TestType : DomainObject
