@@ -17,12 +17,15 @@ namespace Hospital.WPF.Commands
                  if (ambulatoryViewModel.SelectedTemplate != null)
                      ambulatoryViewModel.AddTemplate();
              });
+            _deleteRows = new Command(obj => ambulatoryViewModel.DeleteRows(obj),
+                obj => ((obj != null) && ((System.Collections.IList)obj).Count != 0));
         }
 
         private Command _addRow;
         public Command AddRow { get => _addRow; }
-
         private Command _addTemplate;
         public Command AddTemplate => _addTemplate;
+        private Command _deleteRows;
+        public Command DeleteRows => _deleteRows;
     }
 }

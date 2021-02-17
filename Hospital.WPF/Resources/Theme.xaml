@@ -31,6 +31,7 @@
     <SolidColorBrush x:Key="BrushForegroundDark" Color="{DynamicResource ColorForegroundDark}"/>
     <SolidColorBrush x:Key="BrushTableSelected" Color="{DynamicResource ColorAccentLight}"/>
     <SolidColorBrush x:Key="BrushTableSelectedLight" Color="{DynamicResource ColorAccentHighlight}"/>
+    <SolidColorBrush x:Key="BrushTableSelectedLightTransparent" Color="{DynamicResource ColorAccentHighlight}" Opacity="0.5"/>
     <SolidColorBrush x:Key="BrushAccent1" Color="{DynamicResource ColorAccentLight}"/>
     <SolidColorBrush x:Key="BrushAccent2" Color="{DynamicResource ColorAccentHighlight}"/>
     <SolidColorBrush x:Key="BrushAccentInvert" Color="{DynamicResource ColorAccentInvert}"/>

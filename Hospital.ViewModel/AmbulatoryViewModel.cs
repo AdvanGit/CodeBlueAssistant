@@ -2,9 +2,9 @@
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hospital.ViewModel
@@ -17,23 +17,31 @@ namespace Hospital.ViewModel
         }
 
         private string _title;
-        public string Title { get => _title; set => _title = value;}
+        public string Title { get => _title; set => _title = value; }
     }
-
 
     public class AmbulatoryViewModel : MainViewModel
     {
-
         private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
 
         private Entry _currentEntry;
         public Entry CurrentEntry { get => _currentEntry; set { _currentEntry = value; OnPropertyChanged(nameof(CurrentEntry)); } }
 
         private TestTemplate<Test> _selectedTemplate;
-        public TestTemplate<Test> SelectedTemplate { get => _selectedTemplate;  set { _selectedTemplate = value; OnPropertyChanged(nameof(SelectedTemplate)); } }
+        public TestTemplate<Test> SelectedTemplate { get => _selectedTemplate; set { _selectedTemplate = value; OnPropertyChanged(nameof(SelectedTemplate)); } }
 
         private Test _selectedTest;
-        public Test SelectedTest { get => _selectedTest; set { _selectedTest = value; TestOption = value.DefaultOption; OnPropertyChanged(nameof(SelectedTest)); } }
+        public Test SelectedTest
+        {
+            get => _selectedTest;
+            set
+            {
+                _selectedTest = value;
+                OnPropertyChanged(nameof(SelectedTest));
+                if (value != null) TestOption = value.DefaultOption;
+                else TestOption = null;
+            }
+        }
         private string _testOption;
         public string TestOption { get => _testOption; set { _testOption = value; OnPropertyChanged(nameof(TestOption)); } }
 
@@ -94,15 +102,15 @@ namespace Hospital.ViewModel
 
         private async void GetTestList(TestMethod testMethod)
         {
-                List<Test> result = await ambulatoryDataService.GetTestList(testMethod);
-                foreach (Test item in result) PhysicalTestList.Add(item);
-                CreateTestDiagTemplate();
+            List<Test> result = await ambulatoryDataService.GetTestList(testMethod);
+            foreach (Test item in result) PhysicalTestList.Add(item);
+            CreateTestDiagTemplate();
         }
 
         public TestData CreatePhysDiag(Test test, string value = null, string option = null)
         {
-            return new TestData 
-            { 
+            return new TestData
+            {
                 Test = test,
                 Value = value,
                 Option = option,
@@ -133,6 +141,17 @@ namespace Hospital.ViewModel
                 MedCard = CurrentEntry.MedCard,
                 StaffResult = CurrentEntry.DoctorDestination
             });
+        }
+
+        public void DeleteRows(object testDatas)
+        {
+            var items = ((System.Collections.IList)testDatas).Cast<TestData>().ToList();
+
+            foreach (TestData test in items)
+            {
+                if (test.Status == TestStatus.Редакция)
+                    PhysicalDiagData.Remove(test);
+            }
         }
     }
 }
