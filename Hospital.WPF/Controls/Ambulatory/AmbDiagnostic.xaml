@@ -6,8 +6,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
+             xmlns:controls="clr-namespace:Hospital.WPF.Controls.Ambulatory"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <!--<UserControl.DataContext> <vm:AmbulatoryViewModel/></UserControl.DataContext>--> 
@@ -49,12 +49,13 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Button Content="-" Style="{StaticResource MahApps.Styles.Button.Flat}" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"
                                     Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.DeleteRows}" CommandParameter="{Binding ElementName=dg_PhysDiag, Path=SelectedItems}"/>
-                            <CheckBox x:Name="cb_ItemBarPhysDiag" Content="+" IsChecked="False" Style="{StaticResource  MahApps.Styles.Button.Flat}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"/>
+                            <CheckBox x:Name="cb_ItemBarPhysDiag" Content="+" IsChecked="False"
+                                      Style="{StaticResource  MahApps.Styles.Button.Flat}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"/>
                         </StackPanel>
                     </Grid>
                 </Expander.Header>
                 <StackPanel Orientation="Vertical">
-                    <Grid x:Name="test1" Visibility="Collapsed" Margin="0,5,0,10">
+                    <Grid Visibility="Collapsed" Margin="0,5,0,10">
                         <Grid.Resources>
                             <Style TargetType="{x:Type Grid}">
                                 <Style.Triggers>
@@ -90,52 +91,8 @@
                         <Grid.LayoutTransform>
                             <ScaleTransform ScaleY="0"/>
                         </Grid.LayoutTransform>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="0.5*" MinWidth="75"/>
-                            <ColumnDefinition MaxWidth="150" MinWidth="100"/>
-                            <ColumnDefinition MaxWidth="300" MinWidth="150"/>
-                            <ColumnDefinition MaxWidth="300" MinWidth="150"/>
-                            <ColumnDefinition MaxWidth="300" MinWidth="150"/>
-                            <ColumnDefinition Width="50"/>
-                            <ColumnDefinition Width="0.5*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="45"/>
-                            <RowDefinition Height="45"/>
-                        </Grid.RowDefinitions>
-                        
-                        <TextBlock Text="Шаблон" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Padding="10,0" VerticalAlignment="Center" FontSize="15" Foreground="{StaticResource BrushForegroundVeryLight}"/>
-                        <TextBlock Text="Тест" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10,0" FontSize="15" Foreground="{StaticResource BrushForegroundVeryLight}"/>
-                        
-                        <ComboBox Grid.Row="0" Grid.Column="1" Margin="10,5" MinHeight="0"/>
-                        <ComboBox   Grid.Row="1" Grid.Column="1" Margin="10,5" MinHeight="0"
-                            IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="ID"
-                                ItemsSource="{Binding PhysicalTestList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
-                                SelectedValue="{Binding SelectedTest.Id}" DisplayMemberPath="Id" SelectedValuePath="Id"
-                                SelectedItem="{Binding SelectedTest}"/>
-
-                        <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Margin="0,5,55,5"
-                                  IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False"
-                                  ItemsSource="{Binding PhysicalTestTemplate, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectedValue="{Binding SelectedTemplate.Title}" DisplayMemberPath="Title" SelectedValuePath="Title"
-                                  SelectedItem="{Binding SelectedTemplate}"/>
-                        <Button Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Width="40" Content="edit" Margin="5,5"/>
-                        <ComboBox Grid.Row="1" Grid.Column="2"  Margin="0,5,5,5" mah:TextBoxHelper.Watermark="Название"
-                                  IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" StaysOpenOnEdit="True"
-                                  ItemsSource="{Binding PhysicalTestList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectedValue="{Binding SelectedTest.Title}" DisplayMemberPath="Title" SelectedValuePath="Title"
-                                  SelectedItem="{Binding SelectedTest}"/>
-
-                        <TextBox Grid.Row="1" Grid.Column="3" Margin="5,5" x:Name="tb_TestOption" Text="{Binding TestOption}" mah:TextBoxHelper.Watermark="Опция"/>
-                        <TextBox Grid.Row="1" Grid.Column="4" Margin="5,5" x:Name="tb_TestValue" mah:TextBoxHelper.Watermark="Значение" />
-
-                        <Button Grid.Column="5" Grid.Row="0" Content="create" HorizontalAlignment="Left" Margin="5,5"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddTemplate}"/>
-                        <Button Grid.Column="5" Grid.Row="1" Content="create" HorizontalAlignment="Left" Margin="5,5"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddRow}" CommandParameter="{Binding ElementName=tb_TestValue, Path=Text}"/>
-                    
+                        <mah:TransitioningContentControl Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Navigator.CurrentPhysDiagPanel}"/>
                     </Grid>
-
                     <DataGrid ItemsSource="{Binding PhysicalDiagData}" Style="{StaticResource dg_Ambulatory}" Name="dg_PhysDiag">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True" MinWidth="35" Width="35" ElementStyle="{StaticResource tb_common}"/>
@@ -159,8 +116,110 @@
                 </StackPanel>
             </Expander>
 
-            <Expander Header="ЛАБАРАТОРНАЯ ДИАГНОСТИКА" IsExpanded="False" Template="{StaticResource ExpanderDiagTable}">
-                <DataGrid ItemsSource="{Binding Source={StaticResource cvsLabDiag}}" Sorting="DataGrid_Sorting"
+            <Expander IsExpanded="False" Template="{StaticResource ExpanderDiagTable}">
+                <Expander.Header>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Text="ЛАБАРАТОРНАЯ ДИАГНОСТИКА" FontSize="14" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource BrushForegroundLight}"/>
+                            <TextBlock Padding="10,0" Text="{Binding LabDiagData.Count, StringFormat=Всего: {0}}" VerticalAlignment="Center" Foreground="{StaticResource BrushForegroundLight}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Button Content="-" Style="{StaticResource MahApps.Styles.Button.Flat}" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.DeleteRows}" CommandParameter="{Binding ElementName=dg_labDiag, Path=SelectedItems}"/>
+                            <CheckBox x:Name="cb_ItemBarLabDiag" Content="+" IsChecked="False"
+                                      Style="{StaticResource  MahApps.Styles.Button.Flat}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"/>
+                        </StackPanel>
+                    </Grid>
+                </Expander.Header>
+
+                <StackPanel Orientation="Vertical">
+                    <Grid Visibility="Collapsed" Margin="0,5,0,10">
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=cb_ItemBarLabDiag, Path=IsChecked}" Value="true">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
+                                                                     To="1" 
+                                                                     Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
+                                                                     To="0" 
+                                                                     Duration="0:0:0.2"/>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Collapsed}"/>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.LayoutTransform>
+                            <ScaleTransform ScaleY="0"/>
+                        </Grid.LayoutTransform>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.3*" MinWidth="80"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="0.3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="45"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Шаблон" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Padding="10,0" VerticalAlignment="Center" FontSize="15" Foreground="{StaticResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="Тест" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10,0" FontSize="15" Foreground="{StaticResource BrushForegroundVeryLight}"/>
+
+                        <ComboBox Grid.Row="0" Grid.Column="1" Margin="5,5" MinHeight="0"/>
+                        <ComboBox   Grid.Row="1" Grid.Column="1" Margin="5,5" MinHeight="0"
+                            IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="Тип"
+                                ItemsSource="{Binding LabTestTypes, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValue="{Binding CurrentLabTestType.ShortTitle}" DisplayMemberPath="ShortTitle" SelectedValuePath="ShortTitle"
+                                SelectedItem="{Binding CurrentLabTestType}"/>
+
+                        
+                        
+                        <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,5" MinHeight="0"/>
+                        <ComboBox   Grid.Row="1" Grid.Column="2" Margin="5,5" MinHeight="0"
+                            IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="ID"
+                                ItemsSource="{Binding LabTestList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValue="{Binding SelectedLabTest.Id}" DisplayMemberPath="Id" SelectedValuePath="Id"
+                                SelectedItem="{Binding SelectedLabTest}"/>
+
+                        <ComboBox   Grid.Row="1" Grid.Column="3" Margin="5,5" MinHeight="0"
+                            IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="Название"
+                                ItemsSource="{Binding LabTestList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValue="{Binding SelectedLabTest.ShortTitle}" DisplayMemberPath="ShortTitle" SelectedValuePath="ShortTitle"
+                                SelectedItem="{Binding SelectedLabTest}"/>
+
+                        <ComboBox Grid.Row="0" Grid.Column="4" Margin="5,5" MinHeight="0" />
+                        <ComboBox Grid.Row="1" Grid.Column="4" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Отделение" />
+
+                        <mah:DateTimePicker Grid.Row="0" Grid.Column="5" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Дата" />
+                        <mah:DateTimePicker Grid.Row="1" Grid.Column="5" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Дата" />
+
+                        <Button Grid.Row="1" Grid.Column="6" Content="create" HorizontalAlignment="Left" Margin="5,5"/>
+
+                    </Grid>
+
+                    <DataGrid ItemsSource="{Binding Source={StaticResource cvsLabDiag}}" Sorting="DataGrid_Sorting" x:Name="dg_labDiag"
                       CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="False"
                       Style="{StaticResource dg_Ambulatory}" ColumnWidth="Auto">
                     <DataGrid.GroupStyle>
@@ -206,10 +265,112 @@
                         <DataGridTextColumn Header="ДАТА РЕЗУЛЬТАТА" Binding="{Binding DateResult, StringFormat=dd.MM.yy HH:mm}"  IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                </StackPanel>
             </Expander>
 
-            <Expander Header="ИНСТРУМЕНТАЛЬНАЯ ДИАГНОСТИКА" IsExpanded="False" Template="{StaticResource ExpanderDiagTable}">
-                <DataGrid ItemsSource="{Binding Source={StaticResource cvsToolDiag}}" Sorting="DataGrid_Sorting"
+            <Expander IsExpanded="False" Template="{StaticResource ExpanderDiagTable}">
+                <Expander.Header>
+                    <Grid>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                            <TextBlock Text="ИНСТРУМЕНТАЛЬНАЯ ДИАГНОСТИКА" FontSize="14" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource BrushForegroundLight}"/>
+                            <TextBlock Padding="10,0" Text="{Binding ToolDiagData.Count, StringFormat=Всего: {0}}" VerticalAlignment="Center" Foreground="{StaticResource BrushForegroundLight}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <Button Content="-" Style="{StaticResource MahApps.Styles.Button.Flat}" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.DeleteRows}" CommandParameter="{Binding ElementName=dg_toolDiag, Path=SelectedItems}"/>
+                            <CheckBox x:Name="cb_ItemBarToolDiag" Content="+" IsChecked="False"
+                                      Style="{StaticResource  MahApps.Styles.Button.Flat}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"/>
+                        </StackPanel>
+                    </Grid>
+                </Expander.Header>
+
+                <StackPanel Orientation="Vertical">
+                    <Grid Visibility="Collapsed" Margin="0,5,0,10">
+                        <Grid.Resources>
+                            <Style TargetType="{x:Type Grid}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding ElementName=cb_ItemBarToolDiag, Path=IsChecked}" Value="true">
+                                        <DataTrigger.EnterActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
+                                                                     To="1" 
+                                                                     Duration="0:0:0.2"/>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.EnterActions>
+                                        <DataTrigger.ExitActions>
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
+                                                                     To="0" 
+                                                                     Duration="0:0:0.2"/>
+                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Collapsed}"/>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </DataTrigger.ExitActions>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Grid.Resources>
+                        <Grid.LayoutTransform>
+                            <ScaleTransform ScaleY="0"/>
+                        </Grid.LayoutTransform>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.3*" MinWidth="80"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition Width="0.5*"/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="130"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="0.3*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="45"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Шаблон" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Padding="10,0" VerticalAlignment="Center" FontSize="15" Foreground="{StaticResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="Тест" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10,0" FontSize="15" Foreground="{StaticResource BrushForegroundVeryLight}"/>
+
+                        <ComboBox Grid.Row="0" Grid.Column="1" Margin="5,5" MinHeight="0"/>
+                        <ComboBox   Grid.Row="1" Grid.Column="1" Margin="5,5" MinHeight="0"
+                            IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="Тип"
+                                ItemsSource="{Binding ToolTestTypes, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValue="{Binding CurrentToolTestType.ShortTitle}" DisplayMemberPath="ShortTitle" SelectedValuePath="ShortTitle"
+                                SelectedItem="{Binding CurrentToolTestType}"/>
+
+                        <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,5" MinHeight="0"/>
+                        <ComboBox   Grid.Row="1" Grid.Column="2" Margin="5,5" MinHeight="0"
+                            IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="ID"
+                                ItemsSource="{Binding ToolTestList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValue="{Binding SelectedToolTest.Id}" DisplayMemberPath="Id" SelectedValuePath="Id"
+                                SelectedItem="{Binding SelectedToolTest}"/>
+
+                        <ComboBox   Grid.Row="1" Grid.Column="3" Margin="5,5" MinHeight="0"
+                            IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="Название"
+                                ItemsSource="{Binding ToolTestList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValue="{Binding SelectedToolTest.ShortTitle}" DisplayMemberPath="ShortTitle" SelectedValuePath="ShortTitle"
+                                SelectedItem="{Binding SelectedToolTest}"/>
+
+                        <ComboBox Grid.Row="0" Grid.Column="4" Margin="5,5" MinHeight="0" />
+                        <ComboBox Grid.Row="1" Grid.Column="4" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Отделение" />
+
+                        <mah:DateTimePicker Grid.Row="0" Grid.Column="5" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Дата" />
+                        <mah:DateTimePicker Grid.Row="1" Grid.Column="5" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Дата" />
+
+                        <Button Grid.Row="1" Grid.Column="6" Content="create" HorizontalAlignment="Left" Margin="5,5"/>
+
+                    </Grid>
+
+
+                    <DataGrid ItemsSource="{Binding Source={StaticResource cvsToolDiag}}" Sorting="DataGrid_Sorting" x:Name="dg_toolDiag"
                       CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="False"
                       Style="{StaticResource dg_Ambulatory}" ColumnWidth="Auto">
                     <DataGrid.GroupStyle>
@@ -247,6 +408,8 @@
                         <DataGridTextColumn Header="ДАТА РЕЗУЛЬТАТА" Binding="{Binding DateResult, StringFormat=dd.MM.yy HH:mm}"  IsReadOnly="True"/>
                     </DataGrid.Columns>
                 </DataGrid>
+                </StackPanel>
+                
 
             </Expander>
 

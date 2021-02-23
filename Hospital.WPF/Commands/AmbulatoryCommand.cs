@@ -12,13 +12,20 @@ namespace Hospital.WPF.Commands
                 if (ambulatoryViewModel.SelectedTest != null)
                     ambulatoryViewModel.PhysicalDiagData.Add(ambulatoryViewModel.CreatePhysDiag(ambulatoryViewModel.SelectedTest, obj.ToString(), ambulatoryViewModel.TestOption));
             });
+
             _addTemplate = new Command(obj =>
              {
                  if (ambulatoryViewModel.SelectedTemplate != null)
                      ambulatoryViewModel.AddTemplate();
              });
+
             _deleteRows = new Command(obj => ambulatoryViewModel.DeleteRows(obj),
                 obj => ((obj != null) && ((System.Collections.IList)obj).Count != 0));
+
+            _setPhysPanel = new Command(obj =>
+            {
+                ambulatoryView.Navigator.SetDiagPhysPanel(obj.ToString());
+            });
         }
 
         private Command _addRow;
@@ -27,5 +34,8 @@ namespace Hospital.WPF.Commands
         public Command AddTemplate => _addTemplate;
         private Command _deleteRows;
         public Command DeleteRows => _deleteRows;
+        private Command _setPhysPanel;
+        public Command SetPhysPanel { get => _setPhysPanel; }
+
     }
 }

@@ -837,6 +837,9 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("int");
 
+                    b.Property<string>("ShortTitle")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("TestMethod")
                         .HasColumnType("int");
 

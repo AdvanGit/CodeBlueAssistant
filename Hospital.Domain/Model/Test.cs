@@ -53,12 +53,14 @@ namespace Hospital.Domain.Model
     public class TestType : DomainObject
     {
         private string _title;
+        private string _shortTitle;
         private TestMethod _testMethod;
         private Department _department;
 
         public ObservableCollection<Test> Tests { get; set; }
 
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
+        public string ShortTitle { get => _shortTitle; set { _shortTitle = value; OnPropertyChanged(nameof(ShortTitle)); } }
         public TestMethod TestMethod { get => _testMethod; set { _testMethod = value; OnPropertyChanged("TestMethod"); } }
         public Department Department { get => _department; set { _department = value; OnPropertyChanged("Department"); } }
     }

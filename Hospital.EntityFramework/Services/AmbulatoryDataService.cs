@@ -47,13 +47,27 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-        public async Task<List<Test>> GetTestList(TestMethod testMethod)
+        public async Task<List<Test>> GetTestList(TestMethod testMethod, TestType testType = null)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 List<Test> result = await db.Tests
+                    .Include(t => t.TestType)
                     .AsQueryable()
                     .Where(t => t.TestType.TestMethod == testMethod)
+                    .Where(t=> (testType != null) ?  t.TestType == testType : true)
+                    .ToListAsync();
+                return result;
+            }
+        }
+
+        public async Task<List<TestType>> GetTestTypeList(TestMethod testMethod)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                List<TestType> result = await db.TestTypes
+                    .AsQueryable()
+                    .Where(t => t.TestMethod == testMethod)
                     .ToListAsync();
                 return result;
             }
