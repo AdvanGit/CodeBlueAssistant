@@ -17,6 +17,7 @@ namespace Hospital.ViewModel.Ambulatory
         {
             currentEntry = entry;
             Initialize(entry);
+
             GetTestList(TestMethod.Физикальная);
             GetTestTypeList(TestMethod.Лабараторная);
             GetTestTypeList(TestMethod.Инструментальная);
@@ -45,31 +46,42 @@ namespace Hospital.ViewModel.Ambulatory
             }
         }
 
-        private Test _selectedTest;
-        public Test SelectedTest
+        private Test _selectedPhysicalTest;
+        public Test SelectedPhysicalTest
         {
-            get => _selectedTest;
+            get => _selectedPhysicalTest;
             set
             {
-                _selectedTest = value;
-                OnPropertyChanged(nameof(SelectedTest));
-                if (value != null) TestOption = value.DefaultOption;
-                else TestOption = null;
+                _selectedPhysicalTest = value;
+                OnPropertyChanged(nameof(SelectedPhysicalTest));
+                if (value != null) PhysicalDataOption = value.DefaultOption;
+                else PhysicalDataOption = null;
+            }
+        }
+        private Test _selectedToolTest;
+        public Test SelectedToolTest
+        {
+            get => _selectedToolTest;
+            set
+            {
+                _selectedToolTest = value;
+                OnPropertyChanged(nameof(SelectedToolTest));
+                if (value != null) ToolDataOption = value.DefaultOption;
+                else ToolDataOption = null;
             }
         }
         private Test _selectedLabTest;
         public Test SelectedLabTest { get => _selectedLabTest; set { _selectedLabTest = value; OnPropertyChanged(nameof(SelectedLabTest)); } }
-        private Test _selectedToolTest;
-        public Test SelectedToolTest { get => _selectedToolTest; set { _selectedToolTest = value; OnPropertyChanged(nameof(SelectedToolTest)); } }
 
-        private string _testOption;
-        public string TestOption { get => _testOption; set { _testOption = value; OnPropertyChanged(nameof(TestOption)); } }
+        private string _physicalDataOption;
+        public string PhysicalDataOption { get => _physicalDataOption; set { _physicalDataOption = value; OnPropertyChanged(nameof(PhysicalDataOption)); } }
+        private string _toolDataOption;
+        public string ToolDataOption { get => _toolDataOption; set { _toolDataOption = value; OnPropertyChanged(nameof(ToolDataOption)); } }
 
 
         public ObservableCollection<TestData> PhysicalDiagData { get; } = new ObservableCollection<TestData>();
         public ObservableCollection<TestData> ToolDiagData { get; } = new ObservableCollection<TestData>();
         public ObservableCollection<TestData> LabDiagData { get; } = new ObservableCollection<TestData>();
-        //public ObservableCollection<TestTemplate<Test>> PhysicalTestTemplate { get; } = new ObservableCollection<TestTemplate<Test>>();
 
         public ObservableCollection<TestType> LabTestTypes { get; } = new ObservableCollection<TestType>();
         public ObservableCollection<TestType> ToolTestTypes { get; } = new ObservableCollection<TestType>();
@@ -87,25 +99,19 @@ namespace Hospital.ViewModel.Ambulatory
                 LabDiagData.Clear();
                 ToolDiagData.Clear();
 
-                foreach (TestData test in res)
+                foreach (TestData data in res)
                 {
-                    switch (test.Test.TestType.TestMethod)
+                    switch (data.Test.TestType.TestMethod)
                     {
                         case TestMethod.Физикальная:
-                            {
-                                PhysicalDiagData.Add(test);
-                                break;
-                            }
+                            PhysicalDiagData.Add(data);
+                            break;
                         case TestMethod.Лабараторная:
-                            {
-                                LabDiagData.Add(test);
-                                break;
-                            }
+                            LabDiagData.Add(data);
+                            break;
                         case TestMethod.Инструментальная:
-                            {
-                                ToolDiagData.Add(test);
-                                break;
-                            }
+                            ToolDiagData.Add(data);
+                            break;
                         default:
                             break;
                     }
@@ -119,7 +125,6 @@ namespace Hospital.ViewModel.Ambulatory
             if (testMethod == TestMethod.Лабараторная) foreach (TestType item in result) LabTestTypes.Add(item);
             else if (testMethod == TestMethod.Инструментальная) foreach (TestType item in result) ToolTestTypes.Add(item);
         }
-
         private async void GetTestList(TestMethod testMethod, TestType testType = null)
         {
             List<Test> result = await ambulatoryDataService.GetTestList(testMethod, testType);
@@ -148,44 +153,7 @@ namespace Hospital.ViewModel.Ambulatory
             }
         }
 
-        public void DeleteRows(object testDatas)
-        {
-            var items = ((System.Collections.IList)testDatas).Cast<TestData>().ToList();
-            if (items.Count != 0)
-                switch (items[0].Test.TestType.TestMethod)
-                {
-                    case TestMethod.Физикальная:
-                        {
-                            foreach (TestData test in items)
-                            {
-                                if (test.Status == Enum.Parse<TestStatus>("3"))
-                                    PhysicalDiagData.Remove(test);
-                            }
-                            break;
-                        }
-                    case TestMethod.Лабараторная:
-                        {
-                            foreach (TestData test in items)
-                            {
-                                if (test.Status == TestStatus.Резерв || test.Status == TestStatus.Редакция)
-                                    LabDiagData.Remove(test);
-                            }
-                            break;
-                        }
-                    case TestMethod.Инструментальная:
-                        {
-                            foreach (TestData test in items)
-                            {
-                                if (test.Status == TestStatus.Резерв || test.Status == TestStatus.Редакция)
-                                    ToolDiagData.Remove(test);
-                            }
-                            break;
-                        }
-                    default: break;
-                }
-        }
-
-        public TestData CreatePhysDiag(Test test, string value = null, string option = null)
+        public TestData CreateData(Test test, string value = null, string option = null)
         {
             return new TestData
             {
@@ -194,11 +162,61 @@ namespace Hospital.ViewModel.Ambulatory
                 Option = option,
                 Status = TestStatus.Редакция,
                 DateCreate = DateTime.Now,
-                DateResult = DateTime.Now,
                 MedCard = currentEntry.MedCard,
-                StaffResult = currentEntry.DoctorDestination
             };
         }
+
+        public void AddData(object obj, TestMethod testMethod)
+        {
+            switch (testMethod)
+            {
+                case TestMethod.Физикальная:
+                    TestData data = CreateData(SelectedPhysicalTest, obj.ToString(), PhysicalDataOption);
+                    data.DateResult = DateTime.Now;
+                    data.StaffResult = currentEntry.DoctorDestination;
+                    PhysicalDiagData.Add(data);
+                    break;
+                case TestMethod.Лабараторная:
+                    LabDiagData.Add(CreateData(SelectedLabTest, null, SelectedLabTest.DefaultOption));
+                    break;
+                case TestMethod.Инструментальная:
+                    ToolDiagData.Add(CreateData(SelectedToolTest, null, SelectedToolTest.DefaultOption));
+                    break;
+                default:
+                    break;
+            }
+        }
+        public void RemoveData(object testDatas)
+        {
+            var items = ((System.Collections.IList)testDatas).Cast<TestData>().ToList();
+            if (items.Count != 0)
+                switch (items[0].Test.TestType.TestMethod)
+                {
+                    case TestMethod.Физикальная:
+                        foreach (TestData test in items)
+                        {
+                            if (test.Status == Enum.Parse<TestStatus>("3"))
+                                PhysicalDiagData.Remove(test);
+                        }
+                        break;
+                    case TestMethod.Лабараторная:
+                        foreach (TestData test in items)
+                        {
+                            if (test.Status == TestStatus.Резерв || test.Status == TestStatus.Редакция)
+                                LabDiagData.Remove(test);
+                        }
+                        break;
+                    case TestMethod.Инструментальная:
+                        foreach (TestData test in items)
+                        {
+                            if (test.Status == TestStatus.Резерв || test.Status == TestStatus.Редакция)
+                                ToolDiagData.Remove(test);
+                        }
+                        break;
+                    default: break;
+                }
+        }
+
 
     }
 }

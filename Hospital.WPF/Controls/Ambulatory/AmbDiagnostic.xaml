@@ -7,11 +7,9 @@
              xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
              xmlns:vm="clr-namespace:Hospital.ViewModel.Ambulatory;assembly=Hospital.ViewModel"
-             xmlns:controls="clr-namespace:Hospital.WPF.Controls.Ambulatory"
-             mc:Ignorable="d"
              DataContext="{Binding DiagnosticViewModel}"
+             mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
-    <!--<UserControl.DataContext> <vm:AmbulatoryViewModel/></UserControl.DataContext>--> 
     
     <UserControl.Resources>
         <CollectionViewSource x:Key="cvsLabDiag" Source="{Binding LabDiagData}">
@@ -49,7 +47,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Button Content="-" Style="{StaticResource MahApps.Styles.Button.Flat}" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.DeleteRows}" CommandParameter="{Binding ElementName=dg_PhysDiag, Path=SelectedItems}"/>
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.RemoveTestData}" CommandParameter="{Binding ElementName=dg_PhysDiag, Path=SelectedItems}"/>
                             <CheckBox x:Name="cb_ItemBarPhysDiag" Content="+" IsChecked="False"
                                       Style="{StaticResource  MahApps.Styles.Button.Flat}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"/>
                         </StackPanel>
@@ -92,8 +90,48 @@
                         <Grid.LayoutTransform>
                             <ScaleTransform ScaleY="0"/>
                         </Grid.LayoutTransform>
-                        <mah:TransitioningContentControl Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Navigator.CurrentPhysDiagPanel}"/>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="0.5*" MinWidth="75"/>
+                            <ColumnDefinition MaxWidth="150" MinWidth="100"/>
+                            <ColumnDefinition MaxWidth="300" MinWidth="150"/>
+                            <ColumnDefinition MaxWidth="300" MinWidth="150"/>
+                            <ColumnDefinition MaxWidth="300" MinWidth="150"/>
+                            <ColumnDefinition Width="50"/>
+                            <ColumnDefinition Width="0.5*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="45"/>
+                            <RowDefinition Height="45"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Text="Шаблон" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" Padding="10,0" VerticalAlignment="Center" FontSize="15" Foreground="{StaticResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="Тест" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Padding="10,0" FontSize="15" Foreground="{StaticResource BrushForegroundVeryLight}"/>
+
+                        <ComboBox Grid.Row="0" Grid.Column="1" Margin="5,5" MinHeight="0"/>
+                        <ComboBox   Grid.Row="1" Grid.Column="1" Margin="5,5" MinHeight="0"
+                            IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="ID"
+                                ItemsSource="{Binding PhysicalTestList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValue="{Binding SelectedPhysicalTest.Id}" DisplayMemberPath="Id" SelectedValuePath="Id"
+                                SelectedItem="{Binding SelectedPhysicalTest}"/>
+
+                        <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Margin="0,5,55,5"/>
+                        <Button Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Width="40" Content="edit" Margin="5,5"/>
+                        <ComboBox Grid.Row="1" Grid.Column="2"  Margin="0,5,5,5" mah:TextBoxHelper.Watermark="Название"
+                                  IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" StaysOpenOnEdit="True"
+                                  ItemsSource="{Binding PhysicalTestList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                                  SelectedValue="{Binding SelectedPhysicalTest.Title}" DisplayMemberPath="Title" SelectedValuePath="Title"
+                                  SelectedItem="{Binding SelectedPhysicalTest}"/>
+
+                        <TextBox Grid.Row="1" Grid.Column="3" Margin="5,5" x:Name="tb_TestOption" Text="{Binding PhysicalDataOption}" mah:TextBoxHelper.Watermark="Опция"/>
+                        <TextBox Grid.Row="1" Grid.Column="4" Margin="5,5" x:Name="tb_TestValue" mah:TextBoxHelper.Watermark="Значение" />
+
+                        <Button Grid.Column="5" Grid.Row="0" Content="create" HorizontalAlignment="Left" Margin="5,5"/>
+                        <Button Grid.Column="5" Grid.Row="1" Content="create" HorizontalAlignment="Left" Margin="5,5"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddPhysicalTestData}"
+                                CommandParameter="{Binding ElementName=tb_TestValue, Path=Text}"/>
                     </Grid>
+                    
+                    
                     <DataGrid ItemsSource="{Binding PhysicalDiagData}" Style="{StaticResource dg_Ambulatory}" Name="dg_PhysDiag">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True" MinWidth="35" Width="35" ElementStyle="{StaticResource tb_common}"/>
@@ -126,7 +164,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Button Content="-" Style="{StaticResource MahApps.Styles.Button.Flat}" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.DeleteRows}" CommandParameter="{Binding ElementName=dg_labDiag, Path=SelectedItems}"/>
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.RemoveTestData}" CommandParameter="{Binding ElementName=dg_labDiag, Path=SelectedItems}"/>
                             <CheckBox x:Name="cb_ItemBarLabDiag" Content="+" IsChecked="False"
                                       Style="{StaticResource  MahApps.Styles.Button.Flat}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"/>
                         </StackPanel>
@@ -195,8 +233,6 @@
                                 SelectedValue="{Binding CurrentLabTestType.ShortTitle}" DisplayMemberPath="ShortTitle" SelectedValuePath="ShortTitle"
                                 SelectedItem="{Binding CurrentLabTestType}"/>
 
-                        
-                        
                         <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,5" MinHeight="0"/>
                         <ComboBox   Grid.Row="1" Grid.Column="2" Margin="5,5" MinHeight="0"
                             IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="ID"
@@ -216,7 +252,8 @@
                         <mah:DateTimePicker Grid.Row="0" Grid.Column="5" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Дата" />
                         <mah:DateTimePicker Grid.Row="1" Grid.Column="5" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Дата" />
 
-                        <Button Grid.Row="1" Grid.Column="6" Content="create" HorizontalAlignment="Left" Margin="5,5"/>
+                        <Button Grid.Row="1" Grid.Column="6" Content="create" HorizontalAlignment="Left" Margin="5,5"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddLabTestData}"/>
 
                     </Grid>
 
@@ -278,7 +315,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                             <Button Content="-" Style="{StaticResource MahApps.Styles.Button.Flat}" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.DeleteRows}" CommandParameter="{Binding ElementName=dg_toolDiag, Path=SelectedItems}"/>
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.RemoveTestData}" CommandParameter="{Binding ElementName=dg_toolDiag, Path=SelectedItems}"/>
                             <CheckBox x:Name="cb_ItemBarToolDiag" Content="+" IsChecked="False"
                                       Style="{StaticResource  MahApps.Styles.Button.Flat}" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" VerticalAlignment="Center" MinHeight="0" Height="35" Width="35" Padding="0"/>
                         </StackPanel>
@@ -366,10 +403,10 @@
                         <mah:DateTimePicker Grid.Row="0" Grid.Column="5" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Дата" />
                         <mah:DateTimePicker Grid.Row="1" Grid.Column="5" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Дата" />
 
-                        <Button Grid.Row="1" Grid.Column="6" Content="create" HorizontalAlignment="Left" Margin="5,5"/>
+                        <Button Grid.Row="1" Grid.Column="6" Content="create" HorizontalAlignment="Left" Margin="5,5"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddToolTestData}"/>
 
                     </Grid>
-
 
                     <DataGrid ItemsSource="{Binding Source={StaticResource cvsToolDiag}}" Sorting="DataGrid_Sorting" x:Name="dg_toolDiag"
                       CanUserAddRows="False" CanUserDeleteRows="False" IsReadOnly="False"
@@ -410,11 +447,8 @@
                     </DataGrid.Columns>
                 </DataGrid>
                 </StackPanel>
-                
-
             </Expander>
 
         </StackPanel>
-
     </Grid>
 </UserControl>
