@@ -1,4 +1,4 @@
-﻿using Hospital.ViewModel;
+﻿using Hospital.ViewModel.Ambulatory;
 using Hospital.WPF.Commands;
 using Hospital.WPF.Navigators;
 using System.Windows.Controls;
@@ -7,7 +7,7 @@ namespace Hospital.WPF.Views
 {
     public partial class Ambulatory : UserControl
     {
-        public static string Label { get; } = "Амбулатория";
+        public static string Label => "Амбулатория";
 
         public AmbulatoryCommand Command { get; private set; }
         public AmbulatoryNavigator Navigator { get; } = new AmbulatoryNavigator();

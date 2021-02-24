@@ -12,7 +12,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="540.748" d:DesignWidth="305.094">
 
-    <UserControl.DataContext> <vm:AmbulatoryViewModel/> </UserControl.DataContext>
+    <!--<UserControl.DataContext> <vm:AmbulatoryViewModel/> </UserControl.DataContext>-->
 
     <Grid>
         <StackPanel Orientation="Vertical" >

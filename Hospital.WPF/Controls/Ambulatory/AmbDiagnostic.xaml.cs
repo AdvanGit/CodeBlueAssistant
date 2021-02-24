@@ -7,7 +7,7 @@ namespace Hospital.WPF.Controls.Ambulatory
 
     public partial class AmbDiagnostic : UserControl
     {
-        public static string Title { get; } = "Диагностика";
+        public static string Title => "Диагностика";
 
         public AmbDiagnostic()
         {

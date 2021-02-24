@@ -33,11 +33,7 @@
                                 SelectedValue="{Binding SelectedTest.Id}" DisplayMemberPath="Id" SelectedValuePath="Id"
                                 SelectedItem="{Binding SelectedTest}"/>
 
-        <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Margin="0,5,55,5"
-                                  IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False"
-                                  ItemsSource="{Binding PhysicalTestTemplate, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
-                                  SelectedValue="{Binding SelectedTemplate.Title}" DisplayMemberPath="Title" SelectedValuePath="Title"
-                                  SelectedItem="{Binding SelectedTemplate}"/>
+        <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="3" Margin="0,5,55,5"/>
         <Button Grid.Row="0" Grid.Column="4" HorizontalAlignment="Right" Width="40" Content="edit" Margin="5,5"/>
         <ComboBox Grid.Row="1" Grid.Column="2"  Margin="0,5,5,5" mah:TextBoxHelper.Watermark="Название"
                                   IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" StaysOpenOnEdit="True"
@@ -48,8 +44,7 @@
         <TextBox Grid.Row="1" Grid.Column="3" Margin="5,5" x:Name="tb_TestOption" Text="{Binding TestOption}" mah:TextBoxHelper.Watermark="Опция"/>
         <TextBox Grid.Row="1" Grid.Column="4" Margin="5,5" x:Name="tb_TestValue" mah:TextBoxHelper.Watermark="Значение" />
 
-        <Button Grid.Column="5" Grid.Row="0" Content="create" HorizontalAlignment="Left" Margin="5,5"
-                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddTemplate}"/>
+        <Button Grid.Column="5" Grid.Row="0" Content="create" HorizontalAlignment="Left" Margin="5,5"/>
         <Button Grid.Column="5" Grid.Row="1" Content="create" HorizontalAlignment="Left" Margin="5,5"
                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddRow}"
                 CommandParameter="{Binding ElementName=tb_TestValue, Path=Text}"/>

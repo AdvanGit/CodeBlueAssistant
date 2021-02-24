@@ -14,7 +14,6 @@ namespace Hospital.WPF.Navigators
         private UserControl _currentPhysDiagPanel = new AmbDiagPhysAddPanel();
         public UserControl CurrentPhysDiagPanel { get => _currentPhysDiagPanel; set { _currentPhysDiagPanel = value; OnPropertyChanged(nameof(CurrentPhysDiagPanel)); } }
 
-
         private readonly List<UserControl> bodies = new List<UserControl>
         {
             new AmbDiagnostic(),

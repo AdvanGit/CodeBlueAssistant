@@ -17,7 +17,7 @@ namespace Hospital.EntityFramework.Services
             _contextFactory = contextFactory;
         }
 
-        public async Task<Entry> GetEntriesById(int entryId)
+        public async Task<Entry> GetEntryById(int entryId)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
