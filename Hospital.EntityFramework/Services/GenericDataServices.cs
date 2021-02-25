@@ -3,7 +3,8 @@ using Hospital.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Hospital.EntityFramework.Services
@@ -31,7 +32,7 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                await db.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+                await db.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
                 await db.SaveChangesAsync();
                 return true;
             }
@@ -41,7 +42,7 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                IEnumerable<T> entities = await db.Set<T>().ToListAsync();
+                IEnumerable<T> entities = await db.Set<T>().AsQueryable().ToListAsync();
                 return entities;
             }
         }
@@ -50,7 +51,7 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                var entity = await db.Set<T>().FirstOrDefaultAsync(e => e.Id == id);
+                var entity = await db.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
                 return entity;
             }
         }
@@ -63,6 +64,34 @@ namespace Hospital.EntityFramework.Services
                 db.Set<T>().Update(entity);
                 await db.SaveChangesAsync();
                 return entity;
+            }
+        }
+
+        public async Task<IEnumerable<T>> GetWhere(Func<T, bool> predicate)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                var entity = await db.Set<T>().AsQueryable().Where(predicate).ToAsyncEnumerable().ToListAsync();
+                return entity;
+            }
+        }
+
+        public IEnumerable<T> GetWithInclude(Func<T, bool> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                var query = Include(includeProperties);
+                return query.Where(predicate).ToList();
+            }
+        }
+
+        private IQueryable<T> Include(params Expression<Func<T, object>>[] includeProperties)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                IQueryable<T> query = db.Set<T>();
+                return includeProperties
+                    .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
             }
         }
     }
