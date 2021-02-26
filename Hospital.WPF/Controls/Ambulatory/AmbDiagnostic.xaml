@@ -14,12 +14,12 @@
     <UserControl.Resources>
         <CollectionViewSource x:Key="cvsLabDiag" Source="{Binding LabDiagData}">
             <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Test.TestType"/>
+                <PropertyGroupDescription PropertyName="Test.TestType.Title"/>
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
         <CollectionViewSource x:Key="cvsToolDiag" Source="{Binding ToolDiagData}">
             <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Test.TestType"/>
+                <PropertyGroupDescription PropertyName="Test.TestType.Title"/>
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
 
@@ -233,7 +233,13 @@
                                 SelectedValue="{Binding CurrentLabTestType.ShortTitle}" DisplayMemberPath="ShortTitle" SelectedValuePath="ShortTitle"
                                 SelectedItem="{Binding CurrentLabTestType}"/>
 
-                        <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,5" MinHeight="0"/>
+                        <ComboBox Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="2" Margin="5,5" MinHeight="0"
+                            IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="Имя шаблона"
+                                ItemsSource="{Binding LabTemplates, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                                SelectedValue="{Binding CurrentLabTemplate.Title}" DisplayMemberPath="Title" SelectedValuePath="Title"
+                                SelectedItem="{Binding CurrentLabTemplate}"/>
+
+
                         <ComboBox   Grid.Row="1" Grid.Column="2" Margin="5,5" MinHeight="0"
                             IsEditable="True" IsTextSearchEnabled="True" IsTextSearchCaseSensitive="False" mah:TextBoxHelper.Watermark="ID"
                                 ItemsSource="{Binding LabTestList, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
@@ -252,6 +258,9 @@
                         <mah:DateTimePicker Grid.Row="0" Grid.Column="5" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Дата" />
                         <mah:DateTimePicker Grid.Row="1" Grid.Column="5" Margin="5,5" MinHeight="0" mah:TextBoxHelper.Watermark="Дата" />
 
+                        <Button Grid.Row="0" Grid.Column="6" Content="create" HorizontalAlignment="Left" Margin="5,5"
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddLabTemplate}"/>
+
                         <Button Grid.Row="1" Grid.Column="6" Content="create" HorizontalAlignment="Left" Margin="5,5"
                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddLabTestData}"/>
 
@@ -269,7 +278,7 @@
                                             <ControlTemplate TargetType="{x:Type GroupItem}">
                                                 <Expander IsExpanded="True" Template="{StaticResource ExpanderDiagLabTable}">
                                                     <Expander.Header>
-                                                        <TextBlock Text="{Binding Path=Name.Title}" FontSize="15" Foreground="{DynamicResource BrushForegroundLight}"/>
+                                                        <TextBlock Text="{Binding Path=Name}" FontSize="15" Foreground="{DynamicResource BrushForegroundLight}"/>
                                                     </Expander.Header>
                                                     <Expander.Content>
                                                         <ItemsPresenter/>
@@ -420,7 +429,7 @@
                                             <ControlTemplate TargetType="{x:Type GroupItem}">
                                                 <Expander IsExpanded="true" Template="{StaticResource ExpanderDiagLabTable}">
                                                     <Expander.Header>
-                                                        <TextBlock Text="{Binding Path=Name.Title}" FontSize="15" Foreground="{DynamicResource BrushForegroundLight}"/>
+                                                        <TextBlock Text="{Binding Path=Name}" FontSize="15" Foreground="{DynamicResource BrushForegroundLight}"/>
                                                     </Expander.Header>
                                                     <Expander.Content>
                                                         <ItemsPresenter/>

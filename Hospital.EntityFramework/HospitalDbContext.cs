@@ -41,6 +41,8 @@ namespace Hospital.EntityFramework
         public DbSet<SurgencyGroup> SurgencyGroups { get; set; }
         public DbSet<SurgencyTherapyData> SurgencyTherapyDatas { get; set; }
 
+        public DbSet<TestTemplate> TestTemplates { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new PatientConfig());

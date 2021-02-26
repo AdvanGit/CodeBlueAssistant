@@ -740,6 +740,9 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<string>("ShortTitle")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TestTemplateId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("TestTypeId")
                         .HasColumnType("int");
 
@@ -747,6 +750,8 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("TestTemplateId");
 
                     b.HasIndex("TestTypeId");
 
@@ -825,6 +830,34 @@ namespace Hospital.EntityFramework.Migrations
                     b.HasIndex("TestId");
 
                     b.ToTable("TestNormalValues");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.TestTemplate", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<int?>("CategoryId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("JsonObjects")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("OwnerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CategoryId");
+
+                    b.HasIndex("OwnerId");
+
+                    b.ToTable("TestTemplates");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.TestType", b =>
@@ -1102,6 +1135,10 @@ namespace Hospital.EntityFramework.Migrations
 
             modelBuilder.Entity("Hospital.Domain.Model.Test", b =>
                 {
+                    b.HasOne("Hospital.Domain.Model.TestTemplate", null)
+                        .WithMany("Objects")
+                        .HasForeignKey("TestTemplateId");
+
                     b.HasOne("Hospital.Domain.Model.TestType", "TestType")
                         .WithMany("Tests")
                         .HasForeignKey("TestTypeId");
@@ -1137,6 +1174,21 @@ namespace Hospital.EntityFramework.Migrations
                         .HasForeignKey("TestId");
 
                     b.Navigation("Test");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.TestTemplate", b =>
+                {
+                    b.HasOne("Hospital.Domain.Model.TestType", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId");
+
+                    b.HasOne("Hospital.Domain.Model.Department", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId");
+
+                    b.Navigation("Category");
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.TestType", b =>
@@ -1213,6 +1265,11 @@ namespace Hospital.EntityFramework.Migrations
             modelBuilder.Entity("Hospital.Domain.Model.Test", b =>
                 {
                     b.Navigation("NormalValues");
+                });
+
+            modelBuilder.Entity("Hospital.Domain.Model.TestTemplate", b =>
+                {
+                    b.Navigation("Objects");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.TestType", b =>

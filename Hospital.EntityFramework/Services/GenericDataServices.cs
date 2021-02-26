@@ -32,7 +32,8 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                await db.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
+                var entity = await db.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
+                db.Set<T>().Remove(entity);
                 await db.SaveChangesAsync();
                 return true;
             }
@@ -42,8 +43,7 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                IEnumerable<T> entities = await db.Set<T>().AsQueryable().ToListAsync();
-                return entities;
+                return await db.Set<T>().AsQueryable().ToListAsync();
             }
         }
 
@@ -51,8 +51,7 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                var entity = await db.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
-                return entity;
+                return await db.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
             }
         }
 
@@ -67,32 +66,25 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-        public async Task<IEnumerable<T>> GetWhere(Func<T, bool> predicate)
+        public async Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                var entity = await db.Set<T>().AsQueryable().Where(predicate).ToAsyncEnumerable().ToListAsync();
-                return entity;
+                return await db.Set<T>().AsQueryable().Where(predicate).ToListAsync();
             }
         }
 
-        public IEnumerable<T> GetWithInclude(Func<T, bool> predicate, params Expression<Func<T, object>>[] includeProperties)
+        public async Task<IEnumerable<T>> GetWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                var query = Include(includeProperties);
-                return query.Where(predicate).ToList();
+                return await Include(db.Set<T>(), includeProperties).Where(predicate).ToListAsync();
             }
         }
 
-        private IQueryable<T> Include(params Expression<Func<T, object>>[] includeProperties)
+        private IQueryable<T> Include(IQueryable<T> query, params Expression<Func<T, object>>[] includeProperties)
         {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                IQueryable<T> query = db.Set<T>();
-                return includeProperties
-                    .Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
-            }
+            return includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
         }
     }
 }

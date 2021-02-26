@@ -62,7 +62,7 @@
             </TextBox.InputBindings>
         </TextBox>
 
-        <CheckBox Content="{iconPacks:Material Kind=FilterOutline, Height=18}" IsEnabled="{Binding ElementName=TabDoctor, Path=IsSelected}" Margin="4" Padding="6,0" HorizontalAlignment="Left" Name="SearchBarPopupButton">
+        <CheckBox IsEnabled="{Binding ElementName=TabDoctor, Path=IsSelected}" Margin="4" Padding="6,0" HorizontalAlignment="Left" Name="SearchBarPopupButton">
             <CheckBox.Style>
                 <Style TargetType="{x:Type CheckBox}">
                     <Style.Triggers>

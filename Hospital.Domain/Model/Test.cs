@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 namespace Hospital.Domain.Model
 {
     public enum TestMethod { Физикальная, Лабараторная, Инструментальная }
-    public enum TestStatus { Ожидание, Готов, Неявка, Редакция, Резерв}
+    public enum TestStatus { Ожидание, Готов, Неявка, Редакция, Резерв }
 
     public class TestData : DomainObject
     {
@@ -30,7 +30,8 @@ namespace Hospital.Domain.Model
         public TestStatus Status { get => _status; set { _status = value; OnPropertyChanged("Status"); } }
         public bool IsSymptom { get => _isSymptom; set { _isSymptom = value; OnPropertyChanged("IsSymptom"); } }
     }
-   
+
+
     public class Test : DomainObject
     {
         private string _title;

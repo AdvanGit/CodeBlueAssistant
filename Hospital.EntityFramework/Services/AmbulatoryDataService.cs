@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -33,7 +34,7 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-        public async Task<List<TestData>> GetTestData(int medCardId)
+        public async Task<IEnumerable<TestData>> GetTestData(int medCardId)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
@@ -47,7 +48,7 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-        public async Task<List<Test>> GetTestList(TestMethod testMethod, TestType testType = null)
+        public async Task<IEnumerable<Test>> GetTestList(TestMethod testMethod, TestType testType = null)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
@@ -61,7 +62,20 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-        public async Task<List<TestType>> GetTestTypeList(TestMethod testMethod)
+        public async Task<IEnumerable<Test>> GetTestList(ICollection<int> ids)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                List<Test> result = await db.Tests
+                    .Include(t => t.TestType)
+                    .AsQueryable()
+                    .Where(t => ids.Contains(t.Id))
+                    .ToListAsync();
+                return result;
+            }
+        }
+
+        public async Task<IEnumerable<TestType>> GetTestTypeList(TestMethod testMethod)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
