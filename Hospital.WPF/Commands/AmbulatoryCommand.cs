@@ -1,5 +1,6 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.ViewModel.Ambulatory;
+using Hospital.ViewModel.Notificator;
 using Hospital.WPF.Views;
 
 namespace Hospital.WPF.Commands
@@ -8,15 +9,15 @@ namespace Hospital.WPF.Commands
     {
         public AmbulatoryCommand(AmbulatoryViewModel ambulatoryViewModel, Ambulatory ambulatoryView)
         {
-            _addPhysicalTestData = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddData(obj, TestMethod.Физикальная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.SelectedPhysicalTest != null));
+            _addPhysicalTestData = new Command(obj =>
+            {
+                ambulatoryViewModel.DiagnosticViewModel.AddData(obj, TestMethod.Физикальная);
+                NotificationManager.AddItem(new NotificationItem { Hold = 5000, Message = "Test Message 5 second" });
+            },
+            obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.SelectedPhysicalTest != null));
             _addLabTestData = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddData(obj, TestMethod.Лабараторная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.SelectedLabTest != null));
             _addToolTestData = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddData(obj, TestMethod.Инструментальная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.SelectedToolTest != null));
-            _removeTestData = new Command(obj => 
-            {
-                ambulatoryViewModel.DiagnosticViewModel.RemoveData(obj);
-                //Main.StatusMessage.
-            },
-                obj => ((obj != null) && ((System.Collections.IList)obj).Count != 0));
+            _removeTestData = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.RemoveData(obj), obj => ((obj != null) && ((System.Collections.IList)obj).Count != 0));
             _addLabTemplate = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddTemplate(TestMethod.Лабараторная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.CurrentLabTemplate != null));
             _addPhysicalTemplate = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddTemplate(TestMethod.Физикальная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.CurrentPhysicalTemplate != null));
             _addToolTemplate = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddTemplate(TestMethod.Инструментальная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.CurrentToolTemplate != null));

@@ -6,6 +6,7 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 		xmlns:local="clr-namespace:Hospital.WPF.Views"
+        xmlns:controls="clr-namespace:Hospital.WPF.Controls"
 		mc:Ignorable="d"
 		ResizeMode="CanResize"
 		WindowStartupLocation="CenterScreen"
@@ -49,8 +50,8 @@
 		<ContentControl Content="{Binding CurrentPage, ElementName=MainWindow}"/>
         <Border BorderThickness="0,1,0,0" VerticalAlignment="Top" BorderBrush="{StaticResource BrushPrimaryBorderLight}"/>
 
-        <DockPanel Height="100" VerticalAlignment="Bottom" Background="Black" Opacity="0.8">
-            <TextBlock Text="{Binding StatusMessage, ElementName=MainWindow}" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        </DockPanel>
+        <ContentControl VerticalAlignment="Bottom">
+            <controls:NotificationArea/>
+        </ContentControl>
     </Grid>
 </mah:MetroWindow>

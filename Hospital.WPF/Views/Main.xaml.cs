@@ -31,8 +31,6 @@ namespace Hospital.WPF.Views
         public static readonly DependencyProperty CurrentPageProperty =
             DependencyProperty.Register("CurrentPage", typeof(UserControl), typeof(Main));
 
-        
-
         private void GetControls(UserAccess userAccess)
         {
             switch (userAccess)
@@ -62,6 +60,5 @@ namespace Hospital.WPF.Views
             }
 
         }
-
     }
 }

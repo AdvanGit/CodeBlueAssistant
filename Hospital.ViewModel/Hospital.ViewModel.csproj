@@ -5,6 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Notificator\NotificationArea.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Page Include="Notificator\NotificationArea.xaml">
+      <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Hospital.Domain\Hospital.Domain.csproj" />
     <ProjectReference Include="..\Hospital.EntityFramework\Hospital.EntityFramework.csproj" />
   </ItemGroup>
