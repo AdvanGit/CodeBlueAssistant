@@ -9,7 +9,14 @@
     <Geometry x:Key="treeIconDown">M7,10L12,15L17,10H7Z</Geometry>
     <Geometry x:Key="sortArrowDown">M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z</Geometry>
     <Geometry x:Key="sortArrowUp">M7.41,15.41L12,10.83L16.59,15.41L18,14L12,8L6,14L7.41,15.41Z</Geometry>
+    <Geometry x:Key="diagExpEditOpenPanelGeom">M4 6H2V20C2 21.11 2.9 22 4 22H18V20H4V6M18.7 7.35L17.7 8.35L15.65 6.3L16.65 5.3C16.86 5.08 17.21 5.08 17.42 5.3L18.7 6.58C18.92 6.79 18.92 7.14 18.7 7.35M9 12.94L15.06 6.88L17.12 8.94L11.06 15H9V12.94M20 4L20 4L20 16L8 16L8 4H20M20 2H8C6.9 2 6 2.9 6 4V16C6 17.1 6.9 18 8 18H20C21.1 18 22 17.1 22 16V4C22 2.9 21.1 2 20 2Z</Geometry>
+    <Geometry x:Key="diagExpEditClosePanelGeom">M20.22 2H7.78C6.8 2 6 2.8 6 3.78V16.22C6 17.2 6.8 18 7.78 18H20.22C21.2 18 22 17.21 22 16.22V3.78C22 2.8 21.2 2 20.22 2M11.06 15H9V12.94L15.06 6.88L17.12 8.94L11.06 15M18.7 7.35L17.7 8.35L15.65 6.3L16.65 5.3C16.86 5.08 17.21 5.08 17.42 5.3L18.7 6.58C18.92 6.79 18.92 7.14 18.7 7.35M4 6H2V20C2 21.11 2.9 22 4 22H18V20H4V6Z</Geometry>
+    <Geometry x:Key="path.Edit">M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z</Geometry>
+    <Geometry x:Key="path.Add">M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z</Geometry>
+    <Geometry x:Key="path.Remove">M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M9,8H11V17H9V8M13,8H15V17H13V8Z</Geometry>
     
+    <Path x:Key="SearchFilterRegPath" Data="M15,19.88C15.04,20.18 14.94,20.5 14.71,20.71C14.32,21.1 13.69,21.1 13.3,20.71L9.29,16.7C9.06,16.47 8.96,16.16 9,15.87V10.75L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L15,10.75V19.88M7.04,5L11,10.06V15.58L13,17.58V10.05L16.96,5H7.04Z" Stretch="Uniform" Height="15" Width="30" HorizontalAlignment="Center" Fill="{DynamicResource BrushAccent1}"/>
+
     <!--converters-->
 
     <ser:ToUpperCaseConverter x:Key="ToUpperCaseConverter"/>
@@ -239,7 +246,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border Padding="{TemplateBinding Padding}" x:Name="b_ExpanderMethod"
-                            Background="{DynamicResource BrushBackgroundPaper}"
+                            Background="{TemplateBinding Background}"
                             BorderThickness="0,0,0,1"
                             BorderBrush="{DynamicResource BrushPrimaryBorderLight}">
                         <Grid SnapsToDevicePixels="False" Height="35">
@@ -295,6 +302,7 @@
                               HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
                               IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                               MinHeight="0" MinWidth="0" Margin="0" Padding="0"
+                              Background="{TemplateBinding Background}"
                               Style="{StaticResource ExpanderDownHeaderStyleDiag}"
                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                 <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false"
@@ -310,7 +318,7 @@
         </Border>
         <ControlTemplate.Triggers>
             <Trigger Property="IsExpanded" Value="false">
-                                <Trigger.EnterActions>
+                <Trigger.EnterActions>
                     <BeginStoryboard>
                         <Storyboard>
                             <DoubleAnimation Storyboard.TargetName="ExpandSite"
@@ -824,5 +832,31 @@
         <Setter Property="CanUserAddRows" Value="False"/>
         <Setter Property="CanUserDeleteRows" Value="False"/>
     </Style>
+
+    <!--CheckBox-->
+
+    <Style x:Key="ExpanderChkBoxFlatButton" TargetType="{x:Type CheckBox}" BasedOn="{StaticResource  MahApps.Styles.Button.Flat}">
+        <Setter Property="IsChecked" Value="False"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        <Setter Property="HorizontalAlignment" Value="Center"/>
+        <Setter Property="MinHeight" Value="0"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Width" Value="35"/>
+        <Setter Property="Padding" Value="7"/>
+        <Setter Property="Background" Value="Transparent"/>
+
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
 
 </ResourceDictionary>

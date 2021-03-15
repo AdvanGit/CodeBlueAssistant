@@ -62,7 +62,7 @@
             </TextBox.InputBindings>
         </TextBox>
 
-        <CheckBox IsEnabled="{Binding ElementName=TabDoctor, Path=IsSelected}" Margin="4" Padding="6,0" HorizontalAlignment="Left" Name="SearchBarPopupButton">
+        <CheckBox Content="{StaticResource SearchFilterRegPath}" IsEnabled="{Binding ElementName=TabDoctor, Path=IsSelected}" Margin="4" Padding="0" HorizontalAlignment="Left" Name="SearchBarPopupButton">
             <CheckBox.Style>
                 <Style TargetType="{x:Type CheckBox}">
                     <Style.Triggers>
@@ -97,6 +97,7 @@
                 </Style>
             </CheckBox.Style>
         </CheckBox>
+        
         <Popup AllowsTransparency="True" IsOpen="{Binding ElementName=SearchBarPopupButton, Path=IsChecked}" PlacementTarget="{Binding ElementName=SearchBarPopupButton}" StaysOpen="False">
             <Grid Margin="10">
                 <Border Effect="{StaticResource ShadowCard}" CornerRadius="0,10,10,10"

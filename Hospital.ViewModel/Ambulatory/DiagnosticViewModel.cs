@@ -11,9 +11,7 @@ namespace Hospital.ViewModel.Ambulatory
     public class DiagnosticViewModel : MainViewModel
     {
         private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
-
         private readonly GenericDataServices<TestTemplate> genericTemplateServices = new GenericDataServices<TestTemplate>(new HospitalDbContextFactory());
-        private readonly GenericDataServices<Test> genericTestServices = new GenericDataServices<Test>(new HospitalDbContextFactory());
 
         private readonly Entry currentEntry;
 
@@ -106,6 +104,30 @@ namespace Hospital.ViewModel.Ambulatory
         public ObservableCollection<TestData> ToolDiagData { get; } = new ObservableCollection<TestData>();
         public ObservableCollection<TestData> LabDiagData { get; } = new ObservableCollection<TestData>();
 
+        private int _diagnosticLocator;
+        public int DiagnosticLocator
+        {
+            get => _diagnosticLocator;
+            set
+            {
+                _diagnosticLocator = value;
+                OnPropertyChanged(nameof(DiagnosticLocator));
+                switch (value)
+                {
+                    case 0:
+                        PhysicalTemplates.Clear();
+                        GetTemplateList(new TestType { Id = 9, TestMethod = TestMethod.Физикальная }); //id's may be not equal
+                        break;
+                    case 2:
+                        PhysicalTemplates.Clear();
+                        GetTemplateList(new TestType { Id = 9, TestMethod = TestMethod.Физикальная }); //id's may be not equal
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+
         private async void Initialize(Entry entry)
         {
             if (entry != null && entry.MedCardId != null)
@@ -189,7 +211,7 @@ namespace Hospital.ViewModel.Ambulatory
                     break;
             }
         }
-        
+
         public async void AddTemplate(TestMethod testMethod)
         {
             switch (testMethod)
@@ -198,7 +220,13 @@ namespace Hospital.ViewModel.Ambulatory
                     if (CurrentPhysicalTemplate != null && CurrentPhysicalTemplate.Objects.Count != 0)
                     {
                         var result = await ambulatoryDataService.GetTestList(CurrentPhysicalTemplate.Objects);
-                        foreach (Test test in result) PhysicalDiagData.Add(CreateData(test, null, test.DefaultOption));
+                        foreach (Test test in result)
+                        {
+                            var data = CreateData(test, null, test.DefaultOption);
+                            data.DateResult = DateTime.Now;
+                            data.StaffResult = currentEntry.DoctorDestination;
+                            PhysicalDiagData.Add(data);
+                        }
                     }
                     break;
                 case TestMethod.Лабараторная:
@@ -282,22 +310,10 @@ namespace Hospital.ViewModel.Ambulatory
                     default: break;
                 }
         }
-
-        public void CreateDbDataTemplate(object testDatas, string title)
+        public async void SaveChanges()
         {
-            var items = ((System.Collections.IList)testDatas).Cast<TestData>().ToList();
-            List<int> tests = new List<int>();
-
-            foreach (TestData data in items) tests.Add(data.Test.Id);
-
-            CurrentLabTemplate = new TestTemplate
-            {
-                Title = title,
-                Category = _currentLabTestType,
-                Owner = currentEntry.DoctorDestination.Department,
-                Objects = new List<int>()
-            };
-            CurrentLabTemplate.Objects = tests;
+            foreach (TestData data in PhysicalDiagData.Where(d => d.Status == TestStatus.Редакция)) data.Status = TestStatus.Готов;
+            await ambulatoryDataService.UpdateTestData(PhysicalDiagData.Where(d => (d.DateCreate + TimeSpan.FromHours(1) >= DateTime.Now)).ToList());
         }
     }
 }

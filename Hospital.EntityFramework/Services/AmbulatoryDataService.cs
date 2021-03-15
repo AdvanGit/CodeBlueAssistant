@@ -1,10 +1,7 @@
 ﻿using Hospital.Domain.Model;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Hospital.EntityFramework.Services
@@ -39,15 +36,14 @@ namespace Hospital.EntityFramework.Services
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 List<TestData> result = await db.TestDatas
-                    .Include(t=>t.Test).ThenInclude(t=>t.TestType)
-                    .Include(t=>t.StaffResult)
+                    .Include(t => t.Test).ThenInclude(t => t.TestType)
+                    .Include(t => t.StaffResult)
                     .AsQueryable()
                     .Where(t => t.MedCard.Id == medCardId)
                     .ToListAsync();
                 return result;
             }
         }
-
         public async Task<IEnumerable<Test>> GetTestList(TestMethod testMethod, TestType testType = null)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
@@ -56,12 +52,11 @@ namespace Hospital.EntityFramework.Services
                     .Include(t => t.TestType)
                     .AsQueryable()
                     .Where(t => t.TestType.TestMethod == testMethod)
-                    .Where(t=> (testType != null) ?  t.TestType == testType : true)
+                    .Where(t => (testType != null) ? t.TestType == testType : true)
                     .ToListAsync();
                 return result;
             }
         }
-
         public async Task<IEnumerable<Test>> GetTestList(ICollection<int> ids)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
@@ -74,7 +69,6 @@ namespace Hospital.EntityFramework.Services
                 return result;
             }
         }
-
         public async Task<IEnumerable<TestType>> GetTestTypeList(TestMethod testMethod)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
@@ -86,6 +80,26 @@ namespace Hospital.EntityFramework.Services
                 return result;
             }
         }
+
+        public async Task<bool> SaveRangeTestData(IEnumerable<TestData> datas)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                db.TestDatas.AddRange(datas);
+                await db.SaveChangesAsync();
+                return true;
+            }
+        }
+        public async Task<bool> UpdateTestData(IEnumerable<TestData> datas)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                db.TestDatas.UpdateRange(datas);
+                await db.SaveChangesAsync();
+                return true;
+            }
+        }
+
 
     }
 }

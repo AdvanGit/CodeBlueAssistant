@@ -12,7 +12,7 @@ namespace Hospital.WPF.Views
         {
             InitializeComponent();
             DataContext = new MainViewModel();
-            _getControls(UserAccess.admin);
+            GetControls(UserAccess.admin);
         }
 
         public List<UserControl> Pages
@@ -31,7 +31,9 @@ namespace Hospital.WPF.Views
         public static readonly DependencyProperty CurrentPageProperty =
             DependencyProperty.Register("CurrentPage", typeof(UserControl), typeof(Main));
 
-        private void _getControls(UserAccess userAccess)
+        
+
+        private void GetControls(UserAccess userAccess)
         {
             switch (userAccess)
             {
@@ -60,5 +62,6 @@ namespace Hospital.WPF.Views
             }
 
         }
+
     }
 }

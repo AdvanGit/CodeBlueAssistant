@@ -24,7 +24,7 @@ namespace Hospital.WPF.Controls.Ambulatory
             if (e.Column.SortDirection == null || e.Column.SortDirection.Value == ListSortDirection.Ascending)
             {
                 e.Column.SortDirection = ListSortDirection.Descending;
-                colectionView.SortDescriptions.Add(new SortDescription(sortPath, ListSortDirection.Descending));
+                colectionView.SortDescriptions.Add(new SortDescription(sortPath, ListSortDirection.Descending)); //sorting error
             }  
             else
             {

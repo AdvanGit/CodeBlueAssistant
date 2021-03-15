@@ -740,9 +740,6 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<string>("ShortTitle")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int?>("TestTemplateId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("TestTypeId")
                         .HasColumnType("int");
 
@@ -750,8 +747,6 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("TestTemplateId");
 
                     b.HasIndex("TestTypeId");
 
@@ -788,6 +783,9 @@ namespace Hospital.EntityFramework.Migrations
 
                     b.Property<int?>("TestId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("TimeStamp")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Value")
                         .HasColumnType("nvarchar(max)");
@@ -1135,10 +1133,6 @@ namespace Hospital.EntityFramework.Migrations
 
             modelBuilder.Entity("Hospital.Domain.Model.Test", b =>
                 {
-                    b.HasOne("Hospital.Domain.Model.TestTemplate", null)
-                        .WithMany("Objects")
-                        .HasForeignKey("TestTemplateId");
-
                     b.HasOne("Hospital.Domain.Model.TestType", "TestType")
                         .WithMany("Tests")
                         .HasForeignKey("TestTypeId");
@@ -1265,11 +1259,6 @@ namespace Hospital.EntityFramework.Migrations
             modelBuilder.Entity("Hospital.Domain.Model.Test", b =>
                 {
                     b.Navigation("NormalValues");
-                });
-
-            modelBuilder.Entity("Hospital.Domain.Model.TestTemplate", b =>
-                {
-                    b.Navigation("Objects");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.TestType", b =>

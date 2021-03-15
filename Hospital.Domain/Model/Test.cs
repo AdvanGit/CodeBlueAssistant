@@ -15,6 +15,7 @@ namespace Hospital.Domain.Model
 
         private DateTime _dateCreate;
         private DateTime _dateResult;
+        private DateTime _timeStamp;
 
         private Staff _staffResult;
         private TestStatus _status;
@@ -26,9 +27,11 @@ namespace Hospital.Domain.Model
         public string Value { get => _value; set { _value = value; OnPropertyChanged("Value"); } }
         public DateTime DateCreate { get => _dateCreate; set { _dateCreate = value; OnPropertyChanged("DateCreate"); } }
         public DateTime DateResult { get => _dateResult; set { _dateResult = value; OnPropertyChanged("DateResult"); } }
+        public DateTime TimeStamp { get => _timeStamp; set { _timeStamp = value; OnPropertyChanged(nameof(TimeStamp)); } }
         public Staff StaffResult { get => _staffResult; set { _staffResult = value; OnPropertyChanged("StaffResult"); } }
         public TestStatus Status { get => _status; set { _status = value; OnPropertyChanged("Status"); } }
         public bool IsSymptom { get => _isSymptom; set { _isSymptom = value; OnPropertyChanged("IsSymptom"); } }
+
     }
 
 
