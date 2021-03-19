@@ -1,37 +1,30 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.ViewModel.Ambulatory;
-using Hospital.ViewModel.Notificator;
+using Hospital.WPF.Controls;
 using Hospital.WPF.Views;
 
 namespace Hospital.WPF.Commands
 {
     public class AmbulatoryCommand
     {
+        private static AmbulatoryViewModel _ambulatoryViewModel;
+        private static Ambulatory _ambulatoryView;
+
         public AmbulatoryCommand(AmbulatoryViewModel ambulatoryViewModel, Ambulatory ambulatoryView)
         {
-            _addPhysicalTestData = new Command(obj =>
-            {
-                ambulatoryViewModel.DiagnosticViewModel.AddData(obj, TestMethod.Физикальная);
-                NotificationManager.AddItem(new NotificationItem { Hold = 5000, Message = "Test Message 5 second" });
-            },
-            obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.SelectedPhysicalTest != null));
-            _addLabTestData = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddData(obj, TestMethod.Лабараторная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.SelectedLabTest != null));
-            _addToolTestData = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddData(obj, TestMethod.Инструментальная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.SelectedToolTest != null));
-            _removeTestData = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.RemoveData(obj), obj => ((obj != null) && ((System.Collections.IList)obj).Count != 0));
-            _addLabTemplate = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddTemplate(TestMethod.Лабараторная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.CurrentLabTemplate != null));
-            _addPhysicalTemplate = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddTemplate(TestMethod.Физикальная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.CurrentPhysicalTemplate != null));
-            _addToolTemplate = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.AddTemplate(TestMethod.Инструментальная), obj => (ambulatoryViewModel.DiagnosticViewModel != null) && (ambulatoryViewModel.DiagnosticViewModel.CurrentToolTemplate != null));
-            _updateTestData = new Command(obj => ambulatoryViewModel.DiagnosticViewModel.SaveChanges(), obj => (ambulatoryViewModel.DiagnosticViewModel != null));
+            _ambulatoryViewModel = ambulatoryViewModel;
+            _ambulatoryView = ambulatoryView;
         }
 
-        private Command _addPhysicalTestData,
-            _addLabTestData,
-            _addToolTestData,
-            _removeTestData,
-            _addLabTemplate,
-            _addToolTemplate,
-            _addPhysicalTemplate,
-            _updateTestData;
+        private static readonly Command _addPhysicalTestData = new Command(obj => _ambulatoryViewModel.DiagnosticViewModel.AddData(obj, TestMethod.Физикальная), obj => (_ambulatoryViewModel.DiagnosticViewModel != null) && (_ambulatoryViewModel.DiagnosticViewModel.SelectedPhysicalTest != null));
+        private static readonly Command _addLabTestData = new Command(obj => _ambulatoryViewModel.DiagnosticViewModel.AddData(obj, TestMethod.Лабараторная), obj => (_ambulatoryViewModel.DiagnosticViewModel != null) && (_ambulatoryViewModel.DiagnosticViewModel.SelectedLabTest != null));
+        private static readonly Command _addToolTestData = new Command(obj => _ambulatoryViewModel.DiagnosticViewModel.AddData(obj, TestMethod.Инструментальная), obj => (_ambulatoryViewModel.DiagnosticViewModel != null) && (_ambulatoryViewModel.DiagnosticViewModel.SelectedToolTest != null));
+        private static readonly Command _removeTestData = new Command(obj => new ConfirmDialog(_obj => _ambulatoryViewModel.DiagnosticViewModel.RemoveData(obj), "вы действительно хотите удалить данные?"), obj => ((obj != null) && ((System.Collections.IList)obj).Count != 0));
+        private static readonly Command _addLabTemplate = new Command(obj => _ambulatoryViewModel.DiagnosticViewModel.AddTemplate(TestMethod.Лабараторная), obj => (_ambulatoryViewModel.DiagnosticViewModel != null) && (_ambulatoryViewModel.DiagnosticViewModel.CurrentLabTemplate != null));
+        private static readonly Command _addToolTemplate = new Command(obj => _ambulatoryViewModel.DiagnosticViewModel.AddTemplate(TestMethod.Физикальная), obj => (_ambulatoryViewModel.DiagnosticViewModel != null) && (_ambulatoryViewModel.DiagnosticViewModel.CurrentPhysicalTemplate != null));
+        private static readonly Command _addPhysicalTemplate = new Command(obj => _ambulatoryViewModel.DiagnosticViewModel.AddTemplate(TestMethod.Инструментальная), obj => (_ambulatoryViewModel.DiagnosticViewModel != null) && (_ambulatoryViewModel.DiagnosticViewModel.CurrentToolTemplate != null));
+        private static readonly Command _updateTestData = new Command(obj => _ambulatoryViewModel.DiagnosticViewModel.SaveChanges(), obj => (_ambulatoryViewModel.DiagnosticViewModel != null));
+        
         public Command AddPhysicalTestData => _addPhysicalTestData;
         public Command AddLabTestData => _addLabTestData;
         public Command AddToolTestData => _addToolTestData;

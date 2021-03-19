@@ -2,40 +2,63 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Hospital.ViewModel.Notificator
 {
-    public static class NotificationManager 
+    public static class NotificationManager
     {
         private static ICollection<NotificationItem> notificationQueue = new List<NotificationItem>();
         private static bool isLocked;
-        private static string message;
-        private static bool isOpen;
 
-        public static string Message { get => message; private set { message = value; NotifyStaticPropertyChanged(nameof(Message)); } }
-        public static bool IsOpen { get => isOpen; private set { isOpen = value; NotifyStaticPropertyChanged(nameof(IsOpen)); } }
+        private static bool _isOpen;
+        private static string _message;
+        private static NotificationType _type;
+        private static TimeSpan _span = TimeSpan.FromSeconds(3);
 
-        public async static void AddItem(NotificationItem item)
-        {
-            notificationQueue.Add(item);
-            if (!isLocked) await Show();
-        }
+        public static bool IsOpen { get => _isOpen; private set { _isOpen = value; NotifyStaticPropertyChanged(nameof(IsOpen)); } }
+        public static string Message { get => _message; private set { _message = value; NotifyStaticPropertyChanged(nameof(Message)); } }
+        public static NotificationType Type { get => _type; private set { _type = value; NotifyStaticPropertyChanged(nameof(Type)); } }
+        public static TimeSpan Span { get => _span; set { _span = value; NotifyStaticPropertyChanged(nameof(Span)); } }
 
-        private async static Task Show()
+        private static CancellationTokenSource source = new CancellationTokenSource();
+        private static CancellationToken token = source.Token;
+
+        private async static void Show()
         {
             isLocked = true;
             while (notificationQueue.Count > 0)
             {
                 var item = notificationQueue.First();
                 Message = item.Message;
+                Type = item.Type;
+                Span = item.Hold;
                 IsOpen = true;
-                await Task.Delay(item.Hold);
+                try
+                {
+                    await Task.Delay(item.Hold, token);
+                }
+                catch (TaskCanceledException)
+                {
+                    source = new CancellationTokenSource();
+                    token = source.Token;
+                }
                 IsOpen = false;
                 notificationQueue.Remove(item);
                 await Task.Delay(200);
             }
             isLocked = false;
+        }
+
+        public static void AddItem(NotificationItem item)
+        {
+            notificationQueue.Add(item);
+            if (!isLocked) Show();
+        }
+        public static void Cancel()
+        {
+            source.Cancel();
         }
 
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged = delegate { };

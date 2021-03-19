@@ -1,6 +1,7 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
+using Hospital.ViewModel.Notificator;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -279,10 +280,12 @@ namespace Hospital.ViewModel.Ambulatory
                 default:
                     break;
             }
+            NotificationManager.AddItem(new NotificationItem { Type = NotificationType.Success, Hold = TimeSpan.FromSeconds(3), Message = "Успешно добавлено 3 сек" });
         }
         public void RemoveData(object testDatas)
         {
             var items = ((System.Collections.IList)testDatas).Cast<TestData>().ToList();
+            int removecounter = 0;
             if (items.Count != 0)
                 switch (items[0].Test.TestType.TestMethod)
                 {
@@ -290,25 +293,35 @@ namespace Hospital.ViewModel.Ambulatory
                         foreach (TestData test in items)
                         {
                             if (test.Status == Enum.Parse<TestStatus>("3"))
+                            { 
                                 PhysicalDiagData.Remove(test);
+                                removecounter++;
+                            }
                         }
                         break;
                     case TestMethod.Лабараторная:
                         foreach (TestData test in items)
                         {
                             if (test.Status == TestStatus.Резерв || test.Status == TestStatus.Редакция)
+                            {
                                 LabDiagData.Remove(test);
+                                removecounter++;
+                            }
                         }
                         break;
                     case TestMethod.Инструментальная:
                         foreach (TestData test in items)
                         {
                             if (test.Status == TestStatus.Резерв || test.Status == TestStatus.Редакция)
+                            {
                                 ToolDiagData.Remove(test);
+                                removecounter++;
+                            }
                         }
                         break;
                     default: break;
                 }
+            NotificationManager.AddItem(new NotificationItem { Type = NotificationType.Information,  Hold = TimeSpan.FromSeconds(5), Message = "Удалено " + removecounter.ToString() + " элементов 5 сек" });
         }
         public async void SaveChanges()
         {

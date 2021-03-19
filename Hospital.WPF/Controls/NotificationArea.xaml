@@ -3,10 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:ser="clr-namespace:Hospital.WPF.Services"
              xmlns:notificator="clr-namespace:Hospital.ViewModel.Notificator;assembly=Hospital.ViewModel"
-             mc:Ignorable="d"
-             Height="100" Background="Black" Foreground="White" Opacity="0.8"
+             mc:Ignorable="d" 
+             Height="80" Background="Black" Foreground="White" Opacity="0.8"
              d:DesignHeight="100" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ser:TimeSpanToDurationConverter x:Key="durationConverter"/>
+    </UserControl.Resources>
     <UserControl.Style>
         <Style TargetType="{x:Type UserControl}">
             <Setter Property="Visibility" Value="Collapsed"/>
@@ -45,8 +49,70 @@
             </Style.Triggers>
         </Style>
     </UserControl.Style>
-
     <Grid>
-        <TextBlock Text="{Binding Path=(notificator:NotificationManager.Message), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="{Binding Path=(notificator:NotificationManager.Message), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <Button x:Name="test" Content="close" Height="30" Width="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,50,0" Click="Button_Click" Background="Transparent" Foreground="White"/>
+        <Path VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,0,0,0" Stretch="Uniform" Width="35" Height="35">
+            <Path.Style>
+                <Style TargetType="{x:Type Path}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=(notificator:NotificationManager.Type), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="{x:Static notificator:NotificationType.Success}">
+                            <Setter Property="Fill" Value="LimeGreen"/>
+                            <Setter Property="Data" Value="M12 2C6.5 2 2 6.5 2 12S6.5 22 12 22 22 17.5 22 12 17.5 2 12 2M12 20C7.59 20 4 16.41 4 12S7.59 4 12 4 20 7.59 20 12 16.41 20 12 20M16.59 7.58L10 14.17L7.41 11.59L6 13L10 17L18 9L16.59 7.58Z"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=(notificator:NotificationManager.Type), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="{x:Static notificator:NotificationType.Information}">
+                            <Setter Property="Fill" Value="DodgerBlue"/>
+                            <Setter Property="Data" Value="M11,9H13V7H11M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M11,17H13V11H11V17Z"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=(notificator:NotificationManager.Type), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="{x:Static notificator:NotificationType.Warning}">
+                            <Setter Property="Fill" Value="Yellow"/>
+                            <Setter Property="Data" Value="M11,15H13V17H11V15M11,7H13V13H11V7M12,2C6.47,2 2,6.5 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2M12,20A8,8 0 0,1 4,12A8,8 0 0,1 12,4A8,8 0 0,1 20,12A8,8 0 0,1 12,20Z"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=(notificator:NotificationManager.Type), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="{x:Static notificator:NotificationType.Warning}">
+                            <Setter Property="Fill" Value="Red"/>
+                            <Setter Property="Data" Value="M12,20C7.59,20 4,16.41 4,12C4,7.59 7.59,4 12,4C16.41,4 20,7.59 20,12C20,16.41 16.41,20 12,20M12,2C6.47,2 2,6.47 2,12C2,17.53 6.47,22 12,22C17.53,22 22,17.53 22,12C22,6.47 17.53,2 12,2M14.59,8L12,10.59L9.41,8L8,9.41L10.59,12L8,14.59L9.41,16L12,13.41L14.59,16L16,14.59L13.41,12L16,9.41L14.59,8Z"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Path.Style>
+        </Path>
+        <Border Name="progressborder" VerticalAlignment="Top" Height="2">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Background" Value="White"/>
+                    <Setter Property="RenderTransform">
+                        <Setter.Value>
+                            <ScaleTransform ScaleX="1"/>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding Path=(notificator:NotificationManager.Type), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="{x:Static notificator:NotificationType.Success}">
+                            <Setter Property="Background" Value="LimeGreen"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=(notificator:NotificationManager.Type), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="{x:Static notificator:NotificationType.Information}">
+                            <Setter Property="Background" Value="DodgerBlue"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=(notificator:NotificationManager.Type), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="{x:Static notificator:NotificationType.Warning}">
+                            <Setter Property="Background" Value="Yellow"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=(notificator:NotificationManager.Type), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" Value="{x:Static notificator:NotificationType.Warning}">
+                            <Setter Property="Background" Value="Red"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>    
+            </Border.Style>
+            <Border.Triggers>
+                <EventTrigger RoutedEvent="Binding.TargetUpdated">
+                    <EventTrigger.Actions>
+                        <BeginStoryboard>
+                            <Storyboard>
+                                <DoubleAnimation Duration="{Binding Path=(notificator:NotificationManager.Span), Mode=OneWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, Converter={StaticResource durationConverter}}"
+                                                 From="1" To="0" Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleX)"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger.Actions>
+                </EventTrigger>
+            </Border.Triggers>
+        </Border>
     </Grid>
 </UserControl>

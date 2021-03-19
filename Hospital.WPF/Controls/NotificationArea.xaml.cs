@@ -11,5 +11,10 @@ namespace Hospital.WPF.Controls
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            NotificationManager.Cancel();
+        }
     }
 }
