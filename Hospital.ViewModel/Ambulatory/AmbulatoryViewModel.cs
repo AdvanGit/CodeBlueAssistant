@@ -20,11 +20,18 @@ namespace Hospital.ViewModel.Ambulatory
         private DiagnosticViewModel _diagnosticViewModel;
         public DiagnosticViewModel DiagnosticViewModel { get => _diagnosticViewModel; set { _diagnosticViewModel = value; OnPropertyChanged(nameof(DiagnosticViewModel)); } }
 
+        private TherapyViewModel _therapyViewModel;
+        public TherapyViewModel TherapyViewModel { get => _therapyViewModel; set { _therapyViewModel = value; OnPropertyChanged(nameof(TherapyViewModel)); } }
+
         private async void GetEntry(int entryId)
         {
             Task<Entry> task = ambulatoryDataService.GetEntryById(entryId);
             CurrentEntry = await task;
-            if (task.IsCompleted) DiagnosticViewModel = new DiagnosticViewModel(CurrentEntry);
+            if (task.IsCompleted)
+            {
+                DiagnosticViewModel = new DiagnosticViewModel(CurrentEntry);
+                TherapyViewModel = new TherapyViewModel(CurrentEntry);
+            }
         }
     }
 }

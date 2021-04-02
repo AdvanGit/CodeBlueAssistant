@@ -20,8 +20,8 @@ namespace Hospital.WPF.Views
             DataContext = ambulatoryViewModel;
             Command = new AmbulatoryCommand(ambulatoryViewModel, AmbulatoryView);
 
-            //foreach (UserControl userControl in Navigator.GetBodies()) { AmbulatoryView.AddLogicalChild(userControl); }
-            Navigator.SetBody("MedCard");
+            foreach (UserControl userControl in Navigator.GetBodies()) { AmbulatoryView.AddLogicalChild(userControl); }
+            Navigator.SetBody("Therapy");
         }
     }
 }

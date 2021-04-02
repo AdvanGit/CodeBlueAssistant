@@ -67,7 +67,7 @@ namespace Hospital.EntityFramework
 
                 List<MedCard> medCards = new List<MedCard>
                 {
-                    new MedCard { Doctor=staffs.ElementAt(new Random().Next(staffs.Count) )}
+                    new MedCard { TherapyDoctor=staffs.ElementAt(new Random().Next(staffs.Count) )}
                 };
 
                 List<Entry> entries = new List<Entry>

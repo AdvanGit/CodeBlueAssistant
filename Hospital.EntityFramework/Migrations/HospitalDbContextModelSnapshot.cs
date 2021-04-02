@@ -308,11 +308,20 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<string>("Conclusion")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime>("DiagnosisDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DiagnosisDoctorId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("DiagnosisId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("DoctorId")
-                        .HasColumnType("int");
+                    b.Property<bool>("IsDifferential")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsPreliminary")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Option")
                         .HasColumnType("nvarchar(max)");
@@ -323,13 +332,18 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<string>("Recomendation")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("TherapyDoctorId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("DiagnosisDoctorId");
 
                     b.HasIndex("DiagnosisId");
 
-                    b.HasIndex("DoctorId");
-
                     b.HasIndex("PatientId");
+
+                    b.HasIndex("TherapyDoctorId");
 
                     b.ToTable("MedCards");
                 });
@@ -402,6 +416,15 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<DateTime>("DateCreate")
                         .HasColumnType("datetime2");
 
+                    b.Property<DateTime>("DiagnosisDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("DiagnosisDoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("DiagnosisId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Dose")
                         .HasColumnType("nvarchar(max)");
 
@@ -411,14 +434,26 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int?>("MedCardId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("TherapyDoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Trademark")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("Treatment")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DiagnosisDoctorId");
+
+                    b.HasIndex("DiagnosisId");
+
                     b.HasIndex("DrugId");
 
                     b.HasIndex("MedCardId");
+
+                    b.HasIndex("TherapyDoctorId");
 
                     b.ToTable("PharmacoTherapyDatas");
                 });
@@ -998,23 +1033,29 @@ namespace Hospital.EntityFramework.Migrations
 
             modelBuilder.Entity("Hospital.Domain.Model.MedCard", b =>
                 {
+                    b.HasOne("Hospital.Domain.Model.Staff", "DiagnosisDoctor")
+                        .WithMany()
+                        .HasForeignKey("DiagnosisDoctorId");
+
                     b.HasOne("Hospital.Domain.Model.Diagnosis", "Diagnosis")
                         .WithMany()
                         .HasForeignKey("DiagnosisId");
-
-                    b.HasOne("Hospital.Domain.Model.Staff", "Doctor")
-                        .WithMany()
-                        .HasForeignKey("DoctorId");
 
                     b.HasOne("Hospital.Domain.Model.Staff", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId");
 
+                    b.HasOne("Hospital.Domain.Model.Staff", "TherapyDoctor")
+                        .WithMany()
+                        .HasForeignKey("TherapyDoctorId");
+
                     b.Navigation("Diagnosis");
 
-                    b.Navigation("Doctor");
+                    b.Navigation("DiagnosisDoctor");
 
                     b.Navigation("Patient");
+
+                    b.Navigation("TherapyDoctor");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Patient", b =>
@@ -1028,6 +1069,14 @@ namespace Hospital.EntityFramework.Migrations
 
             modelBuilder.Entity("Hospital.Domain.Model.PharmacoTherapyData", b =>
                 {
+                    b.HasOne("Hospital.Domain.Model.Staff", "DiagnosisDoctor")
+                        .WithMany()
+                        .HasForeignKey("DiagnosisDoctorId");
+
+                    b.HasOne("Hospital.Domain.Model.Diagnosis", "Diagnosis")
+                        .WithMany()
+                        .HasForeignKey("DiagnosisId");
+
                     b.HasOne("Hospital.Domain.Model.Drug", "Drug")
                         .WithMany()
                         .HasForeignKey("DrugId");
@@ -1036,9 +1085,19 @@ namespace Hospital.EntityFramework.Migrations
                         .WithMany("PharmacoTherapyDatas")
                         .HasForeignKey("MedCardId");
 
+                    b.HasOne("Hospital.Domain.Model.Staff", "TherapyDoctor")
+                        .WithMany()
+                        .HasForeignKey("TherapyDoctorId");
+
+                    b.Navigation("Diagnosis");
+
+                    b.Navigation("DiagnosisDoctor");
+
                     b.Navigation("Drug");
 
                     b.Navigation("MedCard");
+
+                    b.Navigation("TherapyDoctor");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.PhysTherMethod", b =>

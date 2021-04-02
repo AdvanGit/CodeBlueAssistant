@@ -24,6 +24,7 @@
     <ser:MultiCommandExecuter x:Key="MultiCommandExecuter"/>
     <ser:MultiBooleanToVisibilityConverter x:Key="MultiBooleanToVisibilityConverter"/>
     <ser:DateToAgeConverter x:Key="DateToAgeConverter"/>
+    <ser:ObjectNullToBoolConverter x:Key="NullToBoolConverter"/>
 
     <!--expanders-->
 
@@ -857,6 +858,5 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-
 
 </ResourceDictionary>

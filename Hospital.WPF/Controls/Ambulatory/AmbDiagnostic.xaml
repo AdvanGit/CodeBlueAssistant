@@ -12,92 +12,21 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
-        <CollectionViewSource x:Key="cvsLabDiag" Source="{Binding LabDiagData}">
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Local/AmbulatoryResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <CollectionViewSource x:Key="cvsLabDiag" Source="{Binding LabDiagData}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Test.TestType.Title"/>
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
-        <CollectionViewSource x:Key="cvsToolDiag" Source="{Binding ToolDiagData}">
+            <CollectionViewSource x:Key="cvsToolDiag" Source="{Binding ToolDiagData}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Test.TestType.Title"/>
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
-
-        <Style x:Key="tb_common" TargetType="{x:Type TextBlock}">
-            <Setter Property="HorizontalAlignment" Value="Center"/>
-            <Setter Property="VerticalAlignment" Value="Center"/>
-        </Style>
-        <Style x:Key="tb_editing" TargetType="{x:Type TextBox}">
-            <Setter Property="HorizontalContentAlignment" Value="Center"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-            <Setter Property="FontSize" Value="15"/>
-            <Setter Property="Margin" Value="0"/>
-        </Style>
-        
-        <Style x:Key="tb.Panel" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MahApps.Styles.TextBox}">
-            <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="VerticalContentAlignment" Value="Center"/>
-        </Style>
-        <Style x:Key="cb.Panel" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
-            <Setter Property="IsEditable" Value="True"/>
-            <Setter Property="IsTextSearchEnabled" Value="True"/>
-            <Setter Property="IsTextSearchCaseSensitive" Value="False"/>
-            <Setter Property="StaysOpenOnEdit" Value="True"/>
-        </Style>
-
-        <Style x:Key="b_flatAccent" TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
-            <Setter Property="Background" Value="{StaticResource BrushAccent1}"/>
-            <Setter Property="Foreground" Value="{StaticResource BrushBackgroundPaper}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BrushAccent1}"/>
-            <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="Width" Value="40"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Cursor" Value="Hand"/>
-                    <Setter Property="Background" Value="{StaticResource BrushAccent1}"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{StaticResource BrushAccent2}"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="{StaticResource BrushPrimaryBorderLight}"/>
-                    <Setter Property="Foreground" Value="{StaticResource BrushBackgroundPaper}"/>
-                    <Setter Property="Opacity" Value="0.5"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-        <Style x:Key="b_flat" TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
-            <Setter Property="Background" Value="{StaticResource BrushBackgroundPaper}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource BrushPrimaryBorderLight}"/>
-            <Setter Property="BorderThickness" Value="1" />
-            <Setter Property="Foreground" Value="{StaticResource BrushAccent1}"/>
-            <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
-            <Setter Property="Margin" Value="5"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-            <Setter Property="Width" Value="40"/>
-            <Style.Triggers>
-                <Trigger Property="IsMouseOver" Value="True">
-                    <Setter Property="Background" Value="{StaticResource BrushBackgroundPaper}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource BrushAccent2}"/>
-                    <Setter Property="Cursor" Value="Hand"/>
-                </Trigger>
-                <Trigger Property="IsPressed" Value="True">
-                    <Setter Property="Background" Value="{StaticResource BrushAccent2}"/>
-                    <Setter Property="BorderBrush" Value="{StaticResource BrushAccent2}"/>
-                </Trigger>
-                <Trigger Property="IsEnabled" Value="False">
-                    <Setter Property="Background" Value="{StaticResource BrushPrimaryBorderLight}"/>
-                    <Setter Property="Foreground" Value="{StaticResource BrushBackgroundPaper}"/>
-                    <Setter Property="Opacity" Value="0.5"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-
+        </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>

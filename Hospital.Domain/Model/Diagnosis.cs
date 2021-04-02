@@ -1,6 +1,6 @@
-﻿
-namespace Hospital.Domain.Model
+﻿namespace Hospital.Domain.Model
 {
+
     public class Diagnosis : DomainObject
     {
         private string _title;
@@ -35,4 +35,5 @@ namespace Hospital.Domain.Model
             }
         }
     }
+
 }

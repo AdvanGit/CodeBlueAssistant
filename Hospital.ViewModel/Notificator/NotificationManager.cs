@@ -39,11 +39,7 @@ namespace Hospital.ViewModel.Notificator
                 {
                     await Task.Delay(item.Hold, token);
                 }
-                catch (TaskCanceledException)
-                {
-                    source = new CancellationTokenSource();
-                    token = source.Token;
-                }
+                catch (TaskCanceledException) { }
                 IsOpen = false;
                 notificationQueue.Remove(item);
                 await Task.Delay(200);
@@ -53,12 +49,19 @@ namespace Hospital.ViewModel.Notificator
 
         public static void AddItem(NotificationItem item)
         {
+            if (item.IsStop && notificationQueue.Count !=0 )
+            {
+                Cancel();
+                notificationQueue.Clear();
+            }
             notificationQueue.Add(item);
             if (!isLocked) Show();
         }
         public static void Cancel()
         {
             source.Cancel();
+            source = new CancellationTokenSource();
+            token = source.Token;
         }
 
         public static event EventHandler<PropertyChangedEventArgs> StaticPropertyChanged = delegate { };

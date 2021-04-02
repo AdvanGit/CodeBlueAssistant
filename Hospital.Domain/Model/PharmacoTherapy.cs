@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hospital.Domain.Model
 {
@@ -10,15 +11,27 @@ namespace Hospital.Domain.Model
     {
         private MedCard _medCard;
         private Drug _drug;
+        private string _trademark;
         private string _dose;
         private Treatment _treatment;
         private DateTime _dateCreate;
 
+        private Staff _therapyDoctor;
+        private Diagnosis _diagnosis;
+        private DateTime _diagnosisDate;
+        private Staff _diagnosisDoctor;
+
         public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged("MedCard"); } }
         public Drug Drug { get => _drug; set { _drug = value; OnPropertyChanged("Drug"); } }
+        public string Trademark { get => _trademark; set { _trademark = value; OnPropertyChanged(nameof(Trademark)); } }
         public string Dose { get => _dose; set { _dose = value; OnPropertyChanged("Dose"); } }
         public Treatment Treatment { get => _treatment; set { _treatment = value; OnPropertyChanged("Treatment"); } }
         public DateTime DateCreate { get => _dateCreate; set { _dateCreate = value; OnPropertyChanged("DateCreate"); } }
+
+        public Staff TherapyDoctor { get => _therapyDoctor; set { _therapyDoctor = value; OnPropertyChanged(nameof(TherapyDoctor)); } }
+        public DateTime DiagnosisDate { get => _diagnosisDate; set { _diagnosisDate = value; OnPropertyChanged(nameof(DiagnosisDate)); } }
+        public Staff DiagnosisDoctor { get => _diagnosisDoctor; set { _diagnosisDoctor = value; OnPropertyChanged(nameof(DiagnosisDoctor)); } }
+        public Diagnosis Diagnosis { get => _diagnosis; set { _diagnosis = value; OnPropertyChanged(nameof(Diagnosis)); } }
     }
 
     public class Drug : DomainObject

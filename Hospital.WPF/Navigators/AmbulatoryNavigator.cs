@@ -14,16 +14,17 @@ namespace Hospital.WPF.Navigators
         private readonly List<UserControl> bodies = new List<UserControl>
         {
             new AmbDiagnostic(),
-            new AmbMedCard(),
+            new AmbTherapy(),
             new AmbReport()
         };
+
 
         public void SetBody(string bodyName)
         {
             switch (bodyName)
             {
-                case "MedCard": CurrentBody = bodies[0]; return;
-                case "Diagnostic": CurrentBody = bodies[1]; return;
+                case "Diagnostic": CurrentBody = bodies[0]; return;
+                case "Therapy": CurrentBody = bodies[1]; return;
                 case "Report": CurrentBody = bodies[2]; return;
                 default: break;
             }

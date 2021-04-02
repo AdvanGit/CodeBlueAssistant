@@ -1,0 +1,340 @@
+﻿<UserControl x:Class="Hospital.WPF.Controls.Ambulatory.AmbTherapy"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:domain="clr-namespace:Hospital.Domain.Model;assembly=Hospital.Domain"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:view="clr-namespace:Hospital.WPF.Views"
+             xmlns:vm="clr-namespace:Hospital.ViewModel.Ambulatory;assembly=Hospital.ViewModel"
+             xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
+             DataContext="{Binding TherapyViewModel}" d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:TherapyViewModel}}"
+             Foreground="{DynamicResource BrushForegroundLight}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Local/AmbulatoryResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource tb.Panel}"/>
+            <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource cb.Panel}">
+                <Setter Property="Height" Value="30"/>
+            </Style>
+            <ObjectDataProvider x:Key="TreatmentEnum" MethodName="GetValues" ObjectType="{x:Type domain:Treatment}">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="domain:Treatment"/>
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
+            <RowDefinition Height="145"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="{Binding}" Grid.Row="0"/>
+
+        <Border  Grid.Row="0" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BrushPrimaryBorderLight}"/>
+        <Border Grid.Row="1" BorderThickness="0,0,0,1" BorderBrush="{DynamicResource BrushPrimaryBorderLight}"/>
+        <!--<GridSplitter Grid.Row="1" VerticalAlignment="Bottom" Height="2" Background="Transparent"/>-->
+
+        <Grid Grid.Row="1" Margin="5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition MinWidth="130" Width="150" MaxWidth="150"/>
+                <ColumnDefinition MinWidth="150" Width="0.4*"/>
+                <ColumnDefinition MinWidth="100" Width="0.6*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="45" MaxHeight="45"/>
+                <RowDefinition Height="45" MaxHeight="45"/>
+                <RowDefinition Height="45" MaxHeight="45"/>
+            </Grid.RowDefinitions>
+
+            <GridSplitter Grid.Column="2" Width="4" ResizeDirection="Columns" Background="Transparent" Grid.RowSpan="3" HorizontalAlignment="Left" Margin="0,5"/>
+
+            <Path Grid.Row="0" Grid.Column="0" Data="{StaticResource Path.Diagnosis}" HorizontalAlignment="Left" Stretch="Uniform" Fill="OrangeRed" Margin="12"/>
+            <TextBlock Text="ДИАГНОЗ" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" FontSize="14" FontWeight="SemiBold"/>
+            <CheckBox Grid.Column="1" IsChecked="{Binding DiagnosisData.IsDifferential}" Content="Диф" FontSize="15" HorizontalAlignment="Left" Margin="5" ToolTip="Дифференциальный"/>
+            <ComboBox Grid.Column="1" Grid.Row="0" Margin="70,5,5,5" SelectedIndex="2">
+                <ComboBoxItem Content="Предварительный"/>
+                <ComboBoxItem Content="Окончательный"/>
+                <ComboBoxItem Content="Не установлен"/>
+            </ComboBox>
+            <ComboBox Grid.Column="0" Grid.Row="1"  Margin="5" ItemsSource="{Binding Diagnoses, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedItem="{Binding CurrentDiagnosis, UpdateSourceTrigger=PropertyChanged}"
+                      SelectedValue="{Binding CurrentDiagnosis.Code}" DisplayMemberPath="Code" SelectedValuePath="Code"/>
+            <ComboBox Grid.Column="1" Grid.Row="1" Margin="5"
+                      ItemsSource="{Binding Diagnoses, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                      Text="{Binding DiagnosisSearchValue}" 
+                      SelectedValue="{Binding CurrentDiagnosis.Title}" DisplayMemberPath="Title" SelectedValuePath="Title"
+                      SelectedItem="{Binding CurrentDiagnosis, UpdateSourceTrigger=PropertyChanged}">
+            </ComboBox>
+            <TextBox Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="2" Margin="5" VerticalContentAlignment="Center" mah:TextBoxHelper.Watermark="Характер заболевания"/>
+            <TextBox VerticalContentAlignment="Top" Grid.Column="2" Grid.RowSpan="3" Margin="5" mah:TextBoxHelper.Watermark="Медицинское заключение"
+                     AcceptsReturn="True" TextWrapping="WrapWithOverflow" VerticalScrollBarVisibility="Auto"/>
+        </Grid>
+
+        <ScrollViewer Grid.Row="2"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+            <StackPanel Orientation="Vertical">
+                <Expander IsExpanded="False" Template="{StaticResource ExpanderDiagTable}">
+                    <Expander.Header>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <TextBlock Text="ЖАЛОБЫ И СИМПТОМЫ" FontSize="14" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource BrushForegroundLight}"/>
+                                <TextBlock Padding="10,0" Text="{Binding Path=TestDatas.Count, StringFormat=Всего: {0}}" VerticalAlignment="Center" Foreground="{StaticResource BrushForegroundLight}" />
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            </StackPanel>
+                        </Grid>
+                    </Expander.Header>
+                    <DataGrid ItemsSource="{Binding TestDatas}" Style="{StaticResource dg_Ambulatory}" IsReadOnly="True" SelectionMode="Single">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" ElementStyle="{StaticResource tb_common}" Width="50" MinWidth="30"/>
+                            <DataGridTextColumn Header="КОД" Binding="{Binding Test.Id}" ElementStyle="{StaticResource tb_common}" Width="50" MinWidth="30"/>
+                            <DataGridTextColumn Header="КАТЕГОРИЯ" Binding="{Binding Test.TestType.ShortTitle}" ElementStyle="{StaticResource tb_common}" MinWidth="60" Width="0.5*" MaxWidth="120"/>
+                            <DataGridTextColumn Header="ТЕСТ" Binding="{Binding Test.Title}" ElementStyle="{StaticResource tb_common}" MinWidth="100" Width="*"/>
+                            <DataGridTextColumn Header="ОПЦИЯ" Binding="{Binding Option}" ElementStyle="{StaticResource tb_common}" MinWidth="100" Width="*"/>
+                            <DataGridTextColumn Header="РЕЗУЛЬТАТ" Binding="{Binding Value}" ElementStyle="{StaticResource tb_common}" MinWidth="100" Width="*"/>
+                            <DataGridTextColumn Header="НОРМА" ElementStyle="{StaticResource tb_common}" MinWidth="60" MaxWidth="150" Width="*">
+                                <DataGridTextColumn.Binding>
+                                    <MultiBinding StringFormat="{}{0} {1}">
+                                        <Binding Path="Test.NormalValues"/>
+                                        <Binding Path="Test.Measure"/>
+                                    </MultiBinding>
+                                </DataGridTextColumn.Binding>
+                            </DataGridTextColumn>
+                            <DataGridTextColumn Header="ИСПОЛНИТЕЛЬ" Binding="{Binding StaffResult.FirstName}" ElementStyle="{StaticResource tb_common}" MinWidth="100" Width="*"/>
+                            <DataGridTextColumn Header="ДАТА РЕЗУЛЬТАТА" Binding="{Binding DateResult, StringFormat=dd.MM.yy}" ElementStyle="{StaticResource tb_common}" MinWidth="80" Width="0.5*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Expander>
+                <Expander IsExpanded="False" Template="{StaticResource ExpanderDiagTable}">
+                    <Expander.Header>
+                        <Grid>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                                <TextBlock Text="ФАРМАКОТЕРАПИЯ" FontSize="14" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource BrushForegroundLight}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                <ListBox Height="30" Background="Transparent" Name="SearchSelector" Visibility="{Binding ElementName=cb_ItemBarPhysDiag, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+                                    <ListBox.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal"/>
+                                        </ItemsPanelTemplate>
+                                    </ListBox.ItemsPanel>
+                                    <ListBox.ItemContainerStyle>
+                                        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource RegistratorSearchTab}"/>
+                                    </ListBox.ItemContainerStyle>
+                                    <ListBoxItem Content="ПОИСК"/>
+                                    <ListBoxItem Content="КАТАЛОГ"/>
+                                </ListBox>
+                                
+                                <CheckBox x:Name="cb_ItemBarPhysDiag" Style="{StaticResource ExpanderChkBoxFlatButton}">
+                                    <Path Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <Path.Style>
+                                            <Style TargetType="{x:Type Path}">
+                                                <Setter Property="Fill" Value="{DynamicResource BrushAccent1}"/>
+                                                <Setter Property="Data" Value="{StaticResource diagExpEditOpenPanelGeom}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type CheckBox}}, Path=IsMouseOver}" Value="true">
+                                                        <Setter Property="Fill" Value="{DynamicResource BrushAccent2}"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type CheckBox}}, Path=IsChecked}" Value="true">
+                                                        <Setter Property="Data" Value="{StaticResource diagExpEditClosePanelGeom}"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Path.Style>
+                                    </Path>
+                                </CheckBox>
+                            </StackPanel>
+                        </Grid>
+                    </Expander.Header>
+                    <StackPanel Orientation="Vertical">
+                        <Grid Visibility="Collapsed" Margin="0,5,0,10">
+                            <Grid.Resources>
+                                <Style TargetType="{x:Type Grid}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding ElementName=cb_ItemBarPhysDiag, Path=IsChecked}" Value="true">
+                                            <DataTrigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                        <DoubleAnimation Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
+                                                                     To="1" 
+                                                                     Duration="0:0:0.2"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.EnterActions>
+                                            <DataTrigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="(ContentPresenter.LayoutTransform).(ScaleTransform.ScaleY)"
+                                                                     To="0" 
+                                                                     Duration="0:0:0.2"/>
+                                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                                            <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Collapsed}"/>
+                                                        </ObjectAnimationUsingKeyFrames>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </DataTrigger.ExitActions>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Grid.Resources>
+                            <Grid.LayoutTransform>
+                                <ScaleTransform ScaleY="0"/>
+                            </Grid.LayoutTransform>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="0.1*"/>
+                                <ColumnDefinition Width="*" MinWidth="640" MaxWidth="1024"/>
+                                <ColumnDefinition Width="0.1*"/>
+                            </Grid.ColumnDefinitions>
+                            <StackPanel Orientation="Vertical" Grid.Column="1" >
+                                <TabControl mah:TabControlHelper.Transition="Default" Height="45" Padding="0" BorderThickness="0" SelectedIndex="{Binding ElementName=SearchSelector, Path=SelectedIndex}">
+                                    <TabControl.Style>
+                                        <Style TargetType="{x:Type TabControl}" BasedOn="{StaticResource MahApps.Styles.TabControl.Animated}">
+                                            <Style.Triggers>
+                                                <Trigger Property="SelectedIndex" Value="1">
+                                                    <Trigger.EnterActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Height" To="165" Duration="0:0:0.2"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.EnterActions>
+                                                    <Trigger.ExitActions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="Height" To="45" Duration="0:0:0.2"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </Trigger.ExitActions>
+                                                </Trigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TabControl.Style>
+                                    <TabItem>
+                                        <ComboBox Text="{Binding DrugSearchValue}" VerticalAlignment="Top"
+                                                  mah:TextBoxHelper.Watermark="Действующее вещество..."
+                                                  ItemsSource="{Binding DrugSearchList}"
+                                                  SelectedItem="{Binding CurrentDrug}"
+                                                  SelectedValue="{Binding CurrentDrug.Substance}" SelectedValuePath="Substance" DisplayMemberPath="Substance"/>
+                                    </TabItem>
+                                    <TabItem>
+                                        <StackPanel>
+                                            <ComboBox ItemsSource="{Binding DrugClasses}" SelectedItem="{Binding CurrentDrugClass}"
+                                                      mah:TextBoxHelper.Watermark="Выберите класс препаратов..."
+                                                      SelectedValue="{Binding CurrentDrugClass.Title}" SelectedValuePath="Title" DisplayMemberPath="Title"/>
+                                            <ComboBox ItemsSource="{Binding DrugSubClasses}" SelectedItem="{Binding CurrentDrugSubClass}"
+                                                      mah:TextBoxHelper.Watermark="Выберите подкласс препаратов..."
+                                                      SelectedValue="{Binding CurrentDrugSubClass.Title}" SelectedValuePath="Title" DisplayMemberPath="Title"
+                                                      IsEnabled="{Binding CurrentDrugClass, Converter={StaticResource NullToBoolConverter}}"/>
+                                            <ComboBox ItemsSource="{Binding DrugGroups}" SelectedItem="{Binding CurrentDrugGroup}"
+                                                      mah:TextBoxHelper.Watermark="Выберите группу препаратов..."
+                                                      SelectedValue="{Binding CurrentDrugGroup.Title}" SelectedValuePath="Title" DisplayMemberPath="Title"
+                                                      IsEnabled="{Binding CurrentDrugSubClass, Converter={StaticResource NullToBoolConverter}}"/>
+                                            <ComboBox ItemsSource="{Binding Drugs}" SelectedItem="{Binding CurrentDrug}"
+                                                      mah:TextBoxHelper.Watermark="Выберите препарат..."
+                                                      SelectedValue="{Binding CurrentDrug.Substance}" SelectedValuePath="Substance" DisplayMemberPath="Substance"
+                                                      IsEnabled="{Binding CurrentDrugGroup, Converter={StaticResource NullToBoolConverter}}"/>
+                                        </StackPanel>
+                                    </TabItem>
+                                </TabControl>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBox Grid.Column="0" mah:TextBoxHelper.Watermark="Марка препарата..." 
+                                         Text="{Binding PharmacoData.Trademark}"
+                                         IsEnabled="{Binding PharmacoData.Drug, Converter={StaticResource NullToBoolConverter}}"/>
+                                    <ComboBox Grid.Column="1"
+                                          ItemsSource="{Binding Source={StaticResource TreatmentEnum}}"
+                                          SelectedItem="{Binding PharmacoData.Treatment}"/>
+                                </Grid>
+                                <Grid>
+                                    <TextBox mah:TextBoxHelper.Watermark="Схема приема..." Margin="5,5,105,5"
+                                             Text="{Binding PharmacoData.Dose}"
+                                             TextWrapping="WrapWithOverflow"  AcceptsReturn="True"
+                                             IsEnabled="{Binding PharmacoData.Drug, Converter={StaticResource NullToBoolConverter}}"/>
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                                        <Button  Style="{StaticResource b_flatAccent}" HorizontalAlignment="Right"
+                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddPharmacoTherapyData}">
+                                            <Path Data="{StaticResource path.Add}" Fill="White" Stretch="Uniform" Margin="3"/>
+                                        </Button>
+                                        <Button  Style="{StaticResource b_flat}" HorizontalAlignment="Right"
+                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.RemovePharmacoTherapyData}" CommandParameter="{Binding ElementName=dg_PharmacoTherapyData, Path=SelectedItems}">
+                                            <Path Data="{StaticResource path.Remove}" Stretch="Uniform" Margin="2">
+                                                <Path.Style>
+                                                    <Style TargetType="{x:Type Path}">
+                                                        <Setter Property="Fill" Value="{StaticResource BrushAccent1}"/>
+                                                        <Style.Triggers>
+                                                            <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type Button}}, Path=IsEnabled}" Value="false">
+                                                                <Setter Property="Fill" Value="White"/>
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Path.Style>
+                                            </Path>
+                                        </Button>
+                                    </StackPanel>
+                                </Grid>
+                            </StackPanel>
+                        </Grid>
+                        <DataGrid ItemsSource="{Binding PharmacoTherapyDatas}" Style="{StaticResource dg_Ambulatory}" Name="dg_PharmacoTherapyData">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Binding="{Binding Id}"  Header="ID" ElementStyle="{StaticResource tb_common}"  Width="50" MinWidth="30" IsReadOnly="True"/>
+                                <DataGridTextColumn Binding="{Binding Diagnosis.Title}" Header="ДИАГНОЗ" MinWidth="100" MaxWidth="200" Width="*" IsReadOnly="True">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource tb_common}">
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock Text="{Binding Diagnosis.Code}"/>
+                                                        <TextBlock Text="{Binding Diagnosis.Title}"/>
+                                                        <TextBlock Text="{Binding DiagnosisDoctor.FirstName}"/>
+                                                        <TextBlock Text="{Binding DiagnosisDate}"/>
+                                                    </StackPanel>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridComboBoxColumn Header="ТЕРАПИЯ" ItemsSource="{Binding Source={StaticResource TreatmentEnum}}" SelectedItemBinding="{Binding Treatment}" ElementStyle="{StaticResource cb.datagrid}" EditingElementStyle="{StaticResource cb.datagrid}" MinWidth="100" MaxWidth="200" Width="*"/>
+                                <DataGridTextColumn Binding="{Binding Drug.Substance}" Header="ВЕЩЕСТВО" MinWidth="120" MaxWidth="200" Width="*" IsReadOnly="True">
+                                    <DataGridTextColumn.ElementStyle>
+                                        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource tb_common}">
+                                            <Setter Property="ToolTip">
+                                                <Setter.Value>
+                                                    <StackPanel Orientation="Vertical">
+                                                        <TextBlock Text="{Binding Drug.DrugSubGroup.DrugGroup.DrugSubClass.DrugClass.Title}"/>
+                                                        <TextBlock Text="{Binding Drug.DrugSubGroup.DrugGroup.DrugSubClass.Title}"/>
+                                                        <TextBlock Text="{Binding Drug.DrugSubGroup.DrugGroup.Title}"/>
+                                                        <TextBlock Text="{Binding Drug.DrugSubGroup.Title}"/>
+                                                    </StackPanel>
+                                                </Setter.Value>
+                                            </Setter>
+                                        </Style>
+                                    </DataGridTextColumn.ElementStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Binding="{Binding Trademark}" Header="МАРКА" ElementStyle="{StaticResource tb_common}" EditingElementStyle="{StaticResource tb_editing}" MinWidth="120" Width="*"/>
+                                <DataGridTextColumn Binding="{Binding Dose}" Header="ДОЗА" ElementStyle="{StaticResource tb_common}" EditingElementStyle="{StaticResource tb_editing}" MinWidth="50" Width="*"/>
+                                <DataGridTextColumn Binding="{Binding TherapyDoctor.FirstName}" Header="ВРАЧ" ElementStyle="{StaticResource tb_common}" MinWidth="80" MaxWidth="200" Width="*" IsReadOnly="True"/>
+                                <DataGridTextColumn Binding="{Binding DateCreate, StringFormat=dd.MM.yy}" Header="ДАТА" ElementStyle="{StaticResource tb_common}" MinWidth="80" MaxWidth="150" Width="*" IsReadOnly="True"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
+
+
+    </Grid>
+</UserControl>

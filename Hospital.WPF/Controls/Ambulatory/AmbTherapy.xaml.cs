@@ -2,11 +2,11 @@
 
 namespace Hospital.WPF.Controls.Ambulatory
 {
-    public partial class AmbMedCard : UserControl
+    public partial class AmbTherapy : UserControl
     {
-        public string Title { get; } = "Карта";
+        public static string Title => "Карта";
 
-        public AmbMedCard()
+        public AmbTherapy()
         {
             InitializeComponent();
         }

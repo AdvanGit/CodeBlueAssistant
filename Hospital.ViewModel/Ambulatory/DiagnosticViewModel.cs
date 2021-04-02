@@ -280,7 +280,7 @@ namespace Hospital.ViewModel.Ambulatory
                 default:
                     break;
             }
-            NotificationManager.AddItem(new NotificationItem { Type = NotificationType.Success, Hold = TimeSpan.FromSeconds(3), Message = "Успешно добавлено 3 сек" });
+            NotificationManager.AddItem(new NotificationItem(NotificationType.Success, TimeSpan.FromSeconds(3), "Success"));
         }
         public void RemoveData(object testDatas)
         {
@@ -321,7 +321,7 @@ namespace Hospital.ViewModel.Ambulatory
                         break;
                     default: break;
                 }
-            NotificationManager.AddItem(new NotificationItem { Type = NotificationType.Information,  Hold = TimeSpan.FromSeconds(5), Message = "Удалено " + removecounter.ToString() + " элементов 5 сек" });
+            NotificationManager.AddItem(new NotificationItem (NotificationType.Information, TimeSpan.FromSeconds(5), "Удалено " + removecounter.ToString() + " элементов 5 сек", true));
         }
         public async void SaveChanges()
         {
