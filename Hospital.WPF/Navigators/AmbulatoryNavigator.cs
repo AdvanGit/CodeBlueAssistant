@@ -15,6 +15,7 @@ namespace Hospital.WPF.Navigators
         {
             new AmbDiagnostic(),
             new AmbTherapy(),
+            new AmbEntry(),
             new AmbReport()
         };
 
@@ -25,7 +26,8 @@ namespace Hospital.WPF.Navigators
             {
                 case "Diagnostic": CurrentBody = bodies[0]; return;
                 case "Therapy": CurrentBody = bodies[1]; return;
-                case "Report": CurrentBody = bodies[2]; return;
+                case "Entry": CurrentBody = bodies[2]; return;
+                case "Report": CurrentBody = bodies[3]; return;
                 default: break;
             }
         }

@@ -14,8 +14,13 @@
     <Geometry x:Key="path.Edit">M20.71,7.04C21.1,6.65 21.1,6 20.71,5.63L18.37,3.29C18,2.9 17.35,2.9 16.96,3.29L15.12,5.12L18.87,8.87M3,17.25V21H6.75L17.81,9.93L14.06,6.18L3,17.25Z</Geometry>
     <Geometry x:Key="path.Add">M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z</Geometry>
     <Geometry x:Key="path.Remove">M9,3V4H4V6H5V19A2,2 0 0,0 7,21H17A2,2 0 0,0 19,19V6H20V4H15V3H9M9,8H11V17H9V8M13,8H15V17H13V8Z</Geometry>
+    <Geometry x:Key="path.UserCircle">M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5C21,3.89 20.1,3 19,3M16.5,16.25C16.5,14.75 13.5,14 12,14C10.5,14 7.5,14.75 7.5,16.25V17H16.5M12,12.25A2.25,2.25 0 0,0 14.25,10A2.25,2.25 0 0,0 12,7.75A2.25,2.25 0 0,0 9.75,10A2.25,2.25 0 0,0 12,12.25Z</Geometry>
+    <Geometry x:Key="path.TransferRight">M3,8H5V16H3V8M7,8H9V16H7V8M11,8H13V16H11V8M15,19.25V4.75L22.25,12L15,19.25Z</Geometry>
+    <Geometry x:Key="path.Male">M9,9C10.29,9 11.5,9.41 12.47,10.11L17.58,5H13V3H21V11H19V6.41L13.89,11.5C14.59,12.5 15,13.7 15,15A6,6 0 0,1 9,21A6,6 0 0,1 3,15A6,6 0 0,1 9,9M9,11A4,4 0 0,0 5,15A4,4 0 0,0 9,19A4,4 0 0,0 13,15A4,4 0 0,0 9,11Z</Geometry>
+    <Geometry x:Key="path.Female">M12,4A6,6 0 0,1 18,10C18,12.97 15.84,15.44 13,15.92V18H15V20H13V22H11V20H9V18H11V15.92C8.16,15.44 6,12.97 6,10A6,6 0 0,1 12,4M12,6A4,4 0 0,0 8,10A4,4 0 0,0 12,14A4,4 0 0,0 16,10A4,4 0 0,0 12,6Z</Geometry>
+    <Geometry x:Key="path.Calendar">M9,10V12H7V10H9M13,10V12H11V10H13M17,10V12H15V10H17M19,3A2,2 0 0,1 21,5V19A2,2 0 0,1 19,21H5C3.89,21 3,20.1 3,19V5A2,2 0 0,1 5,3H6V1H8V3H16V1H18V3H19M19,19V8H5V19H19M9,14V16H7V14H9M13,14V16H11V14H13M17,14V16H15V14H17Z</Geometry>
+    <Geometry x:Key="path.Clock">M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z</Geometry>
     
-    <Path x:Key="SearchFilterRegPath" Data="M15,19.88C15.04,20.18 14.94,20.5 14.71,20.71C14.32,21.1 13.69,21.1 13.3,20.71L9.29,16.7C9.06,16.47 8.96,16.16 9,15.87V10.75L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L15,10.75V19.88M7.04,5L11,10.06V15.58L13,17.58V10.05L16.96,5H7.04Z" Stretch="Uniform" Height="15" Width="30" HorizontalAlignment="Center" Fill="{DynamicResource BrushAccent1}"/>
 
     <!--converters-->
 
@@ -356,7 +361,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type ToggleButton}">
                     <Border Padding="{TemplateBinding Padding}" x:Name="br_labexp"
-                            Background="{DynamicResource BrushBackgroundPaper}"
+                            Background="{TemplateBinding Background}"
                             BorderThickness="0,0,0,1"
                             BorderBrush="{DynamicResource BrushPrimaryBorderLight}">
                         <Grid SnapsToDevicePixels="False">
@@ -381,12 +386,17 @@
                     </Border>
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="true">
-                            <!--<Setter Property="BorderThickness" TargetName="br_labexp" Value="0"/>-->
                             <Setter Property="Data" TargetName="arrow" Value="{StaticResource treeIconDown}"/>
                             <Setter Property="Fill" TargetName="arrow" Value="{DynamicResource BrushAccent1}"/>
                         </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter Property="Background" TargetName="br_labexp" Value="{DynamicResource BrushBackgroundPaper}"/>
+                        </Trigger>
                         <Trigger Property="IsEnabled" Value="false">
                             <Setter Property="Stroke" TargetName="arrow" Value="{StaticResource Expander.Disabled.Arrow.Stroke}"/>
+                        </Trigger>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Cursor" Value="Hand"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -394,7 +404,7 @@
         </Setter>
     </Style>
     <ControlTemplate x:Key="ExpanderDiagLabTable" TargetType="{x:Type Expander}">
-        <Border x:Name="ExpBorder" Background="{TemplateBinding Background}"
+        <Border x:Name="ExpBorder" 
                 BorderThickness="0" SnapsToDevicePixels="true">
             <DockPanel>
                 <ToggleButton x:Name="HeaderSite"
@@ -413,6 +423,7 @@
                               IsChecked="{Binding IsExpanded, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
                               MinHeight="0" MinWidth="0" Margin="0" Padding="6"
                               Style="{StaticResource ExpanderDownHeaderStyleLab}"
+                              Background="{TemplateBinding Background}"
                               VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
                 <ContentPresenter x:Name="ExpandSite" DockPanel.Dock="Bottom" Focusable="false"
                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -847,7 +858,6 @@
         <Setter Property="Width" Value="35"/>
         <Setter Property="Padding" Value="7"/>
         <Setter Property="Background" Value="Transparent"/>
-
         <Style.Triggers>
             <Trigger Property="IsMouseOver" Value="True">
                 <Setter Property="Background" Value="Transparent"/>
@@ -859,4 +869,34 @@
         </Style.Triggers>
     </Style>
 
+    <Style x:Key="cb.filterbutton" TargetType="{x:Type CheckBox}">
+        <Setter Property="Foreground" Value="{DynamicResource BrushPrimaryBorderDark}"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContentControl}">
+                    <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="3">
+                        <Path Data="M15,19.88C15.04,20.18 14.94,20.5 14.71,20.71C14.32,21.1 13.69,21.1 13.3,20.71L9.29,16.7C9.06,16.47 8.96,16.16 9,15.87V10.75L4.21,4.62C3.87,4.19 3.95,3.56 4.38,3.22C4.57,3.08 4.78,3 5,3V3H19V3C19.22,3 19.43,3.08 19.62,3.22C20.05,3.56 20.13,4.19 19.79,4.62L15,10.75V19.88M7.04,5L11,10.06V15.58L13,17.58V10.05L16.96,5H7.04Z" Stretch="Uniform" Height="15" Width="30" HorizontalAlignment="Center" Fill="{DynamicResource BrushAccent1}"/>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource BrushAccent1}"/>
+                <Setter Property="Background" Value="{DynamicResource BrushPrimaryPanel}"/>
+                <Setter Property="Cursor" Value="Hand"/>
+            </Trigger>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource BrushAccent1}"/>
+                <Setter Property="Background" Value="{DynamicResource BrushPrimaryBorderLight}"/>
+            </Trigger>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="Foreground" Value="{DynamicResource BrushAccent1}"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.3"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    
 </ResourceDictionary>

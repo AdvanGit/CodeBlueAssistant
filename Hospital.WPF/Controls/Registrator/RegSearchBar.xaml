@@ -62,49 +62,15 @@
             </TextBox.InputBindings>
         </TextBox>
 
-        <CheckBox Content="{StaticResource SearchFilterRegPath}" IsEnabled="{Binding ElementName=TabDoctor, Path=IsSelected}" Margin="4" Padding="0" HorizontalAlignment="Left" Name="SearchBarPopupButton">
-            <CheckBox.Style>
-                <Style TargetType="{x:Type CheckBox}">
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Foreground" Value="{DynamicResource BrushAccent1}"/>
-                            <Setter Property="Background" Value="{DynamicResource BrushPrimaryPanel}"/>
-                            <Setter Property="Cursor" Value="Hand"/>
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="Foreground" Value="{DynamicResource BrushAccent1}"/>
-                            <Setter Property="Background" Value="{DynamicResource BrushPrimaryBorderLight}"/>
-                        </Trigger>
-                        <Trigger Property="IsChecked" Value="True">
-                            <Setter Property="Foreground" Value="{DynamicResource BrushAccent1}"/>
-                        </Trigger>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.3"/>
-                        </Trigger>
-                    </Style.Triggers>
-                    <Setter Property="Foreground" Value="{DynamicResource BrushPrimaryBorderDark}"/>
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="{x:Type CheckBox}">
-                                <Border Background="{TemplateBinding Background}" Padding="{TemplateBinding Padding}" CornerRadius="3">
-                                    <ContentPresenter Content="{TemplateBinding Content}"
-                                                          VerticalAlignment="Center"
-                                                          HorizontalAlignment="Center"/>
-                                </Border>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </CheckBox.Style>
-        </CheckBox>
-        
+        <CheckBox Style="{StaticResource cb.filterbutton}" IsEnabled="{Binding ElementName=TabDoctor, Path=IsSelected}" Margin="4" Padding="0" HorizontalAlignment="Left" Name="SearchBarPopupButton"/>
+
         <Popup AllowsTransparency="True" IsOpen="{Binding ElementName=SearchBarPopupButton, Path=IsChecked}" PlacementTarget="{Binding ElementName=SearchBarPopupButton}" StaysOpen="False">
             <Grid Margin="10">
                 <Border Effect="{StaticResource ShadowCard}" CornerRadius="0,10,10,10"
                         Background="{DynamicResource BrushBackgroundPaper}"/>
                 <StackPanel Orientation="Vertical" Margin="15">
                     <mah:ToggleSwitch Content="Только свободные" IsOn="{Binding Filter.IsFree}"/>
-                    <mah:ToggleSwitch Content="Только ближайшие" IsOn="{Binding Filter.IsGroup}"/>
+                    <mah:ToggleSwitch Content="Только ближайшие" IsOn="{Binding Filter.IsNearest}"/>
                     <mah:ToggleSwitch Content="Дата" Name="DateSwitcher" IsOn="{Binding Filter.IsDate }"/>
                     <mah:ToggleSwitch Content="ФИО" IsOn="{Binding Filter.IsName}"/>
                     <mah:ToggleSwitch Content="Специальность" IsOn="{Binding Filter.IsQualification}"/>

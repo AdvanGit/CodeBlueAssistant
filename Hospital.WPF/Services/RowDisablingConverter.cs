@@ -9,7 +9,7 @@ namespace Hospital.WPF.Services
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((EntryStatus)value == EntryStatus.Await)
+            if ((EntryStatus)value == EntryStatus.Ожидание)
             {
                 return true;
             }

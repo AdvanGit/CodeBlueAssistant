@@ -51,7 +51,7 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                return await db.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
+                return await db.Set<T>().AsQueryable().AsNoTracking().FirstOrDefaultAsync(e => e.Id == id);
             }
         }
 
@@ -70,7 +70,7 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                return await db.Set<T>().AsQueryable().Where(predicate).ToListAsync();
+                return await db.Set<T>().AsQueryable().AsNoTracking().Where(predicate).ToListAsync();
             }
         }
 
@@ -78,13 +78,13 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                return await Include(db.Set<T>(), includeProperties).Where(predicate).ToListAsync();
+                return await Include(db.Set<T>(), includeProperties).Where(predicate).AsNoTracking().ToListAsync();
             }
         }
 
         private IQueryable<T> Include(IQueryable<T> query, params Expression<Func<T, object>>[] includeProperties)
         {
-            return includeProperties.Aggregate(query, (current, includeProperty) => current.Include(includeProperty));
+            return includeProperties.Aggregate(query, (current, includeProperty) => current.AsNoTracking().Include(includeProperty));
         }
     }
 }

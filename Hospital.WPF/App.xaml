@@ -14,6 +14,7 @@
 
                 <ResourceDictionary Source="/Resources/Dictionary.xaml" />
                 <ResourceDictionary Source="/Resources/Theme.xaml" />
+                <ResourceDictionary Source="/Resources/Local/EnumProviders.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

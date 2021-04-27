@@ -6,19 +6,21 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Hospital.ViewModel.Ambulatory
 {
     public class DiagnosticViewModel : MainViewModel
     {
-        private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
+        private readonly AmbulatoryDataService ambulatoryDataService;
         private readonly GenericDataServices<TestTemplate> genericTemplateServices = new GenericDataServices<TestTemplate>(new HospitalDbContextFactory());
 
         private readonly Entry currentEntry;
 
-        public DiagnosticViewModel(Entry entry)
+        public DiagnosticViewModel(Entry entry, AmbulatoryDataService dataService)
         {
             currentEntry = entry;
+            ambulatoryDataService = dataService;
             Initialize(entry);
 
             GetTestList(TestMethod.Физикальная);
@@ -101,10 +103,6 @@ namespace Hospital.ViewModel.Ambulatory
         public ObservableCollection<Test> LabTestList { get; } = new ObservableCollection<Test>();
         public ObservableCollection<Test> ToolTestList { get; } = new ObservableCollection<Test>();
 
-        public ObservableCollection<TestData> PhysicalDiagData { get; } = new ObservableCollection<TestData>();
-        public ObservableCollection<TestData> ToolDiagData { get; } = new ObservableCollection<TestData>();
-        public ObservableCollection<TestData> LabDiagData { get; } = new ObservableCollection<TestData>();
-
         private int _diagnosticLocator;
         public int DiagnosticLocator
         {
@@ -129,9 +127,26 @@ namespace Hospital.ViewModel.Ambulatory
             }
         }
 
+        private ObservableCollection<TestData> _addedDatas = new ObservableCollection<TestData>();
+        public ObservableCollection<TestData> AddedDatas 
+        {
+            get 
+            {
+                _addedDatas.Clear();
+                foreach (TestData data in PhysicalDiagData.Where(p=>p.Id == 0)) _addedDatas.Add(data);
+                foreach (TestData data in ToolDiagData.Where(p => p.Id == 0)) _addedDatas.Add(data);
+                foreach (TestData data in LabDiagData.Where(p => p.Id == 0)) _addedDatas.Add(data);
+                return _addedDatas;
+            }
+        }
+
+        public ObservableCollection<TestData> PhysicalDiagData { get; } = new ObservableCollection<TestData>();
+        public ObservableCollection<TestData> LabDiagData { get; } = new ObservableCollection<TestData>();
+        public ObservableCollection<TestData> ToolDiagData { get; } = new ObservableCollection<TestData>();
+
         private async void Initialize(Entry entry)
         {
-            if (entry != null && entry.MedCardId != null)
+            if (entry != null && entry.MedCard != null)
             {
                 var res = await ambulatoryDataService.GetTestData(entry.MedCard.Id);
                 PhysicalDiagData.Clear();
@@ -247,6 +262,7 @@ namespace Hospital.ViewModel.Ambulatory
                 default:
                     break;
             }
+            OnPropertyChanged(nameof(AddedDatas));
         }
 
         public TestData CreateData(Test test, string value = null, string option = null)
@@ -280,6 +296,7 @@ namespace Hospital.ViewModel.Ambulatory
                 default:
                     break;
             }
+            OnPropertyChanged(nameof(AddedDatas));
             NotificationManager.AddItem(new NotificationItem(NotificationType.Success, TimeSpan.FromSeconds(3), "Success"));
         }
         public void RemoveData(object testDatas)
@@ -321,12 +338,16 @@ namespace Hospital.ViewModel.Ambulatory
                         break;
                     default: break;
                 }
+            OnPropertyChanged(nameof(AddedDatas));
             NotificationManager.AddItem(new NotificationItem (NotificationType.Information, TimeSpan.FromSeconds(5), "Удалено " + removecounter.ToString() + " элементов 5 сек", true));
         }
-        public async void SaveChanges()
+
+        public async Task UpdateData()
         {
-            foreach (TestData data in PhysicalDiagData.Where(d => d.Status == TestStatus.Редакция)) data.Status = TestStatus.Готов;
-            await ambulatoryDataService.UpdateTestData(PhysicalDiagData.Where(d => (d.DateCreate + TimeSpan.FromHours(1) >= DateTime.Now)).ToList());
+            foreach (TestData data in PhysicalDiagData.Where(p=>p.Id == 0)) data.Status = TestStatus.Готов;
+            foreach (TestData data in LabDiagData.Where(l => l.Id == 0)) data.Status = TestStatus.Ожидание;
+            foreach (TestData data in ToolDiagData.Where(t => t.Id == 0)) data.Status = TestStatus.Ожидание;
+            await ambulatoryDataService.UpdateData(AddedDatas);
         }
     }
 }

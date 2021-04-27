@@ -1,6 +1,8 @@
 ﻿using Hospital.Domain.Model;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using System.Collections.Generic;
 
 namespace Hospital.EntityFramework
 {
@@ -14,6 +16,8 @@ namespace Hospital.EntityFramework
         public DbSet<DepartmentTitle> DepartmentTitles { get; set; }
         public DbSet<Department> Departments { get; set; }
         public DbSet<Change> Changes { get; set; }
+        public DbSet<DiagnosisClass> DiagnosisClasses { get; set; }
+        public DbSet<DiagnosisGroup> DiagnosisGroups { get; set; }
         public DbSet<Diagnosis> Diagnoses { get; set; }
         public DbSet<MedCard> MedCards { get; set; }
         public DbSet<Entry> Entries { get; set; }
@@ -37,7 +41,6 @@ namespace Hospital.EntityFramework
         public DbSet<PhysioTherapyData> PhysioTherapyDatas { get; set; }
 
         public DbSet<SurgencyOperation> SurgencyOperations { get; set; }
-        public DbSet<SurgencyEndoscop> SurgencyEndoscops { get; set; }
         public DbSet<SurgencyGroup> SurgencyGroups { get; set; }
         public DbSet<SurgencyTherapyData> SurgencyTherapyDatas { get; set; }
 
@@ -47,14 +50,14 @@ namespace Hospital.EntityFramework
         {
             modelBuilder.ApplyConfiguration(new PatientConfig());
             modelBuilder.ApplyConfiguration(new StaffConfig());
-            modelBuilder.ApplyConfiguration(new DepartmentConfig());
             modelBuilder.ApplyConfiguration(new EntryConfig());
             modelBuilder.ApplyConfiguration(new MedCardConfig());
             //modelBuilder.Ignore<User>();
             modelBuilder.Ignore<Adress>();
             modelBuilder.Ignore<DomainObject>();
-
-            {
+            
+            { //examples fluentApi
+                
                 //modelBuilder.Entity<Country>();   //Fluent API include  
                 //modelBuilder.Entity<>().Ignore(b => b.Rate);
                 //modelBuilder.Entity<User>().ToTable("People");
@@ -77,7 +80,61 @@ namespace Hospital.EntityFramework
                 //modelBuilder.Entity<User>().HasOne(p => p.Company).WithMany(t => t.Users).HasForeignKey(p => p.CompanyInfoKey);   HasOne / HasMany / WithOne / WithMany    [ForeignKey("CompanyInfoKey")]
                 //modelBuilder.Entity<User>().HasOne(p => p.Company).WithMany(t => t.Users).HasForeignKey(p => p.CompanyName).HasPrincipalKey(t => t.Name)
                 // modelBuilder.Entity<User>().HasOne(p => p.Company).WithMany(t => t.Users).OnDelete(DeleteBehavior.Cascade);  SetNull: Restrict:
+            }
+        }
 
+        public EntityEntry UpdateWithoutTracking(object entity)
+        {
+            ChangeTracker.TrackGraph(
+                entity, node =>
+                {
+                    if (node.Entry.Entity == entity)
+                    {
+                        var propertyEntry = node.Entry.Property("Id");
+                        var keyValue = (int)propertyEntry.CurrentValue;
+                        if (keyValue == 0)
+                        {
+                            node.Entry.State = EntityState.Added;
+                        }
+                        else if (keyValue < 0)
+                        {
+                            propertyEntry.CurrentValue = -keyValue;
+                            node.Entry.State = EntityState.Deleted;
+                        }
+                        else
+                        {
+                            node.Entry.State = EntityState.Modified;
+                        }
+                    }
+                });
+            return Entry(entity);
+        }
+
+        public void UpdateRangeWithoutTracking(IEnumerable<object> entities)
+        {
+            foreach (object entity in entities)
+            {
+                ChangeTracker.TrackGraph(entity, node =>
+                {
+                    if (node.Entry.Entity == entity)
+                    {
+                        var propertyEntry = node.Entry.Property("Id");
+                        var keyValue = (int)propertyEntry.CurrentValue;
+                        if (keyValue == 0)
+                        {
+                            node.Entry.State = EntityState.Added;
+                        }
+                        else if (keyValue < 0)
+                        {
+                            propertyEntry.CurrentValue = -keyValue;
+                            node.Entry.State = EntityState.Deleted;
+                        }
+                        else
+                        {
+                            node.Entry.State = EntityState.Modified;
+                        }
+                    }
+                });
             }
         }
 
@@ -103,12 +160,6 @@ namespace Hospital.EntityFramework
                 builder.Property(s => s.LastName).IsRequired();
                 builder.Property(s => s.FirstName).IsRequired();
                 //builder.Ignore(s => s.Adress);
-            }
-        }
-        private class DepartmentConfig : IEntityTypeConfiguration<Department>
-        {
-            public void Configure(EntityTypeBuilder<Department> builder)
-            {
             }
         }
         private class EntryConfig : IEntityTypeConfiguration<Entry>

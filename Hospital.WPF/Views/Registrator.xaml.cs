@@ -19,7 +19,7 @@ namespace Hospital.WPF.Views
             DataContext = registratorViewModel;
             Command = new RegistratorCommand(registratorViewModel, this);
 
-            foreach (UserControl userControl in Navigator.GetBodies()) { RegistratorView.AddLogicalChild(userControl); }
+            foreach (UserControl userControl in Navigator.GetBodies()) AddLogicalChild(userControl);
             Navigator.SetBody("Doctors");
         }
     }

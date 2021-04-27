@@ -11,10 +11,15 @@ namespace Hospital.ViewModel
 {
     public class RegistratorViewModel : MainViewModel
     {
-        private readonly RegistratorDataServices registratorDataServices = new RegistratorDataServices(new HospitalDbContextFactory());
+        private readonly EntryDataServices registratorDataServices = new EntryDataServices(new HospitalDbContextFactory());
         private readonly GenericDataServices<Belay> genericDataServicesBelay = new GenericDataServices<Belay>(new HospitalDbContextFactory());
         private readonly GenericDataServices<Patient> genericDataServicesPatient = new GenericDataServices<Patient>(new HospitalDbContextFactory());
         private readonly GenericDataServices<Entry> genericDataServicesEntry = new GenericDataServices<Entry>(new HospitalDbContextFactory());
+
+        private EntrySearchFilter _filter = new EntrySearchFilter() 
+        {
+            IsName = true, IsFree = true, IsNearest=true, IsDepartment = true, IsAdress = true, IsQualification = true, DateTime = DateTime.Now, DepartmentType = Enum.Parse<DepartmentType>("0")
+        };
 
         private Entry _selectedEntry;
         private Patient _selectedPatient;
@@ -29,11 +34,7 @@ namespace Hospital.ViewModel
         public ObservableCollection<Patient> Patients { get; } = new ObservableCollection<Patient>();
         public ObservableCollection<Belay> Belays { get; } = new ObservableCollection<Belay>();
 
-        private RegistratorFilter _filter = new RegistratorFilter() 
-        {
-            IsName = true, IsFree = true, IsGroup=true, IsDepartment = true, IsAdress = true, IsQualification = true, DateTime = DateTime.Now 
-        };
-        public RegistratorFilter Filter { get => _filter; set { _filter = value; OnPropertyChanged(nameof(Filter)); } } 
+        public EntrySearchFilter Filter { get => _filter; set { _filter = value; OnPropertyChanged(nameof(Filter)); } } 
 
         public async Task SearchPatient(string value)
         {
@@ -82,13 +83,11 @@ namespace Hospital.ViewModel
         {
                 SelectedEntry.Patient = SelectedPatient;
                 SelectedEntry.Registrator = SelectedEntry.DoctorDestination; //---заглушка отсутсвия данных аккаунта
-                SelectedEntry.EntryStatus = EntryStatus.Await;
+                SelectedEntry.EntryStatus = EntryStatus.Ожидание;
                 await genericDataServicesEntry.Update(SelectedEntry.Id, SelectedEntry);
                 SelectedEntry = null;
                 SelectedPatient = null;
         } //check on exist баг создания записи, если уже есть запись на текущее время. вследствии механизма автоматического выбора. сделать проверку, и предложение заменить, проапдейтить запись
-
-
 
         public void SelectEntity(object entity)
         {

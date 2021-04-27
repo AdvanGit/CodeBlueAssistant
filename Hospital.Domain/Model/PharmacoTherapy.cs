@@ -4,34 +4,36 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hospital.Domain.Model
 {
-    public enum DrugForm {таблетки, капсулы, микструра, раствор, порошок, ампулы}
-    public enum Treatment {Этиотропная, Патогенетическая, Симптоматическая, Заместительная, Профилактическая}
+    public enum DrugForm { таблетки, капсулы, микструра, раствор, порошок, ампулы }
 
-    public class PharmacoTherapyData : DomainObject
+    public class PharmacoTherapyData : TherapyBase, ITherapyData
     {
         private MedCard _medCard;
         private Drug _drug;
         private string _trademark;
         private string _dose;
-        private Treatment _treatment;
         private DateTime _dateCreate;
+        private Treatment _treatment;
 
-        private Staff _therapyDoctor;
-        private Diagnosis _diagnosis;
-        private DateTime _diagnosisDate;
-        private Staff _diagnosisDoctor;
-
-        public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged("MedCard"); } }
+        public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged(nameof(MedCard)); } }
         public Drug Drug { get => _drug; set { _drug = value; OnPropertyChanged("Drug"); } }
-        public string Trademark { get => _trademark; set { _trademark = value; OnPropertyChanged(nameof(Trademark)); } }
-        public string Dose { get => _dose; set { _dose = value; OnPropertyChanged("Dose"); } }
-        public Treatment Treatment { get => _treatment; set { _treatment = value; OnPropertyChanged("Treatment"); } }
+        public string Trademark { get => _trademark; set { _trademark = value; OnPropertyChanged(nameof(Trademark)); OnPropertyChanged(nameof(Option));  } }
+        public string Dose { get => _dose; set { _dose = value; OnPropertyChanged("Dose"); OnPropertyChanged(nameof(Value)); } }
         public DateTime DateCreate { get => _dateCreate; set { _dateCreate = value; OnPropertyChanged("DateCreate"); } }
+        public Treatment Treatment { get => _treatment; set { _treatment = value; OnPropertyChanged(nameof(Treatment)); } }
 
-        public Staff TherapyDoctor { get => _therapyDoctor; set { _therapyDoctor = value; OnPropertyChanged(nameof(TherapyDoctor)); } }
-        public DateTime DiagnosisDate { get => _diagnosisDate; set { _diagnosisDate = value; OnPropertyChanged(nameof(DiagnosisDate)); } }
-        public Staff DiagnosisDoctor { get => _diagnosisDoctor; set { _diagnosisDoctor = value; OnPropertyChanged(nameof(DiagnosisDoctor)); } }
-        public Diagnosis Diagnosis { get => _diagnosis; set { _diagnosis = value; OnPropertyChanged(nameof(Diagnosis)); } }
+        [NotMapped]
+        public string Option { get => Trademark; set => Trademark = value; }
+        [NotMapped]
+        public string Value { get => Dose; set => Dose = value; }
+        [NotMapped]
+        public string Title => Drug.Substance;
+        [NotMapped]
+        public string Group => Drug.DrugSubGroup.DrugGroup.DrugSubClass.Title;
+        [NotMapped]
+        public DateTime Entry => DateCreate;
+        [NotMapped]
+        public string Type => "Фармакотерапия";
     }
 
     public class Drug : DomainObject

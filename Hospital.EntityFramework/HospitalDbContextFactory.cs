@@ -9,6 +9,8 @@ namespace Hospital.EntityFramework
         {
             var optionsBuilder = new DbContextOptionsBuilder<HospitalDbContext>();
             optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=HospitalDB;Trusted_Connection=True;");
+            optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution);
+            optionsBuilder.EnableSensitiveDataLogging(true);
             return new HospitalDbContext(optionsBuilder.Options);
         }
     }

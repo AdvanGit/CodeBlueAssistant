@@ -1,76 +1,98 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hospital.Domain.Model
 {
     public enum PhysTherStatus { Ожидание, Готов, Неявка }
 
-    public class PhysioTherapyData : DomainObject
+    public class PhysioTherapyData : TherapyBase, ITherapyData
     {
         private MedCard _medCard;
         private PhysioTherapyFactor _physioTherapyFactor;
-        private PhysTherMethod _physTherMethod;
-        private string _value;
-        private string _option;
-        private Staff _staff;
+        private PhysTherMethod _physTherMethod; //not use
+        private TimeSpan _duration;
+        private string _localization;
+        private string _params;
         private DateTime _targetDateTime;
         private DateTime _createDateTime;
         private PhysTherStatus _physTherStatus;
+        private Staff _operationDoctor;
+        private Treatment _treatment;
 
-        public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged("MedCard"); } }
+
+        private TimeSpan _remainingTime;
+
+        public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged(nameof(MedCard)); } }
         public PhysioTherapyFactor PhysioTherapyFactor { get => _physioTherapyFactor; set { _physioTherapyFactor = value; OnPropertyChanged("PhysioTherapyFactor"); } }
-        public PhysTherMethod PhysTherMethod { get => _physTherMethod; set { _physTherMethod = value; OnPropertyChanged("PhysTherMethod"); }    }
-        public string Value { get => _value; set { _value = value; OnPropertyChanged("Value"); } }
-        public string Option { get => _option; set { _option = value; OnPropertyChanged("Option"); } }
-        public Staff Staff { get => _staff; set { _staff = value; OnPropertyChanged("Staff"); } }
+        public PhysTherMethod PhysTherMethod { get => _physTherMethod; set { _physTherMethod = value; OnPropertyChanged("PhysTherMethod"); } }
+        public TimeSpan Duration { get => _duration; set { _duration = value; OnPropertyChanged(nameof(Duration)); } }
+        public string Localization { get => _localization; set { _localization = value; OnPropertyChanged(nameof(Localization)); OnPropertyChanged(nameof(Option)); } }
+        public string Params { get => _params; set { _params = value; OnPropertyChanged(nameof(Params)); OnPropertyChanged(nameof(Value)); } }
         public DateTime TargetDateTime { get => _targetDateTime; set { _targetDateTime = value; OnPropertyChanged("TargetDateTime"); } }
         public DateTime CreateDateTime { get => _createDateTime; set { _createDateTime = value; OnPropertyChanged("CreateDateTime"); } }
         public PhysTherStatus PhysTherStatus { get => _physTherStatus; set { _physTherStatus = value; OnPropertyChanged("PhysTherStatus"); } }
+        public Staff OperationDoctor { get => _operationDoctor; set { _operationDoctor = value; OnPropertyChanged(nameof(OperationDoctor)); } }
+        public TimeSpan RemainingTime { get => _remainingTime; set { _remainingTime = value; OnPropertyChanged(nameof(RemainingTime)); OnPropertyChanged(nameof(Value)); } }
+        public Treatment Treatment { get => _treatment; set { _treatment = value; OnPropertyChanged(nameof(Treatment)); } }
+
+        [NotMapped]
+        public string Title => PhysioTherapyFactor.Caption;
+        [NotMapped]
+        public string Group => PhysioTherapyFactor.PhysTherFactGroup.Caption;
+        [NotMapped]
+        public DateTime Entry => TargetDateTime;
+        [NotMapped]
+        public string Value { get => RemainingTime.ToString(); set { TimeSpan.TryParse(value, out _remainingTime); OnPropertyChanged(nameof(RemainingTime)) ; } }
+        [NotMapped]
+        public string Option { get => Localization; set { Localization = value; OnPropertyChanged(nameof(Option)); } }
+        [NotMapped]
+        public string Type => "Физиотерапия";
     }
 
     public class PhysioTherapyFactor : DomainObject
     {
+        private string _caption;
         private string _title;
-        private string _fullTitle;
         private string _tool;
         private PhysTherFactGroup _physTherFactGroup;
 
-        public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
-        public string FullTitle { get => _fullTitle; set { _fullTitle = value; OnPropertyChanged("FullTitle"); } }
+        public string Caption { get => _caption; set { _caption = value; OnPropertyChanged(nameof(Caption)); } }
+        public string Title { get => _title; set { _title = value; OnPropertyChanged(nameof(Title)); } }
         public string Tool { get => _tool; set { _tool = value; OnPropertyChanged("Tool"); } }
         public PhysTherFactGroup PhysTherFactGroup { get => _physTherFactGroup; set { _physTherFactGroup = value; OnPropertyChanged("PhysTherFactGroup"); } }
     }
 
     public class PhysTherFactGroup : DomainObject
     {
+        private string _caption;
         private string _title;
-        private string _fullTitle;
 
         public ObservableCollection<PhysioTherapyFactor> PhysioTherapyFactors { get; set; }
-        public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
-        public string FullTitle { get => _fullTitle; set { _fullTitle = value; OnPropertyChanged("FullTitle"); } }
+        public string Caption { get => _caption; set { _caption = value; OnPropertyChanged(nameof(Caption)); } }
+        public string Title { get => _title; set { _title = value; OnPropertyChanged(nameof(Title)); } }
     }
 
     public class PhysTherMethod : DomainObject
     {
+        private string _caption;
         private string _title;
-        private string _fullTitle;
         private PhysTherMethodGroup _physTherMethodGroup;
 
-        public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
-        public string FullTitle { get => _fullTitle; set { _fullTitle = value; OnPropertyChanged("FullTitle"); } }
+        public string Caption { get => _caption; set { _caption = value; OnPropertyChanged(nameof(Caption)); } }
+        public string Title { get => _title; set { _title = value; OnPropertyChanged(nameof(Title)); } }
 
         public PhysTherMethodGroup PhysTherMethodGroup { get => _physTherMethodGroup; set { _physTherMethodGroup = value; OnPropertyChanged("PhysTherMethodGroup"); } }
     }
 
     public class PhysTherMethodGroup : DomainObject
     {
+        private string _caption;
         private string _title;
-        private string _fullTitle;
 
         public ObservableCollection<PhysTherMethod> PhysTherMethods { get; set; }
-        public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
-        public string FullTitle { get => _fullTitle; set { _fullTitle = value; OnPropertyChanged("FullTitle"); } }
+        public string Caption { get => _caption; set { _caption = value; OnPropertyChanged(nameof(Caption)); } }
+        public string Title { get => _title; set { _title = value; OnPropertyChanged(nameof(Title)); } }
     }
 
 }

@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hospital.Domain.Model
 {
-    public enum TestMethod { Физикальная, Лабараторная, Инструментальная }
-    public enum TestStatus { Ожидание, Готов, Неявка, Редакция, Резерв }
+    public enum TestMethod { Физикальная = 0, Лабараторная = 1, Инструментальная = 2 }
+    public enum TestStatus { Ожидание = 0, Готов = 1, Неявка = 2, Редакция = 3 , Резерв = 4 }
 
     public class TestData : DomainObject
     {
@@ -31,7 +32,6 @@ namespace Hospital.Domain.Model
         public Staff StaffResult { get => _staffResult; set { _staffResult = value; OnPropertyChanged("StaffResult"); } }
         public TestStatus Status { get => _status; set { _status = value; OnPropertyChanged("Status"); } }
         public bool IsSymptom { get => _isSymptom; set { _isSymptom = value; OnPropertyChanged("IsSymptom"); } }
-
     }
 
 
@@ -67,6 +67,9 @@ namespace Hospital.Domain.Model
         public string ShortTitle { get => _shortTitle; set { _shortTitle = value; OnPropertyChanged(nameof(ShortTitle)); } }
         public TestMethod TestMethod { get => _testMethod; set { _testMethod = value; OnPropertyChanged("TestMethod"); } }
         public Department Department { get => _department; set { _department = value; OnPropertyChanged("Department"); } }
+
+        [NotMapped]
+        public int GetTestMethodIndex { get => (int)_testMethod; }
     }
 
     public class TestNormalValue : DomainObject

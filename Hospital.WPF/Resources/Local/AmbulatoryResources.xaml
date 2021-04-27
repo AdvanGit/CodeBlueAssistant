@@ -11,28 +11,56 @@
         <Setter Property="HorizontalAlignment" Value="Center"/>
         <Setter Property="VerticalAlignment" Value="Center"/>
         <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+        <Setter Property="Padding" Value="10,0"/>
     </Style>
+    <Style x:Key="tb.DataGrid.Left" TargetType="{x:Type TextBlock}">
+        <Setter Property="HorizontalAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="TextWrapping" Value="WrapWithOverflow"/>
+    </Style>
+    <Style x:Key="cb.datagrid" TargetType="{x:Type ComboBox}">
+        <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Margin" Value="10,0"/>
+    </Style>
+
+
     <Style x:Key="tb_editing" TargetType="{x:Type TextBox}">
         <Setter Property="HorizontalContentAlignment" Value="Center"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="5,0"/>
     </Style>
-    <Style x:Key="cb.datagrid" TargetType="{x:Type ComboBox}">
-        <Setter Property="HorizontalContentAlignment" Value="Center"/>
+    <Style x:Key="tb.DataGrid.Editing.Left" TargetType="{x:Type TextBox}">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="15"/>
         <Setter Property="Margin" Value="0"/>
+        <Setter Property="Padding" Value="5,0"/>
     </Style>
+    
+    
+    <Style x:Key="tb.expander.header" TargetType="{x:Type TextBlock}">
+        <Setter Property="FontSize" Value="14"/>
+        <Setter Property="FontWeight" Value="SemiBold"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrushForegroundLight}"/>
+        <Setter Property="VerticalAlignment" Value="Center"/>
+    </Style>
+    
 
     <Style x:Key="tb.Panel" TargetType="{x:Type TextBox}" BasedOn="{StaticResource MahApps.Styles.TextBox}">
         <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
         <Setter Property="Margin" Value="5"/>
+        <Setter Property="Padding" Value="10,0"/>
         <Setter Property="VerticalContentAlignment" Value="Center"/>
         <Setter Property="FontSize" Value="15"/>
     </Style>
     <Style x:Key="cb.Panel" TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
         <Setter Property="Margin" Value="5"/>
+        <Setter Property="Padding" Value="10,0" />
         <Setter Property="mah:ControlsHelper.CornerRadius" Value="2"/>
         <Setter Property="IsEditable" Value="True"/>
         <Setter Property="IsTextSearchEnabled" Value="True"/>

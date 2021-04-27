@@ -1,27 +1,20 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
+using Hospital.ViewModel.Notificator;
+using System;
 using System.Threading.Tasks;
 
 namespace Hospital.ViewModel.Ambulatory
 {
     public class AmbulatoryViewModel : MainViewModel
     {
-        public AmbulatoryViewModel()
-        {
-            GetEntry(3);
-        }
-
-        private static readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
+        private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
 
         private Entry _currentEntry;
-        public Entry CurrentEntry { get => _currentEntry; set { _currentEntry = value; OnPropertyChanged(nameof(CurrentEntry)); } }
-
         private DiagnosticViewModel _diagnosticViewModel;
-        public DiagnosticViewModel DiagnosticViewModel { get => _diagnosticViewModel; set { _diagnosticViewModel = value; OnPropertyChanged(nameof(DiagnosticViewModel)); } }
-
         private TherapyViewModel _therapyViewModel;
-        public TherapyViewModel TherapyViewModel { get => _therapyViewModel; set { _therapyViewModel = value; OnPropertyChanged(nameof(TherapyViewModel)); } }
+        private EntryViewModel _entryViewModel;
 
         private async void GetEntry(int entryId)
         {
@@ -29,9 +22,22 @@ namespace Hospital.ViewModel.Ambulatory
             CurrentEntry = await task;
             if (task.IsCompleted)
             {
-                DiagnosticViewModel = new DiagnosticViewModel(CurrentEntry);
-                TherapyViewModel = new TherapyViewModel(CurrentEntry);
+                DiagnosticViewModel = new DiagnosticViewModel(CurrentEntry, ambulatoryDataService);
+                TherapyViewModel = new TherapyViewModel(CurrentEntry, ambulatoryDataService);
+                EntryViewModel = new EntryViewModel(CurrentEntry, ambulatoryDataService);
             }
         }
+
+        public AmbulatoryViewModel()
+        {
+            GetEntry(53);
+        }
+
+        public Entry CurrentEntry { get => _currentEntry; set { _currentEntry = value; OnPropertyChanged(nameof(CurrentEntry)); } }
+        public DiagnosticViewModel DiagnosticViewModel { get => _diagnosticViewModel; set { _diagnosticViewModel = value; OnPropertyChanged(nameof(DiagnosticViewModel)); } }
+        public TherapyViewModel TherapyViewModel { get => _therapyViewModel; set { _therapyViewModel = value; OnPropertyChanged(nameof(TherapyViewModel)); } }
+        public EntryViewModel EntryViewModel { get => _entryViewModel; set { _entryViewModel = value; OnPropertyChanged(nameof(EntryViewModel)); } }
+
+
     }
 }

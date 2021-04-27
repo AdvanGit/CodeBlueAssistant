@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using Hospital.WPF.Navigators;
+using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Data;
 

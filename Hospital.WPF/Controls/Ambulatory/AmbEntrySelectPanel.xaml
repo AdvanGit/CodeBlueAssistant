@@ -1,0 +1,140 @@
+﻿<UserControl x:Class="Hospital.WPF.Controls.Ambulatory.AmbEntrySelectPanel" Name="AmbSelectEntryPanelControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="clr-namespace:Hospital.ViewModel.Ambulatory;assembly=Hospital.ViewModel"
+             xmlns:view="clr-namespace:Hospital.WPF.Views"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
+             DataContext="{Binding EntryViewModel}"
+             d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type vm:EntryViewModel}}"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/Resources/Local/AmbulatoryResources.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource tb.Panel}"/>
+            <Style TargetType="{x:Type TextBlock}">
+                <Setter Property="FontSize" Value="16"/>
+                <Setter Property="VerticalAlignment" Value="Bottom"/>
+            </Style>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
+                <Setter Property="Height" Value="30"/>
+                <Setter Property="Background" Value="Transparent"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <Border Grid.Row="0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}" BorderThickness="0,0,0,1"/>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Content="Back" Margin="5,0,5,5" Grid.Column="0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntrySearchNavigator.SetByType}"
+                    CommandParameter="{x:Type local:AmbEntrySearchPanel}"/>
+            <TextBlock Grid.Column="1" Margin="0,0,0,5" VerticalAlignment="Center" FontWeight="DemiBold" FontSize="18">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} {1} {2}">
+                            <Binding Path="SelectedEntry.DoctorDestination.FirstName"/>
+                            <Binding Path="SelectedEntry.DoctorDestination.MidName"/>
+                            <Binding Path="SelectedEntry.DoctorDestination.LastName"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+             </TextBlock>
+            <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center"  Margin="0,0,15,5" HorizontalAlignment="Right">
+                <CheckBox x:Name="cb_StatusVisibility"/>
+                <TextBlock Name="tb_date" Text="{Binding SelectedEntry.TargetDateTime, StringFormat=dd MMMM - dddd, ConverterCulture='ru-RU'}" FontSize="15" VerticalAlignment="Center"/>
+                <Button Content="P" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.FindEntryPrevious}"/>
+                <Button Content="N" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.FindEntryNext}"/>
+            </StackPanel>
+        </Grid>
+
+        <ListBox Grid.Row="1" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <ListBox.Style>
+                <Style TargetType="{x:Type ListBox}" BasedOn="{StaticResource MahApps.Styles.ListBox}">
+                    <Setter Property="ItemsSource"  Value="{Binding BySelectEntries}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding ElementName=cb_StatusVisibility, Path=IsChecked}" Value="true">
+                            <Setter Property="ItemsSource" Value="{Binding FilteredCollection}"/>
+                        </DataTrigger>    
+                    </Style.Triggers>
+                </Style>
+            </ListBox.Style>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="{x:Type ListBoxItem}">
+                    <Setter Property="Foreground" Value="{StaticResource BrushForegroundMid}"/>
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.InputBindings>
+                                        <MouseBinding MouseAction="LeftDoubleClick"
+                                                      Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.SetSavePanel}"
+                                                      CommandParameter="{Binding Path=SelectedItem, RelativeSource={RelativeSource AncestorType={x:Type ListBox}}}">
+                                        </MouseBinding>
+                                    </Grid.InputBindings>
+                                    <Border x:Name="border_item" Grid.Column="0" Grid.ColumnSpan="2"  Background="{DynamicResource BrushBackgroundPaper}"
+                                                            BorderBrush="{DynamicResource BrushPrimaryBorderLight}" BorderThickness="0,0,0,1"/>
+                                    <StackPanel Grid.Column="0" Margin="15,5" Orientation="Vertical" VerticalAlignment="Center">
+                                        <TextBlock x:Name="tb_entryStatus" FontSize="14" Text="{Binding EntryStatus}"/>
+                                        <TextBlock x:Name="tb_name" FontSize="18" HorizontalAlignment="Left" TextWrapping="WrapWithOverflow">
+                                            <TextBlock.Text>
+                                                <MultiBinding StringFormat="{}{0} {1} {2}">
+                                                    <Binding Path="Patient.FirstName" TargetNullValue="СВОБОДНО"/>
+                                                    <Binding Path="Patient.MidName"/>
+                                                    <Binding Path="Patient.LastName"/>
+                                                </MultiBinding>
+                                            </TextBlock.Text>
+                                        </TextBlock>
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1" Margin="15,5" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
+                                        <TextBlock Name="tb_date" Text="{Binding TargetDateTime, StringFormat=dd MMMM, ConverterCulture='ru-RU'}" FontSize="15" HorizontalAlignment="Right"/>
+                                        <TextBlock Text="{Binding TargetDateTime, StringFormat=dddd, ConverterCulture='ru-RU'}" Margin="0,-2" HorizontalAlignment="Right" FontSize="14" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                                        <TextBlock Name="tb_time" Text="{Binding TargetDateTime, StringFormat=hh:mm}" HorizontalAlignment="Right" FontSize="18" FontWeight="DemiBold" Foreground="{DynamicResource BrushAccentInvert}"/>
+                                    </StackPanel>
+                                </Grid>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="tb_name" Property="FontWeight" Value="DemiBold"/>
+                                        <Setter TargetName="tb_date" Property="FontWeight" Value="DemiBold"/>
+                                        <Setter TargetName="border_item" Property="Background" Value="{DynamicResource BrushPrimaryPanel}"/>
+                                    </Trigger>
+                                    <Trigger Property="IsMouseOver" Value="True">
+                                        <Setter Property="Cursor" Value="Hand"/>
+                                    </Trigger>
+                                    <Trigger Property="IsEnabled" Value="False">
+                                        <Setter Property="Opacity" Value="0.6"/>
+                                        <Setter TargetName="tb_time" Property="Foreground" Value="{DynamicResource BrushForegroundVeryLight}"/>
+                                    </Trigger>
+                                    <DataTrigger Binding="{Binding EntryStatus}" Value="Открыта">
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                        <Setter TargetName="tb_entryStatus" Property="Foreground" Value="{DynamicResource BrushAccentPositive}"/>
+                                    </DataTrigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListBox.ItemContainerStyle>
+        </ListBox>
+
+        <Button Grid.Row="1" Content="ОТМЕНА" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-30"
+                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntryTabNavigator.SetByType}"
+                CommandParameter="{x:Type local:AmbEntryInfo}"/>
+
+    </Grid>
+</UserControl>
