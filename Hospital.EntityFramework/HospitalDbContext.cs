@@ -103,6 +103,7 @@ namespace Hospital.EntityFramework
                         }
                         else
                         {
+                            node.Entry.State = EntityState.Added;
                             node.Entry.State = EntityState.Modified;
                         }
                     }
@@ -145,7 +146,7 @@ namespace Hospital.EntityFramework
                 builder.Property(s => s.IsEnabled).HasDefaultValue(true);
                 builder.Property(s => s.LastName).IsRequired();
                 builder.Property(s => s.FirstName).IsRequired();
-                builder.Property(s => s.CreateDate).HasDefaultValueSql("GETDATE()");
+                builder.Property(s => s.CreateDate).HasDefaultValueSql("NOW()");
                 builder.Property(s => s._Adress).HasColumnName("Adress");
                 builder.HasOne(s => s.Department).WithMany(d => d.Staffs);
 
@@ -155,7 +156,7 @@ namespace Hospital.EntityFramework
         {
             public void Configure(EntityTypeBuilder<Patient> builder)
             {
-                builder.Property(s => s.CreateDate).HasDefaultValueSql("GETDATE()");
+                builder.Property(s => s.CreateDate).HasDefaultValueSql("NOW()");
                 builder.Property(s => s._Adress).HasColumnName("Adress");
                 builder.Property(s => s.LastName).IsRequired();
                 builder.Property(s => s.FirstName).IsRequired();
@@ -168,7 +169,7 @@ namespace Hospital.EntityFramework
             {
                 builder.HasOne(e => e.Registrator).WithMany(s => s.Registrators).OnDelete(DeleteBehavior.NoAction);
                 builder.HasOne(e => e.DoctorDestination).WithMany(s => s.DoctorDestinations).OnDelete(DeleteBehavior.NoAction);
-                builder.Property(e => e.CreateDateTime).HasDefaultValueSql("GETDATE()");
+                builder.Property(e => e.CreateDateTime).HasDefaultValueSql("NOW()");
             }
         }
         private class MedCardConfig : IEntityTypeConfiguration<MedCard>

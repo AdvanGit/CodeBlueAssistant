@@ -12,15 +12,14 @@ namespace Hospital.ViewModel.Ambulatory
 {
     public class DiagnosticViewModel : MainViewModel
     {
-        private readonly AmbulatoryDataService ambulatoryDataService;
+        private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
         private readonly GenericDataServices<TestTemplate> genericTemplateServices = new GenericDataServices<TestTemplate>(new HospitalDbContextFactory());
 
         private readonly Entry currentEntry;
 
-        public DiagnosticViewModel(Entry entry, AmbulatoryDataService dataService)
+        public DiagnosticViewModel(Entry entry)
         {
             currentEntry = entry;
-            ambulatoryDataService = dataService;
             Initialize(entry);
 
             GetTestList(TestMethod.Физикальная);

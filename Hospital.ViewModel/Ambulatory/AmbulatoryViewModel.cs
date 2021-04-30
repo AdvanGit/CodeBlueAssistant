@@ -1,8 +1,6 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
-using Hospital.ViewModel.Notificator;
-using System;
 using System.Threading.Tasks;
 
 namespace Hospital.ViewModel.Ambulatory
@@ -11,6 +9,7 @@ namespace Hospital.ViewModel.Ambulatory
     {
         private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
 
+        private string _caption;
         private Entry _currentEntry;
         private DiagnosticViewModel _diagnosticViewModel;
         private TherapyViewModel _therapyViewModel;
@@ -22,22 +21,26 @@ namespace Hospital.ViewModel.Ambulatory
             CurrentEntry = await task;
             if (task.IsCompleted)
             {
-                DiagnosticViewModel = new DiagnosticViewModel(CurrentEntry, ambulatoryDataService);
-                TherapyViewModel = new TherapyViewModel(CurrentEntry, ambulatoryDataService);
-                EntryViewModel = new EntryViewModel(CurrentEntry, ambulatoryDataService);
+                DiagnosticViewModel = new DiagnosticViewModel(CurrentEntry);
+                TherapyViewModel = new TherapyViewModel(CurrentEntry);
+                EntryViewModel = new EntryViewModel(CurrentEntry);
+                Caption = CurrentEntry.TargetDateTime.ToShortTimeString();
             }
         }
 
-        public AmbulatoryViewModel()
+        public AmbulatoryViewModel(int entryId)
         {
-            GetEntry(53);
+            EntryId = entryId;
+            GetEntry(entryId);
         }
+
+        public string Caption { get => _caption; set { _caption = value; OnPropertyChanged(nameof(Caption)); } }
+        public int EntryId { get; }
 
         public Entry CurrentEntry { get => _currentEntry; set { _currentEntry = value; OnPropertyChanged(nameof(CurrentEntry)); } }
         public DiagnosticViewModel DiagnosticViewModel { get => _diagnosticViewModel; set { _diagnosticViewModel = value; OnPropertyChanged(nameof(DiagnosticViewModel)); } }
         public TherapyViewModel TherapyViewModel { get => _therapyViewModel; set { _therapyViewModel = value; OnPropertyChanged(nameof(TherapyViewModel)); } }
         public EntryViewModel EntryViewModel { get => _entryViewModel; set { _entryViewModel = value; OnPropertyChanged(nameof(EntryViewModel)); } }
-
 
     }
 }

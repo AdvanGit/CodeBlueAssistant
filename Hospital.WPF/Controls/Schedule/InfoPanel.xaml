@@ -226,7 +226,8 @@
             </Expander>
         </StackPanel>
 
-        <Button Content="Открыть" Margin="15,10" Grid.Row="3" />
+        <Button Content="Открыть" Margin="15,10" Grid.Row="3"
+                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Schedule}}, Path=Command.OpenTab}"/>
 
     </Grid>
 </UserControl>

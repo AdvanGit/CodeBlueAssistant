@@ -99,5 +99,6 @@ namespace Hospital.ViewModel
             if (isNew) EditingPatient = new Patient();
             else EditingPatient = (Patient)SelectedPatient.Clone();
         }
+
     }
 }

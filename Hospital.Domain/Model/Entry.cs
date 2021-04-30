@@ -30,11 +30,11 @@ namespace Hospital.Domain.Model
         public Staff Registrator { get => _registrator; set { _registrator = value; OnPropertyChanged(nameof(Registrator)); } }
         //public int RegistratorId { get; set; }
         public Staff DoctorDestination { get => _doctorDestination; set { _doctorDestination = value; OnPropertyChanged(nameof(DoctorDestination)); } }
+        public Entry EntryOut { get => _entryOut; set { _entryOut = value; OnPropertyChanged(nameof(EntryOut)); } }
+        //public int? EntryOutId { get; set; }
 
         public DateTime TargetDateTime { get => _targetDateTime; set { _targetDateTime = value; OnPropertyChanged("TargetDateTime"); } }
         public DateTime CreateDateTime { get => _createDateTime; set { _createDateTime = value; OnPropertyChanged(nameof(CreateDateTime)); } }
 
-        public Entry EntryOut { get => _entryOut; set { _entryOut = value; OnPropertyChanged(nameof(EntryOut)); } }
-        //public int? EntryOutId { get; set; }
     }
 }

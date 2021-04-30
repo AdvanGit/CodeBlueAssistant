@@ -22,7 +22,6 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                db.ChangeTracker.AutoDetectChangesEnabled = false;
                 //парсинг строки (Оставлены пробелы в конце и начале строки для удобства тестирования)
                 string[] words = Regex.Replace(_string, @"\s+", " ").Split(' ');
 
@@ -102,7 +101,6 @@ namespace Hospital.EntityFramework.Services
                 string[] words = Regex.Replace(_string, @"\s+", " ").Split(' ');
 
                 return await db.Patients.Include(p => p.Belay)
-                    .AsNoTracking()
                     .AsAsyncEnumerable()
                     .Where(p =>
                        ((
@@ -120,7 +118,6 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                db.ChangeTracker.AutoDetectChangesEnabled = false;
                 IList<Entry> entries = await db.Entries
                     .AsQueryable()
                     .Where(e => e.DoctorDestination.Id == selectedStaff.Id)
@@ -157,13 +154,13 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-        public async Task<bool> UpdateEntry(Entry entry)
+        public async Task<Entry> UpdateEntry(Entry entry)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 db.UpdateWithoutTracking(entry);
                 await db.SaveChangesAsync();
-                return true;
+                return entry;
             }
         }
 

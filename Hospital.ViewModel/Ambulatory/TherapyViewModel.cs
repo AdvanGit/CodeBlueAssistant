@@ -12,7 +12,7 @@ namespace Hospital.ViewModel.Ambulatory
 {
     public class TherapyViewModel : MainViewModel
     {
-        private readonly AmbulatoryDataService ambulatoryDataService;
+        private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
         private readonly GenericDataServices<DrugSubClass> dataServicesDrugSubClass = new GenericDataServices<DrugSubClass>(new HospitalDbContextFactory());
         private readonly GenericDataServices<DrugGroup> dataServicesDrugGroup = new GenericDataServices<DrugGroup>(new HospitalDbContextFactory());
 
@@ -167,10 +167,9 @@ namespace Hospital.ViewModel.Ambulatory
         }
 
 
-        public TherapyViewModel(Entry entry, AmbulatoryDataService dataService)
+        public TherapyViewModel(Entry entry)
         {
             _currentEntry = entry;
-            ambulatoryDataService = dataService;
             Initialize(entry);
         }
 

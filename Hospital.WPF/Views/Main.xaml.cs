@@ -1,6 +1,9 @@
 ﻿using Hospital.ViewModel;
+using Hospital.WPF.Navigators;
 using MahApps.Metro.Controls;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -8,6 +11,28 @@ namespace Hospital.WPF.Views
 {
     public partial class Main : MetroWindow
     {
+        private static UserControl _currentPage;
+        
+        private void GetControls(UserAccess userAccess)
+        {
+            switch (userAccess)
+            {
+                case UserAccess.admin:
+                    MenuNavigator.Bodies.Add(new Registrator());
+                    MenuNavigator.Bodies.Add(new Schedule());
+                    CurrentPage = MenuNavigator.Bodies[0];
+                    break;
+                case UserAccess.doctor:
+                    break;
+                case UserAccess.registrator:
+                    break;
+                case UserAccess.manager:
+                    break;
+                default:
+                    break;
+            }
+        }
+        
         public Main()
         {
             InitializeComponent();
@@ -15,50 +40,22 @@ namespace Hospital.WPF.Views
             GetControls(UserAccess.admin);
         }
 
-        public List<UserControl> Pages
-        {
-            get { return (List<UserControl>)GetValue(PagesProperty); }
-            set { SetValue(PagesProperty, value); }
-        }
-        public UserControl CurrentPage
-        {
-            get { return (UserControl)GetValue(CurrentPageProperty); }
-            set { SetValue(CurrentPageProperty, value); }
-        }
+        public static Navigator MenuNavigator { get; } = new Navigator(new ObservableCollection<UserControl>());
+        public static Navigator TabNavigator { get; } = new Navigator(new ObservableCollection<UserControl>());
 
-        public static readonly DependencyProperty PagesProperty =
-            DependencyProperty.Register("Pages", typeof(List<UserControl>), typeof(Main));
-        public static readonly DependencyProperty CurrentPageProperty =
-            DependencyProperty.Register("CurrentPage", typeof(UserControl), typeof(Main));
-
-        private void GetControls(UserAccess userAccess)
+        public static UserControl CurrentPage
         {
-            switch (userAccess)
+            get => _currentPage; 
+            set 
             {
-                case UserAccess.admin:
-                    Pages = new List<UserControl>
-                    {
-                        new Registrator(),
-                        new Schedule(),
-                        new Ambulatory()
-                    };
-                    CurrentPage = Pages[0];
-                    break;
-                case UserAccess.doctor:
-                    break;
-                case UserAccess.registrator:
-                    Pages = new List<UserControl>
-                    {
-                        new Registrator(),
-                    };
-                    CurrentPage = Pages[0];
-                    break;
-                case UserAccess.manager:
-                    break;
-                default:
-                    break;
-            }
-
+                _currentPage = null;
+                OnStaticPropertyChanged(nameof(CurrentPage)); //refresh bindings
+                _currentPage = value;
+                OnStaticPropertyChanged(nameof(CurrentPage)); 
+            } 
         }
+
+        public static event PropertyChangedEventHandler StaticPropertyChanged;
+        public static void OnStaticPropertyChanged(string prop = "") { StaticPropertyChanged?.Invoke(null, new PropertyChangedEventArgs(prop)); }
     }
 }

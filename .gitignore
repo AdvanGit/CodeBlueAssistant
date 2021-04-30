@@ -12,6 +12,7 @@ Migrations/
 *.userosscache
 *.sln.docstates
 Migrations/ 
+HospitalDbContextFactory.cs
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

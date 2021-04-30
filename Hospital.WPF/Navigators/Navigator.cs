@@ -69,8 +69,8 @@ namespace Hospital.WPF.Navigators
             }
         }
 
-        public Command SetByIndex => new Command(i => CurrentBody = Bodies[int.Parse(i.ToString())], i => int.Parse(i.ToString())+1 >= Bodies.Count && int.Parse(i.ToString())+1 <= Bodies.Count );
-        public Command SetByTypeName => new Command(i => SetBody(i.ToString()), i=> i!=null);
+        public Command SetByIndex => new Command(i => CurrentBody = Bodies[int.Parse(i.ToString())], i => int.Parse(i.ToString()) + 1 >= Bodies.Count && int.Parse(i.ToString()) + 1 <= Bodies.Count);
+        public Command SetByTypeName => new Command(i => SetBody(i.ToString()), i => i != null);
         public Command SetByType => new Command(i => SetBody((Type)i), i => i != null);
         public Command PreviousHistory => new Command(i => Previous());
         public Command NextHistory => new Command(i => Next());

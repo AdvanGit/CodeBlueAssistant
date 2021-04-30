@@ -9,9 +9,7 @@ namespace Hospital.WPF.Views
 {
     public partial class Ambulatory : UserControl
     {
-        public static string Label => "Амбулатория";
-
-        private AmbulatoryViewModel ambulatoryViewModel = new AmbulatoryViewModel();
+        private AmbulatoryViewModel ambulatoryViewModel;
 
         public AmbulatoryCommand Command { get; }
         public AmbulatoryNavigator Navigator { get; } = new AmbulatoryNavigator();
@@ -19,9 +17,10 @@ namespace Hospital.WPF.Views
         public Navigator EntryTabNavigator { get; } = new Navigator(new ObservableCollection<UserControl>() { new AmbEntryInfo(), new AmbEntrySearchBar() });
         public Navigator EntrySearchNavigator { get; } = new Navigator(new ObservableCollection<UserControl>() { new AmbEntrySearchPanel(), new AmbEntrySelectPanel(), new AmbEntrySavePanel() });
 
-        public Ambulatory()
+        public Ambulatory(int entryId)
         {
             InitializeComponent();
+            ambulatoryViewModel = new AmbulatoryViewModel(entryId);
             DataContext = ambulatoryViewModel;
             Command = new AmbulatoryCommand(ambulatoryViewModel, this);
 
@@ -32,12 +31,12 @@ namespace Hospital.WPF.Views
             foreach (UserControl control in EntrySearchNavigator.Bodies) AddLogicalChild(control);
         }
 
-
         public override void OnApplyTemplate()
         {
             base.OnApplyTemplate();
             EntrySearchNavigator.SetBody(typeof(AmbEntrySearchPanel));
             EntryTabNavigator.SetBody(typeof(AmbEntryInfo));
         }
+
     }
 }

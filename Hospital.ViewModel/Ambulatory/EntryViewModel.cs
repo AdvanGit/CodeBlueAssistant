@@ -14,7 +14,7 @@ namespace Hospital.ViewModel.Ambulatory
     public class EntryViewModel : MainViewModel
     {
         private readonly EntryDataServices entryDataServices = new EntryDataServices(new HospitalDbContextFactory());
-        private readonly AmbulatoryDataService ambulatoryDataService;
+        //private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
 
         private Entry _currentEntry;
         private Entry _selectedEntry;
@@ -31,10 +31,9 @@ namespace Hospital.ViewModel.Ambulatory
             DateTime = DateTime.Now
         };
 
-        public EntryViewModel(Entry currentEntry, AmbulatoryDataService ambulatoryDataService)
+        public EntryViewModel(Entry currentEntry)
         {
             CurrentEntry = currentEntry;
-            this.ambulatoryDataService = ambulatoryDataService;
         }
 
         public ObservableCollection<Entry> FindedEntries { get; } = new ObservableCollection<Entry>();
@@ -67,8 +66,8 @@ namespace Hospital.ViewModel.Ambulatory
         public async void ToAbsence()
         {
             CurrentEntry.EntryStatus = EntryStatus.Неявка;
-            if (await entryDataServices.UpdateEntry(CurrentEntry))
-                NotificationManager.AddItem(new NotificationItem(NotificationType.Success, TimeSpan.FromSeconds(2), "Запись успешно обновлена"));
+            await entryDataServices.UpdateEntry(CurrentEntry);
+            NotificationManager.AddItem(new NotificationItem(NotificationType.Success, TimeSpan.FromSeconds(2), "Запись успешно обновлена"));
         }
         public async Task UpdateEntry()
         {

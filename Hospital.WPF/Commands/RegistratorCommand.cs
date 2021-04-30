@@ -5,73 +5,69 @@ namespace Hospital.WPF.Commands
 {
     public class RegistratorCommand
     {
-        private Command _setBody;
-        private Command _findDoctor;
-        private Command _findPatient;
-        private Command _getEntries;
-        private Command _selectPatient;
-        private Command _selectEntry;
-        private Command _editPatient;
-        private Command _savePatient;
-        private Command _createEntry;
+        private static RegistratorViewModel _vm;
+        private static Registrator _view;
 
-        public Command SetBody { get => _setBody; }
-        public Command FindDoctor { get => _findDoctor; }
-        public Command FindPatient { get => _findPatient; }
-        public Command GetEntries { get => _getEntries; }
-        public Command SelectPatient { get => _selectPatient; }
-        public Command SelectEntry { get => _selectEntry; }
-        public Command EditPatient { get => _editPatient; }
-        public Command SavePatient { get => _savePatient; }
-        public Command CreateEntry { get => _createEntry; }
-
-        public RegistratorCommand(RegistratorViewModel viewModel, Registrator view)
+        private static readonly Command _setBody = new Command(param => 
+            {
+                _view.Navigator.SetBody(param.ToString());
+                if (param.ToString() == "Doctors") _view.SearchBar.TabDoctor.IsSelected = true;
+                else if (param.ToString() == "Patients") _view.SearchBar.TabPatient.IsSelected = true;
+            });
+        private static readonly Command _findDoctor = new Command(async param => await _vm.SearchDoctor(_view.SearchBar.TextBoxSearch.Text));
+        private static readonly Command _findPatient = new Command(async param => await _vm.SearchPatient(_view.SearchBar.TextBoxSearch.Text));
+        private static readonly Command _getEntries = new Command(async obj =>
         {
-            _setBody = new Command(param =>
+            if (obj != null)
             {
-                view.Navigator.SetBody(param.ToString());
-                if (param.ToString() == "Doctors") view.SearchBar.TabDoctor.IsSelected = true;
-                else if (param.ToString() == "Patients") view.SearchBar.TabPatient.IsSelected = true;
-            });
-            _findPatient = new Command(async param => await viewModel.SearchPatient(view.SearchBar.TextBoxSearch.Text));
-            _findDoctor = new Command(async param => await viewModel.SearchDoctor(view.SearchBar.TextBoxSearch.Text));
-            _getEntries = new Command(async obj =>
-            {
-                if (obj != null)
-                {
-                    await viewModel.GetEntries(obj);
-                    view.Navigator.SetBody("Entries");
-                }
-            });
-            _selectPatient = new Command(obj => { if (obj != null) viewModel.SelectEntity(obj); });
-            _selectEntry = new Command(obj =>
+                await _vm.GetEntries(obj);
+                _view.Navigator.SetBody("Entries");
+            }
+        });
+        private static readonly Command _selectPatient = new Command(obj => { if (obj != null) _vm.SelectEntity(obj); });
+        private static readonly Command _selectEntry = new Command(obj =>
             {
                 if (obj != null)
                 {
-                    viewModel.SelectEntity(obj);
-                    view.SearchBar.TabPatient.IsSelected = true;
-                    view.SearchBar.TextBoxSearch.Focus();
-                    view.Navigator.SetBody("Patients");
+                    _vm.SelectEntity(obj);
+                    _view.SearchBar.TabPatient.IsSelected = true;
+                    _view.SearchBar.TextBoxSearch.Focus();
+                    _view.Navigator.SetBody("Patients");
                 }
             });
-            _editPatient = new Command(async obj =>
+        private static readonly Command _editPatient = new Command(async obj =>
             {
-                if (obj.ToString() == "true") viewModel.EditPatient(true);
-                else viewModel.EditPatient(false);
-                view.Navigator.SetBody("Edit");
-                await viewModel.GetBelays();
+                if (obj.ToString() == "true") _vm.EditPatient(true);
+                else _vm.EditPatient(false);
+                _view.Navigator.SetBody("Edit");
+                await _vm.GetBelays();
             }, obj =>
             {
                 if (obj.ToString() == "true") return true;
-                else return viewModel.SelectedPatient != null;
+                else return _vm.SelectedPatient != null;
             });
-            _savePatient = new Command(async obj =>
+        private static readonly Command _savePatient = new Command(async obj =>
             {
-                var command = viewModel.SavePatient();
+                var command = _vm.SavePatient();
                 await command;
-                if (command.IsCompletedSuccessfully) view.Navigator.SetBody("Patients");
+                if (command.IsCompletedSuccessfully) _view.Navigator.SetBody("Patients");
             });
-            _createEntry = new Command(async obj => await viewModel.CreateEntry(), obj => { return (viewModel.SelectedEntry != null && viewModel.SelectedPatient != null); });
+        private static readonly Command _createEntry = new Command(async obj => await _vm.CreateEntry(), obj => { return (_vm.SelectedEntry != null && _vm.SelectedPatient != null); });
+
+        public RegistratorCommand(RegistratorViewModel viewModel, Registrator view)
+        {
+            _vm = viewModel;
+            _view = view;
         }
+
+        public static Command SetBody => _setBody;
+        public static Command FindDoctor => _findDoctor;
+        public static Command FindPatient => _findPatient;
+        public static Command GetEntries => _getEntries;
+        public static Command SelectPatient => _selectPatient;
+        public static Command SelectEntry => _selectEntry;
+        public static Command EditPatient => _editPatient;
+        public static Command SavePatient => _savePatient;
+        public static Command CreateEntry => _createEntry;
     }
 }
