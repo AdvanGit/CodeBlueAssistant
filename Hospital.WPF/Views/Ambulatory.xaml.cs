@@ -2,20 +2,24 @@
 using Hospital.WPF.Commands;
 using Hospital.WPF.Controls.Ambulatory;
 using Hospital.WPF.Navigators;
+using System;
 using System.Collections.ObjectModel;
 using System.Windows.Controls;
 
 namespace Hospital.WPF.Views
 {
-    public partial class Ambulatory : UserControl
+    public partial class Ambulatory : UserControl, INavigatorItem
     {
         private AmbulatoryViewModel ambulatoryViewModel;
 
         public AmbulatoryCommand Command { get; }
         public AmbulatoryNavigator Navigator { get; } = new AmbulatoryNavigator();
 
-        public Navigator EntryTabNavigator { get; } = new Navigator(new ObservableCollection<UserControl>() { new AmbEntryInfo(), new AmbEntrySearchBar() });
-        public Navigator EntrySearchNavigator { get; } = new Navigator(new ObservableCollection<UserControl>() { new AmbEntrySearchPanel(), new AmbEntrySelectPanel(), new AmbEntrySavePanel() });
+        public Navigator EntryTabNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>() { new AmbEntryInfo(), new AmbEntrySearchBar() });
+        public Navigator EntrySearchNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>() { new AmbEntrySearchPanel(), new AmbEntrySelectPanel(), new AmbEntrySavePanel() });
+
+        public string Label => "Ambulatory";
+        public Type Type => typeof(Ambulatory);
 
         public Ambulatory(int entryId)
         {

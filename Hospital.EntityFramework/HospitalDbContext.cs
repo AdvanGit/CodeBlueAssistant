@@ -40,9 +40,9 @@ namespace Hospital.EntityFramework
         public DbSet<PhysTherMethodGroup> PhysTherMethodGroups { get; set; }
         public DbSet<PhysioTherapyData> PhysioTherapyDatas { get; set; }
 
-        public DbSet<SurgencyOperation> SurgencyOperations { get; set; }
-        public DbSet<SurgencyGroup> SurgencyGroups { get; set; }
-        public DbSet<SurgencyTherapyData> SurgencyTherapyDatas { get; set; }
+        public DbSet<SurgeryOperation> SurgeryOperations { get; set; }
+        public DbSet<SurgeryGroup> SurgeryGroups { get; set; }
+        public DbSet<SurgeryTherapyData> SurgeryTherapyDatas { get; set; }
 
         public DbSet<TestTemplate> TestTemplates { get; set; }
 

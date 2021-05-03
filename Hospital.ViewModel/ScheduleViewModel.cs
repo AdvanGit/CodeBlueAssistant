@@ -23,7 +23,7 @@ namespace Hospital.ViewModel
 
         public ScheduleViewModel()
         {
-            SelectedDate = new DateTime(2020, 11, 26);
+            SelectedDate = new DateTime(2021, 05, 03);
         }
 
         private async void GetEntry(DateTime date)

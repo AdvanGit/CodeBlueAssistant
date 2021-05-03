@@ -9,11 +9,11 @@ namespace Hospital.WPF.Navigators
 {
     public class Navigator : INotifyPropertyChanged
     {
-        private UserControl _currentBody;
+        private INavigatorItem _currentBody;
         private bool isHistory;
-        private List<UserControl> controlsQueue = new List<UserControl>();
+        private List<INavigatorItem> controlsQueue = new List<INavigatorItem>();
         private int queueIndex;
-        private void AddHistory(UserControl control)
+        private void AddHistory(INavigatorItem control)
         {
             if (isHistory)
             {
@@ -23,19 +23,19 @@ namespace Hospital.WPF.Navigators
             }
         }
 
-        public Navigator(ObservableCollection<UserControl> controls, bool isHistory = false)
+        public Navigator(ObservableCollection<INavigatorItem> controls, bool isHistory = false)
         {
             this.isHistory = isHistory;
             Bodies = controls;
         }
 
-        public UserControl CurrentBody { get => _currentBody; set { _currentBody = value; OnPropertyChanged(nameof(CurrentBody)); AddHistory(value); } }
+        public INavigatorItem CurrentBody { get => _currentBody; set { _currentBody = value; OnPropertyChanged(nameof(CurrentBody)); AddHistory(value); } }
 
-        public ObservableCollection<UserControl> Bodies { get; }
+        public ObservableCollection<INavigatorItem> Bodies { get; }
 
         public void SetBody(string typeName)
         {
-            foreach (UserControl control in Bodies)
+            foreach (INavigatorItem control in Bodies)
                 if (control.GetType().Name == typeName)
                 {
                     CurrentBody = control;
@@ -44,7 +44,7 @@ namespace Hospital.WPF.Navigators
         }
         public void SetBody(Type type)
         {
-            foreach (UserControl control in Bodies)
+            foreach (INavigatorItem control in Bodies)
                 if (control.GetType() == type)
                 {
                     CurrentBody = control;

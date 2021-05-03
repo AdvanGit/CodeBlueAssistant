@@ -26,10 +26,10 @@ namespace Hospital.WPF.Commands
         #region Therapy Command
         private readonly Command _addPharmacoTherapyData;
         private readonly Command _addPhysioData;
-        private readonly Command _addSurgencyData;
+        private readonly Command _addSurgeryData;
         private readonly Command _removePharmacoTherapyData;
         private readonly Command _removePhysioData;
-        private readonly Command _removeSurgencyData;
+        private readonly Command _removeSurgeryData;
         #endregion
 
         #region Entry Command
@@ -60,10 +60,10 @@ namespace Hospital.WPF.Commands
 
             _addPharmacoTherapyData = new Command(obj => _vm.TherapyViewModel.AddPharmacoTherapyData(), obj => (_vm.TherapyViewModel != null) && (_vm.TherapyViewModel.PharmacoData.Drug != null));
             _addPhysioData = new Command(obj => _vm.TherapyViewModel.AddPhysioTherapyData(), obj => (_vm.TherapyViewModel != null) && (_vm.TherapyViewModel.PhysioData.PhysioTherapyFactor != null));
-            _addSurgencyData = new Command(obj => _vm.TherapyViewModel.AddSurgencyTherapyData(), obj => (_vm.TherapyViewModel != null) && (_vm.TherapyViewModel.SurgencyData.SurgencyOperation != null));
+            _addSurgeryData = new Command(obj => _vm.TherapyViewModel.AddSurgeryTherapyData(), obj => (_vm.TherapyViewModel != null) && (_vm.TherapyViewModel.SurgeryData.SurgeryOperation != null));
             _removePharmacoTherapyData = new Command(obj => new ConfirmDialog(_obj => _vm.TherapyViewModel.RemovePharmacoTherapyData(obj), "вы действительно хотите удалить данные?"), obj => ((obj != null) && ((IList)obj).Count != 0));
             _removePhysioData = new Command(obj => new ConfirmDialog(_obj => _vm.TherapyViewModel.RemovePhysioTherapyData(obj), "вы действительно хотите удалить данные?"), obj => ((obj != null) && ((IList)obj).Count != 0));
-            _removeSurgencyData = new Command(obj => new ConfirmDialog(_obj => _vm.TherapyViewModel.RemoveSurgencyTherapyData(obj), "вы действительно хотите удалить данные?"), obj => ((obj != null) && ((IList)obj).Count != 0));
+            _removeSurgeryData = new Command(obj => new ConfirmDialog(_obj => _vm.TherapyViewModel.RemoveSurgeryTherapyData(obj), "вы действительно хотите удалить данные?"), obj => ((obj != null) && ((IList)obj).Count != 0));
 
             _findEntryPrevious = new Command(obj =>
             {
@@ -114,8 +114,8 @@ namespace Hospital.WPF.Commands
         public Command RemovePharmacoTherapyData => _removePharmacoTherapyData;
         public Command AddPhysioData => _addPhysioData;
         public Command RemovePhysioData => _removePhysioData;
-        public Command AddSurgencyData => _addSurgencyData;
-        public Command RemoveSurgencyData => _removeSurgencyData;
+        public Command AddSurgeryData => _addSurgeryData;
+        public Command RemoveSurgeryData => _removeSurgeryData;
 
         public Command FindEntry => _findEntry;
         public Command FindBySelect => _findBySelect;

@@ -1,13 +1,16 @@
 ﻿using Hospital.ViewModel;
 using Hospital.WPF.Commands;
+using Hospital.WPF.Navigators;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 
 namespace Hospital.WPF.Views
 {
-    public partial class Schedule : UserControl
+    public partial class Schedule : UserControl, INavigatorItem
     {
-        public static string Label { get; } = "Расписание";
+        public string Label => "Расписание";
+        public Type Type => typeof(Schedule);
 
         private static readonly ScheduleViewModel scheduleViewModel = new ScheduleViewModel();
         public ScheduleCommand Command { get; private set; }

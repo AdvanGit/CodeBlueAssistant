@@ -209,14 +209,14 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-        public async Task<IEnumerable<SurgencyTherapyData>> GetSurgencyTherapyDatas(int medCardId)
+        public async Task<IEnumerable<SurgeryTherapyData>> GetSurgeryTherapyDatas(int medCardId)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                IList<SurgencyTherapyData> result = await db.SurgencyTherapyDatas
+                IList<SurgeryTherapyData> result = await db.SurgeryTherapyDatas
                     .AsQueryable().AsNoTracking()
                     .Where(s => s.MedCard.Id == medCardId)
-                    .Include(s => s.SurgencyOperation).ThenInclude(s => s.SurgencyGroup)
+                    .Include(s => s.SurgeryOperation).ThenInclude(s => s.SurgeryGroup)
                     .Include(p => p.TherapyDoctor)
                     .Include(p => p.DiagnosisDoctor)
                     .Include(p => p.Diagnosis)
@@ -224,25 +224,25 @@ namespace Hospital.EntityFramework.Services
                 return result;
             }
         }
-        public async Task<IEnumerable<SurgencyGroup>> GetSurgencyGroups(SurgencyType surgencyType)
+        public async Task<IEnumerable<SurgeryGroup>> GetSurgeryGroups(SurgeryType surgeryType)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                IList<SurgencyGroup> result = await db.SurgencyGroups
+                IList<SurgeryGroup> result = await db.SurgeryGroups
                     .AsQueryable().AsNoTracking()
-                    .Where(s => s.SurgencyType == surgencyType)
+                    .Where(s => s.SurgeryType == surgeryType)
                     .ToListAsync();
                 return result;
             }
         }
-        public async Task<IEnumerable<SurgencyOperation>> GetSurgencyOperations(SurgencyGroup surgencyGroup)
+        public async Task<IEnumerable<SurgeryOperation>> GetSurgeryOperations(SurgeryGroup surgeryGroup)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                IList<SurgencyOperation> result = await db.SurgencyOperations
+                IList<SurgeryOperation> result = await db.SurgeryOperations
                     .AsQueryable().AsNoTracking()
-                    .Where(s => s.SurgencyGroup == surgencyGroup)
-                    .Include(s => s.SurgencyGroup)
+                    .Where(s => s.SurgeryGroup == surgeryGroup)
+                    .Include(s => s.SurgeryGroup)
                     .ToListAsync();
                 return result;
             }

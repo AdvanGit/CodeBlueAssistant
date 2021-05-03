@@ -1,6 +1,7 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.Domain.Services;
 using Microsoft.EntityFrameworkCore;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,11 +67,21 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-        public async Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate)
+        public async Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate, Action<string> exceptionHandler = null )
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                return await db.Set<T>().AsQueryable().AsNoTracking().Where(predicate).ToListAsync();
+                try
+                {
+                    var res = await db.Set<T>().AsQueryable().AsNoTracking().Where(predicate).ToListAsync();
+                    if (exceptionHandler!= null && res.Count == 0) exceptionHandler("Данные не найдены");
+                    return res;
+                }
+                catch (NpgsqlException ex)
+                {
+                    if (exceptionHandler != null) exceptionHandler(ex.Message);
+                    return new List<T>();
+                }
             }
         }
 

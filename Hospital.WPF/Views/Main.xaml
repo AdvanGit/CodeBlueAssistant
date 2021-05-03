@@ -1,5 +1,4 @@
-﻿<mah:MetroWindow x:Class="Hospital.WPF.Views.Main"
-                 x:Name="MainWindow"
+﻿<mah:MetroWindow x:Class="Hospital.WPF.Views.Main" x:Name="MainWindow"
 		xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 		xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 		xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -7,22 +6,15 @@
 		xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 		xmlns:local="clr-namespace:Hospital.WPF.Views"
         xmlns:controls="clr-namespace:Hospital.WPF.Controls"
-		mc:Ignorable="d"
-		ResizeMode="CanResize"
-		WindowStartupLocation="CenterScreen"
-		BorderThickness="0"
-		GlowBrush="{StaticResource MahApps.Brushes.Gray1}"
-		TitleBarHeight="35"
-		NonActiveWindowTitleBrush="White"
-		WindowTitleBrush="White"
-		OverrideDefaultWindowCommandsBrush="Black"
-		TitleForeground="Black"      
-		TitleAlignment="Center" 
-		Title="Hospital" Height="720" Width="1280">
+		mc:Ignorable="d" ResizeMode="CanResize" WindowStartupLocation="CenterScreen"
+		BorderThickness="0" GlowBrush="{StaticResource MahApps.Brushes.Gray1}"
+		TitleBarHeight="34" NonActiveWindowTitleBrush="White" WindowTitleBrush="White"
+		OverrideDefaultWindowCommandsBrush="Black" TitleForeground="Black"      
+		TitleAlignment="Center" Title="Hosptal" Height="720" Width="1280">
    
 	<mah:MetroWindow.LeftWindowCommands>
 		<mah:WindowCommands ShowLastSeparator="False">
-			<StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal">
 				<Button Content="menu"/>
 				<ListBox Foreground="{DynamicResource MahApps.Brushes.Gray}" Cursor="Hand"
 						 VerticalAlignment="Bottom"

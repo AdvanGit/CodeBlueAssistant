@@ -20,6 +20,7 @@ namespace Hospital.EntityFramework.Services
 
         public async Task<IEnumerable<Entry>> FindDoctor(string _string, EntrySearchFilter filter)
         {
+            List<Entry> result = new List<Entry>();
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 //парсинг строки (Оставлены пробелы в конце и начале строки для удобства тестирования)
@@ -28,9 +29,9 @@ namespace Hospital.EntityFramework.Services
                 //Поиск смен по фильтру и строке
                 List<Change> allChanges = await db.Changes
                     .AsQueryable()
+                    .OrderBy(c => c.DateTimeStart)
                     .Where(c => c.Staff.Department.Type == filter.DepartmentType)
-                    .Where(c => (filter.IsDate ? (c.DateTimeStart.Date == filter.DateTime.Date) : (true)))
-                    //true => c.DatetimeStart.Date >= filter.DateTime.Date. Заглушка, иначе смены не будут найдены, так как на текущую дату их нет, только старые
+                    .Where(c => (filter.IsDate ? (c.DateTimeStart.Date == filter.DateTime.Date) : (c.DateTimeStart < DateTime.Now.Date+TimeSpan.FromDays(30))))
                     .Include(c => c.Staff).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                     //Далее фильтрация происходит на клиенте, EF не дает добро на обработку сложных запросов сервером (в асинхронном режиме)
                     .AsAsyncEnumerable()
@@ -44,7 +45,6 @@ namespace Hospital.EntityFramework.Services
                             >= words.Count()))
                     .ToListAsync();
 
-                List<Entry> result = new List<Entry>();
 
                 for (int i = 0; i < allChanges.Count; i++)
                 {
@@ -61,7 +61,7 @@ namespace Hospital.EntityFramework.Services
                                 DoctorDestination = change.Staff
                             });
 
-                    //поиск уже существующих записей на текущую смену
+                    //поиск уже существующих записей на текущую смену !Уходит много времени
                     List<Entry> existEntries = await db.Entries
                         .AsQueryable()
                         .Where(e => e.DoctorDestination.Id == change.Staff.Id)
@@ -90,8 +90,8 @@ namespace Hospital.EntityFramework.Services
 
                     result.AddRange(_result);
                 }
-                return result;
             }
+            return result;
         }
 
         public async Task<IEnumerable<Patient>> FindPatient(string _string)

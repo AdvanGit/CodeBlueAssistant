@@ -103,10 +103,10 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<string>("Code")
+                    b.Property<string>("Caption")
                         .HasColumnType("text");
 
-                    b.Property<string>("ShortTitle")
+                    b.Property<string>("Code")
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
@@ -249,11 +249,11 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Caption")
+                        .HasColumnType("text");
+
                     b.Property<int?>("DrugSubClassId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("ShortTitle")
-                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .HasColumnType("text");
@@ -292,14 +292,14 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Caption")
+                        .HasColumnType("text");
+
                     b.Property<int?>("DrugGroupId")
                         .HasColumnType("integer");
 
                     b.Property<bool>("IsReciept")
                         .HasColumnType("boolean");
-
-                    b.Property<string>("ShortTitle")
-                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .HasColumnType("text");
@@ -747,14 +747,14 @@ namespace Hospital.EntityFramework.Migrations
                     b.ToTable("Staffs");
                 });
 
-            modelBuilder.Entity("Hospital.Domain.Model.SurgencyGroup", b =>
+            modelBuilder.Entity("Hospital.Domain.Model.SurgeryGroup", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
-                    b.Property<int>("SurgencyType")
+                    b.Property<int>("SurgeryType")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -762,10 +762,10 @@ namespace Hospital.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("SurgencyGroups");
+                    b.ToTable("SurgeryGroups");
                 });
 
-            modelBuilder.Entity("Hospital.Domain.Model.SurgencyOperation", b =>
+            modelBuilder.Entity("Hospital.Domain.Model.SurgeryOperation", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -778,7 +778,7 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("SurgencyGroupId")
+                    b.Property<int?>("SurgeryGroupId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Title")
@@ -788,12 +788,12 @@ namespace Hospital.EntityFramework.Migrations
 
                     b.HasIndex("DepartmentId");
 
-                    b.HasIndex("SurgencyGroupId");
+                    b.HasIndex("SurgeryGroupId");
 
-                    b.ToTable("SurgencyOperations");
+                    b.ToTable("SurgeryOperations");
                 });
 
-            modelBuilder.Entity("Hospital.Domain.Model.SurgencyTherapyData", b =>
+            modelBuilder.Entity("Hospital.Domain.Model.SurgeryTherapyData", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -818,16 +818,16 @@ namespace Hospital.EntityFramework.Migrations
                     b.Property<string>("Option")
                         .HasColumnType("text");
 
-                    b.Property<int>("SurgencyClass")
+                    b.Property<int>("SurgeryClass")
                         .HasColumnType("integer");
 
-                    b.Property<int?>("SurgencyOperationId")
+                    b.Property<int?>("SurgeryOperationId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("SurgencyPriority")
+                    b.Property<int>("SurgeryPriority")
                         .HasColumnType("integer");
 
-                    b.Property<int>("SurgencyStatus")
+                    b.Property<int>("SurgeryStatus")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("TargetDateTime")
@@ -844,11 +844,11 @@ namespace Hospital.EntityFramework.Migrations
 
                     b.HasIndex("MedCardId");
 
-                    b.HasIndex("SurgencyOperationId");
+                    b.HasIndex("SurgeryOperationId");
 
                     b.HasIndex("TherapyDoctorId");
 
-                    b.ToTable("SurgencyTherapyDatas");
+                    b.ToTable("SurgeryTherapyDatas");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Test", b =>
@@ -858,13 +858,13 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Caption")
+                        .HasColumnType("text");
+
                     b.Property<string>("DefaultOption")
                         .HasColumnType("text");
 
                     b.Property<string>("Measure")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ShortTitle")
                         .HasColumnType("text");
 
                     b.Property<int?>("TestTypeId")
@@ -992,11 +992,11 @@ namespace Hospital.EntityFramework.Migrations
                         .HasColumnType("integer")
                         .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn);
 
+                    b.Property<string>("Caption")
+                        .HasColumnType("text");
+
                     b.Property<int?>("DepartmentId")
                         .HasColumnType("integer");
-
-                    b.Property<string>("ShortTitle")
-                        .HasColumnType("text");
 
                     b.Property<int>("TestMethod")
                         .HasColumnType("integer");
@@ -1144,7 +1144,7 @@ namespace Hospital.EntityFramework.Migrations
                         .WithMany()
                         .HasForeignKey("DiagnosisId");
 
-                    b.HasOne("Hospital.Domain.Model.Staff", "Patient")
+                    b.HasOne("Hospital.Domain.Model.Patient", "Patient")
                         .WithMany()
                         .HasForeignKey("PatientId");
 
@@ -1275,22 +1275,22 @@ namespace Hospital.EntityFramework.Migrations
                     b.Navigation("Department");
                 });
 
-            modelBuilder.Entity("Hospital.Domain.Model.SurgencyOperation", b =>
+            modelBuilder.Entity("Hospital.Domain.Model.SurgeryOperation", b =>
                 {
                     b.HasOne("Hospital.Domain.Model.Department", "Department")
                         .WithMany()
                         .HasForeignKey("DepartmentId");
 
-                    b.HasOne("Hospital.Domain.Model.SurgencyGroup", "SurgencyGroup")
-                        .WithMany("SurgencyOperations")
-                        .HasForeignKey("SurgencyGroupId");
+                    b.HasOne("Hospital.Domain.Model.SurgeryGroup", "SurgeryGroup")
+                        .WithMany("SurgeryOperations")
+                        .HasForeignKey("SurgeryGroupId");
 
                     b.Navigation("Department");
 
-                    b.Navigation("SurgencyGroup");
+                    b.Navigation("SurgeryGroup");
                 });
 
-            modelBuilder.Entity("Hospital.Domain.Model.SurgencyTherapyData", b =>
+            modelBuilder.Entity("Hospital.Domain.Model.SurgeryTherapyData", b =>
                 {
                     b.HasOne("Hospital.Domain.Model.Staff", "DiagnosisDoctor")
                         .WithMany()
@@ -1301,12 +1301,12 @@ namespace Hospital.EntityFramework.Migrations
                         .HasForeignKey("DiagnosisId");
 
                     b.HasOne("Hospital.Domain.Model.MedCard", "MedCard")
-                        .WithMany("SurgencyTherapyDatas")
+                        .WithMany("SurgeryTherapyDatas")
                         .HasForeignKey("MedCardId");
 
-                    b.HasOne("Hospital.Domain.Model.SurgencyOperation", "SurgencyOperation")
+                    b.HasOne("Hospital.Domain.Model.SurgeryOperation", "SurgeryOperation")
                         .WithMany()
-                        .HasForeignKey("SurgencyOperationId");
+                        .HasForeignKey("SurgeryOperationId");
 
                     b.HasOne("Hospital.Domain.Model.Staff", "TherapyDoctor")
                         .WithMany()
@@ -1318,7 +1318,7 @@ namespace Hospital.EntityFramework.Migrations
 
                     b.Navigation("MedCard");
 
-                    b.Navigation("SurgencyOperation");
+                    b.Navigation("SurgeryOperation");
 
                     b.Navigation("TherapyDoctor");
                 });
@@ -1431,7 +1431,7 @@ namespace Hospital.EntityFramework.Migrations
 
                     b.Navigation("PhysioTherapyDatas");
 
-                    b.Navigation("SurgencyTherapyDatas");
+                    b.Navigation("SurgeryTherapyDatas");
 
                     b.Navigation("TestDatas");
                 });
@@ -1453,9 +1453,9 @@ namespace Hospital.EntityFramework.Migrations
                     b.Navigation("Registrators");
                 });
 
-            modelBuilder.Entity("Hospital.Domain.Model.SurgencyGroup", b =>
+            modelBuilder.Entity("Hospital.Domain.Model.SurgeryGroup", b =>
                 {
-                    b.Navigation("SurgencyOperations");
+                    b.Navigation("SurgeryOperations");
                 });
 
             modelBuilder.Entity("Hospital.Domain.Model.Test", b =>

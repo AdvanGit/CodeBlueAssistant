@@ -21,6 +21,7 @@ namespace Hospital.ViewModel.Ambulatory
             CurrentEntry = await task;
             if (task.IsCompleted)
             {
+                if (CurrentEntry.MedCard == null) _currentEntry.MedCard = new MedCard { Patient = _currentEntry.Patient, TherapyDoctor = _currentEntry.DoctorDestination};
                 DiagnosticViewModel = new DiagnosticViewModel(CurrentEntry);
                 TherapyViewModel = new TherapyViewModel(CurrentEntry);
                 EntryViewModel = new EntryViewModel(CurrentEntry);

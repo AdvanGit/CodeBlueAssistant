@@ -22,7 +22,7 @@ namespace Hospital.ViewModel.Ambulatory
 
         private PharmacoTherapyData _pharmacoData = new PharmacoTherapyData();
         private PhysioTherapyData _physioData = new PhysioTherapyData();
-        private SurgencyTherapyData _surgencyData = new SurgencyTherapyData();
+        private SurgeryTherapyData _surgeryData = new SurgeryTherapyData();
 
         private DrugClass _currentDrugClass;
         private DrugSubClass _currentDrugSubClass;
@@ -34,8 +34,8 @@ namespace Hospital.ViewModel.Ambulatory
         private DiagnosisClass _currentDiagnosisClass;
         private DiagnosisGroup _currentDiagnosisGroup;
 
-        private SurgencyType _currentSurgencyType;
-        private SurgencyGroup _currentSurgencyGroup;
+        private SurgeryType _currentSurgeryType;
+        private SurgeryGroup _currentSurgeryGroup;
 
         private async void Initialize(Entry entry)
         {
@@ -56,8 +56,8 @@ namespace Hospital.ViewModel.Ambulatory
                 var physioGroups = await ambulatoryDataService.GetPhysioGroups();
                 foreach (PhysTherFactGroup physTherFactGroup in physioGroups) PhysTherFactGroups.Add(physTherFactGroup);
 
-                var surgencyDatas = await ambulatoryDataService.GetSurgencyTherapyDatas(entry.MedCard.Id);
-                foreach (SurgencyTherapyData surgencyData in surgencyDatas) SurgencyTherapyDatas.Add(surgencyData);
+                var surgeryDatas = await ambulatoryDataService.GetSurgeryTherapyDatas(entry.MedCard.Id);
+                foreach (SurgeryTherapyData surgeryData in surgeryDatas) SurgeryTherapyDatas.Add(surgeryData);
 
                 PharmacoData.MedCard = entry.MedCard;
                 PharmacoData.TherapyDoctor = entry.DoctorDestination;
@@ -65,9 +65,9 @@ namespace Hospital.ViewModel.Ambulatory
                 PhysioData.TherapyDoctor = entry.DoctorDestination;
                 PhysioData.PhysTherStatus = PhysTherStatus.Ожидание;
 
-                SurgencyData.MedCard = entry.MedCard;
-                SurgencyData.TherapyDoctor = entry.DoctorDestination;
-                SurgencyData.SurgencyStatus = SurgencyStatus.Ожидание;
+                SurgeryData.MedCard = entry.MedCard;
+                SurgeryData.TherapyDoctor = entry.DoctorDestination;
+                SurgeryData.SurgeryStatus = SurgeryStatus.Ожидание;
 
                 Diagnoses.Add(entry.MedCard.Diagnosis);
             }
@@ -150,19 +150,19 @@ namespace Hospital.ViewModel.Ambulatory
             foreach (PhysioTherapyFactor factor in res) PhysioTherapyFactors.Add(factor);
         } //null check all above on method params
 
-        private async void GetSurgencyGroups(SurgencyType type)
+        private async void GetSurgeryGroups(SurgeryType type)
         {
-            SurgencyGroups.Clear();
-            var res = await ambulatoryDataService.GetSurgencyGroups(type);
-            foreach (SurgencyGroup group in res) SurgencyGroups.Add(group);
+            SurgeryGroups.Clear();
+            var res = await ambulatoryDataService.GetSurgeryGroups(type);
+            foreach (SurgeryGroup group in res) SurgeryGroups.Add(group);
         }
-        private async void GetSurgencyOperations(SurgencyGroup group)
+        private async void GetSurgeryOperations(SurgeryGroup group)
         {
             if (group != null)
             {
-                SurgencyOperations.Clear();
-                var res = await ambulatoryDataService.GetSurgencyOperations(group);
-                foreach (SurgencyOperation operation in res) SurgencyOperations.Add(operation);
+                SurgeryOperations.Clear();
+                var res = await ambulatoryDataService.GetSurgeryOperations(group);
+                foreach (SurgeryOperation operation in res) SurgeryOperations.Add(operation);
             }
         }
 
@@ -189,10 +189,10 @@ namespace Hospital.ViewModel.Ambulatory
         public ObservableCollection<PhysTherFactGroup> PhysTherFactGroups { get; } = new ObservableCollection<PhysTherFactGroup>();
         public ObservableCollection<PhysioTherapyFactor> PhysioTherapyFactors { get; } = new ObservableCollection<PhysioTherapyFactor>();
 
-        public ObservableCollection<SurgencyTherapyData> SurgencyTherapyDatas { get; } = new ObservableCollection<SurgencyTherapyData>();
+        public ObservableCollection<SurgeryTherapyData> SurgeryTherapyDatas { get; } = new ObservableCollection<SurgeryTherapyData>();
 
-        public ObservableCollection<SurgencyGroup> SurgencyGroups { get; } = new ObservableCollection<SurgencyGroup>();
-        public ObservableCollection<SurgencyOperation> SurgencyOperations { get; } = new ObservableCollection<SurgencyOperation>();
+        public ObservableCollection<SurgeryGroup> SurgeryGroups { get; } = new ObservableCollection<SurgeryGroup>();
+        public ObservableCollection<SurgeryOperation> SurgeryOperations { get; } = new ObservableCollection<SurgeryOperation>();
 
         public PharmacoTherapyData PharmacoData { get => _pharmacoData; set { _pharmacoData = value; OnPropertyChanged(nameof(PharmacoData)); } }
         public DrugClass CurrentDrugClass
@@ -314,25 +314,25 @@ namespace Hospital.ViewModel.Ambulatory
             }
         }
 
-        public SurgencyTherapyData SurgencyData { get => _surgencyData; set { _surgencyData = value; OnPropertyChanged(nameof(SurgencyData)); } }
-        public SurgencyType CurrentSurgencyType 
+        public SurgeryTherapyData SurgeryData { get => _surgeryData; set { _surgeryData = value; OnPropertyChanged(nameof(SurgeryData)); } }
+        public SurgeryType CurrentSurgeryType 
         {
-            get => _currentSurgencyType; 
+            get => _currentSurgeryType; 
             set 
             {
-                _currentSurgencyType = value; 
-                OnPropertyChanged(nameof(CurrentSurgencyType));
-                GetSurgencyGroups(value);
+                _currentSurgeryType = value; 
+                OnPropertyChanged(nameof(CurrentSurgeryType));
+                GetSurgeryGroups(value);
             }
         }
-        public SurgencyGroup CurrentSurgencyGroup
+        public SurgeryGroup CurrentSurgeryGroup
         {
-            get => _currentSurgencyGroup;
+            get => _currentSurgeryGroup;
             set
             {
-                _currentSurgencyGroup = value;
-                OnPropertyChanged(nameof(CurrentSurgencyGroup));
-                GetSurgencyOperations(value);
+                _currentSurgeryGroup = value;
+                OnPropertyChanged(nameof(CurrentSurgeryGroup));
+                GetSurgeryOperations(value);
             }
         }
 
@@ -344,7 +344,7 @@ namespace Hospital.ViewModel.Ambulatory
                 _addedDatas.Clear();
                 foreach (ITherapyData data in PharmacoTherapyDatas.Where(p => p.Id == 0)) _addedDatas.Add(data);
                 foreach (ITherapyData data in PhysioTherapyDatas.Where(p => p.Id == 0)) _addedDatas.Add(data);
-                foreach (ITherapyData data in SurgencyTherapyDatas.Where(s => s.Id == 0)) _addedDatas.Add(data);
+                foreach (ITherapyData data in SurgeryTherapyDatas.Where(s => s.Id == 0)) _addedDatas.Add(data);
                 return _addedDatas;
             }
         }
@@ -411,28 +411,28 @@ namespace Hospital.ViewModel.Ambulatory
             OnPropertyChanged(nameof(AddedDatas));
         }
 
-        public void AddSurgencyTherapyData()
+        public void AddSurgeryTherapyData()
         {
-            var data = (SurgencyTherapyData)SurgencyData.Clone();
+            var data = (SurgeryTherapyData)SurgeryData.Clone();
             data.Diagnosis = _currentEntry.MedCard.Diagnosis;
             data.DiagnosisDoctor = _currentEntry.MedCard.DiagnosisDoctor;
             data.DiagnosisDate = _currentEntry.MedCard.DiagnosisDate;
             data.CreateDateTime = DateTime.Now;
-            SurgencyTherapyDatas.Add(data);
-            CurrentSurgencyGroup = null;
-            SurgencyData.Option = null;
-            SurgencyData.SurgencyOperation = null;
+            SurgeryTherapyDatas.Add(data);
+            CurrentSurgeryGroup = null;
+            SurgeryData.Option = null;
+            SurgeryData.SurgeryOperation = null;
             OnPropertyChanged(nameof(AddedDatas));
         }
-        public void RemoveSurgencyTherapyData(object surgencyDatas)
+        public void RemoveSurgeryTherapyData(object surgeryDatas)
         {
-            var items = ((IList)surgencyDatas).Cast<SurgencyTherapyData>().ToList();
+            var items = ((IList)surgeryDatas).Cast<SurgeryTherapyData>().ToList();
             int removecounter = 0;
-            foreach (SurgencyTherapyData data in items)
+            foreach (SurgeryTherapyData data in items)
             {
                 if (data.Id == 0)
                 {
-                    SurgencyTherapyDatas.Remove(data);
+                    SurgeryTherapyDatas.Remove(data);
                     removecounter++;
                 }
             }

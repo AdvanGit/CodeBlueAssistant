@@ -53,13 +53,13 @@ namespace Hospital.Domain.Model
     public class DrugSubGroup : DomainObject
     {
         private string _title;
-        private string _shortTitle;
+        private string _caption;
         private bool _isReciept;
         private DrugGroup _drugGroup;
 
         public ObservableCollection<Drug> Drugs { get; set; }
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
-        public string ShortTitle { get => _shortTitle; set { _shortTitle = value; OnPropertyChanged("ShortTitle"); } }
+        public string Caption { get => _caption; set { _caption = value; OnPropertyChanged("Caption"); } }
         public bool IsReciept { get => _isReciept; set { _isReciept = value; OnPropertyChanged("IsReciept"); } }
         public DrugGroup DrugGroup { get => _drugGroup; set { _drugGroup = value; OnPropertyChanged("DrugGroup"); } }
     }
@@ -67,12 +67,12 @@ namespace Hospital.Domain.Model
     public class DrugGroup : DomainObject
     {
         private string _title;
-        private string _shortTitle;
+        private string _caption;
         private DrugSubClass _drugSubClass;
 
         public ObservableCollection<DrugSubGroup> DrugSubGroups { get; set; }
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
-        public string ShortTitle { get => _shortTitle; set { _shortTitle = value; OnPropertyChanged("ShortTitle"); } }
+        public string Caption { get => _caption; set { _caption = value; OnPropertyChanged("Caption"); } }
         public DrugSubClass DrugSubClass { get => _drugSubClass; set { _drugSubClass = value; OnPropertyChanged("DrugSubClass"); } }
     }
 

@@ -1,12 +1,17 @@
-﻿using System.Windows.Controls;
+﻿using Hospital.WPF.Navigators;
+using System;
+using System.Windows.Controls;
 
 namespace Hospital.WPF.Controls.Ambulatory
 {
-    public partial class AmbEntrySavePanel : UserControl
+    public partial class AmbEntrySavePanel : UserControl, INavigatorItem
     {
         public AmbEntrySavePanel()
         {
             InitializeComponent();
         }
+
+        public string Label => "AmbEntrySavePanel";
+        public Type Type => typeof(AmbEntrySavePanel);
     }
 }

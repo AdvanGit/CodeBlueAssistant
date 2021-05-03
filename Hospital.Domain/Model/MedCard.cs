@@ -12,12 +12,12 @@ namespace Hospital.Domain.Model
         private string _conclusion;
         private string _recomendation;
 
-        private Staff _patient;
+        private Patient _patient;
 
         public ObservableCollection<TestData> TestDatas { get; set; }
         public ObservableCollection<PharmacoTherapyData> PharmacoTherapyDatas { get; set; }
         public ObservableCollection<PhysioTherapyData> PhysioTherapyDatas { get; set; }
-        public ObservableCollection<SurgencyTherapyData> SurgencyTherapyDatas { get; set; }
+        public ObservableCollection<SurgeryTherapyData> SurgeryTherapyDatas { get; set; }
 
         public bool IsDifferential { get => _isDifferential; set { _isDifferential = value; OnPropertyChanged(nameof(IsDifferential)); } }
         public bool IsPreliminary { get => _isPreliminary; set { _isPreliminary = value; OnPropertyChanged(nameof(IsPreliminary)); } }
@@ -27,6 +27,6 @@ namespace Hospital.Domain.Model
         public string Recomendation { get => _recomendation; set { _recomendation = value; OnPropertyChanged("Recomendation"); } }
         public string Option { get => _option; set { _option = value; OnPropertyChanged(nameof(Option)); } }
 
-        public Staff Patient { get => _patient; set { _patient = value; OnPropertyChanged(nameof(Patient)); } }
+        public Patient Patient { get => _patient; set { _patient = value; OnPropertyChanged(nameof(Patient)); } }
     }
 }

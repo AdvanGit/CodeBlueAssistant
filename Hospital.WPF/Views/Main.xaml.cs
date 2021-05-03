@@ -1,4 +1,5 @@
 ﻿using Hospital.ViewModel;
+using Hospital.WPF.Controls;
 using Hospital.WPF.Navigators;
 using MahApps.Metro.Controls;
 using System.Collections.Generic;
@@ -11,39 +12,20 @@ namespace Hospital.WPF.Views
 {
     public partial class Main : MetroWindow
     {
-        private static UserControl _currentPage;
-        
-        private void GetControls(UserAccess userAccess)
-        {
-            switch (userAccess)
-            {
-                case UserAccess.admin:
-                    MenuNavigator.Bodies.Add(new Registrator());
-                    MenuNavigator.Bodies.Add(new Schedule());
-                    CurrentPage = MenuNavigator.Bodies[0];
-                    break;
-                case UserAccess.doctor:
-                    break;
-                case UserAccess.registrator:
-                    break;
-                case UserAccess.manager:
-                    break;
-                default:
-                    break;
-            }
-        }
+        private static INavigatorItem _currentPage;
         
         public Main()
         {
             InitializeComponent();
             DataContext = new MainViewModel();
-            GetControls(UserAccess.admin);
+            MenuNavigator.Bodies.Add(new LoginControl());
+            CurrentPage = MenuNavigator.Bodies[0];
         }
 
-        public static Navigator MenuNavigator { get; } = new Navigator(new ObservableCollection<UserControl>());
-        public static Navigator TabNavigator { get; } = new Navigator(new ObservableCollection<UserControl>());
+        public static Navigator MenuNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>());
+        public static Navigator TabNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>());
 
-        public static UserControl CurrentPage
+        public static INavigatorItem CurrentPage
         {
             get => _currentPage; 
             set 

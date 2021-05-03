@@ -33,19 +33,19 @@
                     <x:Type TypeName="domain:Treatment"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <ObjectDataProvider x:Key="SurgencyClassEnum" MethodName="GetValues" ObjectType="{x:Type domain:SurgencyClass}">
+            <ObjectDataProvider x:Key="SurgeryClassEnum" MethodName="GetValues" ObjectType="{x:Type domain:SurgeryClass}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="domain:SurgencyClass"/>
+                    <x:Type TypeName="domain:SurgeryClass"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <ObjectDataProvider x:Key="SurgencyTypeEnum" MethodName="GetValues" ObjectType="{x:Type domain:SurgencyType}">
+            <ObjectDataProvider x:Key="SurgeryTypeEnum" MethodName="GetValues" ObjectType="{x:Type domain:SurgeryType}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="domain:SurgencyType"/>
+                    <x:Type TypeName="domain:SurgeryType"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
-            <ObjectDataProvider x:Key="SurgencyPriorityEnum" MethodName="GetValues" ObjectType="{x:Type domain:SurgencyPriority}">
+            <ObjectDataProvider x:Key="SurgeryPriorityEnum" MethodName="GetValues" ObjectType="{x:Type domain:SurgeryPriority}">
                 <ObjectDataProvider.MethodParameters>
-                    <x:Type TypeName="domain:SurgencyPriority"/>
+                    <x:Type TypeName="domain:SurgeryPriority"/>
                 </ObjectDataProvider.MethodParameters>
             </ObjectDataProvider>
         </ResourceDictionary>
@@ -218,7 +218,7 @@
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}" ElementStyle="{StaticResource tb_common}" Width="50" MinWidth="30"/>
                             <DataGridTextColumn Header="КОД" Binding="{Binding Test.Id}" ElementStyle="{StaticResource tb_common}" Width="50" MinWidth="30"/>
-                            <DataGridTextColumn Header="КАТЕГОРИЯ" Binding="{Binding Test.TestType.ShortTitle}" ElementStyle="{StaticResource tb_common}" MinWidth="60" Width="0.5*" MaxWidth="120"/>
+                            <DataGridTextColumn Header="КАТЕГОРИЯ" Binding="{Binding Test.TestType.Caption}" ElementStyle="{StaticResource tb_common}" MinWidth="60" Width="0.5*" MaxWidth="120"/>
                             <DataGridTextColumn Header="ТЕСТ" Binding="{Binding Test.Title}" ElementStyle="{StaticResource tb_common}" MinWidth="100" Width="*"/>
                             <DataGridTextColumn Header="ОПЦИЯ" Binding="{Binding Option}" ElementStyle="{StaticResource tb_common}" MinWidth="100" Width="*"/>
                             <DataGridTextColumn Header="РЕЗУЛЬТАТ" Binding="{Binding Value}" ElementStyle="{StaticResource tb_common}" MinWidth="100" Width="*"/>
@@ -627,7 +627,7 @@
                                 <TextBlock Text="ХИРУРГИЯ" Style="{StaticResource tb.expander.header}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-                                <CheckBox x:Name="cb_ItemBarSurgencyTher" Style="{StaticResource ExpanderChkBoxFlatButton}">
+                                <CheckBox x:Name="cb_ItemBarSurgeryTher" Style="{StaticResource ExpanderChkBoxFlatButton}">
                                     <Path Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Path.Style>
                                             <Style TargetType="{x:Type Path}">
@@ -653,7 +653,7 @@
                             <Grid.Resources>
                                 <Style TargetType="{x:Type Grid}">
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding ElementName=cb_ItemBarSurgencyTher, Path=IsChecked}" Value="true">
+                                        <DataTrigger Binding="{Binding ElementName=cb_ItemBarSurgeryTher, Path=IsChecked}" Value="true">
                                             <DataTrigger.EnterActions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
@@ -702,15 +702,15 @@
                                             <RowDefinition/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <ComboBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Source={StaticResource SurgencyTypeEnum}}" SelectedItem="{Binding CurrentSurgencyType}"
-                                                  SelectedValue="{Binding CurrentSurgencyType}" ItemStringFormat="{}{0} хиругия"/>
-                                        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource SurgencyClassEnum}}" SelectedItem="{Binding SurgencyData.SurgencyClass}"/>
-                                        <ComboBox Grid.Column="2" Grid.Row="0" ItemsSource="{Binding Source={StaticResource SurgencyPriorityEnum}}" SelectedItem="{Binding SurgencyData.SurgencyPriority}"/>
-                                        <ComboBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding SurgencyGroups}" SelectedItem="{Binding CurrentSurgencyGroup}"
-                                                  SelectedValue="{Binding CurrentSurgencyGroup.Title}" SelectedValuePath="Title" DisplayMemberPath="Title"/>
-                                        <ComboBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" ItemsSource="{Binding SurgencyOperations}" SelectedItem="{Binding SurgencyData.SurgencyOperation}"
-                                                  SelectedValue="{Binding SurgencyData.SurgencyOperation.Title}" SelectedValuePath="Title" DisplayMemberPath="Title"
-                                                  IsEnabled="{Binding CurrentSurgencyGroup, Converter={StaticResource NullToBoolConverter}}"/>
+                                        <ComboBox Grid.Column="0" Grid.Row="0" ItemsSource="{Binding Source={StaticResource SurgeryTypeEnum}}" SelectedItem="{Binding CurrentSurgeryType}"
+                                                  SelectedValue="{Binding CurrentSurgeryType}" ItemStringFormat="{}{0} хиругия"/>
+                                        <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource SurgeryClassEnum}}" SelectedItem="{Binding SurgeryData.SurgeryClass}"/>
+                                        <ComboBox Grid.Column="2" Grid.Row="0" ItemsSource="{Binding Source={StaticResource SurgeryPriorityEnum}}" SelectedItem="{Binding SurgeryData.SurgeryPriority}"/>
+                                        <ComboBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding SurgeryGroups}" SelectedItem="{Binding CurrentSurgeryGroup}"
+                                                  SelectedValue="{Binding CurrentSurgeryGroup.Title}" SelectedValuePath="Title" DisplayMemberPath="Title"/>
+                                        <ComboBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" ItemsSource="{Binding SurgeryOperations}" SelectedItem="{Binding SurgeryData.SurgeryOperation}"
+                                                  SelectedValue="{Binding SurgeryData.SurgeryOperation.Title}" SelectedValuePath="Title" DisplayMemberPath="Title"
+                                                  IsEnabled="{Binding CurrentSurgeryGroup, Converter={StaticResource NullToBoolConverter}}"/>
                                     </Grid>
                                     <Grid>
                                         <Grid.ColumnDefinitions>
@@ -721,18 +721,18 @@
                                             <RowDefinition/>
                                             <RowDefinition/>
                                         </Grid.RowDefinitions>
-                                        <TextBox Grid.ColumnSpan="2" Grid.Row="0" Text="{Binding SurgencyData.Option}" MinHeight="30" MaxHeight="100" mah:TextBoxHelper.Watermark="Параметры..."
+                                        <TextBox Grid.ColumnSpan="2" Grid.Row="0" Text="{Binding SurgeryData.Option}" MinHeight="30" MaxHeight="100" mah:TextBoxHelper.Watermark="Параметры..."
                                                  AcceptsReturn="True" TextWrapping="WrapWithOverflow" VerticalScrollBarVisibility="Auto"
-                                                 IsEnabled="{Binding SurgencyData.SurgencyOperation, Converter={StaticResource NullToBoolConverter}}"/>
+                                                 IsEnabled="{Binding SurgeryData.SurgeryOperation, Converter={StaticResource NullToBoolConverter}}"/>
                                         <ComboBox Grid.Column="0" Grid.Row="1" mah:TextBoxHelper.Watermark="Отделение" IsEnabled="False"/>
                                         <mah:DateTimePicker Grid.Column="1" Grid.Row="1" Margin="5,5,105,5" mah:ControlsHelper.CornerRadius="2" Height="30" IsEnabled="False"/>
                                         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Right">
                                             <Button  Style="{StaticResource b_flatAccent}" HorizontalAlignment="Right"
-                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddSurgencyData}">
+                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.AddSurgeryData}">
                                                 <Path Data="{StaticResource path.Add}" Fill="White" Stretch="Uniform" Margin="3"/>
                                             </Button>
                                             <Button  Style="{StaticResource b_flat}" HorizontalAlignment="Right"
-                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.RemoveSurgencyData}" CommandParameter="{Binding ElementName=dg_SurgencyTherapyData, Path=SelectedItems}">
+                                                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.RemoveSurgeryData}" CommandParameter="{Binding ElementName=dg_SurgeryTherapyData, Path=SelectedItems}">
                                                 <Path Data="{StaticResource path.Remove}" Stretch="Uniform" Margin="2">
                                                     <Path.Style>
                                                         <Style TargetType="{x:Type Path}">
@@ -751,7 +751,7 @@
                                 </StackPanel>
                             </Grid>
                         </Grid>
-                        <DataGrid ItemsSource="{Binding SurgencyTherapyDatas}" Style="{StaticResource dg_Ambulatory}" Name="dg_SurgencyTherapyData">
+                        <DataGrid ItemsSource="{Binding SurgeryTherapyDatas}" Style="{StaticResource dg_Ambulatory}" Name="dg_SurgeryTherapyData">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" ElementStyle="{StaticResource tb_common}"  MaxWidth="50" Width="0.2*" MinWidth="30" IsReadOnly="True"/>
                                 <DataGridTextColumn Header="ДИАГНОЗ" Binding="{Binding Diagnosis.Code}" MinWidth="60" MaxWidth="200" Width="0.3*" IsReadOnly="True">
@@ -770,12 +770,12 @@
                                         </Style>
                                     </DataGridTextColumn.ElementStyle>
                                 </DataGridTextColumn>
-                                <DataGridComboBoxColumn Header="КЛАСС" ItemsSource="{Binding Source={StaticResource SurgencyClassEnum}}" SelectedItemBinding="{Binding SurgencyClass}" ElementStyle="{StaticResource cb.datagrid}" EditingElementStyle="{StaticResource cb.datagrid}" MinWidth="80"/>
-                                <DataGridTextColumn Header="ТИП" Binding="{Binding SurgencyOperation.SurgencyGroup.SurgencyType}" IsReadOnly="True" ElementStyle="{StaticResource tb_common}" MinWidth="80"/>
-                                <DataGridTextColumn Header="ОПЕР. ПРИЕМ" Binding="{Binding SurgencyOperation.Caption}" IsReadOnly="True" ElementStyle="{StaticResource tb.DataGrid.Left}" MaxWidth="500" MinWidth="80" Width="*"/>
+                                <DataGridComboBoxColumn Header="КЛАСС" ItemsSource="{Binding Source={StaticResource SurgeryClassEnum}}" SelectedItemBinding="{Binding SurgeryClass}" ElementStyle="{StaticResource cb.datagrid}" EditingElementStyle="{StaticResource cb.datagrid}" MinWidth="80"/>
+                                <DataGridTextColumn Header="ТИП" Binding="{Binding SurgeryOperation.SurgeryGroup.SurgeryType}" IsReadOnly="True" ElementStyle="{StaticResource tb_common}" MinWidth="80"/>
+                                <DataGridTextColumn Header="ОПЕР. ПРИЕМ" Binding="{Binding SurgeryOperation.Caption}" IsReadOnly="True" ElementStyle="{StaticResource tb.DataGrid.Left}" MaxWidth="500" MinWidth="80" Width="*"/>
                                 <DataGridTextColumn Header="ПАРАМЕТРЫ" Binding="{Binding Option}" ElementStyle="{StaticResource tb.DataGrid.Left}" EditingElementStyle="{StaticResource tb.DataGrid.Editing.Left}" MinWidth="80" Width="*"/>
-                                <DataGridComboBoxColumn Header="ПРИОРИТЕТ" ItemsSource="{Binding Source={StaticResource SurgencyPriorityEnum}}" SelectedItemBinding="{Binding SurgencyPriority}" ElementStyle="{StaticResource cb.datagrid}" EditingElementStyle="{StaticResource cb.datagrid}" MinWidth="80"/>
-                                <DataGridTextColumn Header="СТАТУС" Binding="{Binding SurgencyStatus}" ElementStyle="{StaticResource tb_common}" IsReadOnly="True" MinWidth="80"/>
+                                <DataGridComboBoxColumn Header="ПРИОРИТЕТ" ItemsSource="{Binding Source={StaticResource SurgeryPriorityEnum}}" SelectedItemBinding="{Binding SurgeryPriority}" ElementStyle="{StaticResource cb.datagrid}" EditingElementStyle="{StaticResource cb.datagrid}" MinWidth="80"/>
+                                <DataGridTextColumn Header="СТАТУС" Binding="{Binding SurgeryStatus}" ElementStyle="{StaticResource tb_common}" IsReadOnly="True" MinWidth="80"/>
                                 <DataGridTextColumn Header="ЗАПИСЬ" Binding="{Binding TargetDateTime, StringFormat=dd.MM.yy}" ElementStyle="{StaticResource tb_common}" IsReadOnly="True" Width="0.3*" MinWidth="80"/>
                             </DataGrid.Columns>
                         </DataGrid>

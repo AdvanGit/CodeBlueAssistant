@@ -1,13 +1,16 @@
 ﻿using Hospital.ViewModel;
 using Hospital.WPF.Commands;
 using Hospital.WPF.Navigators;
+using System;
 using System.Windows.Controls;
 
 namespace Hospital.WPF.Views
 {
-    public partial class Registrator : UserControl
+    public partial class Registrator : UserControl, INavigatorItem
     {
-        public static string Label { get; } = "Регистратура";
+        public string Label { get; } = "Регистратура";
+        public Type Type => typeof(Registrator);
+
 
         private static readonly RegistratorViewModel registratorViewModel = new RegistratorViewModel();
         public RegistratorNavigator Navigator { get; } = new RegistratorNavigator();

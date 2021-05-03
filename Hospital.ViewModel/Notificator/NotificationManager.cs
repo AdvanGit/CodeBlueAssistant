@@ -37,7 +37,7 @@ namespace Hospital.ViewModel.Notificator
                 IsOpen = true;
                 try
                 {
-                    await Task.Delay(item.Hold, token);
+                    await Task.Delay(item.IsManual ? TimeSpan.FromMilliseconds(-1) : item.Hold, token);
                 }
                 catch (TaskCanceledException) { }
                 IsOpen = false;

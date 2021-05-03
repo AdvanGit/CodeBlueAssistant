@@ -38,7 +38,7 @@ namespace Hospital.Domain.Model
     public class Test : DomainObject
     {
         private string _title;
-        private string _shortTitle;
+        private string _caption;
         private string _measure;
         private TestType _testType;
         private string _defaulOption;
@@ -46,7 +46,7 @@ namespace Hospital.Domain.Model
         public ObservableCollection<TestNormalValue> NormalValues { get; set; }
 
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
-        public string ShortTitle { get => _shortTitle; set { _shortTitle = value; OnPropertyChanged("ShortTitle"); } }
+        public string Caption { get => _caption; set { _caption = value; OnPropertyChanged("Caption"); } }
 
         public string DefaultOption { get => _defaulOption; set { _defaulOption = value; OnPropertyChanged(nameof(DefaultOption)); } }
         public string Measure { get => _measure; set { _measure = value; OnPropertyChanged("Measure"); } }
@@ -57,14 +57,14 @@ namespace Hospital.Domain.Model
     public class TestType : DomainObject
     {
         private string _title;
-        private string _shortTitle;
+        private string _caption;
         private TestMethod _testMethod;
         private Department _department;
 
         public ObservableCollection<Test> Tests { get; set; }
 
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }
-        public string ShortTitle { get => _shortTitle; set { _shortTitle = value; OnPropertyChanged(nameof(ShortTitle)); } }
+        public string Caption { get => _caption; set { _caption = value; OnPropertyChanged(nameof(Caption)); } }
         public TestMethod TestMethod { get => _testMethod; set { _testMethod = value; OnPropertyChanged("TestMethod"); } }
         public Department Department { get => _department; set { _department = value; OnPropertyChanged("Department"); } }
 

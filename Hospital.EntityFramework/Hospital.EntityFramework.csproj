@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="DataGenerator\NameFemale.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ApplicationDefinition Include="DataGenerator\NameFemale.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="5.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.5">
       <PrivateAssets>all</PrivateAssets>
@@ -16,6 +24,21 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Hospital.Domain\Hospital.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DataGenerator\Cities.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DataGenerator\Name.Female.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DataGenerator\Name.Male.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="DataGenerator\Streets.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
