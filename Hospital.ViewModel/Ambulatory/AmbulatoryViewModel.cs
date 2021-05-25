@@ -1,7 +1,8 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
-using System.Threading.Tasks;
+using Hospital.ViewModel.Notificator;
+using System;
 
 namespace Hospital.ViewModel.Ambulatory
 {
@@ -11,22 +12,27 @@ namespace Hospital.ViewModel.Ambulatory
 
         private string _caption;
         private Entry _currentEntry;
-        private DiagnosticViewModel _diagnosticViewModel;
+        private DiagnosticViewModel _diagnosticViewModel = new DiagnosticViewModel();
         private TherapyViewModel _therapyViewModel;
         private EntryViewModel _entryViewModel;
 
         private async void GetEntry(int entryId)
         {
-            Task<Entry> task = ambulatoryDataService.GetEntryById(entryId);
-            CurrentEntry = await task;
-            if (task.IsCompleted)
+            IsLoading = true;
+            try
             {
-                if (CurrentEntry.MedCard == null) _currentEntry.MedCard = new MedCard { Patient = _currentEntry.Patient, TherapyDoctor = _currentEntry.DoctorDestination};
-                DiagnosticViewModel = new DiagnosticViewModel(CurrentEntry);
+                CurrentEntry = await ambulatoryDataService.GetEntryById(entryId);
+                if (CurrentEntry.MedCard == null) _currentEntry.MedCard = new MedCard { Patient = _currentEntry.Patient, TherapyDoctor = _currentEntry.DoctorDestination };
+                DiagnosticViewModel.Initialize(CurrentEntry);
                 TherapyViewModel = new TherapyViewModel(CurrentEntry);
                 EntryViewModel = new EntryViewModel(CurrentEntry);
                 Caption = CurrentEntry.TargetDateTime.ToShortTimeString();
             }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 5);
+            }
+            IsLoading = false;
         }
 
         public AmbulatoryViewModel(int entryId)

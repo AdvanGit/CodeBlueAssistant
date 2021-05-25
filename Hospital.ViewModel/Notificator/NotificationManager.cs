@@ -47,6 +47,11 @@ namespace Hospital.ViewModel.Notificator
             isLocked = false;
         }
 
+        public static void AddException(Exception exception, int timeSpan = 0, bool isHold = false)
+        {
+            AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(timeSpan),
+                exception.GetType().Name +": " + exception.Message, false, isHold));
+        }
         public static void AddItem(NotificationItem item)
         {
             if (item.IsStop && notificationQueue.Count !=0 )

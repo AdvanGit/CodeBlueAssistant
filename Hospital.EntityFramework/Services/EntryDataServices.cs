@@ -31,9 +31,9 @@ namespace Hospital.EntityFramework.Services
                     .AsQueryable()
                     .OrderBy(c => c.DateTimeStart)
                     .Where(c => c.Staff.Department.Type == filter.DepartmentType)
-                    .Where(c => (filter.IsDate ? (c.DateTimeStart.Date == filter.DateTime.Date) : (c.DateTimeStart < DateTime.Now.Date+TimeSpan.FromDays(30))))
+                    .Where(c => (filter.IsDate ? (c.DateTimeStart.Date == filter.DateTime.Date) : (c.DateTimeStart.Date < (DateTime.Now.AddDays(30)))))
                     .Include(c => c.Staff).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
-                    //Далее фильтрация происходит на клиенте, EF не дает добро на обработку сложных запросов сервером (в асинхронном режиме)
+                    //Далее фильтрация происходит на клиенте, EF не дает добро на обработку сложных запросов сервером(в асинхронном режиме)
                     .AsAsyncEnumerable()
                     .Where(c => (
                             ((filter.IsName) ? ((words.Any(word => c.Staff.FirstName.Contains(word, StringComparison.CurrentCultureIgnoreCase)) ? 1 : 0) +
@@ -110,6 +110,7 @@ namespace Hospital.EntityFramework.Services
                            (words.Any(word => (p.PhoneNumber != 0) && (p.PhoneNumber.ToString().Contains(word, StringComparison.CurrentCultureIgnoreCase))) ? 1 : 0)
                            >= words.Count())
                       ))
+                    .Take(100)
                     .ToListAsync();
             }
         }

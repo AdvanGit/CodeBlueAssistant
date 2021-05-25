@@ -2,9 +2,11 @@
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Filters;
 using Hospital.EntityFramework.Services;
+using Hospital.ViewModel.Notificator;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hospital.ViewModel
@@ -20,38 +22,69 @@ namespace Hospital.ViewModel
         {
             IsName = true, IsFree = true, IsNearest=true, IsDepartment = true, IsAdress = true, IsQualification = true, DateTime = DateTime.Now, DepartmentType = Enum.Parse<DepartmentType>("0")
         };
+        private string _searchString = "";
 
         private Entry _selectedEntry;
         private Patient _selectedPatient;
         private Patient _editingPatient;
 
-        public Entry SelectedEntry { get => _selectedEntry; set { _selectedEntry = value; OnPropertyChanged(nameof(SelectedEntry)); } }
+        public Entry SelectedEntry { get => _selectedEntry; set { _selectedEntry = value;  if (value != null) Filter.DateTime = value.TargetDateTime; OnPropertyChanged(nameof(SelectedEntry)); } }
         public Patient SelectedPatient { get => _selectedPatient; set { _selectedPatient = value; OnPropertyChanged(nameof(SelectedPatient)); } }
         public Patient EditingPatient { get => _editingPatient; set { _editingPatient = value; OnPropertyChanged(nameof(EditingPatient)); } }
-
+        
         public ObservableCollection<Entry> Doctors { get; } = new ObservableCollection<Entry>();
         public ObservableCollection<Entry> Entries { get; } = new ObservableCollection<Entry>();
+        public ObservableCollection<Entry> FilteredEntries { get; } = new ObservableCollection<Entry>();
+
         public ObservableCollection<Patient> Patients { get; } = new ObservableCollection<Patient>();
         public ObservableCollection<Belay> Belays { get; } = new ObservableCollection<Belay>();
 
-        public EntrySearchFilter Filter { get => _filter; set { _filter = value; OnPropertyChanged(nameof(Filter)); } } 
+        public EntrySearchFilter Filter { get => _filter; set { _filter = value; OnPropertyChanged(nameof(Filter)); } }
+        public string SearchString { get => _searchString; set { _searchString = value; OnPropertyChanged(nameof(SearchString)); }}
 
-        public async Task SearchPatient(string value)
+        public async Task SearchPatient()
         {
-            if (value != null && value != "")
+            if (SearchString != "")
             {
-                Patients.Clear();
-                IEnumerable<Patient> result = await registratorDataServices.FindPatient(value);
-                foreach (Patient patient in result) Patients.Add(patient);
+                IsLoading = true;
+                try
+                {
+                    IEnumerable<Patient> result = await registratorDataServices.FindPatient(SearchString);
+                    if (result.Count() != 0)
+                    {
+                        Patients.Clear();
+                        foreach (Patient patient in result) Patients.Add(patient);
+                    }
+                    else NotificationManager.AddItem(new NotificationItem(NotificationType.Information, TimeSpan.FromSeconds(3), "Ничего не найдено"));
+                }
+                catch (Exception ex)
+                {
+                    NotificationManager.AddException(ex,6);
+                }
+                IsLoading = false;
             }
         }
-        public async Task SearchDoctor(string value)
+        public async Task SearchDoctor()
         {
-            if (value != null && value != "")
+            if (SearchString != "")
             {
-                Doctors.Clear();
-                IEnumerable<Entry> result = await registratorDataServices.FindDoctor(value, _filter);
-                foreach (Entry entry in result) Doctors.Add(entry);
+                IsLoading = true;
+                try
+                {
+                    IEnumerable<Entry> result = await registratorDataServices.FindDoctor(SearchString, _filter);
+                    if (result.Count() != 0)
+                    {
+                        Doctors.Clear();
+                        foreach (Entry entry in result) Doctors.Add(entry);
+                    }
+                    else NotificationManager.AddItem(new NotificationItem(NotificationType.Information, TimeSpan.FromSeconds(3), "Ничего не найдено"));
+
+                }
+                catch (Exception ex)
+                {
+                    NotificationManager.AddException(ex,6);
+                }
+                IsLoading = false;
             }
         }
         public async Task GetEntries(object obj)
@@ -59,25 +92,70 @@ namespace Hospital.ViewModel
             if (obj != null)
             {
                 SelectedEntry = (Entry)obj;
-                Entries.Clear();
-                IEnumerable<Entry> result = await registratorDataServices.GetEntries(SelectedEntry.DoctorDestination, (SelectedEntry.TargetDateTime));
-                foreach (Entry entry in result) Entries.Add(entry);
+                IsLoading = true;
+                try
+                {
+                    IEnumerable<Entry> result = await registratorDataServices.GetEntries(SelectedEntry.DoctorDestination, (SelectedEntry.TargetDateTime));
+                    Entries.Clear();
+                    FilteredEntries.Clear();
+                    foreach (Entry entry in result) Entries.Add(entry);
+                    foreach (Entry entry in result.Where(e => e.EntryStatus == EntryStatus.Открыта)) FilteredEntries.Add(entry);
+                }
+                catch (Exception ex)
+                {
+                    NotificationManager.AddException(ex, 6);
+                }
+                IsLoading = false;
             }
+        }
+        public async Task GetEntries(bool isBack)
+        {
+            if (isBack) Filter.DateTime -= TimeSpan.FromDays(1);
+            else Filter.DateTime += TimeSpan.FromDays(1);
+            OnPropertyChanged(nameof(Filter));
+            IsLoading = true;
+            try
+            {
+                IEnumerable<Entry> result = await registratorDataServices.GetEntries(SelectedEntry.DoctorDestination, Filter.DateTime);
+                Entries.Clear();
+                FilteredEntries.Clear();
+                foreach (Entry entry in result) Entries.Add(entry);
+                foreach (Entry entry in result.Where(e => e.EntryStatus == EntryStatus.Открыта)) FilteredEntries.Add(entry);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 6);
+            }
+            IsLoading = false;
         }
         public async Task GetBelays()
         {
             if (Belays.Count == 0)
             {
-                IEnumerable<Belay> result = await genericDataServicesBelay.GetAll();
-                foreach (Belay belay in result) Belays.Add(belay);
+                try
+                {
+                    IEnumerable<Belay> result = await genericDataServicesBelay.GetAll();
+                    foreach (Belay belay in result) Belays.Add(belay);
+                }
+                catch (Exception ex)
+                {
+                    NotificationManager.AddException(ex, 6);
+                }
             }
         }
         public async Task SavePatient()
         {
-            await genericDataServicesPatient.Update(EditingPatient.Id, EditingPatient);
-            SelectedPatient = EditingPatient;
-            Patients.Clear();
-            Patients.Add(await genericDataServicesPatient.GetById(SelectedPatient.Id));
+            try
+            {
+                await genericDataServicesPatient.Update(EditingPatient.Id, EditingPatient);
+                SelectedPatient = EditingPatient;
+                Patients.Clear();
+                Patients.Add(await genericDataServicesPatient.GetById(SelectedPatient.Id));
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 6);
+            }
         }
         public async Task CreateEntry()
         {

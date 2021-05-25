@@ -48,38 +48,68 @@ namespace Hospital.ViewModel.Ambulatory
 
         public async void FindEntry(string searchValue)
         {
-            FindedEntries.Clear();
-            var res = await entryDataServices.FindDoctor(searchValue, Filter);
-            foreach (Entry entry in res) FindedEntries.Add(entry);
+            try
+            {
+                var res = await entryDataServices.FindDoctor(searchValue, Filter);
+                FindedEntries.Clear();
+                foreach (Entry entry in res) FindedEntries.Add(entry);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 6);
+            }
+
         }
         public async void FindBySelect(object item)
         {
             SelectedEntry = (Entry)item;
-            BySelectEntries.Clear();
-            FilteredCollection.Clear();
-            var res = await entryDataServices.GetEntries(SelectedEntry.DoctorDestination, SelectedEntry.TargetDateTime.Date);
-            foreach (Entry _entry in res) BySelectEntries.Add(_entry);
-            foreach (Entry _entry in res.Where(e => e.EntryStatus == EntryStatus.Открыта)) FilteredCollection.Add(_entry);
+            try
+            {
+                var res = await entryDataServices.GetEntries(SelectedEntry.DoctorDestination, SelectedEntry.TargetDateTime.Date);
+                BySelectEntries.Clear();
+                FilteredCollection.Clear();
+                foreach (Entry _entry in res) BySelectEntries.Add(_entry);
+                foreach (Entry _entry in res.Where(e => e.EntryStatus == EntryStatus.Открыта)) FilteredCollection.Add(_entry);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 6);
+            }
+
         }
         public void SetEntryOut(object item) => EntryOut = (Entry)item;
 
         public async void ToAbsence()
         {
-            CurrentEntry.EntryStatus = EntryStatus.Неявка;
-            await entryDataServices.UpdateEntry(CurrentEntry);
-            NotificationManager.AddItem(new NotificationItem(NotificationType.Success, TimeSpan.FromSeconds(2), "Запись успешно обновлена"));
+            try
+            {
+                CurrentEntry.EntryStatus = EntryStatus.Неявка;
+                await entryDataServices.UpdateEntry(CurrentEntry);
+                NotificationManager.AddItem(new NotificationItem(NotificationType.Success, TimeSpan.FromSeconds(2), "Запись успешно обновлена"));
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 6);
+            }
         }
         public async Task UpdateEntry()
         {
-            EntryOut.Registrator = CurrentEntry.DoctorDestination;
-            EntryOut.Patient = CurrentEntry.Patient;
-            EntryOut.CreateDateTime = DateTime.Now;
-            EntryOut.EntryStatus = EntryStatus.Ожидание;
-            EntryOut.MedCard = CurrentEntry.MedCard;
-            await entryDataServices.UpdateEntry(EntryOut);
-            CurrentEntry.EntryStatus = EntryStatus.Закрыта;
-            CurrentEntry.EntryOut = EntryOut;
-            await entryDataServices.UpdateEntry(CurrentEntry);
+            try
+            {
+                EntryOut.Registrator = CurrentEntry.DoctorDestination;
+                EntryOut.Patient = CurrentEntry.Patient;
+                EntryOut.CreateDateTime = DateTime.Now;
+                EntryOut.EntryStatus = EntryStatus.Ожидание;
+                EntryOut.MedCard = CurrentEntry.MedCard;
+                await entryDataServices.UpdateEntry(EntryOut);
+                CurrentEntry.EntryStatus = EntryStatus.Закрыта;
+                CurrentEntry.EntryOut = EntryOut;
+                await entryDataServices.UpdateEntry(CurrentEntry);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 6);
+            }
         }
     }
 }

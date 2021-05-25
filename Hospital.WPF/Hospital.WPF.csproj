@@ -4,10 +4,11 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <StartupObject>Hospital.WPF.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MahApps.Metro" Version="2.4.1" />
+    <PackageReference Include="MahApps.Metro" Version="2.4.5" />
   </ItemGroup>
 
   <ItemGroup>

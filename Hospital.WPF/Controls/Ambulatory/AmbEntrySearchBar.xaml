@@ -12,19 +12,38 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="30"/>
         </Grid.RowDefinitions>
-        <Border Grid.Row="0" Grid.RowSpan="2" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource BrushBackgroundPaper}" Effect="{StaticResource ShadowCard}"/>
+        <Grid.Resources>
+            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Button.PathWithText}"/>
+        </Grid.Resources>
+        <Border Grid.RowSpan="4" Background="{DynamicResource BrushBackgroundPaper}" Effect="{StaticResource ShadowCard}"/>
+        <Label Content="ЗАПИСЬ НА ПРИЕМ" Padding="15 0" 
+               FontWeight="DemiBold" FontSize="14"
+               VerticalContentAlignment="Center" HorizontalContentAlignment="Left"
+               HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+               Background="{StaticResource MahApps.Brushes.Accent}" 
+               Foreground="White"/>
+        <Button Foreground="White" HorizontalAlignment="Right" ToolTip="Отмена"
+                mah:ItemHelper.HoverForegroundBrush="White"
+                mah:ItemHelper.HoverBackgroundBrush="{StaticResource Brush.AccentRed}"
+                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntryTabNavigator.SetByType}"
+                CommandParameter="{x:Type local:AmbEntryInfo}">
+            <Path Data="{StaticResource path.Close}" Margin="12"/>
+        </Button>
         
-        <Grid Margin="15">
+        <Grid Margin="15" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBox Grid.Column="0" Name="search_textBox" Height="35" Padding="32,0" VerticalContentAlignment="Center" mah:ControlsHelper.CornerRadius="2,0,0,2" Margin="0"
-									    mah:TextBoxHelper.Watermark="{Binding}" mah:TextBoxHelper.SelectAllOnFocus="True"/>
+            <TextBox Grid.Column="0" Name="search_textBox" Height="35" Padding="32,0" VerticalContentAlignment="Center"
+                     mah:ControlsHelper.CornerRadius="2,0,0,2" Margin="0"
+                     mah:ControlsHelper.FocusBorderBrush="{DynamicResource MahApps.Brushes.Accent}"
+                     mah:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.Accent3}"
+					 mah:TextBoxHelper.Watermark="Введите параметры поиска" mah:TextBoxHelper.SelectAllOnFocus="True"/>
             <CheckBox Grid.Column="0" Style="{StaticResource cb.filterbutton}" Margin="3" Padding="0" HorizontalAlignment="Left" Name="SearchBarPopupButton"/>
 
             <DatePicker Grid.Column="0" Margin="3" VerticalContentAlignment="Center" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Width="115"
@@ -52,11 +71,14 @@
                 </Grid>
             </Popup>
 
-            <Button Content="ПОИСК" Grid.Column="1" Style="{StaticResource MahApps.Styles.Button.Flat}" mah:ControlsHelper.CornerRadius="0,2,2,0"
-								    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.FindEntry}"
-								    CommandParameter="{Binding ElementName=search_textBox, Path=Text}"/>
+            <Button Content="ПОИСК" Grid.Column="1" mah:ControlsHelper.CornerRadius="0,2,2,0"
+                    Style="{StaticResource Button.Common}"
+                    Background="{StaticResource MahApps.Brushes.Accent}"
+                    Foreground="White"
+					Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.FindEntry}"
+					CommandParameter="{Binding ElementName=search_textBox, Path=Text}"/>
         </Grid>
 
-        <mah:TransitioningContentControl Grid.Row="1" Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntrySearchNavigator.CurrentBody}" Transition="Up"/>
+        <mah:TransitioningContentControl Grid.Row="2" Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntrySearchNavigator.CurrentBody}" Transition="Up"/>
     </Grid>
 </UserControl>

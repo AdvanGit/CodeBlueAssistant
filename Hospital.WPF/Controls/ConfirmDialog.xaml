@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+        xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
         xmlns:local="clr-namespace:Hospital.WPF.Controls" SizeToContent="WidthAndHeight"
         WindowStyle="SingleBorderWindow" WindowStartupLocation="CenterOwner" ResizeMode="NoResize"
         mc:Ignorable="d" MinHeight="200" MinWidth="400" MaxHeight="400" MaxWidth="800">
@@ -15,9 +16,21 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <Border Background="{DynamicResource BrushPrimaryBorderLight}" Margin="10,0" Grid.ColumnSpan="2" Height="1" VerticalAlignment="Bottom" Grid.Row="0"/>
-        <Button Click="Button_ClickCancel" Grid.Column="0" Grid.Row="1" Content="Отмена" Margin="10"/>
-        <Button Click="Button_ClickOk" Grid.Column="1" Grid.Row="1" Content="ОК" Margin="10"/>
+        <Border Background="{StaticResource BrushPrimaryBorderLight}" Height="1"
+                VerticalAlignment="Top" Margin="10 0"
+                Grid.ColumnSpan="2" Grid.Row="1"/>
+        <Button Click="Button_ClickCancel" Style="{StaticResource Button.Common}"
+                mah:ControlsHelper.CornerRadius="2"
+                Foreground="{StaticResource BrushForegroundMid}"
+                Background="{StaticResource BrushPrimaryBorderLight}"
+                Grid.Column="0" Grid.Row="1" Content="ОТМЕНА" Margin="10"/>
+        <Button Style="{StaticResource Button.Common}"
+                mah:ControlsHelper.CornerRadius="2"
+                mah:ControlsHelper.FocusBorderBrush="{StaticResource BrushPrimaryBorderDark}"
+                Foreground="White"
+                Background="{StaticResource MahApps.Brushes.Accent}"
+                Click="Button_ClickOk" Grid.Column="1" Grid.Row="1" 
+                Content="ОК" Margin="10"/>
         <TextBlock Margin="20,10" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Text="{Binding ElementName=ConformDialog, Path=Message}" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="16"/>
     </Grid>
 </Window>

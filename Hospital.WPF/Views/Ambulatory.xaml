@@ -10,18 +10,18 @@
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       d:DesignHeight="450" d:DesignWidth="800">
 
-    <!--<UserControl.DataContext> <vm:AmbulatoryViewModel/> </UserControl.DataContext>-->
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition MinWidth="200" MaxWidth="300" Width="0.3*"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
+        
         <ContentControl Grid.Column="0">
-            <controls:AmbMenuPanel Background="{DynamicResource BrushPrimaryPanel}"
-                                   BorderThickness="0,0,1,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}"/>
+            <controls:AmbMenuPanel Background="{StaticResource BrushPrimaryPanel}"
+                                   BorderThickness="0,0,1,0" BorderBrush="{StaticResource BrushPrimaryBorderLight}"/>
         </ContentControl>
-        <mah:TransitioningContentControl Grid.Column="1"  Content="{Binding ElementName=AmbulatoryView, Path=Navigator.CurrentBody}" Transition="Default"/>
+        
+        <mah:TransitioningContentControl Grid.Column="1"  Content="{Binding ElementName=AmbulatoryView, Path=MenuNavigator.CurrentBody}" Transition="Default"/>
         <GridSplitter Grid.Column="1" BorderThickness="2" BorderBrush="Transparent" HorizontalAlignment="Left"/>
     </Grid>
 </UserControl>

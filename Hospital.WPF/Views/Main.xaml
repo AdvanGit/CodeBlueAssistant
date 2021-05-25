@@ -38,48 +38,17 @@
 	</mah:MetroWindow.LeftWindowCommands>
 
     <mah:MetroWindow.RightWindowCommands>
-        <mah:WindowCommands ShowLastSeparator="False" Height="28" VerticalAlignment="Bottom">
+        <mah:WindowCommands ShowLastSeparator="False" VerticalAlignment="Stretch">
             <StackPanel Orientation="Horizontal">
                 <ListBox ItemsSource="{Binding ElementName=MainWindow, Path=TabNavigator.Bodies}"
                          SelectedItem="{Binding ElementName=MainWindow, Path=CurrentPage}"
-                         Cursor="Hand">
+                         ItemContainerStyle="{StaticResource ListBoxItem.Header.Right}"
+                         Cursor="Hand" VerticalAlignment="Stretch">
                     <ListBox.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top" Orientation="Horizontal"/>
+                            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal"/>
                         </ItemsPanelTemplate>
                     </ListBox.ItemsPanel>
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <StackPanel Orientation="Horizontal">
-								<TextBlock Text="{Binding Path=DataContext.Caption}" Padding="6"/>
-                                <Button Command="{Binding Command.CloseTab}" Padding="8">
-                                    <Path x:Name="path_close" Data="{StaticResource path.Close}" Stretch="Uniform" Height="10" Fill="{DynamicResource BrushBackgroundPaper}"/>
-                                    <Button.Style>
-                                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button.Chromeless}">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type ListBoxItem}}, Path=IsSelected}" Value="true">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Button.Style>
-                                </Button>
-                            </StackPanel>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                    <ListBox.ItemContainerStyle>
-                        <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource MahApps.Styles.ListBoxItem}">
-                            <Setter Property="Foreground" Value="{DynamicResource BrushForegroundLight}"/>
-                            <Setter Property="FontSize" Value="14"/>
-                            <Setter Property="Padding" Value="5,0"/>
-                            <Style.Triggers>
-                                <Trigger Property="IsSelected" Value="True">
-                                    <Setter Property="FontWeight" Value="DemiBold"/>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </ListBox.ItemContainerStyle>
                 </ListBox>    
             </StackPanel>    
         </mah:WindowCommands>
@@ -89,7 +58,6 @@
         <mah:TransitioningContentControl Content="{Binding CurrentPage, ElementName=MainWindow}" Transition="Default"/>
 
         <Border BorderThickness="0,1,0,0" VerticalAlignment="Top" BorderBrush="{StaticResource BrushPrimaryBorderLight}"/>
-
         <ContentControl VerticalAlignment="Bottom">
             <controls:NotificationArea/>
         </ContentControl>

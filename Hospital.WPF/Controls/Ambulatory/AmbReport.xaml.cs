@@ -1,18 +1,15 @@
-﻿using System.Windows;
+﻿using Hospital.WPF.Navigators;
+using System;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Hospital.WPF.Controls.Ambulatory
 {
-    public partial class AmbReport : UserControl
+    public partial class AmbReport : UserControl, INavigatorItem
     {
-
-        public string Title
-        {
-            get { return (string)GetValue(TitleProperty); }
-            set { SetValue(TitleProperty, value); }
-        }
-        public static readonly DependencyProperty TitleProperty =
-            DependencyProperty.Register("Title", typeof(string), typeof(AmbReport), new PropertyMetadata("Отчет"));
+        public string Label => "Отчет";
+        public Type Type => typeof(AmbReport);
+        public Geometry GeometryIcon => Geometry.Parse("M377 105L279.1 7c-4.5-4.5-10.6-7-17-7H256v128h128v-6.1c0-6.3-2.5-12.4-7-16.9zm-153 31V0H24C10.7 0 0 10.7 0 24v464c0 13.3 10.7 24 24 24h336c13.3 0 24-10.7 24-24V160H248c-13.2 0-24-10.8-24-24zm64 160v48c0 4.4-3.6 8-8 8h-56v56c0 4.4-3.6 8-8 8h-48c-4.4 0-8-3.6-8-8v-56h-56c-4.4 0-8-3.6-8-8v-48c0-4.4 3.6-8 8-8h56v-56c0-4.4 3.6-8 8-8h48c4.4 0 8 3.6 8 8v56h56c4.4 0 8 3.6 8 8z");
 
         public AmbReport()
         {

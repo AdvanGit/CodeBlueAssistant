@@ -11,5 +11,10 @@
             <x:Type TypeName="domain:TestMethod"/>
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
+    <ObjectDataProvider x:Key="enum.Gender" MethodName="GetValues" ObjectType="{x:Type domain:Gender}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="domain:Gender"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
 
 </ResourceDictionary>

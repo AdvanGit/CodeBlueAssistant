@@ -6,37 +6,67 @@
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
              xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
-             xmlns:domain="clr-namespace:Hospital.Domain.Model;assembly=Hospital.Domain"
-             xmlns:sys="clr-namespace:System;assembly=mscorlib"
-             mc:Ignorable="d" 
-             d:DesignHeight="720" d:DesignWidth="350">
-    
+             xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
+             mc:Ignorable="d" d:DataContext="{d:DesignInstance Type={x:Type vm:RegistratorViewModel}, IsDesignTimeCreatable=True}"
+             d:DesignHeight="500" d:DesignWidth="500">
     <UserControl.Resources>
-        <ObjectDataProvider x:Key="genderEnum" MethodName="GetValues"
-                        ObjectType="{x:Type sys:Enum}">
-            <ObjectDataProvider.MethodParameters>
-                <x:Type TypeName="domain:Gender"/>     <!--not MVVM-->
-            </ObjectDataProvider.MethodParameters>
-        </ObjectDataProvider>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MahApps.Styles.TextBox}">
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="mah:ControlsHelper.CornerRadius" Value="2,2,0,0"/>
+            <Setter Property="Background" Value="{StaticResource BrushPrimaryPanel}"/>
+            <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{StaticResource Brush.AccentGreen}"/>
+            <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{StaticResource Brush.AccentGreen2}"/>
+        </Style>
+        <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource MahApps.Styles.TextBlock}">
+            <Setter Property="Foreground" Value="{StaticResource BrushForegroundLight}"/>
+            <Setter Property="Margin" Value="5,0,0,2"/>
+        </Style>
+        <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="mah:ControlsHelper.CornerRadius" Value="2,2,0,0"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="Background" Value="{StaticResource BrushPrimaryPanel}"/>
+            <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{StaticResource Brush.AccentGreen}"/>
+            <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{StaticResource Brush.AccentGreen2}"/>
+        </Style>
+        <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource MahApps.Styles.DatePicker}">
+            <Setter Property="BorderThickness" Value="0,0,0,2"/>
+            <Setter Property="FontSize" Value="15"/>
+            <Setter Property="VerticalContentAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="0,0,0,5"/>
+            <Setter Property="mah:ControlsHelper.CornerRadius" Value="2,2,0,0"/>
+            <Setter Property="Background" Value="{StaticResource BrushPrimaryPanel}"/>
+            <Setter Property="mah:ControlsHelper.FocusBorderBrush" Value="{StaticResource Brush.AccentGreen}"/>
+            <Setter Property="mah:ControlsHelper.MouseOverBorderBrush" Value="{StaticResource Brush.AccentGreen2}"/>
+        </Style>
     </UserControl.Resources>
-
-    <Grid>
+    
+    <Grid Background="{StaticResource MahApps.Brushes.ThemeBackground}">
         <Grid.RowDefinitions>
-            <RowDefinition Height="40"/>
+            <RowDefinition Height="35"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="60"/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
 
-        <TextBlock Text="РЕДАКТИРОВАТЬ" Grid.Row="0" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-        <Border Background="{DynamicResource MahApps.Brushes.Accent}" Grid.Row="0"/>
+        <Border Background="{DynamicResource Brush.AccentGreen}" Grid.Row="0" Grid.ColumnSpan="2"/>
+        <TextBlock Text="РЕДАКТИРОВАТЬ" Foreground="White" Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
-        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="20,10">
+        <StackPanel Orientation="Vertical" Grid.Row="1" Margin="20 10 10 10">
+            
             <TextBlock Text="Фамилия"/>
-            <TextBox Text="{Binding EditingPatient.FirstName}"/>
+            <TextBox Text="{Binding EditingPatient.FirstName}" mah:TextBoxHelper.Watermark="Введите фамилию"/>
             <TextBlock Text="Имя"/>
-            <TextBox Text="{Binding EditingPatient.MidName}"/>
+            <TextBox Text="{Binding EditingPatient.MidName}" mah:TextBoxHelper.Watermark="Введите имя"/>
             <TextBlock Text="Отчество"/>
-            <TextBox Text="{Binding EditingPatient.LastName}"/>
+            <TextBox Text="{Binding EditingPatient.LastName}" mah:TextBoxHelper.Watermark="Введите отчество"/>
+            
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -45,28 +75,31 @@
                 <Grid.RowDefinitions>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Text="Дата" Grid.Row="0" Grid.Column="0"/>
-                <TextBlock Text="Пол" Grid.Row="0" Grid.Column="1"/>
-                <DatePicker Grid.Row="1" Grid.Column="0" SelectedDate="{Binding EditingPatient.BirthDay}"/>
-                <ComboBox SelectedItem="{Binding EditingPatient.Gender}" 
-                          ItemsSource="{Binding Source={StaticResource genderEnum}}"
-                          Grid.Row="1" Grid.Column="1"/>
-                <TextBlock Text="ОМС" Grid.Row="2" Grid.ColumnSpan="2"/>
-                <ComboBox Grid.Row="3" Grid.Column="0"
-                          ItemsSource="{Binding Belays, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
-                          SelectedValue="{Binding EditingPatient.Belay.Title}"
-                          DisplayMemberPath="Title"
-                          SelectedValuePath="Title"
-                          SelectedItem="{Binding EditingPatient.Belay}"/>
-                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding  EditingPatient.BelayCode}"/>
+                <TextBlock Text="Дата рождения" Grid.Row="0" Grid.Column="0"/>
+                <DatePicker Grid.Row="1" Grid.Column="0" SelectedDate="{Binding EditingPatient.BirthDay}" Margin="0,0,5,5"/>
+                
+                <TextBlock Text="Пол" Grid.Row="0" Grid.Column="1" Margin="10,0,0,2"/>
+                <ComboBox Grid.Row="1" Grid.Column="1" Margin="5,0,0,5"
+                          SelectedItem="{Binding EditingPatient.Gender}"
+                          ItemsSource="{Binding Source={StaticResource enum.Gender}}"/>
             </Grid>
+            
+            <TextBlock Text="ОМС" Grid.Row="2" Grid.ColumnSpan="2"/>
+            <ComboBox Grid.Row="3" Grid.Column="0" mah:TextBoxHelper.Watermark="Выберите держателя"
+                        ItemsSource="{Binding Belays, IsAsync=True, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedValue="{Binding EditingPatient.Belay.Title}"
+                        DisplayMemberPath="Title"
+                        SelectedValuePath="Title"
+                        SelectedItem="{Binding EditingPatient.Belay}"/>
+            <TextBlock Text="Номер ОМС" Grid.Row="2" Grid.ColumnSpan="2"/>  
+            <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding  EditingPatient.BelayCode}"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Grid.Row="1" Margin="10 10 20 10">
             <TextBlock Text="Номер телефона 1"/>
             <TextBox Text="{Binding EditingPatient.PhoneNumber}"/>
             <TextBlock Text="Номер телефона 2"/>
-            <TextBox/>
+            <TextBox IsEnabled="False"/>
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
@@ -77,34 +110,53 @@
                     <RowDefinition/>
                     <RowDefinition/>
                     <RowDefinition/>
-                    <RowDefinition/>
-                    <RowDefinition/>
                 </Grid.RowDefinitions>
-                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="Адрес прописки"/>
-                <TextBox Grid.Row="1" Grid.Column="0"/>
-                <TextBox Grid.Row="1" Grid.Column="1"/>
-                <TextBox Grid.Row="2" Grid.Column="0"/>
-                <TextBox Grid.Row="2" Grid.Column="1"/>
-                <TextBlock Grid.Row="3" Grid.Column="0"  Text="Место жительства"/>
-                <CheckBox Grid.Row="3" Grid.Column="1" Content="Прописка"/>
-                <TextBox Grid.Row="4" Grid.Column="0"/>
-                <TextBox Grid.Row="4" Grid.Column="1"/>
-                <TextBox Grid.Row="5" Grid.Column="0"/>
-                <TextBox Grid.Row="5" Grid.Column="1"/>
+                <TextBlock Grid.Row="0" Grid.Column="0"  Text="Город" />
+                <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding EditingPatient.Adress.City}" Margin="0,0,5,5" />
+                <TextBlock Grid.Row="0" Grid.Column="1" Text="Улица" Margin="10,0,0,2" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EditingPatient.Adress.Street}" Margin="5,0,0,5"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Дом"/>
+                <TextBox Grid.Row="3" Grid.Column="0" Text="{Binding EditingPatient.Adress.Number}" Margin="0,0,5,5"/>
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="Квартира" Margin="10,0,0,2"/>
+                <TextBox Grid.Row="3" Grid.Column="1" Text="{Binding EditingPatient.Adress.Room}" Margin="5,0,0,5"/>
             </Grid>
-            
+            <TextBlock Text="Семейное положение"/>
+            <ComboBox>
+                <ComboBoxItem Content="Состоит" IsSelected="{Binding EditingPatient.IsMarried}"/>
+                <ComboBoxItem Content="Не состоит"/>
+            </ComboBox>
+            <TextBlock Text="Наличие детей"/>
+            <ComboBox>
+                <ComboBoxItem Content="Имеет" IsSelected="{Binding EditingPatient.HasChild}"/>
+                <ComboBoxItem Content="Не имеет"/>
+            </ComboBox>
         </StackPanel>
-        
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Button Content="Отмена" Grid.Row="2" Grid.Column="0" Margin="20,15,10,15"
-                    Command="{Binding Path=Command.SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
-                    CommandParameter="Patients"/>
-            <Button Content="СОХРАНИТЬ" Grid.Row="2" Grid.Column="1" Margin="10,15,20,15"
-                    Command="{Binding Path=Command.SavePatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
-        </Grid>
+
+        <Border Grid.Row="2" Grid.ColumnSpan="2" BorderBrush="{StaticResource BrushPrimaryBorderLight}" BorderThickness="0,1,0,0">
+            <Grid>
+                <Button HorizontalAlignment="Left"  BorderThickness="5,0,0,0" BorderBrush="Transparent"
+                        mah:ControlsHelper.FocusBorderBrush="Red"
+                        Style="{StaticResource Button.PathWithText}"
+                        Foreground="{StaticResource BrushForegroundLight}"
+                        mah:ItemHelper.HoverForegroundBrush="Red"
+                        Command="{Binding Path=Command.SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                        CommandParameter="RegPatientTable">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,8,0">
+                        <Path Data="{StaticResource path.Cancel}" Margin="8"/>
+                        <TextBlock Text="ОТМЕНА"/>
+                    </StackPanel>
+                </Button>
+                <Button HorizontalAlignment="Right" Style="{StaticResource Button.PathWithText}" Padding="5 0"
+                        Foreground="{StaticResource BrushForegroundLight}" BorderThickness="0,0,5,0" BorderBrush="Transparent"
+                        mah:ItemHelper.HoverForegroundBrush="{StaticResource Brush.AccentGreen}"
+                        mah:ControlsHelper.FocusBorderBrush="{StaticResource Brush.AccentGreen}"
+                        Command="{Binding Path=Command.SavePatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}">
+                    <StackPanel Orientation="Horizontal" Margin="0,0,5,0">
+                        <Path Data="{StaticResource path.Save}" Margin="8"/>
+                        <TextBlock Text="СОХРАНИТЬ"/>
+                    </StackPanel>
+                </Button>
+            </Grid>
+        </Border>
     </Grid>
 </UserControl>

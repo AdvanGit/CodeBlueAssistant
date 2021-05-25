@@ -8,41 +8,116 @@
       xmlns:controls="clr-namespace:Hospital.WPF.Controls.Schedule"
       xmlns:con="clr-namespace:Hospital.WPF.Services"
       xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
-      mc:Ignorable="d"
+      xmlns:view="clr-namespace:Hospital.WPF.Views"
+      mc:Ignorable="d" d:DataContext="{d:DesignInstance Type={x:Type vm:ScheduleViewModel}}"
       d:DesignHeight="450" d:DesignWidth="868.296">
-
-    <!--<UserControl.DataContext>
-        <vm:ScheduleViewModel/>
-    </UserControl.DataContext>-->
     
     <UserControl.Resources>
         <con:ScheduleRowCountConverter x:Key="RowConverter"/>
     </UserControl.Resources>
-
+    
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="45"/>
+            <RowDefinition Height="40"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Grid.Row="0" BorderBrush="{StaticResource BrushPrimaryBorderLight}" BorderThickness="0,0,0,1" Background="{StaticResource BrushPrimaryPanel}" Effect="{StaticResource EffectShadowDown}"/>
+        <ProgressBar IsIndeterminate="{Binding IsLoading}" Grid.Row="0" VerticalAlignment="Bottom" Height="3">
+            <ProgressBar.Style>
+                <Style TargetType="{x:Type ProgressBar}">
+                    <Setter Property="BorderThickness" Value="0"/>
+                    <Setter Property="Background" Value="Transparent"/>
+                </Style>
+            </ProgressBar.Style>
+        </ProgressBar>
+
         <StackPanel Grid.Row="0" Orientation="Horizontal">
-            
-            <Button Content="previous" Command="{Binding ElementName=ScheduleView, Path=Command.PreviousDate}"/>
-            
-            <DatePicker SelectedDate="{Binding SelectedDate}"/>
-
-            <Button Content="next" Command="{Binding ElementName=ScheduleView, Path=Command.NextDate}"/>
-
+            <Button Style="{StaticResource Button.PathWithText}" Foreground="{StaticResource BrushForegroundLight}"
+                    mah:ControlsHelper.CornerRadius="2" Margin="5" Padding="5" Width="30" Height="30"
+                    mah:ItemHelper.HoverBackgroundBrush="{StaticResource MahApps.Brushes.Accent}"
+                    mah:ItemHelper.HoverForegroundBrush="White" ToolTip="Предыдущая дата"
+                    Command="{Binding ElementName=ScheduleView, Path=Command.PreviousDate}">
+                <Path Data="{StaticResource path.ChevronLeft}" Stretch="Uniform" Margin="3"/>
+            </Button>
+            <DatePicker Background="Transparent" BorderThickness="0" mah:TextBoxHelper.Watermark="Дата" Width="110" 
+                        SelectedDate="{Binding SelectedDate}" Margin="0,4" FontWeight="DemiBold"
+                        mah:TextBoxHelper.ButtonWidth="25" 
+                        HorizontalContentAlignment="Center" VerticalContentAlignment="Center" FontSize="14"/>
+            <Button Style="{StaticResource Button.PathWithText}" Foreground="{StaticResource BrushForegroundLight}"
+                    mah:ControlsHelper.CornerRadius="2" Margin="5" Padding="5" Width="30" Height="30"
+                    mah:ItemHelper.HoverBackgroundBrush="{StaticResource MahApps.Brushes.Accent}"
+                    mah:ItemHelper.HoverForegroundBrush="White" ToolTip="Следующая дата"
+                    Command="{Binding ElementName=ScheduleView, Path=Command.NextDate}">
+                <Path Data="{StaticResource path.ChevronRight}" Stretch="Uniform" Margin="3"/>
+            </Button>
         </StackPanel>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Right">
-            <Button Content="+" Command="{Binding ElementName=ScheduleView, Path=Command.AddColumn}"/>
-            <TextBlock Text="{Binding ElementName=ScheduleView, Path=TileColumnCount}"/>
-            <Button Content="-" Command="{Binding ElementName=ScheduleView, Path=Command.RemoveColumn}"/>
+            <Button Style="{StaticResource Button.PathWithText}" Foreground="{StaticResource BrushForegroundLight}"
+                    mah:ControlsHelper.CornerRadius="2" Margin="5,5,0,5" Padding="5" Width="30" Height="30"
+                    mah:ItemHelper.HoverBackgroundBrush="{StaticResource MahApps.Brushes.Accent}"
+                    mah:ItemHelper.HoverForegroundBrush="White" ToolTip="Удалить колонку"
+                    Command="{Binding ElementName=ScheduleView, Path=Command.RemoveColumn}">
+                <Path Data="{StaticResource path.TilesRemove}" Margin="2"/>
+            </Button>
+            <Button Style="{StaticResource Button.PathWithText}" Foreground="{StaticResource BrushForegroundLight}"
+                    mah:ControlsHelper.CornerRadius="2" Margin="0,5,5,5" Padding="5" Width="30" Height="30"
+                    mah:ItemHelper.HoverBackgroundBrush="{StaticResource MahApps.Brushes.Accent}"
+                    mah:ItemHelper.HoverForegroundBrush="White" ToolTip="Добавить колонку"
+                    Command="{Binding ElementName=ScheduleView, Path=Command.AddColumn}">
+                <Path Data="{StaticResource path.TilesAdd}" Margin="2"/>
+            </Button>
+            <Border Width="1" Background="{StaticResource BrushPrimaryBorderLight}" Margin="0,5"/>
+            <CheckBox Style="{StaticResource ExpanderChkBoxFlatButton}" Width="30" Margin="5"
+                      mah:ControlsHelper.CornerRadius="2" 
+                      x:Name="cb_panel" IsChecked="True" ToolTip="Информация">
+                <Path Stretch="Uniform" Data="{StaticResource path.SolidDockRight}" Margin="0,2">
+                    <Path.Style>
+                        <Style TargetType="{x:Type Path}">
+                            <Setter Property="Opacity" Value="0.5"/>
+                            <Setter Property="Fill" Value="{StaticResource BrushForegroundLight}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type CheckBox}}, Path=IsChecked}" Value="true">
+                                    <Setter Property="Fill" Value="{StaticResource BrushForegroundLight}"/>
+                                    <Setter Property="Opacity" Value="1"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type CheckBox}}, Path=IsMouseOver}" Value="true">
+                                    <Setter Property="Fill" Value="{StaticResource MahApps.Brushes.Accent}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+            </CheckBox>
         </StackPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition MinWidth="270"/>
-                <ColumnDefinition MinWidth="200" MaxWidth="400" Width="300"/>
+                <ColumnDefinition MaxWidth="400">
+                    <ColumnDefinition.Style>
+                        <Style>
+                            <Setter Property="ColumnDefinition.Width" Value="300"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=cb_panel, Path=IsChecked}" Value="False">
+                                    <DataTrigger.EnterActions>
+                                        <BeginStoryboard Name="BeginStoryboard1">
+                                            <Storyboard>
+                                                <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Width">
+                                                    <ObjectAnimationUsingKeyFrames.KeyFrames>
+                                                        <DiscreteObjectKeyFrame KeyTime="0:0:0"
+                                                                Value="{x:Static GridLength.Auto}" />
+                                                    </ObjectAnimationUsingKeyFrames.KeyFrames>
+                                                </ObjectAnimationUsingKeyFrames>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </DataTrigger.EnterActions>
+                                    <DataTrigger.ExitActions>
+                                        <RemoveStoryboard BeginStoryboardName="BeginStoryboard1" />
+                                    </DataTrigger.ExitActions>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
             </Grid.ColumnDefinitions>
 
             <ListBox x:Name="ListBoxSchedule" Grid.Column="0" ItemsSource="{Binding Entries}"
@@ -59,48 +134,88 @@
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
-                                    <Grid Height="75" Margin="10">
+                                    <Grid Height="95">
                                         <Grid.Width>
                                             <MultiBinding Converter="{StaticResource RowConverter}">
                                                 <Binding ElementName="ListBoxSchedule" Path="ActualWidth"/>
                                                 <Binding ElementName="ScheduleView" Path="TileColumnCount"/>
                                             </MultiBinding>
                                         </Grid.Width>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="75"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Border x:Name="TileBorder" Grid.ColumnSpan="2" Background="{DynamicResource BrushBackgroundPaper}" Effect="{StaticResource ShadowCard}"/>
-                                        <Border x:Name="StatusBorder" Grid.Column="0" Background="White" HorizontalAlignment="Right" Width="3" Height="60"/>
-                                        <StackPanel Orientation="Horizontal" Grid.Column="0" HorizontalAlignment="Center">
-                                            <TextBlock x:Name="TextHour" Text="{Binding TargetDateTime, StringFormat=HH}" FontSize="28" VerticalAlignment="Center"/>
-                                            <TextBlock x:Name="TextMinute" Text="{Binding TargetDateTime, StringFormat=:mm}" FontSize="22" VerticalAlignment="Center" Padding="0,4,0,0"/>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Vertical" Grid.Column="1" VerticalAlignment="Center" Margin="10,0" >
-                                            <TextBlock x:Name="TextFirstName" Text="{Binding Patient.FirstName, Converter={StaticResource ToUpperCaseConverter}}" FontSize="17"/>
-                                            <TextBlock x:Name="TextMidName" Text="{Binding Patient.MidName}" FontSize="17" Margin="0,-2"/>
-                                            <TextBlock x:Name="TextLastName" Text="{Binding Patient.LastName}" FontSize="17"/>
-                                        </StackPanel>
+                                        <Grid Margin="10">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="0.4*" MaxWidth="120" MinWidth="80"/>
+                                                <ColumnDefinition Width="*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <Border x:Name="TileBorder" Grid.ColumnSpan="2" Background="{DynamicResource BrushBackgroundPaper}"
+                                                    Effect="{StaticResource ShadowCard}">
+                                                <Border.InputBindings>
+                                                    <MouseBinding MouseAction="LeftDoubleClick" 
+                                                                  Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Schedule}}, Path=Command.OpenTab}"/>
+                                                </Border.InputBindings>
+                                                
+                                            </Border>
+                                            <Border x:Name="StatusBorder" IsHitTestVisible="False" RenderTransformOrigin="1 0.5" Grid.Column="0" Background="Transparent">
+                                                <Border.RenderTransform>
+                                                    <ScaleTransform ScaleX="0.05" ScaleY="0.8"/>
+                                                </Border.RenderTransform>
+                                            </Border>
+                                            <StackPanel Orientation="Horizontal" IsHitTestVisible="False" Grid.Column="0" HorizontalAlignment="Center" Margin="0,0,2,0">
+                                                <TextBlock x:Name="TextHour" Text="{Binding TargetDateTime, StringFormat=HH}" FontSize="27" VerticalAlignment="Center"/>
+                                                <TextBlock x:Name="TextMinute" Text="{Binding TargetDateTime, StringFormat=:mm}" FontSize="21" VerticalAlignment="Center" Padding="0,5,0,0"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Vertical" IsHitTestVisible="False" Grid.Column="1" Margin="10,5" VerticalAlignment="Center" >
+                                                <TextBlock x:Name="TextFirstName" Text="{Binding Patient.FirstName, Converter={StaticResource ToUpperCaseConverter}}" FontSize="17"/>
+                                                <TextBlock x:Name="TextMidName" Text="{Binding Patient.MidName}" FontSize="17" Margin="0,-2"/>
+                                                <TextBlock x:Name="TextLastName" Text="{Binding Patient.LastName}" FontSize="17"/>
+                                            </StackPanel>
+                                        </Grid>
                                     </Grid>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="FontWeight" TargetName="TextFirstName" Value="Bold"/>
                                             <Setter Property="FontWeight" TargetName="TextMidName" Value="Bold"/>
                                             <Setter Property="FontWeight" TargetName="TextLastName" Value="Bold"/>
-                                            <Setter Property="Foreground" TargetName="TextHour" Value="{DynamicResource BrushBackgroundPaper}"/>
-                                            <Setter Property="Foreground" TargetName="TextMinute" Value="{DynamicResource BrushBackgroundPaper}"/>
-                                            <Setter Property="Width" TargetName="StatusBorder" Value="75"/>
-                                            <Setter Property="Height" TargetName="StatusBorder" Value="75"/>
+                                            <Setter Property="Foreground" TargetName="TextHour" Value="{StaticResource BrushBackgroundPaper}"/>
+                                            <Setter Property="Foreground" TargetName="TextMinute" Value="{StaticResource BrushBackgroundPaper}"/>
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="0:0:0.2" To="1"
+                                                                         Storyboard.TargetName="StatusBorder"
+                                                                         Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleX)"/>
+                                                        <DoubleAnimation Duration="0:0:0.2" To="1"
+                                                                         Storyboard.TargetName="StatusBorder"
+                                                                         Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleY)"/>
+
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Duration="0:0:0.2" To="0.05"
+                                                                         Storyboard.TargetName="StatusBorder"
+                                                                         Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleX)"/>
+                                                        <DoubleAnimation Duration="0:0:0.2" To="0.8"
+                                                                         Storyboard.TargetName="StatusBorder"
+                                                                         Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleY)"/>
+
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
                                         </Trigger>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter Property="BorderThickness" TargetName="TileBorder" Value="2"/>
-                                            <Setter Property="BorderBrush" TargetName="TileBorder" Value="{DynamicResource BrushPrimaryBorderDark}"/>
+                                            <Setter Property="BorderBrush" TargetName="TileBorder" Value="{Binding ElementName=StatusBorder, Path=Background}"/>
                                         </Trigger>
-                                        <DataTrigger Binding="{Binding EntryStatus}" Value="Await">
-                                            <Setter Property="Background" TargetName="StatusBorder" Value="{DynamicResource BrushAccentPositive}"/>
+                                        <DataTrigger Binding="{Binding Path=EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="3">
+                                            <Setter Property="Background" TargetName="StatusBorder" Value="{StaticResource Brush.AccentGreen}"/>
                                         </DataTrigger>
-                                        <DataTrigger Binding="{Binding EntryStatus}" Value="Open">
-                                            <Setter Property="Background" TargetName="StatusBorder" Value="DarkViolet"/>
+                                        <DataTrigger Binding="{Binding Path=EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="1">
+                                            <Setter Property="Background" TargetName="StatusBorder" Value="{StaticResource Brush.AccentRed}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="2">
+                                            <Setter Property="Background" TargetName="StatusBorder" Value="{StaticResource BrushForegroundVeryLight}"/>
                                         </DataTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -110,11 +225,43 @@
                 </ListBox.ItemContainerStyle>
             </ListBox>
             
-            <ContentControl Grid.Column="1">
+            <ContentControl Grid.Column="1" RenderTransformOrigin="1 1">
+                <ContentControl.RenderTransform>
+                    <ScaleTransform ScaleX="1"/>
+                </ContentControl.RenderTransform>
+                <ContentControl.Resources>
+                    <Style TargetType="{x:Type ContentControl}">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding ElementName=cb_panel, Path=IsChecked}" Value="true">
+                                <DataTrigger.EnterActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="1" Duration="0:0:0.2"/>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{x:Static Visibility.Visible}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.EnterActions>
+                                <DataTrigger.ExitActions>
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleX)"
+                                                             To="0" Duration="0:0:0.2"/>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility">
+                                                <DiscreteObjectKeyFrame KeyTime="0:0:0.2" Value="{x:Static Visibility.Collapsed}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </DataTrigger.ExitActions>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContentControl.Resources>
                 <controls:InfoPanel BorderThickness="1,0,0,0" BorderBrush="{StaticResource BrushPrimaryBorderLight}"/>
             </ContentControl>
             <GridSplitter Grid.Column="1" ResizeDirection="Columns" HorizontalAlignment="Left" BorderThickness="2" BorderBrush="Transparent"/>
-            
         </Grid>
     </Grid>
 </UserControl>

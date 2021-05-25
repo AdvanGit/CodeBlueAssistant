@@ -1,6 +1,7 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
+using Hospital.ViewModel.Extensions;
 using Hospital.ViewModel.Notificator;
 using System;
 using System.Collections.Generic;
@@ -15,38 +16,25 @@ namespace Hospital.ViewModel.Ambulatory
         private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
         private readonly GenericDataServices<TestTemplate> genericTemplateServices = new GenericDataServices<TestTemplate>(new HospitalDbContextFactory());
 
-        private readonly Entry currentEntry;
+        private Entry currentEntry;
 
-        public DiagnosticViewModel(Entry entry)
-        {
-            currentEntry = entry;
-            Initialize(entry);
-
-            GetTestList(TestMethod.Физикальная);
-            GetTestTypeList(TestMethod.Лабараторная);
-            GetTestTypeList(TestMethod.Инструментальная);
-        }
-
-        private TestType _currentLabTestType;
-        private TestType _currentToolTestType;
+        #region old
         public TestType CurrentLabTestType
         {
-            get => _currentLabTestType;
+            get => LabTestTypes.Current;
             set
             {
-                _currentLabTestType = value;
-                OnPropertyChanged(nameof(CurrentLabTestType));
+                LabTestTypes.Current = value;
                 GetTestList(TestMethod.Лабараторная, CurrentLabTestType);
                 GetTemplateList(value);
             }
         }
         public TestType CurrentToolTestType
         {
-            get => _currentToolTestType;
+            get => ToolTestTypes.Current;
             set
             {
-                _currentToolTestType = value;
-                OnPropertyChanged(nameof(CurrentToolTestType));
+                ToolTestTypes.Current = value;
                 GetTestList(TestMethod.Инструментальная, CurrentToolTestType);
                 GetTemplateList(value);
             }
@@ -95,10 +83,10 @@ namespace Hospital.ViewModel.Ambulatory
         public ObservableCollection<TestTemplate> LabTemplates { get; } = new ObservableCollection<TestTemplate>();
         public ObservableCollection<TestTemplate> ToolTemplates { get; } = new ObservableCollection<TestTemplate>();
 
-        public ObservableCollection<TestType> LabTestTypes { get; } = new ObservableCollection<TestType>();
-        public ObservableCollection<TestType> ToolTestTypes { get; } = new ObservableCollection<TestType>();
+        public ObservableStorage<TestType> LabTestTypes { get; } = new ObservableStorage<TestType>();
+        public ObservableStorage<TestType> ToolTestTypes { get; } = new ObservableStorage<TestType>();
 
-        public ObservableCollection<Test> PhysicalTestList { get; } = new ObservableCollection<Test>();
+        public ObservableStorage<Test> PhysicalTestList { get; } = new ObservableStorage<Test>();
         public ObservableCollection<Test> LabTestList { get; } = new ObservableCollection<Test>();
         public ObservableCollection<Test> ToolTestList { get; } = new ObservableCollection<Test>();
 
@@ -127,78 +115,167 @@ namespace Hospital.ViewModel.Ambulatory
         }
 
         private ObservableCollection<TestData> _addedDatas = new ObservableCollection<TestData>();
-        public ObservableCollection<TestData> AddedDatas 
+        public ObservableCollection<TestData> AddedDatas
         {
-            get 
+            get
             {
                 _addedDatas.Clear();
-                foreach (TestData data in PhysicalDiagData.Where(p=>p.Id == 0)) _addedDatas.Add(data);
+                foreach (TestData data in PhysicalDiagData.Where(p => p.Id == 0)) _addedDatas.Add(data);
                 foreach (TestData data in ToolDiagData.Where(p => p.Id == 0)) _addedDatas.Add(data);
                 foreach (TestData data in LabDiagData.Where(p => p.Id == 0)) _addedDatas.Add(data);
                 return _addedDatas;
             }
         }
 
-        public ObservableCollection<TestData> PhysicalDiagData { get; } = new ObservableCollection<TestData>();
-        public ObservableCollection<TestData> LabDiagData { get; } = new ObservableCollection<TestData>();
-        public ObservableCollection<TestData> ToolDiagData { get; } = new ObservableCollection<TestData>();
+        public ObservableStorage<TestData> PhysicalDiagData { get; } = new ObservableStorage<TestData>();
+        public ObservableStorage<TestData> LabDiagData { get; } = new ObservableStorage<TestData>();
+        public ObservableStorage<TestData> ToolDiagData { get; } = new ObservableStorage<TestData>();
+        #endregion
 
-        private async void Initialize(Entry entry)
+        public TestContainer PhysicalContainer { get; } = new TestContainer();
+
+        public int DataAwaitCount => LabDiagData.Where(l => l.Status == Enum.Parse<TestStatus>("0")).Count()
+            + ToolDiagData.Where(t => t.Status == Enum.Parse<TestStatus>("0")).Count();
+        public int DataIsSymptomCount => PhysicalDiagData.Where(p => p.IsSymptom).Count()
+            + LabDiagData.Where(l => l.IsSymptom).Count()
+            + ToolDiagData.Where(t => t.IsSymptom).Count();
+        public int DataCount => PhysicalDiagData.Count() + LabDiagData.Count() + ToolDiagData.Count();
+
+        protected internal async void Initialize(Entry entry)
         {
+            currentEntry = entry;
             if (entry != null && entry.MedCard != null)
             {
-                var res = await ambulatoryDataService.GetTestData(entry.MedCard.Id);
-                PhysicalDiagData.Clear();
-                LabDiagData.Clear();
-                ToolDiagData.Clear();
-
-                foreach (TestData data in res)
+                LabDiagData.IsLoading = true;
+                try
                 {
-                    switch (data.Test.TestType.TestMethod)
+                    var res = await ambulatoryDataService.GetTestData(entry.MedCard.Id);
+                    PhysicalDiagData.Clear();
+                    LabDiagData.Clear();
+                    ToolDiagData.Clear();
+
+                    foreach (TestData data in res)
                     {
-                        case TestMethod.Физикальная:
-                            PhysicalDiagData.Add(data);
-                            break;
-                        case TestMethod.Лабараторная:
-                            LabDiagData.Add(data);
-                            break;
-                        case TestMethod.Инструментальная:
-                            ToolDiagData.Add(data);
-                            break;
-                        default:
-                            break;
+                        switch (data.Test.TestType.TestMethod)
+                        {
+                            case TestMethod.Физикальная:
+                                PhysicalDiagData.Add(data);
+                                break;
+                            case TestMethod.Лабараторная:
+                                LabDiagData.Add(data);
+                                break;
+                            case TestMethod.Инструментальная:
+                                ToolDiagData.Add(data);
+                                break;
+                            default:
+                                break;
+                        }
                     }
+
                 }
+                catch (Exception ex)
+                {
+                    NotificationManager.AddException(ex, 4);
+                }
+                LabDiagData.IsLoading = false;
             }
+
+            GetTestList(TestMethod.Физикальная);
+            GetTestTypeList(TestMethod.Лабараторная);
+            GetTestTypeList(TestMethod.Инструментальная);
+
+            await PhysicalContainer.Initialize(TestMethod.Физикальная, entry);
+            PhysicalContainer.CurrentType = PhysicalContainer.TypeList.FirstOrDefault();
         }
 
         private async void GetTestTypeList(TestMethod testMethod)
         {
-            IEnumerable<TestType> result = await ambulatoryDataService.GetTestTypeList(testMethod);
-            if (testMethod == TestMethod.Лабараторная) foreach (TestType item in result) LabTestTypes.Add(item);
-            else if (testMethod == TestMethod.Инструментальная) foreach (TestType item in result) ToolTestTypes.Add(item);
+            IEnumerable<TestType> result;
+            switch (testMethod)
+            {
+                case TestMethod.Физикальная:
+                    break;
+                case TestMethod.Лабараторная:
+                    LabDiagData.IsLoading = true;
+                    break;
+                case TestMethod.Инструментальная:
+                    ToolDiagData.IsLoading = true;
+                    break;
+                default:
+                    break;
+            }
+            try
+            {
+                result = await ambulatoryDataService.GetTestTypeList(testMethod);
+            }
+            catch (Exception ex)
+            {
+                result = new List<TestType>();
+                NotificationManager.AddException(ex, 5);
+            }    
+            switch (testMethod)
+            {
+                case TestMethod.Физикальная:
+                    break;
+                case TestMethod.Лабараторная:
+                    foreach (TestType item in result) LabTestTypes.Add(item);
+                    LabDiagData.IsLoading = false;
+                    break;
+                case TestMethod.Инструментальная:
+                    foreach (TestType item in result) ToolTestTypes.Add(item);
+                    ToolDiagData.IsLoading = false;
+                    break;
+                default:
+                    break;
+            }
         }
         private async void GetTestList(TestMethod testMethod, TestType testType = null)
         {
-            IEnumerable<Test> result = await ambulatoryDataService.GetTestList(testMethod, testType);
+            switch (testMethod)
+            {
+                case TestMethod.Физикальная:
+                    PhysicalDiagData.IsLoading = true;
+                    break;
+                case TestMethod.Лабараторная:
+                    LabDiagData.IsLoading = true;
+                    break;
+                case TestMethod.Инструментальная:
+                    ToolDiagData.IsLoading = true;
+                    break;
+                default:
+                    break;
+            }
+            IEnumerable<Test> result;
+            try
+            {
+                result = await ambulatoryDataService.GetTestList(testMethod, testType);
+            }
+            catch (Exception ex)
+            {
+                result = new List<Test>();
+                NotificationManager.AddException(ex, 5);
+            }
             switch (testMethod)
             {
                 case TestMethod.Физикальная:
                     {
                         PhysicalTestList.Clear();
                         foreach (Test item in result) PhysicalTestList.Add(item);
+                        PhysicalDiagData.IsLoading = false;
                         break;
                     }
                 case TestMethod.Лабараторная:
                     {
                         LabTestList.Clear();
                         foreach (Test item in result) LabTestList.Add(item);
+                        LabDiagData.IsLoading = false;
                         break;
                     }
                 case TestMethod.Инструментальная:
                     {
                         ToolTestList.Clear();
                         foreach (Test item in result) ToolTestList.Add(item);
+                        ToolDiagData.IsLoading = false;
                         break;
                     }
                 default:
@@ -207,23 +284,26 @@ namespace Hospital.ViewModel.Ambulatory
         }
         private async void GetTemplateList(TestType testType)
         {
-            var arr = await genericTemplateServices.GetWithInclude(t => t.Category.Id == testType.Id, t => t.Category);
-            switch (testType.TestMethod)
+            if (testType != null)
             {
-                case TestMethod.Физикальная:
-                    PhysicalTemplates.Clear();
-                    foreach (TestTemplate template in arr) PhysicalTemplates.Add(template);
-                    break;
-                case TestMethod.Лабараторная:
-                    LabTemplates.Clear();
-                    foreach (TestTemplate template in arr) LabTemplates.Add(template);
-                    break;
-                case TestMethod.Инструментальная:
-                    ToolTemplates.Clear();
-                    foreach (TestTemplate template in arr) ToolTemplates.Add(template);
-                    break;
-                default:
-                    break;
+                var arr = await genericTemplateServices.GetWithInclude(t => t.Category.Id == testType.Id, t => t.Category);
+                switch (testType.TestMethod)
+                {
+                    case TestMethod.Физикальная:
+                        PhysicalTemplates.Clear();
+                        foreach (TestTemplate template in arr) PhysicalTemplates.Add(template);
+                        break;
+                    case TestMethod.Лабараторная:
+                        LabTemplates.Clear();
+                        foreach (TestTemplate template in arr) LabTemplates.Add(template);
+                        break;
+                    case TestMethod.Инструментальная:
+                        ToolTemplates.Clear();
+                        foreach (TestTemplate template in arr) ToolTemplates.Add(template);
+                        break;
+                    default:
+                        break;
+                }
             }
         }
 
@@ -232,7 +312,7 @@ namespace Hospital.ViewModel.Ambulatory
             switch (testMethod)
             {
                 case TestMethod.Физикальная:
-                    if (CurrentPhysicalTemplate != null && CurrentPhysicalTemplate.Objects.Count != 0)
+                    if (CurrentPhysicalTemplate != null && CurrentPhysicalTemplate.Objects.Count() != 0)
                     {
                         var result = await ambulatoryDataService.GetTestList(CurrentPhysicalTemplate.Objects);
                         foreach (Test test in result)
@@ -245,14 +325,14 @@ namespace Hospital.ViewModel.Ambulatory
                     }
                     break;
                 case TestMethod.Лабараторная:
-                    if (CurrentLabTemplate != null && CurrentLabTemplate.Objects.Count != 0)
+                    if (CurrentLabTemplate != null && CurrentLabTemplate.Objects.Count() != 0)
                     {
                         var result = await ambulatoryDataService.GetTestList(CurrentLabTemplate.Objects);
                         foreach (Test test in result) LabDiagData.Add(CreateData(test, null, test.DefaultOption));
                     }
                     break;
                 case TestMethod.Инструментальная:
-                    if (CurrentToolTemplate != null && CurrentToolTemplate.Objects.Count != 0)
+                    if (CurrentToolTemplate != null && CurrentToolTemplate.Objects.Count() != 0)
                     {
                         var result = await ambulatoryDataService.GetTestList(CurrentToolTemplate.Objects);
                         foreach (Test test in result) ToolDiagData.Add(CreateData(test, null, test.DefaultOption));
@@ -261,9 +341,8 @@ namespace Hospital.ViewModel.Ambulatory
                 default:
                     break;
             }
-            OnPropertyChanged(nameof(AddedDatas));
+            RaiseDataPropetryChange();
         }
-
         public TestData CreateData(Test test, string value = null, string option = null)
         {
             return new TestData
@@ -295,9 +374,29 @@ namespace Hospital.ViewModel.Ambulatory
                 default:
                     break;
             }
-            OnPropertyChanged(nameof(AddedDatas));
-            NotificationManager.AddItem(new NotificationItem(NotificationType.Success, TimeSpan.FromSeconds(3), "Success"));
+            RaiseDataPropetryChange();
         }
+        public void AddData(TestData data)
+        {
+            data.DateCreate = DateTime.Now;
+            data.MedCard = currentEntry.MedCard;
+            data.Status = TestStatus.Редакция;
+
+            switch (data.Test.TestType.TestMethod)
+            {
+                case TestMethod.Лабараторная:
+                    LabDiagData.Add(CreateData(SelectedLabTest, null, SelectedLabTest.DefaultOption));
+                    break;
+                case TestMethod.Инструментальная:
+                    ToolDiagData.Add(CreateData(SelectedToolTest, null, SelectedToolTest.DefaultOption));
+                    break;
+                default:
+                    break;
+            }
+            RaiseDataPropetryChange();
+        }
+
+
         public void RemoveData(object testDatas)
         {
             var items = ((System.Collections.IList)testDatas).Cast<TestData>().ToList();
@@ -309,7 +408,7 @@ namespace Hospital.ViewModel.Ambulatory
                         foreach (TestData test in items)
                         {
                             if (test.Status == Enum.Parse<TestStatus>("3"))
-                            { 
+                            {
                                 PhysicalDiagData.Remove(test);
                                 removecounter++;
                             }
@@ -337,16 +436,23 @@ namespace Hospital.ViewModel.Ambulatory
                         break;
                     default: break;
                 }
-            OnPropertyChanged(nameof(AddedDatas));
-            NotificationManager.AddItem(new NotificationItem (NotificationType.Information, TimeSpan.FromSeconds(5), "Удалено " + removecounter.ToString() + " элементов 5 сек", true));
+            RaiseDataPropetryChange();
+            NotificationManager.AddItem(new NotificationItem(NotificationType.Information, TimeSpan.FromSeconds(4), "Удалено " + removecounter.ToString() + " элементов", true));
         }
-
         public async Task UpdateData()
         {
-            foreach (TestData data in PhysicalDiagData.Where(p=>p.Id == 0)) data.Status = TestStatus.Готов;
+            foreach (TestData data in PhysicalDiagData.Where(p => p.Id == 0)) data.Status = TestStatus.Готов;
             foreach (TestData data in LabDiagData.Where(l => l.Id == 0)) data.Status = TestStatus.Ожидание;
             foreach (TestData data in ToolDiagData.Where(t => t.Id == 0)) data.Status = TestStatus.Ожидание;
             await ambulatoryDataService.UpdateData(AddedDatas);
+        }
+
+        public void RaiseDataPropetryChange()
+        {
+            OnPropertyChanged(nameof(AddedDatas));
+            OnPropertyChanged(nameof(DataAwaitCount));
+            OnPropertyChanged(nameof(DataIsSymptomCount));
+            OnPropertyChanged(nameof(DataCount));
         }
     }
 }

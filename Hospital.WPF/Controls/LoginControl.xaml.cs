@@ -16,20 +16,21 @@ namespace Hospital.WPF.Controls
             App.Current.Shutdown();
         }
 
-        public LoginControl()
-        {
-            InitializeComponent();
-        }
-
+        private LoginViewModel _vm = new LoginViewModel();
         public string Label => "Авторизация";
         public Type Type => typeof(LoginControl);
 
+        public LoginControl()
+        {
+            InitializeComponent();
+            DataContext = _vm;
+        }
+
         public Command Init => new Command(async obj => 
         {
-            long phone;
-            if (long.TryParse(obj.ToString(), out phone))
+            if (long.TryParse(obj.ToString(), out long phone))
             {
-                if (await MainViewModel.GetUser(phone))
+                if (await _vm.GetUser(phone))
                 {
                     Main.MenuNavigator.Bodies.Clear();
                     Main.MenuNavigator.Bodies.Add(new Views.Registrator());
@@ -38,8 +39,6 @@ namespace Hospital.WPF.Controls
                 }
             }
             else NotificationManager.AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(3), "Номер введен неверно", true));
-        }, obj => (obj != null &&  obj.ToString().Length == 11 ));
-
-
+        }, obj => (obj != null &&  obj.ToString().Length > 5 ));
     }
 }

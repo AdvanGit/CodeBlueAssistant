@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
              xmlns:view="clr-namespace:Hospital.WPF.Views"
              mc:Ignorable="d" 
@@ -24,8 +25,15 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Border Background="{DynamicResource BrushBackgroundPaper}" Grid.ColumnSpan="2" Effect="{StaticResource ShadowCard}" CornerRadius="2" />
-        <Border Background="{StaticResource BrushAccentPositive}" Grid.Column="0" CornerRadius="2,0,0,2" />
-        <TextBlock Text="П А Ц И Е Н Т" FontSize="12"  Foreground="White" Margin="0,10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
+        <Button Background="{StaticResource Brush.AccentGreen}" Style="{StaticResource Button.Common}" Grid.Column="0" BorderThickness="0"
+                mah:ControlsHelper.CornerRadius="2,0,0,2" mah:ControlsHelper.MouseOverBorderBrush="{StaticResource Brush.AccentGreen2}"
+                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}, Path=Navigator.SetByType}"
+                CommandParameter="{x:Type local:RegPatientTable}"
+                />
+        <Button Content="X" Grid.Column="0" Style="{StaticResource MahApps.Styles.Button.Chromeless}" VerticalAlignment="Top" Padding="5" Foreground="White"
+                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}, Path=Command.CleanPatient}"/>
+
+        <TextBlock Text="П А Ц И Е Н Т" FontSize="12" IsHitTestVisible="False"  Foreground="White" Margin="0,10" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom">
             <TextBlock.LayoutTransform>
                 <RotateTransform Angle="-90"/>
             </TextBlock.LayoutTransform>

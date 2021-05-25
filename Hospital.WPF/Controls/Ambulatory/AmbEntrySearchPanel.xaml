@@ -28,12 +28,7 @@
     </UserControl.Resources>
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-
-        <ListBox Grid.Row="0" Foreground="{DynamicResource BrushForegroundLight}" ItemsSource="{Binding FindedEntries}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListBox Foreground="{DynamicResource BrushForegroundLight}" ItemsSource="{Binding FindedEntries}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
             <ListBox.ItemContainerStyle>
                 <Style TargetType="{x:Type ListBoxItem}">
                     <Setter Property="Foreground" Value="{StaticResource BrushForegroundMid}"/>
@@ -100,7 +95,7 @@
                                     <StackPanel Grid.Column="1" Margin="15,5" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
                                         <TextBlock Name="tb_date" Text="{Binding TargetDateTime, StringFormat=dd MMMM, ConverterCulture='ru-RU'}" FontSize="15" HorizontalAlignment="Right"/>
                                         <TextBlock Text="{Binding TargetDateTime, StringFormat=dddd, ConverterCulture='ru-RU'}" Margin="0,-2" HorizontalAlignment="Right" FontSize="14" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                                        <TextBlock Text="{Binding TargetDateTime, StringFormat=hh:mm}" HorizontalAlignment="Right" FontSize="18" FontWeight="DemiBold" Foreground="{DynamicResource BrushAccentInvert}"/>
+                                        <TextBlock Text="{Binding TargetDateTime, StringFormat=HH:mm}" HorizontalAlignment="Right" FontSize="18" FontWeight="DemiBold" Foreground="{DynamicResource BrushAccentInvert}"/>
                                     </StackPanel>
                                 </Grid>
                                 <ControlTemplate.Triggers>
@@ -119,9 +114,6 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-
-        <Button Grid.Row="0" Content="ОТМЕНА" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-30"
-                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntryTabNavigator.SetByType}"
-                CommandParameter="{x:Type local:AmbEntryInfo}"/>
+        <Border Height="1" Background="{StaticResource BrushPrimaryBorderLight}" VerticalAlignment="Top"/>
     </Grid>
 </UserControl>

@@ -8,8 +8,7 @@
 			 xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
 			 xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
 			 Foreground="{DynamicResource BrushForegroundMid}"
-			 mc:Ignorable="d"
-			 DataContext="{Binding EntryViewModel}"
+			 mc:Ignorable="d" DataContext="{Binding EntryViewModel}" 
 			 d:DataContext="{d:DesignInstance IsDesignTimeCreatable=false, Type={x:Type vm:EntryViewModel}}"
 			 d:DesignHeight="800" d:DesignWidth="800">
     <UserControl.Resources>
@@ -34,9 +33,9 @@
     <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Visible">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0.1*"/>
-                <ColumnDefinition Width="*" MinWidth="640" MaxWidth="1024"/>
-                <ColumnDefinition  Width="0.1*"/>
+                <ColumnDefinition Width="0.01*"/>
+                <ColumnDefinition Width="*" MinWidth="640" MaxWidth="1280"/>
+                <ColumnDefinition Width="0.01*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
@@ -44,13 +43,14 @@
                 <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
 
-            <Grid Grid.Column="1" Margin="10" d:DataContext="{d:DesignInstance IsDesignTimeCreatable=True, Type={x:Type vm:AmbulatoryViewModel}}">
+            <Grid Grid.Column="1" Margin="0 10" d:DataContext="{d:DesignInstance Type={x:Type vm:AmbulatoryViewModel}}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Border Grid.ColumnSpan="2" CornerRadius="2" Background="{DynamicResource BrushBackgroundPaper}" Effect="{StaticResource ShadowCard}" />
-                <Border Grid.Column="0" Background="{DynamicResource BrushAccent1}" CornerRadius="2,0,0,2"/>
+                <Border Grid.ColumnSpan="2" mah:ControlsHelper.CornerRadius="0 0 0 0"
+                        Background="{DynamicResource BrushBackgroundPaper}" Effect="{StaticResource ShadowCard}" />
+                <Border Grid.Column="0" mah:ControlsHelper.CornerRadius="2 0 0 2" Background="{DynamicResource BrushAccent1}"/>
                 <StackPanel Grid.Column="0" >
                     <Path Data="{StaticResource path.UserCircle}" Height="35" VerticalAlignment="Center" Margin="20,20,20,0" Fill="{DynamicResource BrushBackgroundPaper}" Stretch="UniformToFill" />
                     <TextBlock Text="пациент" HorizontalAlignment="Center" FontSize="13" Foreground="{DynamicResource BrushBackgroundPaper}" FontWeight="DemiBold"/>
@@ -157,20 +157,7 @@
                 </StackPanel>
             </Grid>
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Grid.Column="1" Grid.Row="1">
-                <ListBox ItemsSource="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntryTabNavigator.Bodies}"
-						 SelectedItem="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntryTabNavigator.CurrentBody}"
-						 SelectedValue="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntryTabNavigator.CurrentBody.Name}"
-						 SelectedValuePath="Name" DisplayMemberPath="Name">
-                    <ListBox.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Horizontal"/>
-                        </ItemsPanelTemplate>
-                    </ListBox.ItemsPanel>
-                </ListBox>
-            </StackPanel>
-
-            <Grid Grid.Row="2" Grid.Column="1" Margin="10,30,10,10">
+            <Grid Grid.Row="2" Grid.Column="1" Margin="0,10">
                 <mah:TransitioningContentControl Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntryTabNavigator.CurrentBody}" Transition="Left"/>
 			</Grid>
         </Grid>

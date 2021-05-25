@@ -17,20 +17,12 @@
                 <ResourceDictionary Source="/Resources/Local/AmbulatoryResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource tb.Panel}"/>
-            <Style TargetType="{x:Type TextBlock}">
-                <Setter Property="FontSize" Value="16"/>
-                <Setter Property="VerticalAlignment" Value="Bottom"/>
-            </Style>
-            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
-                <Setter Property="Height" Value="30"/>
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
         </ResourceDictionary>
     </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="35"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Border Grid.Row="0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}" BorderThickness="0,0,0,1"/>
@@ -39,9 +31,18 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Button Content="Back" Margin="5,0,5,5" Grid.Column="0" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntrySearchNavigator.SetByType}"
-                    CommandParameter="{x:Type local:AmbEntrySearchPanel}"/>
-            <TextBlock Grid.Column="1" Margin="0,0,0,5" VerticalAlignment="Center" FontWeight="DemiBold" FontSize="18">
+
+            <Button Margin="5,0,5,5" Grid.Column="0" ToolTip="Назад"
+                    Foreground="{StaticResource BrushForegroundMid}"
+                    mah:ControlsHelper.CornerRadius="16"
+                    mah:ItemHelper.HoverForegroundBrush="{StaticResource BrushForegroundVeryLight}"
+                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntrySearchNavigator.SetByType}"
+                    CommandParameter="{x:Type local:AmbEntrySearchPanel}">
+                <Path Data="{StaticResource path.Undo}"  Margin="7"/>
+            </Button>
+            
+            <TextBlock Grid.Column="1" Margin="0,0,0,5" VerticalAlignment="Center" 
+                       FontWeight="DemiBold" FontSize="18">
                     <TextBlock.Text>
                         <MultiBinding StringFormat="{}{0} {1} {2}">
                             <Binding Path="SelectedEntry.DoctorDestination.FirstName"/>
@@ -51,10 +52,23 @@
                     </TextBlock.Text>
              </TextBlock>
             <StackPanel Grid.Column="1" Grid.Row="0" Orientation="Horizontal" VerticalAlignment="Center"  Margin="0,0,15,5" HorizontalAlignment="Right">
-                <CheckBox x:Name="cb_StatusVisibility"/>
-                <TextBlock Name="tb_date" Text="{Binding SelectedEntry.TargetDateTime, StringFormat=dd MMMM - dddd, ConverterCulture='ru-RU'}" FontSize="15" VerticalAlignment="Center"/>
-                <Button Content="P" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.FindEntryPrevious}"/>
-                <Button Content="N" Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.FindEntryNext}"/>
+                <CheckBox x:Name="cb_StatusVisibility" Content="Свободно" ToolTip="Показывать только свободные записи"/>
+                <Button 
+                    Padding="10 5"
+                    Foreground="{StaticResource BrushForegroundMid}"    
+                    mah:ItemHelper.HoverForegroundBrush="{StaticResource MahApps.Brushes.Accent}"
+                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.FindEntryPrevious}">
+                    <Path Data="{StaticResource path.ChevronLeft}"/>
+                </Button>
+                <TextBlock Name="tb_date" FontWeight="DemiBold"
+                           Text="{Binding SelectedEntry.TargetDateTime, StringFormat=dd MMMM (ddd), ConverterCulture='ru-RU'}" FontSize="15" VerticalAlignment="Center"/>
+                <Button
+                    Padding="10 5"
+                    Foreground="{StaticResource BrushForegroundMid}"
+                    mah:ItemHelper.HoverForegroundBrush="{StaticResource MahApps.Brushes.Accent}"
+                    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.FindEntryNext}">
+                    <Path Data="{StaticResource path.ChevronRight}"/>
+                </Button>
             </StackPanel>
         </Grid>
 
@@ -104,7 +118,7 @@
                                     <StackPanel Grid.Column="1" Margin="15,5" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Center">
                                         <TextBlock Name="tb_date" Text="{Binding TargetDateTime, StringFormat=dd MMMM, ConverterCulture='ru-RU'}" FontSize="15" HorizontalAlignment="Right"/>
                                         <TextBlock Text="{Binding TargetDateTime, StringFormat=dddd, ConverterCulture='ru-RU'}" Margin="0,-2" HorizontalAlignment="Right" FontSize="14" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                                        <TextBlock Name="tb_time" Text="{Binding TargetDateTime, StringFormat=hh:mm}" HorizontalAlignment="Right" FontSize="18" FontWeight="DemiBold" Foreground="{DynamicResource BrushAccentInvert}"/>
+                                        <TextBlock Name="tb_time" Text="{Binding TargetDateTime, StringFormat=HH:mm}" HorizontalAlignment="Right" FontSize="18" FontWeight="DemiBold" Foreground="{DynamicResource BrushAccentInvert}"/>
                                     </StackPanel>
                                 </Grid>
                                 <ControlTemplate.Triggers>
@@ -131,10 +145,5 @@
                 </Style>
             </ListBox.ItemContainerStyle>
         </ListBox>
-
-        <Button Grid.Row="1" Content="ОТМЕНА" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,0,-30"
-                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntryTabNavigator.SetByType}"
-                CommandParameter="{x:Type local:AmbEntryInfo}"/>
-
     </Grid>
 </UserControl>

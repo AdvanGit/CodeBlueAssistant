@@ -7,9 +7,9 @@
              xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Schedule"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             d:DataContext="{d:DesignInstance Type={x:Type vm:ScheduleViewModel}}"
              mc:Ignorable="d" Foreground="{StaticResource BrushForegroundMid}" d:DesignWidth="341.58" d:DesignHeight="648">
 
-    <!--<UserControl.DataContext> <vm:ScheduleViewModel/> </UserControl.DataContext>-->
     <UserControl.Resources>
         <Style TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="15"/>
@@ -19,15 +19,42 @@
         </Style>
     </UserControl.Resources>
 
-    <Grid>
+    <Grid Background="{StaticResource MahApps.Brushes.ThemeBackground}">
         <Grid.RowDefinitions>
             <RowDefinition Height="95"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="50"/>
+            <RowDefinition Height="55"/>
         </Grid.RowDefinitions>
-        <Border Background="{DynamicResource BrushBackgroundPaper}" Grid.Row="0"/>
-        <Border Background="{DynamicResource BrushAccentPositive}" Grid.Row="0" Height="3" VerticalAlignment="Bottom"/>
+        <Border Grid.Row="0" Height="4" VerticalAlignment="Bottom">
+            <Border.Style>
+                <Style TargetType="{x:Type Border}">
+                    <Setter Property="Background" Value="{StaticResource BrushPrimaryBorderLight}"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentEntry.EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="3">
+                            <Setter Property="Background" Value="{StaticResource Brush.AccentGreen}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentEntry.EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="1">
+                            <Setter Property="Background" Value="{StaticResource Brush.AccentRed}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding CurrentEntry.EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="2">
+                            <Setter Property="Background" Value="{StaticResource BrushForegroundVeryLight}"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Border.Style>
+        </Border>
+        
         <Grid Grid.Row="0">
+            <Grid.Style>
+                <Style TargetType="{x:Type Grid}">
+                    <Setter Property="Visibility" Value="Visible"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding CurrentEntry, Converter={StaticResource NullToBoolConverter}}" Value="False">
+                            <Setter Property="Visibility" Value="Hidden"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Grid.Style>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="35*" MinWidth="95"/>
                 <ColumnDefinition Width="65*"/>
@@ -35,7 +62,7 @@
 
             <StackPanel Grid.Column="0" Margin="5,0" Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock x:Name="TextHour" Text="{Binding CurrentEntry.TargetDateTime, StringFormat=HH}" FontSize="35" VerticalAlignment="Center" Padding="0,0,0,0"/>
-                <TextBlock x:Name="TextMinute" Text="{Binding CurrentEntry.TargetDateTime, StringFormat=:mm}" FontSize="32" VerticalAlignment="Center" Padding="0,4,0,0"/>
+                <TextBlock x:Name="TextMinute" Text="{Binding CurrentEntry.TargetDateTime, StringFormat=:mm}" FontSize="30" FontWeight="DemiBold" VerticalAlignment="Center" Padding="0,5,0,0"/>
             </StackPanel>
             <StackPanel Grid.Column="1" Margin="10,0" Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock x:Name="TextFirstName" Text="{Binding CurrentEntry.Patient.FirstName, Converter={StaticResource ToUpperCaseConverter}}" FontSize="22" Margin="0,-5"/>
@@ -44,189 +71,195 @@
             </StackPanel>
             <Border Width="1" Height="70" Grid.Column="0" Background="{StaticResource BrushPrimaryBorderLight}" HorizontalAlignment="Right"/>
         </Grid>
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel  Orientation="Vertical">
+                <Expander Template="{StaticResource ExpanderTemplate}"
+                          BorderThickness="0" IsExpanded="False" FontSize="15"
+                          Foreground="{StaticResource BrushForegroundVeryLight}"
+                          Background="{StaticResource BrushPrimaryPanel}"
+                          Header="Заметка">
+                    <StackPanel Orientation="Vertical">
+                        <TextBox Text="текст заметки к записи" Margin="15,2" FontStyle="Italic" IsReadOnly="True" Background="Transparent" BorderThickness="0"/>
+                        <Border Height="1" Background="{DynamicResource BrushPrimaryBorderLight}" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                </Expander>
+                <Expander Template="{StaticResource ExpanderTemplate}"
+                          BorderThickness="0" IsExpanded="True"
+                          Foreground="{DynamicResource BrushForegroundVeryLight}"
+                          Background="{DynamicResource BrushPrimaryPanel}">
+                    <Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="55*"/>
+                                <ColumnDefinition Width="45*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Направление" Padding="0" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                            <TextBlock Grid.Column="1" Text="{Binding CurrentEntry.Id, StringFormat=№ 0}" Padding="0" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        </Grid>
+                    </Expander.Header>
+                    <StackPanel Orientation="Vertical">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Регистратор" Grid.Column="0" Grid.Row="0"/>
+                            <TextBlock Text="Дата регистрации" Grid.Column="0" Grid.Row="1"/>
+                            <TextBlock Text="Статус записи" Grid.Column="0" Grid.Row="2"/>
+                            <TextBlock Text="Статус приема" Grid.Column="0" Grid.Row="3"/>
+                            <Border Width="1" Grid.Column="0" Grid.RowSpan="4" Background="{DynamicResource BrushPrimaryBorderLight}" HorizontalAlignment="Right"/>
+                            <StackPanel Grid.Column="1" Grid.Row="0">
+                                <TextBlock Text="{Binding CurrentEntry.Registrator.FirstName}"/>
+                                <TextBlock Text="{Binding CurrentEntry.Registrator.Department.Title.Title}"/>
+                            </StackPanel>
+                            <TextBlock Text="{Binding CurrentEntry.CreateDateTime, StringFormat=dd.MM.yyyy}" Grid.Column="1" Grid.Row="1"/>
+                            <TextBlock Text="{Binding CurrentEntry.EntryStatus}" Grid.Column="1" Grid.Row="2" />
+                            <TextBlock Text="{Binding CurrentEntry.InviteStatus}" Grid.Column="1" Grid.Row="3" />                    </Grid>
+                        <Border Height="1" Background="{DynamicResource BrushPrimaryBorderLight}" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                </Expander>
+                <Expander Template="{StaticResource ExpanderTemplate}"
+                          BorderThickness="0" IsExpanded="{Binding CurrentEntry.MedCard, Mode=OneWay, TargetNullValue=false, Converter={StaticResource NullToBoolConverter}}"
+                          Foreground="{StaticResource BrushForegroundVeryLight}"
+                          Background="{StaticResource BrushPrimaryPanel}">
+                    <Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="55*"/>
+                                <ColumnDefinition Width="45*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Медицинская карта" Padding="0" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                            <TextBlock Padding="0" Grid.Column="1" Text="{Binding CurrentEntry.MedCard.Id, StringFormat=№ 0}" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        </Grid>
+                    </Expander.Header>
+                    <StackPanel Orientation="Vertical">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Отделение" Grid.Column="0" Grid.Row="0"/>
+                            <TextBlock Text="Лечащий врач" Grid.Column="0" Grid.Row="1"/>
+                            <TextBlock Text="Диагноз" Grid.Column="0" Grid.Row="2"/>
+                            <Border Width="1" Grid.Column="0" Grid.RowSpan="3" Background="{DynamicResource BrushPrimaryBorderLight}" HorizontalAlignment="Right"/>
+                            <TextBlock Text="{Binding CurrentEntry.MedCard.TherapyDoctor.Department.Title.Title}" Grid.Column="1" Grid.Row="0" />
+                            <TextBlock Text="{Binding CurrentEntry.MedCard.TherapyDoctor.FirstName}" Grid.Column="1" Grid.Row="1" />
+                            <TextBlock Text="{Binding CurrentEntry.MedCard.Diagnosis.Title}" Grid.Column="1" FontWeight="Bold" Grid.Row="2" />
+                        </Grid>
+                        <Border Height="1" Background="{DynamicResource BrushPrimaryBorderLight}" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                </Expander>
+                <Expander Template="{StaticResource ExpanderTemplate}"
+                          BorderThickness="0" IsExpanded="True"
+                          Foreground="{StaticResource BrushForegroundVeryLight}"
+                          Background="{StaticResource BrushPrimaryPanel}">
+                    <Expander.Header>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="55*"/>
+                                <ColumnDefinition Width="45*"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Column="0" Text="Личная карта" Padding="0" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                            <TextBlock Padding="0" Grid.Column="1" Text="{Binding CurrentEntry.Patient.Id, StringFormat=№ 0}" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        </Grid>
+                    </Expander.Header>
+                    <StackPanel Orientation="Vertical">
+                        <Grid Margin="5">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                                <RowDefinition/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="Возраст:" Grid.Column="0" Grid.Row="0"/>
+                            <TextBlock Text="Род деятельности:" Grid.Column="0" Grid.Row="1"/>
+                            <TextBlock Text="Семейное полож:" Grid.Column="0" Grid.Row="2"/>
+                            <TextBlock Text="Номер телефона:" Grid.Column="0" Grid.Row="3"/>
+                            <TextBlock Text="Прикрепление:" Grid.Column="0" Grid.Row="4"/>
+                            <TextBlock Text="Адрес:" Grid.Column="0" Grid.Row="5"/>
 
-        <StackPanel Grid.Row="1" Orientation="Vertical">
-            <Expander Template="{DynamicResource ExpanderTemplate}"
-                      BorderThickness="0" IsExpanded="False" FontSize="15"
-                      Foreground="{DynamicResource BrushForegroundVeryLight}"
-                      Background="{DynamicResource BrushPrimaryPanel}"
-                      Header="Заметка">
-                <StackPanel Orientation="Vertical">
-                    <TextBox Text="текст заметки к записи" Margin="15,2" FontStyle="Italic" IsReadOnly="True" Background="Transparent" BorderThickness="0"/>
-                    <Border Height="1" Background="{DynamicResource BrushPrimaryBorderLight}" VerticalAlignment="Bottom"/>
-                </StackPanel>
-            </Expander>
-            <Expander Template="{DynamicResource ExpanderTemplate}"
-                      BorderThickness="0" IsExpanded="True"
-                      Foreground="{DynamicResource BrushForegroundVeryLight}"
-                      Background="{DynamicResource BrushPrimaryPanel}">
-                <Expander.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="55*"/>
-                            <ColumnDefinition Width="45*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Направление" Padding="0" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                        <TextBlock Grid.Column="1" Text="{Binding CurrentEntry.Id, StringFormat=№ 0}" Padding="0" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                    </Grid>
-                </Expander.Header>
-                <StackPanel Orientation="Vertical">
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Регистратор" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock Text="Дата регистрации" Grid.Column="0" Grid.Row="1"/>
-                        <TextBlock Text="Статус" Grid.Column="0" Grid.Row="2"/>
-                        <Border Width="1" Grid.Column="0" Grid.RowSpan="3" Background="{DynamicResource BrushPrimaryBorderLight}" HorizontalAlignment="Right"/>
-                        <TextBlock Text="{Binding CurrentEntry.Registrator.FirstName}" Grid.Column="1" Grid.Row="0" />
-                        <TextBlock Text="{Binding CurrentEntry.CreateDateTime, StringFormat=dd.MM.yyyy}" Grid.Column="1" Grid.Row="1"/>
-                        <TextBlock Text="{Binding CurrentEntry.EntryStatus}" Grid.Column="1" Grid.Row="2" />
+                            <Border Width="1" Grid.Column="0" Grid.RowSpan="6" Background="{DynamicResource BrushPrimaryBorderLight}" HorizontalAlignment="Right"/>
 
-                    </Grid>
-                    <Border Height="1" Background="{DynamicResource BrushPrimaryBorderLight}" VerticalAlignment="Bottom"/>
-                </StackPanel>
-            </Expander>
-            <Expander Template="{DynamicResource ExpanderTemplate}"
-                      BorderThickness="0" IsExpanded="True"
-                      Foreground="{DynamicResource BrushForegroundVeryLight}"
-                      Background="{DynamicResource BrushPrimaryPanel}">
-                <Expander.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="55*"/>
-                            <ColumnDefinition Width="45*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Медицинская карта" Padding="0" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                        <TextBlock Padding="0" Grid.Column="1" Text="{Binding CurrentEntry.MedCardId, StringFormat=№ 0}" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                    </Grid>
-                </Expander.Header>
-                <StackPanel Orientation="Vertical">
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Отделение" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock Text="Лечащий врач" Grid.Column="0" Grid.Row="1"/>
-                        <TextBlock Text="Диагноз" Grid.Column="0" Grid.Row="2"/>
-                        <Border Width="1" Grid.Column="0" Grid.RowSpan="3" Background="{DynamicResource BrushPrimaryBorderLight}" HorizontalAlignment="Right"/>
-                        <TextBlock Text="{Binding CurrentEntry.MedCard.Doctor.Department.Title.Title}" Grid.Column="1" Grid.Row="0" />
-                        <TextBlock Text="{Binding CurrentEntry.MedCard.Doctor.FirstName}" Grid.Column="1" Grid.Row="1" />
-                        <TextBlock Text="{Binding CurrentEntry.MedCard.Diagnosis.Title}" Grid.Column="1" FontWeight="Bold" Grid.Row="2" />
-                    </Grid>
-                    <Border Height="1" Background="{DynamicResource BrushPrimaryBorderLight}" VerticalAlignment="Bottom"/>
-                </StackPanel>
-            </Expander>
-            <Expander Template="{DynamicResource ExpanderTemplate}"
-                      BorderThickness="0" IsExpanded="True"
-                      Foreground="{DynamicResource BrushForegroundVeryLight}"
-                      Background="{DynamicResource BrushPrimaryPanel}">
-                <Expander.Header>
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="55*"/>
-                            <ColumnDefinition Width="45*"/>
-                        </Grid.ColumnDefinitions>
-                        <TextBlock Grid.Column="0" Text="Личная карта" Padding="0" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                        <TextBlock Padding="0" Grid.Column="1" Text="{Binding CurrentEntry.PatientId, StringFormat=№ 0}" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                    </Grid>
-                </Expander.Header>
-                <StackPanel Orientation="Vertical">
-                    <Grid Margin="5">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <TextBlock Text="Возраст:" Grid.Column="0" Grid.Row="0"/>
-                        <TextBlock Text="Род деятельности:" Grid.Column="0" Grid.Row="1"/>
-                        <TextBlock Text="Семейное полож:" Grid.Column="0" Grid.Row="2"/>
-                        <TextBlock Text="Номер телефона:" Grid.Column="0" Grid.Row="3"/>
-                        <TextBlock Text="Прикрепление:" Grid.Column="0" Grid.Row="4"/>
-                        <TextBlock Text="Адрес:" Grid.Column="0" Grid.Row="5"/>
+                            <TextBlock Text="{Binding CurrentEntry.Patient.BirthDay, Converter={StaticResource DateToAgeConverter}}" Grid.Column="1" Grid.Row="0" Padding="10,0"/>
+                            <TextBlock Text="не реализовано" Grid.Column="1" Grid.Row="1" Foreground="{StaticResource BrushForegroundVeryLight}"/>
+                            <TextBlock Grid.Column="1" Grid.Row="2" Foreground="{StaticResource BrushForegroundMid}">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Padding" Value="10,4"/>
+                                        <Setter Property="FontSize" Value="15"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="True"/>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="male"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Text" Value="Женат"/>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="True"/>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="female"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Text" Value="Замужем"/>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="False"/>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="male"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Text" Value="Не женат"/>
+                                            </MultiDataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="False"/>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="female"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Text" Value="Не замужем"/>
+                                            </MultiDataTrigger>
 
-                        <Border Width="1" Grid.Column="0" Grid.RowSpan="6" Background="{DynamicResource BrushPrimaryBorderLight}" HorizontalAlignment="Right"/>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                            <TextBlock Text="{Binding CurrentEntry.Patient.PhoneNumber}" Grid.Column="1" Grid.Row="3"/>
+                            <TextBlock Text="не реализовано" Grid.Column="1" Grid.Row="4" Foreground="{StaticResource BrushForegroundVeryLight}" />
+                            <TextBlock Grid.Column="1" Grid.Row="5" >
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}г.{0} ул.{1} д.{2} кв.{3}">
+                                        <Binding Path="CurrentEntry.Patient.Adress.City"/>
+                                        <Binding Path="CurrentEntry.Patient.Adress.Street"/>
+                                        <Binding Path="CurrentEntry.Patient.Adress.Number"/>
+                                        <Binding Path="CurrentEntry.Patient.Adress.Room"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                            </TextBlock>
 
-                        <TextBlock Text="{Binding CurrentEntry.Patient.BirthDay, Converter={StaticResource DateToAgeConverter}}" Grid.Column="1" Grid.Row="0" Padding="10,0"/>
-                        <TextBlock Text="не реализовано" Grid.Column="1" Grid.Row="1"/>
-                        <TextBlock Grid.Column="1" Grid.Row="2">
-                            <TextBlock.Style>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="Padding" Value="10,4"/>
-                                    <Setter Property="FontSize" Value="15"/>
-                                    <Style.Triggers>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="True"/>
-                                                <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="male"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Text" Value="Женат"/>
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="True"/>
-                                                <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="female"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Text" Value="Замужем"/>
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="False"/>
-                                                <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="male"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Text" Value="Не женат"/>
-                                        </MultiDataTrigger>
-                                        <MultiDataTrigger>
-                                            <MultiDataTrigger.Conditions>
-                                                <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="False"/>
-                                                <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="female"/>
-                                            </MultiDataTrigger.Conditions>
-                                            <Setter Property="Text" Value="Не замужем"/>
-                                        </MultiDataTrigger>
+                        </Grid>
+                        <Border Height="1" Background="{DynamicResource BrushPrimaryBorderLight}" VerticalAlignment="Bottom"/>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </ScrollViewer>
 
-                                    </Style.Triggers>
-                                </Style>
-                            </TextBlock.Style>
-                        </TextBlock>
-                        <TextBlock Text="{Binding CurrentEntry.Patient.PhoneNumber}" Grid.Column="1" Grid.Row="3"/>
-                        <TextBlock Text="Не реализовано" Grid.Column="1" Grid.Row="4" />
-                        <TextBlock Grid.Column="1" Grid.Row="5" >
-                            <TextBlock.Text>
-                                <MultiBinding StringFormat="{}г.{0} ул.{1} д.{2} кв.{3}">
-                                    <Binding Path="CurrentEntry.Patient.Adress.City"/>
-                                    <Binding Path="CurrentEntry.Patient.Adress.Street"/>
-                                    <Binding Path="CurrentEntry.Patient.Adress.Number"/>
-                                    <Binding Path="CurrentEntry.Patient.Adress.Room"/>
-                                </MultiBinding>
-                            </TextBlock.Text>
-                        </TextBlock>
-
-                    </Grid>
-                    <Border Height="1" Background="{DynamicResource BrushPrimaryBorderLight}" VerticalAlignment="Bottom"/>
-                </StackPanel>
-            </Expander>
-        </StackPanel>
-
-        <Button Content="Открыть" Margin="15,10" Grid.Row="3"
+        <Button Content="ОТКРЫТЬ" mah:ControlsHelper.CornerRadius="2" Foreground="White"
+                Style="{StaticResource Button.Common}" Background="{StaticResource MahApps.Brushes.Accent}" Margin="15,10" Grid.Row="3"
                 Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Schedule}}, Path=Command.OpenTab}"/>
 
     </Grid>

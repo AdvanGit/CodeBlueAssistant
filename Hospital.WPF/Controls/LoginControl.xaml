@@ -2,27 +2,58 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Hospital.WPF.Controls"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
+             xmlns:local="clr-namespace:Hospital.WPF.Controls" 
+             xmlns:parts="clr-namespace:Hospital.WPF.Resources.Parts"
+             d:DataContext="{d:DesignInstance Type={x:Type vm:LoginViewModel}, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MinWidth="400">
-            <ComboBox Name="cb_phoneNumber" IsEditable="True" IsSynchronizedWithCurrentItem="False" >
+            <Grid Margin="0,0,20,0" HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="50"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <parts:LoadingSpinner x:Name="spinner" HorizontalAlignment="Center" Foreground="{StaticResource MahApps.Brushes.Accent}" 
+                                      Thickness="3" Diameter="25" IsLoading="{Binding IsLoading}"/>
+                <Path HorizontalAlignment="Center" Height="25" Data="{StaticResource path.LogIn}" Fill="{StaticResource MahApps.Brushes.Accent}" Grid.Column="0" Stretch="Uniform">
+                    <Path.Style>
+                        <Style TargetType="{x:Type Path}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoading}" Value="false">
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Path.Style>
+                </Path>
+                <TextBlock Text="Выполните вход" FontSize="25" FontWeight="Light" Padding="0,0,0,2" Foreground="{StaticResource MahApps.Brushes.Accent}" Grid.Column="1"
+                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Grid>
+            <ComboBox Height="35" FontSize="18" Margin="0,30" Name="cb_phoneNumber" IsEditable="True" IsSynchronizedWithCurrentItem="False"
+                      mah:ControlsHelper.CornerRadius="2" mah:ControlsHelper.FocusBorderBrush="{StaticResource MahApps.Brushes.Accent}"
+                      mah:TextBoxHelper.Watermark="введите номер телефона сотрудника" mah:TextBoxHelper.SelectAllOnFocus="False">
                 <ComboBoxItem Content="89411654359"/>
                 <ComboBoxItem Content="89400515275"/>
                 <ComboBoxItem Content="89718180221"/>
             </ComboBox>
-            <TextBlock Text="{Binding}"/>
-            <Grid>
+            <Grid Height="35">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Выход" Grid.Column="0" Margin="0,0,20,0" Click="Button_Click"/>
-                <Button Content="Вход" Grid.Column="1" Margin="20,0,0,0" Command="{Binding ElementName=LoginControlControl, Path=Init}"
+                <Button Style="{StaticResource Button.Common}" Content="ЗАКРЫТЬ" Grid.Column="0" Margin="0,0,15,0" Click="Button_Click"
+                        Background="{StaticResource MahApps.Brushes.Gray8}"
+                        mah:ControlsHelper.CornerRadius="2"/>
+                <Button Style="{StaticResource Button.Common}" Content="OK" Grid.Column="1" Margin="15,0,0,0" Foreground="White"
+                        Background="{StaticResource MahApps.Brushes.Accent}"
+                        mah:ControlsHelper.CornerRadius="2"
+                        Command="{Binding ElementName=LoginControlControl, Path=Init}"
                         CommandParameter="{Binding ElementName=cb_phoneNumber, Path=Text}"/>
             </Grid>
         </StackPanel>
-        
     </Grid>
 </UserControl>

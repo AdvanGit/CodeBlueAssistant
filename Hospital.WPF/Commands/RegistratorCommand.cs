@@ -1,5 +1,7 @@
 ﻿using Hospital.ViewModel;
+using Hospital.WPF.Controls.Registrator;
 using Hospital.WPF.Views;
+using System;
 
 namespace Hospital.WPF.Commands
 {
@@ -10,18 +12,16 @@ namespace Hospital.WPF.Commands
 
         private static readonly Command _setBody = new Command(param => 
             {
-                _view.Navigator.SetBody(param.ToString());
-                if (param.ToString() == "Doctors") _view.SearchBar.TabDoctor.IsSelected = true;
-                else if (param.ToString() == "Patients") _view.SearchBar.TabPatient.IsSelected = true;
+                _view.Navigator.SetBody(param.ToString());;
+                if (param.ToString() == "RegDoctorTable") _view.SearchBar.TabDoctor.IsSelected = true;
+                else if (param.ToString() == "RegPatientTable") _view.SearchBar.TabPatient.IsSelected = true;
             });
-        private static readonly Command _findDoctor = new Command(async param => await _vm.SearchDoctor(_view.SearchBar.TextBoxSearch.Text));
-        private static readonly Command _findPatient = new Command(async param => await _vm.SearchPatient(_view.SearchBar.TextBoxSearch.Text));
         private static readonly Command _getEntries = new Command(async obj =>
         {
             if (obj != null)
             {
                 await _vm.GetEntries(obj);
-                _view.Navigator.SetBody("Entries");
+                _view.Navigator.SetBody(typeof(RegEntryTable));
             }
         });
         private static readonly Command _selectPatient = new Command(obj => { if (obj != null) _vm.SelectEntity(obj); });
@@ -32,14 +32,14 @@ namespace Hospital.WPF.Commands
                     _vm.SelectEntity(obj);
                     _view.SearchBar.TabPatient.IsSelected = true;
                     _view.SearchBar.TextBoxSearch.Focus();
-                    _view.Navigator.SetBody("Patients");
+                    _view.Navigator.SetBody(typeof(RegPatientTable));
                 }
             });
         private static readonly Command _editPatient = new Command(async obj =>
             {
                 if (obj.ToString() == "true") _vm.EditPatient(true);
                 else _vm.EditPatient(false);
-                _view.Navigator.SetBody("Edit");
+                _view.Navigator.SetBody(typeof(RegEditPanel));
                 await _vm.GetBelays();
             }, obj =>
             {
@@ -50,9 +50,18 @@ namespace Hospital.WPF.Commands
             {
                 var command = _vm.SavePatient();
                 await command;
-                if (command.IsCompletedSuccessfully) _view.Navigator.SetBody("Patients");
+                if (command.IsCompletedSuccessfully) _view.Navigator.SetBody(typeof(RegPatientTable));
             });
         private static readonly Command _createEntry = new Command(async obj => await _vm.CreateEntry(), obj => { return (_vm.SelectedEntry != null && _vm.SelectedPatient != null); });
+        private static readonly Command _getSearchFunc = new Command(async obj =>
+        {
+            if (obj.ToString() == "0") await _vm.SearchDoctor();
+            if (obj.ToString() == "1") await _vm.SearchPatient();
+        }, obj => _vm.SearchString != "");
+        private static readonly Command _cleanEntry = new Command(obj => _vm.SelectedEntry = null);
+        private static readonly Command _cleanPatient = new Command(obj => _vm.SelectedPatient = null);
+        private static readonly Command _findEntryPrevious = new Command(async obj => { await _vm.GetEntries(true); }, obj => _vm != null); 
+        private static readonly Command _findEntryNext = new Command(async obj => { await _vm.GetEntries(false); }, obj => _vm != null);
 
         public RegistratorCommand(RegistratorViewModel viewModel, Registrator view)
         {
@@ -61,13 +70,16 @@ namespace Hospital.WPF.Commands
         }
 
         public static Command SetBody => _setBody;
-        public static Command FindDoctor => _findDoctor;
-        public static Command FindPatient => _findPatient;
         public static Command GetEntries => _getEntries;
         public static Command SelectPatient => _selectPatient;
         public static Command SelectEntry => _selectEntry;
         public static Command EditPatient => _editPatient;
         public static Command SavePatient => _savePatient;
         public static Command CreateEntry => _createEntry;
+        public static Command GetSearchFunc => _getSearchFunc;
+        public static Command CleanEntry => _cleanEntry;
+        public static Command CleanPatient => _cleanPatient;
+        public static Command FindEntryPrevious => _findEntryPrevious;
+        public static Command FindEntryNext => _findEntryNext;
     }
 }

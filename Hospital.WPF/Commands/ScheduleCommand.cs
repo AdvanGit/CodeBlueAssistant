@@ -13,8 +13,8 @@ namespace Hospital.WPF.Commands
 
         private static readonly Command _nextDate = new Command(obj => _vm.SelectedDate += TimeSpan.FromDays(1));
         private static readonly Command _previousDate = new Command(obj => _vm.SelectedDate -= TimeSpan.FromDays(1));
-        private static readonly Command _addColumn = new Command(obj => { if (_view.TileColumnCount < 5) _view.TileColumnCount += 1; });
-        private static readonly Command _removeColumn = new Command(obj => { if (_view.TileColumnCount > 1) _view.TileColumnCount -= 1; });
+        private static readonly Command _addColumn = new Command(obj => _view.TileColumnCount += 1, obj => _view.TileColumnCount < 5);
+        private static readonly Command _removeColumn = new Command(obj => _view.TileColumnCount -= 1, obj => _view.TileColumnCount > 1);
 
         private static readonly Command _openTab = new Command(obj =>
         {
@@ -34,7 +34,7 @@ namespace Hospital.WPF.Commands
                 Main.TabNavigator.Bodies.Add(view);
                 Main.CurrentPage = view;
             }
-        });
+        }, obj => _vm.CurrentEntry != null);
 
         public ScheduleCommand(ScheduleViewModel scheduleViewModel, Schedule scheduleView)
         {

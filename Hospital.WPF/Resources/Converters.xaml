@@ -1,0 +1,13 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:ser="clr-namespace:Hospital.WPF.Services"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <ser:ToUpperCaseConverter x:Key="ToUpperCaseConverter"/>
+    <ser:ObjectEqualsToBoolConverter x:Key="ObjectEqualsToBoolConverter"/>
+    <ser:MultiCommandExecuter x:Key="MultiCommandExecuter"/>
+    <ser:MultiBooleanToVisibilityConverter x:Key="MultiBooleanToVisibilityConverter"/>
+    <ser:DateToAgeConverter x:Key="DateToAgeConverter"/>
+    <ser:ObjectNullToBoolConverter x:Key="NullToBoolConverter"/>
+    <ser:EnumValueToIndexConverter x:Key="EnumValueToIndexConverter"/>
+
+</ResourceDictionary>

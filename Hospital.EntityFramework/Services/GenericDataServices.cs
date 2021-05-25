@@ -67,21 +67,11 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-        public async Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate, Action<string> exceptionHandler = null )
+        public async Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                try
-                {
-                    var res = await db.Set<T>().AsQueryable().AsNoTracking().Where(predicate).ToListAsync();
-                    if (exceptionHandler!= null && res.Count == 0) exceptionHandler("Данные не найдены");
-                    return res;
-                }
-                catch (NpgsqlException ex)
-                {
-                    if (exceptionHandler != null) exceptionHandler(ex.Message);
-                    return new List<T>();
-                }
+                return await db.Set<T>().AsQueryable().AsNoTracking().Where(predicate).ToListAsync();
             }
         }
 

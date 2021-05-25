@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.EntityFramework.Services
 {
-    public class AmbulatoryDataService
+    public class AmbulatoryDataService : ITestDataService
     {
         private readonly HospitalDbContextFactory _contextFactory;
 
@@ -33,6 +33,58 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
+        public async Task<IEnumerable<TestData>> GetTestData(int medCardId, TestMethod method)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                List<TestData> result = await db.TestDatas
+                    .AsQueryable()
+                    .Where(t => t.MedCard.Id == medCardId)
+                    .Where(t => t.Test.TestType.TestMethod == method)
+                    .Include(t => t.Test).ThenInclude(t => t.TestType)
+                    .Include(t => t.StaffResult)
+                    .ToListAsync();
+                return result;
+            }
+        }
+
+        public async Task<IEnumerable<Test>> GetTestList(TestType testType)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                IList<Test> result = await db.Tests
+                    .AsQueryable()
+                    .Where(t => t.TestType == testType)
+                    .Include(t => t.TestType)
+                    .ToListAsync();
+                return result;
+            }
+        }
+        public async Task<IEnumerable<Test>> GetTestList(IEnumerable<int> ids)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                List<Test> result = await db.Tests
+                    .AsQueryable()
+                    .Where(t => ids.Contains(t.Id))
+                    .Include(t => t.TestType)
+                    .ToListAsync();
+                return result;
+            }
+        }
+        public async Task<IEnumerable<TestTemplate>> GetTemplateList(TestType testType)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                List<TestTemplate> result = await db.TestTemplates
+                    .AsQueryable()
+                    .Where(t => t.Category == testType)
+                    .ToListAsync();
+                return result;
+            }
+        }
+
+
         public async Task<IEnumerable<TestData>> GetTestData(int medCardId, bool onlySymptom = false)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
@@ -43,31 +95,6 @@ namespace Hospital.EntityFramework.Services
                     .Where(t => (onlySymptom == true) ? (t.IsSymptom == true) : true)
                     .Include(t => t.Test).ThenInclude(t => t.TestType)
                     .Include(t => t.StaffResult)
-                    .ToListAsync();
-                return result;
-            }
-        }
-        public async Task<IEnumerable<Test>> GetTestList(TestMethod testMethod, TestType testType = null)
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                IList<Test> result = await db.Tests
-                    .AsQueryable()
-                    .Where(t => t.TestType.TestMethod == testMethod)
-                    .Where(t => (testType != null) ? t.TestType == testType : true)
-                    .Include(t => t.TestType)
-                    .ToListAsync();
-                return result;
-            }
-        }
-        public async Task<IEnumerable<Test>> GetTestList(ICollection<int> ids)
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                List<Test> result = await db.Tests
-                    .AsQueryable()
-                    .Where(t => ids.Contains(t.Id))
-                    .Include(t => t.TestType)
                     .ToListAsync();
                 return result;
             }
@@ -83,6 +110,21 @@ namespace Hospital.EntityFramework.Services
                 return result;
             }
         }
+
+        public async Task<IEnumerable<Test>> GetTestList(TestMethod testMethod, TestType testType = null)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                IList<Test> result = await db.Tests
+                    .AsQueryable()
+                    .Where(t => t.TestType.TestMethod == testMethod)
+                    .Where(t => (testType != null) ? t.TestType == testType : true)
+                    .Include(t => t.TestType)
+                    .ToListAsync();
+                return result;
+            }
+        }
+
 
         public async Task<IEnumerable<Diagnosis>> GetDiagnoses(string searchValue, bool isCode = false)
         {

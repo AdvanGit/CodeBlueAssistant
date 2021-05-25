@@ -5,31 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
-             xmlns:command="clr-namespace:Hospital.WPF.Commands"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="35"/>
             <RowDefinition/>
+            <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
-
-        <Border Grid.Row="0" Background="{StaticResource BrushBackgroundPaper}" BorderBrush="{StaticResource BrushPrimaryBorderLight}" BorderThickness="0,1,0,0"/>
-        <Border Grid.Row="0" BorderBrush="{StaticResource BrushTableSelected}" BorderThickness="0,0,0,2"/>
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
-            <Button Content="Back" 
-                    Command="{Binding Path=Command.SetBody, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
-                    CommandParameter="Entries"/>
-        </StackPanel>
-        <StackPanel Orientation="Horizontal" Grid.Row="0" HorizontalAlignment="Right">
-            <Button Content="РЕГИСТРАЦИЯ" Grid.Row="0" HorizontalAlignment="Right"
-                    Command="{Binding Path=Command.EditPatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
-                    CommandParameter="true"/>
-        </StackPanel>
-
-        <DataGrid Grid.Row="1" ItemsSource="{Binding Patients}" Style="{StaticResource TableCommon}">
+        
+        <DataGrid Grid.Row="0" ItemsSource="{Binding Patients}" mah:ControlsHelper.CornerRadius="2"
+                  mah:HeaderedControlHelper.HeaderForeground="White" IsReadOnly="True" BorderThickness="0"
+                  mah:HeaderedControlHelper.HeaderBackground="{StaticResource Brush.AccentGreen}"
+                  Style="{StaticResource dg_Ambulatory}">
             <DataGrid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick"
                               Command="{Binding Path=Command.SelectPatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
@@ -46,7 +35,7 @@
                                     <Binding RelativeSource="{RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}" Path="DataContext.SelectedPatient"/>
                                 </MultiBinding>
                             </DataTrigger.Binding>
-                            <Setter Property="Background" Value="{StaticResource BrushTableSelected}"/>
+                            <Setter Property="Background" Value="{StaticResource Brush.AccentGreen2}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -62,19 +51,50 @@
                                 </MultiBinding>
                             </DataTrigger.Binding>
                             <Setter Property="Foreground" Value="{StaticResource BrushBackgroundPaper}"/>
-                            <Setter Property="BorderBrush" Value="{StaticResource BrushTableSelected}"/>
+                            <Setter Property="BorderBrush" Value="Transparent"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
             </DataGrid.CellStyle>
             <DataGrid.Columns>
-                <DataGridTextColumn Header="ID" Binding="{Binding Id}"/>
+                <DataGridTextColumn Header="ID" Binding="{Binding Id}" MinWidth="50" Width="0.3*" MaxWidth="100"/>
                 <DataGridTextColumn Header="ФАМИЛИЯ" Binding="{Binding FirstName}"/>
                 <DataGridTextColumn Header="ИМЯ" Binding="{Binding MidName}"/>
                 <DataGridTextColumn Header="ОТЧЕСТВО" Binding="{Binding LastName}"/>
-                <DataGridTextColumn Header="ДАТА РОЖДЕНИЯ" Binding="{Binding BirthDay, StringFormat='dd.MM.yyyy'}"/>
-                <DataGridTextColumn Header="НОМЕР ТЕЛЕФОНА" Binding="{Binding PhoneNumber}"/>
+                <DataGridTextColumn Header="ДАТА РОЖДЕНИЯ" SortMemberPath="BirthDay" MinWidth="130" MaxWidth="180">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding StringFormat="{}{0:dd.MM.yyyy} / {1}">
+                            <Binding Path="BirthDay"/>
+                            <Binding Path="BirthDay" Converter="{StaticResource DateToAgeConverter}"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="НОМЕР ТЕЛЕФОНА" Binding="{Binding PhoneNumber}" MinWidth="120" MaxWidth="180"/>
             </DataGrid.Columns>
         </DataGrid>
+
+        <Border Grid.Row="1" Background="{StaticResource BrushBackgroundPaper}" BorderBrush="{StaticResource BrushPrimaryBorderLight}" BorderThickness="0,1,0,0"/>
+        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
+            <Button Style="{StaticResource Button.PathWithText}" Foreground="{StaticResource BrushForegroundLight}"
+                            mah:ItemHelper.HoverForegroundBrush="{StaticResource MahApps.Brushes.Accent}"
+                            Command="{Binding Path=Navigator.SetByType, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                            CommandParameter="{x:Type local:RegEntryTable}">
+                <StackPanel Orientation="Horizontal" Margin="10,0">
+                    <Path Data="{StaticResource path.Undo}" Margin="5,10" Stretch="Uniform"/>
+                    <TextBlock Text="НАЗАД" Margin="5,0"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Right">
+            <Button Style="{StaticResource Button.PathWithText}" Foreground="{StaticResource BrushForegroundLight}"
+                            mah:ItemHelper.HoverForegroundBrush="{StaticResource MahApps.Brushes.Accent}"
+                            Command="{Binding Path=Command.EditPatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
+                            CommandParameter="true">
+                <StackPanel Orientation="Horizontal" Margin="10,0">
+                    <Path Data="{StaticResource path.AccountAdd}" Margin="5,10" Stretch="Uniform"/>
+                    <TextBlock Text="РЕГИСТРАЦИЯ" Margin="5,0"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
     </Grid>
 </UserControl>

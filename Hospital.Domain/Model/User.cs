@@ -4,7 +4,7 @@ using System.Collections.ObjectModel;
 
 namespace Hospital.Domain.Model
 {
-    public enum Gender : byte { male, female }
+    public enum Gender : byte { male, female}
     public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
 
     public class User : DomainObject

@@ -1,15 +1,17 @@
-﻿using System.Windows.Controls;
+﻿using Hospital.WPF.Navigators;
+using System;
+using System.Windows.Controls;
 
 namespace Hospital.WPF.Controls.Registrator
 {
-    /// <summary>
-    /// Логика взаимодействия для RegEntryTable.xaml
-    /// </summary>
-    public partial class RegEntryTable : UserControl
+    public partial class RegEntryTable : UserControl, INavigatorItem
     {
         public RegEntryTable()
         {
             InitializeComponent();
         }
+
+        public string Label => "Записи";
+        public Type Type => typeof(RegEntryTable);
     }
 }
