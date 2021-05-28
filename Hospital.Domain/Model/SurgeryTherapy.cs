@@ -4,7 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hospital.Domain.Model
 {
-    public enum SurgeryStatus { Ожидание, Готово, Неявка }
     public enum SurgeryClass { Лечебная, Радикальная, Паллативная, Симптоматическая, Диагностическая }
     public enum SurgeryPriority { Плановая, Экстренная, Срочная }
     public enum SurgeryType { Малоинвазивная, Оперативная }
@@ -15,7 +14,7 @@ namespace Hospital.Domain.Model
         private SurgeryClass _surgeryClass;
         private SurgeryPriority _surgeryPriority;
         private SurgeryOperation _surgeryOperation;
-        private SurgeryStatus _surgeryStatus;
+        private ProcedureStatus _procedureStatus;
         private DateTime _createDateTime;
         private DateTime _targetDateTime;
         private string _option;
@@ -24,7 +23,7 @@ namespace Hospital.Domain.Model
         public SurgeryClass SurgeryClass { get => _surgeryClass; set { _surgeryClass = value; OnPropertyChanged(nameof(Model.SurgeryClass)); } }
         public SurgeryPriority SurgeryPriority { get => _surgeryPriority; set { _surgeryPriority = value; OnPropertyChanged(nameof(SurgeryPriority)); } }
         public SurgeryOperation SurgeryOperation { get => _surgeryOperation; set { _surgeryOperation = value; OnPropertyChanged(nameof(SurgeryOperation)); } }
-        public SurgeryStatus SurgeryStatus { get => _surgeryStatus; set { _surgeryStatus = value; OnPropertyChanged(nameof(SurgeryStatus)); } }
+        public ProcedureStatus ProcedureStatus { get => _procedureStatus; set { _procedureStatus = value; OnPropertyChanged(nameof(ProcedureStatus)); } }
         public DateTime CreateDateTime { get => _createDateTime; set { _createDateTime = value; OnPropertyChanged("CreateDateTime"); } }
         public DateTime TargetDateTime { get => _targetDateTime; set { _targetDateTime = value; OnPropertyChanged("TargetDateTime"); } }
         public string Option { get => _option; set { _option = value; OnPropertyChanged("Option"); } }

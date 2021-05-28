@@ -4,6 +4,7 @@ using Hospital.WPF.Controls.Ambulatory;
 using Hospital.WPF.Navigators;
 using System;
 using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace Hospital.WPF.Views
@@ -27,7 +28,6 @@ namespace Hospital.WPF.Views
         public Navigator EntryTabNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>() { new AmbEntryInfo(), new AmbEntrySearchBar() });
         public Navigator EntrySearchNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>() { new AmbEntrySearchPanel(), new AmbEntrySelectPanel(), new AmbEntrySavePanel() });
 
-
         public Ambulatory(int entryId)
         {
             InitializeComponent();
@@ -47,6 +47,5 @@ namespace Hospital.WPF.Views
             EntrySearchNavigator.SetBody(typeof(AmbEntrySearchPanel));
             EntryTabNavigator.SetBody(typeof(AmbEntryInfo));
         }
-
     }
 }

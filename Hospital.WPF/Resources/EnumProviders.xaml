@@ -17,4 +17,25 @@
         </ObjectDataProvider.MethodParameters>
     </ObjectDataProvider>
 
+    <ObjectDataProvider x:Key="enum.Treatment" MethodName="GetValues" ObjectType="{x:Type domain:Treatment}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="domain:Treatment"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider x:Key="Enum.SurgeryClass" MethodName="GetValues" ObjectType="{x:Type domain:SurgeryClass}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="domain:SurgeryClass"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider x:Key="Enum.SurgeryType" MethodName="GetValues" ObjectType="{x:Type domain:SurgeryType}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="domain:SurgeryType"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+    <ObjectDataProvider x:Key="Enum.SurgeryPriority" MethodName="GetValues" ObjectType="{x:Type domain:SurgeryPriority}">
+        <ObjectDataProvider.MethodParameters>
+            <x:Type TypeName="domain:SurgeryPriority"/>
+        </ObjectDataProvider.MethodParameters>
+    </ObjectDataProvider>
+
 </ResourceDictionary>

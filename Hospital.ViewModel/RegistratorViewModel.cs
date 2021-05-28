@@ -110,23 +110,26 @@ namespace Hospital.ViewModel
         }
         public async Task GetEntries(bool isBack)
         {
-            if (isBack) Filter.DateTime -= TimeSpan.FromDays(1);
-            else Filter.DateTime += TimeSpan.FromDays(1);
-            OnPropertyChanged(nameof(Filter));
-            IsLoading = true;
-            try
+            if (SelectedEntry != null)
             {
-                IEnumerable<Entry> result = await registratorDataServices.GetEntries(SelectedEntry.DoctorDestination, Filter.DateTime);
-                Entries.Clear();
-                FilteredEntries.Clear();
-                foreach (Entry entry in result) Entries.Add(entry);
-                foreach (Entry entry in result.Where(e => e.EntryStatus == EntryStatus.Открыта)) FilteredEntries.Add(entry);
+                if (isBack) Filter.DateTime -= TimeSpan.FromDays(1);
+                else Filter.DateTime += TimeSpan.FromDays(1);
+                OnPropertyChanged(nameof(Filter));
+                IsLoading = true;
+                try
+                {
+                    IEnumerable<Entry> result = await registratorDataServices.GetEntries(SelectedEntry.DoctorDestination, Filter.DateTime);
+                    Entries.Clear();
+                    FilteredEntries.Clear();
+                    foreach (Entry entry in result) Entries.Add(entry);
+                    foreach (Entry entry in result.Where(e => e.EntryStatus == EntryStatus.Открыта)) FilteredEntries.Add(entry);
+                }
+                catch (Exception ex)
+                {
+                    NotificationManager.AddException(ex, 6);
+                }
+                IsLoading = false;
             }
-            catch (Exception ex)
-            {
-                NotificationManager.AddException(ex, 6);
-            }
-            IsLoading = false;
         }
         public async Task GetBelays()
         {

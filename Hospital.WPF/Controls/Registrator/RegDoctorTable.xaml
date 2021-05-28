@@ -11,17 +11,18 @@
 			 d:DesignHeight="450" d:DesignWidth="800">
 
     <Grid>
+        <Border Background="{StaticResource MahApps.Brushes.ThemeBackground}" Effect="{StaticResource ShadowCard}"/>
         <DataGrid mah:ControlsHelper.CornerRadius="2" ItemsSource="{Binding Doctors}" BorderThickness="0"
                   mah:HeaderedControlHelper.HeaderForeground="White" IsReadOnly="True"
                   mah:HeaderedControlHelper.HeaderBackground="{StaticResource MahApps.Brushes.Accent2}"
-                  Style="{StaticResource dg_Ambulatory}">
+                  Style="{StaticResource DataGrid.Common}">
             <DataGrid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick" 
                               Command="{Binding Path=Command.GetEntries, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
                               CommandParameter="{Binding Path=SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"/>
             </DataGrid.InputBindings>
             <DataGrid.CellStyle>
-                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource TableCell}">
+                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DataGridCell.Common}">
                     <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
@@ -37,7 +38,7 @@
                 </Style>
             </DataGrid.CellStyle>
             <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource TableRow}">
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRow.Common}">
                     <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>

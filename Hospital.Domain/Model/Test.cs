@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Runtime.Serialization;
 
 namespace Hospital.Domain.Model
 {
     public enum TestMethod { Физикальная = 0, Лабараторная = 1, Инструментальная = 2 }
-    public enum TestStatus { Ожидание = 0, Готов = 1, Неявка = 2, Редакция = 3 , Резерв = 4 }
+    public enum ProcedureStatus { Ожидание = 0, Готов = 1, Неявка = 2, Редакция = 3, Резерв = 4 }
 
     public class TestData : DomainObject
     {
@@ -20,7 +19,7 @@ namespace Hospital.Domain.Model
         private DateTime _timeStamp;
 
         private Staff _staffResult;
-        private TestStatus _status;
+        private ProcedureStatus _status;
         private bool _isSymptom;
 
         public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged("MedCard"); } }
@@ -31,10 +30,9 @@ namespace Hospital.Domain.Model
         public DateTime DateResult { get => _dateResult; set { _dateResult = value; OnPropertyChanged("DateResult"); } }
         public DateTime TimeStamp { get => _timeStamp; set { _timeStamp = value; OnPropertyChanged(nameof(TimeStamp)); } }
         public Staff StaffResult { get => _staffResult; set { _staffResult = value; OnPropertyChanged("StaffResult"); } }
-        public TestStatus Status { get => _status; set { _status = value; OnPropertyChanged("Status"); } }
+        public ProcedureStatus Status { get => _status; set { _status = value; OnPropertyChanged("Status"); } }
         public bool IsSymptom { get => _isSymptom; set { _isSymptom = value; OnPropertyChanged("IsSymptom"); } }
     }
-
 
     public class Test : DomainObject
     {

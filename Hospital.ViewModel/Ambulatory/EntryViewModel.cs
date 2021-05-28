@@ -14,7 +14,6 @@ namespace Hospital.ViewModel.Ambulatory
     public class EntryViewModel : MainViewModel
     {
         private readonly EntryDataServices entryDataServices = new EntryDataServices(new HospitalDbContextFactory());
-        //private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
 
         private Entry _currentEntry;
         private Entry _selectedEntry;
@@ -48,23 +47,29 @@ namespace Hospital.ViewModel.Ambulatory
 
         public async void FindEntry(string searchValue)
         {
+            IsLoading = true;
             try
             {
+                FindedEntries.Clear();
                 var res = await entryDataServices.FindDoctor(searchValue, Filter);
                 FindedEntries.Clear();
-                foreach (Entry entry in res) FindedEntries.Add(entry);
+                if (res.Count() > 0) foreach (Entry entry in res) FindedEntries.Add(entry);
+                else NotificationManager.AddItem(new NotificationItem(NotificationType.Information, TimeSpan.FromSeconds(3), "Ничего не найдено"));
             }
             catch (Exception ex)
             {
                 NotificationManager.AddException(ex, 6);
             }
-
+            IsLoading = false;
         }
         public async void FindBySelect(object item)
         {
             SelectedEntry = (Entry)item;
+            IsLoading = true;
             try
             {
+                BySelectEntries.Clear();
+                FilteredCollection.Clear();
                 var res = await entryDataServices.GetEntries(SelectedEntry.DoctorDestination, SelectedEntry.TargetDateTime.Date);
                 BySelectEntries.Clear();
                 FilteredCollection.Clear();
@@ -75,7 +80,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 NotificationManager.AddException(ex, 6);
             }
-
+            IsLoading = false;
         }
         public void SetEntryOut(object item) => EntryOut = (Entry)item;
 

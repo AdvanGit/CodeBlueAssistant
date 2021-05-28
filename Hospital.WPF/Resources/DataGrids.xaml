@@ -2,88 +2,7 @@
                     xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <Style x:Key="TableRow" TargetType="{x:Type DataGridRow}">
-        <Style.Triggers>
-            <Trigger Property="IsMouseOver" Value="True">
-                <Setter Property="Background" Value="{StaticResource BrushPrimaryBorderLight}"/>
-                <Trigger.EnterActions>
-                    <BeginStoryboard>
-                        <Storyboard>
-                            <DoubleAnimation Duration="0:0:0.4" Storyboard.TargetProperty="(Background).(Opacity)" From="0.4"  To="1.0"/>
-                        </Storyboard>
-                    </BeginStoryboard>
-                </Trigger.EnterActions>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.5"/>
-                <Setter Property="IsHitTestVisible" Value="False"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style x:Key="TableCell" TargetType="{x:Type DataGridCell}">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type DataGridCell}">
-                    <Grid Background="{TemplateBinding Background}" Height="{TemplateBinding Height}">
-                        <ContentPresenter Margin="{TemplateBinding Padding}"
-                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        <TextBlock Foreground="{TemplateBinding Foreground}"/>
-                        <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                BorderThickness="{TemplateBinding BorderThickness}"/>
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-        <Setter Property="VerticalContentAlignment" Value="Center"/>
-        <Setter Property="Padding" Value="10,0"/>
-        <Setter Property="FontSize" Value="15"/>
-        <Setter Property="Height" Value="35"/>
-        <Setter Property="Foreground" Value="{DynamicResource BrushForegroundDark}"/>
-        <Setter Property="BorderBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
-        <Setter Property="BorderThickness" Value="0,0,1,0"/>
-        <Style.Triggers>
-            <Trigger Property="IsSelected" Value="True">
-                <Setter Property="Background" Value="Transparent"/>
-            </Trigger>
-            <Trigger Property="IsEnabled" Value="False">
-                <Setter Property="Opacity" Value="0.3"/>
-            </Trigger>
-        </Style.Triggers>
-    </Style>
-    <Style TargetType="{x:Type DataGrid}" x:Key="TableCommon" BasedOn="{StaticResource MahApps.Styles.DataGrid}">
-        <Setter Property="AlternatingRowBackground" Value="{DynamicResource BrushTableRowAlternationBackgroud}"/>
-        <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="IsReadOnly" Value="True"/>
-        <Setter Property="SelectionUnit" Value="FullRow"/>
-        <Setter Property="SelectionMode" Value="Single"/>
-        <Setter Property="IsSynchronizedWithCurrentItem" Value="True"/>
-        <Setter Property="HeadersVisibility" Value="Column"/>
-        <Setter Property="GridLinesVisibility" Value="Horizontal"/>
-        <Setter Property="HorizontalGridLinesBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
-        <Setter Property="VerticalGridLinesBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
-        <Setter Property="CellStyle" Value="{StaticResource TableCell}"/>
-        <Setter Property="RowStyle" Value="{StaticResource TableRow}"/>
-        <Setter Property="ColumnHeaderStyle">
-            <Setter.Value>
-                <Style TargetType="{x:Type DataGridColumnHeader}">
-                    <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                    <Setter Property="Height" Value="35"/>
-                    <Setter Property="Width" Value="Auto"/>
-                    <Setter Property="BorderThickness" Value="0"/>
-                    <Setter Property="Padding" Value="5,0"/>
-                    <Setter Property="FontSize" Value="12"/>
-                    <Setter Property="FontWeight" Value="SemiBold"/>
-                    <Setter Property="Foreground" Value="{DynamicResource  BrushForegroundLight}"/>
-                    <Setter Property="Background" Value="{DynamicResource BrushTableHeader}"/>
-                </Style>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <!--DataGridAmbulatory-->
-
-    <Style x:Key="dg_ColumnHeaderAmbulatory" TargetType="{x:Type DataGridColumnHeader}">
+    <Style x:Key="DataGridColumnHeader.Common" TargetType="{x:Type DataGridColumnHeader}">
         <Setter Property="Cursor" Value="Hand" />
         <Setter Property="Foreground" Value="{Binding (mah:HeaderedControlHelper.HeaderForeground), Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
         <Setter Property="Background" Value="{Binding (mah:HeaderedControlHelper.HeaderBackground), Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}"/>
@@ -151,9 +70,79 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    
-    
-    <Style x:Key="dg_TableRowAmbulatory" TargetType="{x:Type DataGridRow}">
+    <Style x:Key="DataGridRow.Common" TargetType="{x:Type DataGridRow}">
+        <Style.Triggers>
+            <Trigger Property="IsMouseOver" Value="True">
+                <Setter Property="Background" Value="{StaticResource BrushPrimaryBorderLight}"/>
+                <Trigger.EnterActions>
+                    <BeginStoryboard>
+                        <Storyboard>
+                            <DoubleAnimation Duration="0:0:0.4" Storyboard.TargetProperty="(Background).(Opacity)" From="0.4"  To="1.0"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </Trigger.EnterActions>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.5"/>
+                <Setter Property="IsHitTestVisible" Value="False"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style x:Key="DataGridCell.Common" TargetType="{x:Type DataGridCell}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type DataGridCell}">
+                    <Grid Background="{TemplateBinding Background}" Height="{TemplateBinding Height}">
+                        <ContentPresenter Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        <TextBlock Foreground="{TemplateBinding Foreground}"/>
+                        <Border BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"/>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="VerticalContentAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="10,0"/>
+        <Setter Property="FontSize" Value="15"/>
+        <Setter Property="Height" Value="35"/>
+        <Setter Property="Foreground" Value="{DynamicResource BrushForegroundDark}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
+        <Setter Property="BorderThickness" Value="0,0,1,0"/>
+        <Style.Triggers>
+            <Trigger Property="IsSelected" Value="True">
+                <Setter Property="Background" Value="Transparent"/>
+            </Trigger>
+            <Trigger Property="IsEnabled" Value="False">
+                <Setter Property="Opacity" Value="0.3"/>
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+    <Style TargetType="{x:Type DataGrid}" x:Key="DataGrid.Common" BasedOn="{StaticResource MahApps.Styles.DataGrid}">
+        <Setter Property="Visibility" Value="Visible"/>
+        <Setter Property="BorderThickness" Value="0 0 0 1"/>
+        <Setter Property="BorderBrush" Value="{StaticResource BrushPrimaryBorderLight}"/>
+        <Setter Property="AlternatingRowBackground" Value="{StaticResource BrushTableRowAlternationBackgroud}"/>
+        <Setter Property="AutoGenerateColumns" Value="False"/>
+        <Setter Property="SelectionUnit" Value="FullRow"/>
+        <Setter Property="IsReadOnly" Value="False"/>
+        <Setter Property="IsSynchronizedWithCurrentItem" Value="True"/>
+        <Setter Property="GridLinesVisibility" Value="None"/>
+        <Setter Property="ColumnHeaderStyle" Value="{StaticResource DataGridColumnHeader.Common}"/>
+        <Setter Property="CellStyle" Value="{StaticResource DataGridCell.Common}"/>
+        <Setter Property="RowStyle" Value="{StaticResource DataGridRow.Common}"/>
+        <Setter Property="CanUserAddRows" Value="False"/>
+        <Setter Property="CanUserDeleteRows" Value="False"/>
+        <Setter Property="mah:HeaderedControlHelper.HeaderBackground" Value="{StaticResource BrushTableHeader}"/>
+        <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{StaticResource BrushForegroundLight}"/>
+        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
+        <Setter Property="ColumnWidth" Value="*"/>
+    </Style>
+
+    <!--DataGridAmbulatory-->
+
+    <Style x:Key="DataGridRow.Ambulatory" TargetType="{x:Type DataGridRow}">
         <Setter Property="SnapsToDevicePixels" Value="True" />
         <Setter Property="BorderThickness" Value="0,0,0,0"/>
         <Setter Property="BorderBrush" Value="{DynamicResource BrushPrimaryBorderLight}"/>
@@ -163,7 +152,7 @@
             </Trigger>
         </Style.Triggers>
     </Style>
-    <Style x:Key="dg_tableCellAmbulatory" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MahApps.Styles.DataGridCell}">
+    <Style x:Key="DataGridCell.Ambulatory" TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource MahApps.Styles.DataGridCell}">
         <Setter Property="VerticalContentAlignment" Value="Stretch"/>
         <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
         <Setter Property="FontSize" Value="15"/>
@@ -182,24 +171,14 @@
         </Style.Triggers>
     </Style>
     
-    <Style x:Key="dg_Ambulatory" TargetType="{x:Type DataGrid}" BasedOn="{StaticResource MahApps.Styles.DataGrid}">
-        <Setter Property="BorderThickness" Value="0 0 0 1"/>
-        <Setter Property="BorderBrush" Value="{StaticResource BrushPrimaryBorderLight}"/>
-        <Setter Property="AlternatingRowBackground" Value="{DynamicResource BrushTableRowAlternationBackgroud}"/>
-        <Setter Property="AutoGenerateColumns" Value="False"/>
-        <Setter Property="SelectionUnit" Value="FullRow"/>
-        <Setter Property="IsReadOnly" Value="False"/>
-        <Setter Property="IsSynchronizedWithCurrentItem" Value="True"/>
-        <Setter Property="GridLinesVisibility" Value="None"/>
-        <Setter Property="ColumnHeaderStyle" Value="{DynamicResource dg_ColumnHeaderAmbulatory}"/>
-        <Setter Property="CellStyle" Value="{DynamicResource dg_tableCellAmbulatory}"/>
-        <Setter Property="RowStyle" Value="{DynamicResource dg_TableRowAmbulatory}"/>
-        <Setter Property="CanUserAddRows" Value="False"/>
-        <Setter Property="CanUserDeleteRows" Value="False"/>
-        <Setter Property="mah:HeaderedControlHelper.HeaderBackground" Value="{DynamicResource BrushTableHeader}"/>
-        <Setter Property="mah:HeaderedControlHelper.HeaderForeground" Value="{DynamicResource BrushForegroundLight}"/>
-        <Setter Property="HorizontalScrollBarVisibility" Value="Disabled"/>
-        <Setter Property="ColumnWidth" Value="*"/>
+    <Style x:Key="dg_Ambulatory" TargetType="{x:Type DataGrid}" BasedOn="{StaticResource DataGrid.Common}">
+        <Setter Property="CellStyle" Value="{StaticResource DataGridCell.Ambulatory}"/>
+        <Setter Property="RowStyle" Value="{StaticResource DataGridRow.Ambulatory}"/>
+        <Style.Triggers>
+            <Trigger Property="HasItems" Value="False">
+                <Setter Property="Visibility" Value="Collapsed"/>
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
 </ResourceDictionary>

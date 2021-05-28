@@ -48,11 +48,21 @@
                 <Button Style="{StaticResource Button.Common}" Content="ЗАКРЫТЬ" Grid.Column="0" Margin="0,0,15,0" Click="Button_Click"
                         Background="{StaticResource MahApps.Brushes.Gray8}"
                         mah:ControlsHelper.CornerRadius="2"/>
-                <Button Style="{StaticResource Button.Common}" Content="OK" Grid.Column="1" Margin="15,0,0,0" Foreground="White"
+                <Button Content="OK" Grid.Column="1" Margin="15,0,0,0" Foreground="White"
                         Background="{StaticResource MahApps.Brushes.Accent}"
                         mah:ControlsHelper.CornerRadius="2"
                         Command="{Binding ElementName=LoginControlControl, Path=Init}"
-                        CommandParameter="{Binding ElementName=cb_phoneNumber, Path=Text}"/>
+                        CommandParameter="{Binding ElementName=cb_phoneNumber, Path=Text}">
+                    <Button.Style>
+                        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Button.Common}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsLoading}" Value="true">
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Button.Style>
+                </Button>
             </Grid>
         </StackPanel>
     </Grid>

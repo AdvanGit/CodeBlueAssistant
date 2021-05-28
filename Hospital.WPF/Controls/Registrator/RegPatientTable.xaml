@@ -15,18 +15,18 @@
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
         
+        <Border Grid.RowSpan="2" Effect="{StaticResource ShadowCard}" Background="{StaticResource MahApps.Brushes.ThemeBackground}" BorderBrush="{StaticResource BrushPrimaryBorderLight}" BorderThickness="0,1,0,0"/>
         <DataGrid Grid.Row="0" ItemsSource="{Binding Patients}" mah:ControlsHelper.CornerRadius="2"
                   mah:HeaderedControlHelper.HeaderForeground="White" IsReadOnly="True" BorderThickness="0"
                   mah:HeaderedControlHelper.HeaderBackground="{StaticResource Brush.AccentGreen}"
-                  Style="{StaticResource dg_Ambulatory}">
+                  Style="{StaticResource DataGrid.Common}">
             <DataGrid.InputBindings>
                 <MouseBinding MouseAction="LeftDoubleClick"
                               Command="{Binding Path=Command.SelectPatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
                               CommandParameter="{Binding Path=SelectedItem, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type DataGrid}}}"/>
             </DataGrid.InputBindings>
-            
             <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource TableRow}">
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRow.Common}">
                     <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
@@ -41,7 +41,7 @@
                 </Style>
             </DataGrid.RowStyle>
             <DataGrid.CellStyle>
-                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource TableCell}">
+                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DataGridCell.Common}">
                     <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
@@ -72,8 +72,7 @@
                 <DataGridTextColumn Header="НОМЕР ТЕЛЕФОНА" Binding="{Binding PhoneNumber}" MinWidth="120" MaxWidth="180"/>
             </DataGrid.Columns>
         </DataGrid>
-
-        <Border Grid.Row="1" Background="{StaticResource BrushBackgroundPaper}" BorderBrush="{StaticResource BrushPrimaryBorderLight}" BorderThickness="0,1,0,0"/>
+        <Border Grid.Row="1" BorderBrush="{StaticResource BrushPrimaryBorderLight}" BorderThickness="0,1,0,0"/>
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Left">
             <Button Style="{StaticResource Button.PathWithText}" Foreground="{StaticResource BrushForegroundLight}"
                             mah:ItemHelper.HoverForegroundBrush="{StaticResource MahApps.Brushes.Accent}"

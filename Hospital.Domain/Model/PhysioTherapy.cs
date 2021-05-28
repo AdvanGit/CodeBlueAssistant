@@ -4,8 +4,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Hospital.Domain.Model
 {
-    public enum PhysTherStatus { Ожидание, Готов, Неявка }
-
     public class PhysioTherapyData : TherapyBase, ITherapyData
     {
         private MedCard _medCard;
@@ -16,7 +14,7 @@ namespace Hospital.Domain.Model
         private string _params;
         private DateTime _targetDateTime;
         private DateTime _createDateTime;
-        private PhysTherStatus _physTherStatus;
+        private ProcedureStatus _procedureStatus;
         private Staff _operationDoctor;
         private Treatment _treatment;
 
@@ -31,7 +29,7 @@ namespace Hospital.Domain.Model
         public string Params { get => _params; set { _params = value; OnPropertyChanged(nameof(Params)); OnPropertyChanged(nameof(Value)); } }
         public DateTime TargetDateTime { get => _targetDateTime; set { _targetDateTime = value; OnPropertyChanged("TargetDateTime"); } }
         public DateTime CreateDateTime { get => _createDateTime; set { _createDateTime = value; OnPropertyChanged("CreateDateTime"); } }
-        public PhysTherStatus PhysTherStatus { get => _physTherStatus; set { _physTherStatus = value; OnPropertyChanged("PhysTherStatus"); } }
+        public ProcedureStatus ProcedureStatus { get => _procedureStatus; set { _procedureStatus = value; OnPropertyChanged("PhysTherStatus"); } }
         public Staff OperationDoctor { get => _operationDoctor; set { _operationDoctor = value; OnPropertyChanged(nameof(OperationDoctor)); } }
         public TimeSpan RemainingTime { get => _remainingTime; set { _remainingTime = value; OnPropertyChanged(nameof(RemainingTime)); OnPropertyChanged(nameof(Value)); } }
         public Treatment Treatment { get => _treatment; set { _treatment = value; OnPropertyChanged(nameof(Treatment)); } }

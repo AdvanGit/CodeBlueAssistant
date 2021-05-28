@@ -1,12 +1,13 @@
 ﻿using Hospital.Domain.Model;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hospital.EntityFramework.Services
 {
-    public class AmbulatoryDataService : ITestDataService
+    public class AmbulatoryDataService : ITestDataService, ITherapyDataService
     {
         private readonly HospitalDbContextFactory _contextFactory;
 
@@ -47,7 +48,6 @@ namespace Hospital.EntityFramework.Services
                 return result;
             }
         }
-
         public async Task<IEnumerable<Test>> GetTestList(TestType testType)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
@@ -72,6 +72,17 @@ namespace Hospital.EntityFramework.Services
                 return result;
             }
         }
+        public async Task<IEnumerable<TestType>> GetTestTypeList(TestMethod testMethod)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                List<TestType> result = await db.TestTypes
+                    .AsQueryable()
+                    .Where(t => t.TestMethod == testMethod)
+                    .ToListAsync();
+                return result;
+            }
+        }
         public async Task<IEnumerable<TestTemplate>> GetTemplateList(TestType testType)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
@@ -84,55 +95,13 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-
-        public async Task<IEnumerable<TestData>> GetTestData(int medCardId, bool onlySymptom = false)
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                List<TestData> result = await db.TestDatas
-                    .AsQueryable()
-                    .Where(t => t.MedCard.Id == medCardId)
-                    .Where(t => (onlySymptom == true) ? (t.IsSymptom == true) : true)
-                    .Include(t => t.Test).ThenInclude(t => t.TestType)
-                    .Include(t => t.StaffResult)
-                    .ToListAsync();
-                return result;
-            }
-        }
-        public async Task<IEnumerable<TestType>> GetTestTypeList(TestMethod testMethod)
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                List<TestType> result = await db.TestTypes
-                    .AsQueryable()
-                    .Where(t => t.TestMethod == testMethod)
-                    .ToListAsync();
-                return result;
-            }
-        }
-
-        public async Task<IEnumerable<Test>> GetTestList(TestMethod testMethod, TestType testType = null)
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                IList<Test> result = await db.Tests
-                    .AsQueryable()
-                    .Where(t => t.TestType.TestMethod == testMethod)
-                    .Where(t => (testType != null) ? t.TestType == testType : true)
-                    .Include(t => t.TestType)
-                    .ToListAsync();
-                return result;
-            }
-        }
-
-
         public async Task<IEnumerable<Diagnosis>> GetDiagnoses(string searchValue, bool isCode = false)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 IList<Diagnosis> result = await db.Diagnoses
                     .AsQueryable()
-                    .Where(d => isCode ? d.Code.Contains(searchValue) : d.Title.Contains(searchValue))
+                    .Where(d => isCode ? d.Code.ToLower().Contains(searchValue.ToLower()) : d.Title.ToLower().Contains(searchValue.ToLower()))
                     .Include(d => d.DiagnosisGroup).ThenInclude(d => d.DiagnosisClass)
                     .ToListAsync();
                 return result;
@@ -146,16 +115,6 @@ namespace Hospital.EntityFramework.Services
                     .AsQueryable()
                     .Where(d => d.DiagnosisGroup == diagnosisGroup)
                     .Include(d => d.DiagnosisGroup).ThenInclude(d => d.DiagnosisClass)
-                    .ToListAsync();
-                return result;
-            }
-        }
-        public async Task<IEnumerable<DiagnosisClass>> GetDiagnosisClasses()
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                IList<DiagnosisClass> result = await db.DiagnosisClasses
-                    .AsQueryable()
                     .ToListAsync();
                 return result;
             }
@@ -187,6 +146,30 @@ namespace Hospital.EntityFramework.Services
                 return result;
             }
         }
+
+        public async Task<IEnumerable<DrugSubClass>> GetDrugSubClasses(DrugClass drugClass)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                IList<DrugSubClass> result = await db.DrugSubClasses
+                    .AsQueryable()
+                    .Where(d => d.DrugClass == drugClass)
+                    .ToListAsync();
+                return result;
+            }
+        }
+        public async Task<IEnumerable<DrugGroup>> GetDrugGroup(DrugSubClass drugSubClass)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                IList<DrugGroup> result = await db.DrugGroups
+                    .AsQueryable()
+                    .Where(d => d.DrugSubClass == drugSubClass)
+                    .ToListAsync();
+                return result;
+            }
+        }
+
         public async Task<IEnumerable<Drug>> GetDrugs(DrugGroup drugGroup)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
@@ -205,7 +188,7 @@ namespace Hospital.EntityFramework.Services
             {
                 IList<Drug> result = await db.Drugs
                     .AsQueryable()
-                    .Where(d => d.Substance.Contains(substance))
+                    .Where(d => d.Substance.ToLower().Contains(substance.ToLower()))
                     .Include(d => d.DrugSubGroup).ThenInclude(d => d.DrugGroup).ThenInclude(d => d.DrugSubClass).ThenInclude(d => d.DrugClass)
                     .ToListAsync();
                 return result;
@@ -236,16 +219,6 @@ namespace Hospital.EntityFramework.Services
                     .AsQueryable().AsNoTracking()
                     .Where(p => p.PhysTherFactGroup == physTherFactGroup)
                     .Include(p => p.PhysTherFactGroup)
-                    .ToListAsync();
-                return result;
-            }
-        }
-        public async Task<IEnumerable<PhysTherFactGroup>> GetPhysioGroups()
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                IList<PhysTherFactGroup> result = await db.PhysTherFactGroups
-                    .AsQueryable().AsNoTracking()
                     .ToListAsync();
                 return result;
             }

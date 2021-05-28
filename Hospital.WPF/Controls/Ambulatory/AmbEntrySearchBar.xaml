@@ -43,7 +43,13 @@
                      mah:ControlsHelper.CornerRadius="2,0,0,2" Margin="0"
                      mah:ControlsHelper.FocusBorderBrush="{DynamicResource MahApps.Brushes.Accent}"
                      mah:ControlsHelper.MouseOverBorderBrush="{DynamicResource MahApps.Brushes.Accent3}"
-					 mah:TextBoxHelper.Watermark="Введите параметры поиска" mah:TextBoxHelper.SelectAllOnFocus="True"/>
+					 mah:TextBoxHelper.Watermark="Введите параметры поиска" mah:TextBoxHelper.SelectAllOnFocus="True">
+                <TextBox.InputBindings>
+                    <KeyBinding Key="Enter"
+					    Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.FindEntry}"
+					    CommandParameter="{Binding ElementName=search_textBox, Path=Text}"/>                
+                </TextBox.InputBindings>
+            </TextBox>
             <CheckBox Grid.Column="0" Style="{StaticResource cb.filterbutton}" Margin="3" Padding="0" HorizontalAlignment="Left" Name="SearchBarPopupButton"/>
 
             <DatePicker Grid.Column="0" Margin="3" VerticalContentAlignment="Center" HorizontalAlignment="Right" FontSize="14" FontWeight="Bold" Width="115"
@@ -78,6 +84,12 @@
 					Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=Command.FindEntry}"
 					CommandParameter="{Binding ElementName=search_textBox, Path=Text}"/>
         </Grid>
+        <ProgressBar Height="3" Grid.Row="1" VerticalAlignment="Bottom" IsIndeterminate="{Binding IsLoading}"
+                     BorderThickness="0" Background="Transparent">
+            <ProgressBar.Style>
+                <Style TargetType="{x:Type ProgressBar}"/>
+            </ProgressBar.Style>
+        </ProgressBar>
 
         <mah:TransitioningContentControl Grid.Row="2" Content="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=EntrySearchNavigator.CurrentBody}" Transition="Up"/>
     </Grid>

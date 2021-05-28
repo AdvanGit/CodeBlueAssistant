@@ -41,7 +41,7 @@
     <SolidColorBrush x:Key="Brush.AccentGreen" Color="{DynamicResource ColorAccentGreen}"/>
     <SolidColorBrush x:Key="Brush.AccentGreen2" Color="{DynamicResource ColorAccentGreen2}"/>
     <SolidColorBrush x:Key="Brush.AccentRed" Color="{DynamicResource ColorAccentRed}"/>
-
+    
     <DropShadowEffect x:Key="EffectShadowDown" BlurRadius="10" Direction="270"  Opacity="0.15" ShadowDepth="4" Color="Black"  />
     <DropShadowEffect x:Key="ShadowCard" BlurRadius="15" Opacity="0.2" ShadowDepth="1" Color="Black"  />
 </ResourceDictionary>

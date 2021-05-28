@@ -21,11 +21,12 @@
             <RowDefinition Height="35"/>
         </Grid.RowDefinitions>
 
+        <Border Grid.RowSpan="2" Background="{StaticResource MahApps.Brushes.ThemeBackground}" Effect="{StaticResource ShadowCard}"/>
         <DataGrid Grid.Row="0" mah:ControlsHelper.CornerRadius="2" IsReadOnly="True" BorderThickness="0"
                   mah:HeaderedControlHelper.HeaderBackground="{StaticResource BrushForegroundLight}"
                   mah:HeaderedControlHelper.HeaderForeground="White" BorderBrush="{StaticResource BrushPrimaryBorderLight}">
             <DataGrid.Style>
-                <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource dg_Ambulatory}">
+                <Style TargetType="{x:Type DataGrid}" BasedOn="{StaticResource DataGrid.Common}">
                     <Setter Property="ItemsSource" Value="{Binding Entries}"/>
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding ElementName=cb_onlyfree, Path=IsChecked}" Value="true">
@@ -35,7 +36,7 @@
                 </Style>
             </DataGrid.Style>
             <DataGrid.CellStyle>
-                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource TableCell}">
+                <Style TargetType="{x:Type DataGridCell}" BasedOn="{StaticResource DataGridCell.Common}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type DataGridCell}">
@@ -74,7 +75,7 @@
                 </Style>
             </DataGrid.CellStyle>
             <DataGrid.RowStyle>
-                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource TableRow}">
+                <Style TargetType="{x:Type DataGridRow}" BasedOn="{StaticResource DataGridRow.Common}">
                     <Style.Triggers>
                         <DataTrigger Value="True">
                             <DataTrigger.Binding>
@@ -98,8 +99,7 @@
                 <DataGridTextColumn Header="ТЕЛЕФОН" Binding="{Binding Patient.PhoneNumber}" MinWidth="100" MaxWidth="170"/>
                 </DataGrid.Columns>
         </DataGrid>
-        
-        <Border Grid.Row="1" Background="{StaticResource BrushBackgroundPaper}"
+        <Border Grid.Row="1"
                 BorderBrush="{StaticResource BrushPrimaryBorderLight}"
                 BorderThickness="0 1 0 0">
             <Grid>

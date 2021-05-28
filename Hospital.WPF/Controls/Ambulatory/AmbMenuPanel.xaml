@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:ui="clr-namespace:Hospital.WPF.Resources.Behaviors"
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
              xmlns:parts="clr-namespace:Hospital.WPF.Resources.Parts"
              xmlns:vm="clr-namespace:Hospital.ViewModel.Ambulatory;assembly=Hospital.ViewModel"
@@ -13,7 +14,23 @@
 
     <Grid>
         <StackPanel Orientation="Vertical" >
-            
+            <Label Content="только чтение" HorizontalContentAlignment="Center" Padding="3"
+                   Background="LightYellow" FontSize="12">
+                <Label.Style>
+                    <Style TargetType="{x:Type Label}">
+                        <Setter Property="Visibility" Value="Collapsed"/>
+                        <Style.Triggers>
+                            <MultiDataTrigger>
+                                <MultiDataTrigger.Conditions>
+                                    <Condition Binding="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=DataContext.IsEditable}" Value="false"/>
+                                    <Condition Binding="{Binding IsLoading}" Value="False"/>
+                                </MultiDataTrigger.Conditions>
+                                <Setter Property="Visibility" Value="Visible"/>
+                            </MultiDataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Label.Style>
+            </Label>
             <Expander IsExpanded="True" Foreground="{StaticResource BrushForegroundMid}"
                       Template="{StaticResource Expander.AmbulatoryMenu}"
                       HorizontalAlignment="Stretch" 
@@ -28,6 +45,15 @@
                                     <Binding Path="CurrentEntry.Patient.LastName"/>
                                 </MultiBinding>
                             </TextBlock.Text>
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding IsLoading}" Value="True">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
                         </TextBlock>
                         <parts:LoadingSpinner IsLoading="{Binding IsLoading}" Thickness="3" Foreground="{DynamicResource MahApps.Brushes.Accent}"/>
                     </Grid>
@@ -40,12 +66,9 @@
                                 <Setter Property="FontSize" Value="15"/>
                                 <Setter Property="Padding" Value="3"/>
                                 <Setter Property="HorizontalAlignment" Value="Right"/>
+                                <Setter Property="VerticalAlignment" Value="Bottom"/>
                             </Style>
                         </Grid.Resources>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="64"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
                             <RowDefinition/>
                             <RowDefinition/>
@@ -53,29 +76,44 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <TextBlock Text="запись" Grid.Column="0" Grid.Row="0" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                        <TextBlock Text="время" Grid.Column="0" Grid.Row="1" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                        <TextBlock Text="дата" Grid.Column="0" Grid.Row="2" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                        <TextBlock Text="лицо" Grid.Column="0" Grid.Row="3" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
-                        <TextBlock Text="отдел" Grid.Column="0" Grid.Row="4" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="запись" Grid.Row="0" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="дата" Grid.Row="1" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="карта" Grid.Row="2" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="лечащий врач" Grid.Row="3" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
+                        <TextBlock Text="отделение" Grid.Row="4" HorizontalAlignment="Left" Foreground="{DynamicResource BrushForegroundVeryLight}"/>
 
                         <TextBlock Text="{Binding CurrentEntry.Id}" Grid.Column="1" Grid.Row="0"/>
-                        <TextBlock Text="{Binding CurrentEntry.TargetDateTime, StringFormat=HH:mm}" Grid.Column="1" Grid.Row="1" FontWeight="DemiBold"/>
-                        <TextBlock Text="{Binding CurrentEntry.TargetDateTime, StringFormat=dd.MM.yyyy}" Grid.Column="1" Grid.Row="2"/>
-                        <TextBlock Text="{Binding CurrentEntry.Registrator.FirstName}" Grid.Column="1" Grid.Row="3"/>
-                        <TextBlock Text="{Binding CurrentEntry.Registrator.Department.Title.Title}" Grid.Column="1" Grid.Row="4"/>
+                        <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Text="{Binding CurrentEntry.TargetDateTime, StringFormat=dd.MM}" FontSize="14" Foreground="{StaticResource BrushForegroundLight}"/>
+                            <TextBlock Text="{Binding CurrentEntry.TargetDateTime, StringFormat=HH:mm}" FontWeight="DemiBold"/>
+                        </StackPanel>
+                        <TextBlock Grid.Column="1" Grid.Row="2" FontSize="15" Padding="3" HorizontalAlignment="Right">
+                            <TextBlock.Style>
+                                <Style TargetType="{x:Type TextBlock}">
+                                    <Setter Property="Text" Value="{Binding CurrentEntry.MedCard.Id}"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CurrentEntry.MedCard.Id}" Value="0">
+                                            <Setter Property="Text" Value="не заведена"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                        <TextBlock Text="{Binding CurrentEntry.MedCard.TherapyDoctor.FirstName, FallbackValue=нет}" Grid.Column="1" Grid.Row="3"/>
+                        <TextBlock Text="{Binding CurrentEntry.MedCard.TherapyDoctor.Department.Title.Title, FallbackValue=нет}" Grid.Column="1" Grid.Row="4"/>
                         
-                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Column="1" Grid.Row="0" BorderThickness="0,0,0,1"/>
-                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Column="1" Grid.Row="1" BorderThickness="0,0,0,1"/>
-                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Column="1" Grid.Row="2" BorderThickness="0,0,0,1"/>
-                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Column="1" Grid.Row="3" BorderThickness="0,0,0,1"/>
-                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Column="1" Grid.Row="4" BorderThickness="0,0,0,1"/>
+                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Row="0" BorderThickness="0,0,0,1"/>
+                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Row="1" BorderThickness="0,0,0,1"/>
+                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Row="2" BorderThickness="0,0,0,1"/>
+                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Row="3" BorderThickness="0,0,0,1"/>
+                        <Border BorderBrush="{DynamicResource BrushPrimaryBorderLight}" Grid.Row="4" BorderThickness="0,0,0,1"/>
 
                     </Grid>
                 </StackPanel>
             </Expander>
 
             <ListBox x:Name="TabMenu" Background="Transparent"
+                     ui:SelectorBehavior.ShouldSelectItemOnMouseUp="True"
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                      SelectedItem="{Binding RelativeSource={RelativeSource AncestorType=view:Ambulatory}, Path=MenuNavigator.CurrentBody}"
                      ItemsSource="{Binding RelativeSource={RelativeSource AncestorType=view:Ambulatory}, Path=MenuNavigator.Bodies}">
@@ -122,7 +160,35 @@
                             <DataTrigger Binding="{Binding Type}" Value="{x:Type local:AmbTherapy}">
                                 <Setter Property="Content">
                                     <Setter.Value>
-                                        <TextBlock Text="test 2"/>
+                                        <Grid Margin="15 0 15 10" HorizontalAlignment="Stretch">
+                                            <Grid.Resources>
+                                                <Style TargetType="{x:Type Grid}">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding IsLoading}" Value="true">
+                                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Grid.Resources>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition/>
+                                                <RowDefinition/>
+                                            </Grid.RowDefinitions>
+
+                                            <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                                                    <TextBlock Grid.Row="0" FontSize="14" HorizontalAlignment="Left" TextWrapping="Wrap">
+                                                        <TextBlock.Text>
+                                                            <MultiBinding StringFormat="{}Диагноз: {0} {1}. {2} {3:dd.MM}" FallbackValue="ДИАГНОЗ: не установлен">
+                                                                <Binding Path="TherapyViewModel.CurrentDiagnosis.Code" Mode="OneWay"/>
+                                                                <Binding Path="TherapyViewModel.CurrentDiagnosis.Title" Mode="OneWay"/>
+                                                                <Binding Path="TherapyViewModel.MedCard.DiagnosisDoctor.FirstName" Mode="OneWay"/>
+                                                                <Binding Path="TherapyViewModel.MedCard.DiagnosisDate" Mode="OneWay"/>
+                                                            </MultiBinding>
+                                                        </TextBlock.Text>
+                                                    </TextBlock>
+                                                    <TextBlock Margin="0 6 0 0" Text="{Binding TherapyViewModel.AwaitCount, StringFormat=В ожидании: 0}" FontSize="14"/>
+                                            </StackPanel>
+                                        </Grid>
                                     </Setter.Value>
                                 </Setter>
                             </DataTrigger>

@@ -11,14 +11,16 @@ namespace Hospital.WPF.Commands
 {
     public class AmbulatoryCommand
     {
-        #region CommandFields
-        private readonly Command _addPhysicalTemplate;
+        #region Command fields
         private readonly Command _addPhysicalData;
+        private readonly Command _removePhysicalData;
+        private readonly Command _addPhysicalTemplate;
+        private readonly Command _addLabData;
+        private readonly Command _removeLabData;
         private readonly Command _addLabTemplate;
-        private readonly Command _addLabTestData;
+        private readonly Command _addToolData;
+        private readonly Command _removeToolData;
         private readonly Command _addToolTemplate;
-        private readonly Command _addToolTestData;
-        private readonly Command _removeTestData;
 
         private readonly Command _addPharmacoTherapyData;
         private readonly Command _addPhysioData;
@@ -33,9 +35,7 @@ namespace Hospital.WPF.Commands
         private readonly Command _findBySelect;
         private readonly Command _setSavePanel;
         private readonly Command _toAbsence;
-        private readonly Command _saveDatas;
-
-        private readonly Command _removePhysicalData;
+        //private readonly Command _saveDatas;
         #endregion
 
         private readonly Command _closeTab;
@@ -45,24 +45,65 @@ namespace Hospital.WPF.Commands
             AmbulatoryViewModel vm = ambulatoryViewModel;
             Ambulatory view = ambulatoryView;
             TestContainer physicalContainer = vm.DiagnosticViewModel.PhysicalContainer;
+            TestContainer labContainer = vm.DiagnosticViewModel.LabContainer;
+            TestContainer toolContainer = vm.DiagnosticViewModel.ToolContainer;
 
-            _addPhysicalTemplate = new Command(
-                obj => physicalContainer.AddTemplate(),
-                obj => (vm.DiagnosticViewModel != null) && (physicalContainer.CurrentTemplate != null));
-            _addPhysicalData = new Command( 
-                obj => physicalContainer.Datas.Add(physicalContainer.GenerateData()),
-                obj => (vm.DiagnosticViewModel != null) && (physicalContainer.CurrentTest != null));
+            #region diagnostic command
+            _addPhysicalTemplate = new Command(async obj =>
+            {
+                await physicalContainer.AddTemplate();
+                vm.DiagnosticViewModel.RaiseDataPropetryChange();
+            }, obj => (vm.DiagnosticViewModel != null) && (physicalContainer.CurrentTemplate != null));
+            _addPhysicalData = new Command(obj =>
+           {
+               physicalContainer.Datas.Add(physicalContainer.GenerateData());
+               vm.DiagnosticViewModel.RaiseDataPropetryChange();
+           }, obj => (vm.DiagnosticViewModel != null) && (physicalContainer.CurrentTest != null));
             _removePhysicalData = new Command(obj =>
-                new ConfirmDialog(_obj => physicalContainer.RemoveRangeData((obj as IList).Cast<TestData>().ToList()), "вы действительно хотите удалить данные?"),
-                obj => ((obj != null) && ((IList)obj).Count != 0));
+            {
+                new ConfirmDialog(_obj => physicalContainer.RemoveRangeData((obj as IList).Cast<TestData>().ToList()), "вы действительно хотите удалить данные?");
+                vm.DiagnosticViewModel.RaiseDataPropetryChange();
+            }, obj => ((obj != null) && ((IList)obj).Count != 0));
 
+            _addLabTemplate = new Command(async obj =>
+            {
+                await labContainer.AddTemplate();
+                vm.DiagnosticViewModel.RaiseDataPropetryChange();
+            }, obj => (vm.DiagnosticViewModel != null) && (labContainer.CurrentTemplate != null));
+            _addLabData = new Command(obj =>
+            {
+                labContainer.Datas.Add(labContainer.GenerateData());
+                vm.DiagnosticViewModel.RaiseDataPropetryChange();
+            }, obj => (vm.DiagnosticViewModel != null) && (labContainer.CurrentTest != null));
+            _removeLabData = new Command(obj =>
+            {
+                new ConfirmDialog(_obj => labContainer.RemoveRangeData((obj as IList).Cast<TestData>().ToList()), "вы действительно хотите удалить данные?");
+                vm.DiagnosticViewModel.RaiseDataPropetryChange();
+            }, obj => (obj != null) && ((IList)obj).Count != 0);
 
-            _removeTestData = new Command(obj => new ConfirmDialog(_obj => vm.DiagnosticViewModel.RemoveData(obj), "вы действительно хотите удалить данные?"), obj => ((obj != null) && ((IList)obj).Count != 0));
+            _addToolTemplate = new Command(async obj =>
+            {
+                await toolContainer.AddTemplate();
+                vm.DiagnosticViewModel.RaiseDataPropetryChange();
+            }, obj => (vm.DiagnosticViewModel != null) && (toolContainer.CurrentTemplate != null));
+            _addToolData = new Command(obj =>
+            {
+                toolContainer.Datas.Add(toolContainer.GenerateData());
+                vm.DiagnosticViewModel.RaiseDataPropetryChange();
+            }, obj => (vm.DiagnosticViewModel != null) && (toolContainer.CurrentTest != null));
+            _removeToolData = new Command(obj =>
+            {
+                new ConfirmDialog(_obj => toolContainer.RemoveRangeData((obj as IList).Cast<TestData>().ToList()), "вы действительно хотите удалить данные?");
+                vm.DiagnosticViewModel.RaiseDataPropetryChange();
+            }, obj => ((obj != null) && ((IList)obj).Count != 0));
+            #endregion
 
-            _addLabTemplate = new Command(obj => vm.DiagnosticViewModel.AddTemplate(TestMethod.Лабараторная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.CurrentLabTemplate != null));
-            _addLabTestData = new Command(obj => vm.DiagnosticViewModel.AddData(obj, TestMethod.Лабараторная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.SelectedLabTest != null));
-            _addToolTemplate = new Command(obj => vm.DiagnosticViewModel.AddTemplate(TestMethod.Инструментальная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.CurrentToolTemplate != null));
-            _addToolTestData = new Command(obj => vm.DiagnosticViewModel.AddData(obj, TestMethod.Инструментальная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.SelectedToolTest != null));
+            //_removeTestData = new Command(obj => new ConfirmDialog(_obj => vm.DiagnosticViewModel.RemoveData(obj), "вы действительно хотите удалить данные?"), obj => ((obj != null) && ((IList)obj).Count != 0));
+
+            //_addLabTemplate = new Command(obj => vm.DiagnosticViewModel.AddTemplate(TestMethod.Лабараторная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.CurrentLabTemplate != null));
+            //_addLabTestData = new Command(obj => vm.DiagnosticViewModel.AddData(obj, TestMethod.Лабараторная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.SelectedLabTest != null));
+            //_addToolTemplate = new Command(obj => vm.DiagnosticViewModel.AddTemplate(TestMethod.Инструментальная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.CurrentToolTemplate != null));
+            //_addToolTestData = new Command(obj => vm.DiagnosticViewModel.AddData(obj, TestMethod.Инструментальная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.SelectedToolTest != null));
             _removePhysioData = new Command(obj => new ConfirmDialog(_obj => vm.TherapyViewModel.RemovePhysioTherapyData(obj), "вы действительно хотите удалить данные?"), obj => ((obj != null) && ((IList)obj).Count != 0));
 
             _addPharmacoTherapyData = new Command(obj => vm.TherapyViewModel.AddPharmacoTherapyData(), obj => (vm.TherapyViewModel != null) && (vm.TherapyViewModel.PharmacoData.Drug != null));
@@ -97,7 +138,7 @@ namespace Hospital.WPF.Commands
                 vm.EntryViewModel.SetEntryOut(obj);
             }, obj => vm.EntryViewModel != null && obj != null);
             _toAbsence = new Command(obj => new ConfirmDialog(_obj => vm.EntryViewModel.ToAbsence(), "Вы подтверждаете неявку лица\n" + vm.CurrentEntry.Patient.FirstName + " " + vm.CurrentEntry.Patient.MidName + " " + vm.CurrentEntry.Patient.LastName + "?"));
-            _saveDatas = new Command(obj => new ConfirmDialog(async _obj => { await vm.DiagnosticViewModel.UpdateData(); await vm.TherapyViewModel.UpdateData(); await vm.EntryViewModel.UpdateEntry(); }, "Записать и сохранить?"));
+            //_saveDatas = new Command(obj => new ConfirmDialog(async _obj => { await vm.DiagnosticViewModel.UpdateData(); await vm.TherapyViewModel.UpdateData(); await vm.EntryViewModel.UpdateEntry(); }, "Записать и сохранить?"));
 
             _closeTab = new Command(obj => new ConfirmDialog(_obj =>
             {
@@ -108,13 +149,17 @@ namespace Hospital.WPF.Commands
             }, "Вы действительно хотите закрыть вкладку?\n\nВнимение: все несохраненные данные будут утеряны!"));
         }
 
+        #region Diagnostic property
         public Command AddPhysicalData => _addPhysicalData;
-        public Command AddLabTestData => _addLabTestData;
-        public Command AddToolTestData => _addToolTestData;
-        public Command RemoveTestData => _removeTestData;
-        public Command AddLabTemplate => _addLabTemplate;
-        public Command AddToolTemplate => _addToolTemplate;
+        public Command RemovePhysicalData => _removePhysicalData;
         public Command AddPhysicalTemplate => _addPhysicalTemplate;
+        public Command AddLabData => _addLabData;
+        public Command RemoveLabData => _removeLabData;
+        public Command AddLabTemplate => _addLabTemplate;
+        public Command AddToolData => _addToolData;
+        public Command RemoveToolData => _removeToolData;
+        public Command AddToolTemplate => _addToolTemplate;
+        #endregion
 
         public Command AddPharmacoTherapyData => _addPharmacoTherapyData;
         public Command RemovePharmacoTherapyData => _removePharmacoTherapyData;
@@ -130,9 +175,7 @@ namespace Hospital.WPF.Commands
         public Command FindEntryNext => _findEntryNext;
 
         public Command ToAbsence => _toAbsence;
-        public Command SaveDatas => _saveDatas;
+        //public Command SaveDatas => _saveDatas;
         public Command CloseTab => _closeTab;
-
-        public Command RemovePhysicalData => _removePhysicalData;
     }
 }

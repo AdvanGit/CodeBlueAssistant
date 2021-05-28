@@ -6,7 +6,7 @@
              xmlns:ser="clr-namespace:Hospital.WPF.Services"
              xmlns:notificator="clr-namespace:Hospital.ViewModel.Notificator;assembly=Hospital.ViewModel"
              mc:Ignorable="d"
-             Height="80" Background="Black" Foreground="White" Opacity="0.85"
+             MinHeight="70" MaxHeight="200" Background="Black" Foreground="White" Opacity="0.85"
              d:DesignHeight="100" d:DesignWidth="800">
     <UserControl.Resources>
         <ser:TimeSpanToDurationConverter x:Key="durationConverter"/>

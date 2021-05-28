@@ -12,13 +12,17 @@ namespace Hospital.ViewModel.Ambulatory
 {
     public class TherapyViewModel : MainViewModel
     {
-        private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
-        private readonly GenericDataServices<DrugSubClass> dataServicesDrugSubClass = new GenericDataServices<DrugSubClass>(new HospitalDbContextFactory());
-        private readonly GenericDataServices<DrugGroup> dataServicesDrugGroup = new GenericDataServices<DrugGroup>(new HospitalDbContextFactory());
+        private readonly ITherapyDataService therapyDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
 
         private Entry _currentEntry;
+        private MedCard _medCard;
 
         private string _diagnosisSearchTitleValue, _diagnosisSearchCodeValue, _drugSearchValue;
+
+        private bool _isLoadingPharma;
+        private bool _isLoadingSurgery;
+        private bool _isLoadingPhysio;
+        private bool _isLoadingDiagnosis;
 
         private PharmacoTherapyData _pharmacoData = new PharmacoTherapyData();
         private PhysioTherapyData _physioData = new PhysioTherapyData();
@@ -37,143 +41,232 @@ namespace Hospital.ViewModel.Ambulatory
         private SurgeryType _currentSurgeryType;
         private SurgeryGroup _currentSurgeryGroup;
 
-        private async void Initialize(Entry entry)
+        internal protected async void Initialize(Entry entry)
         {
-            if (entry != null && entry.MedCard != null)
+            _currentEntry = entry;
+            MedCard = entry.MedCard;
+            try
             {
-                var res = await ambulatoryDataService.GetTestData(entry.MedCard.Id, true);
-                foreach (TestData data in res) TestDatas.Add(data);
-
-                var diagnosisClasses = await ambulatoryDataService.GetDiagnosisClasses();
+                IsLoadingDiagnosis = true;
+                var diagnosisClasses = await new GenericDataServices<DiagnosisClass>(new HospitalDbContextFactory()).GetAll();
                 foreach (DiagnosisClass diagnosisClass in diagnosisClasses) DiagnosisClasses.Add(diagnosisClass);
+                IsLoadingDiagnosis = false;
+
+                IsLoadingPharma = true;
                 var drugsClasses = await new GenericDataServices<DrugClass>(new HospitalDbContextFactory()).GetAll();
                 foreach (DrugClass drugClass in drugsClasses) DrugClasses.Add(drugClass);
-                var pharmacoDatas = await ambulatoryDataService.GetPharmacoTherapyDatas(entry.MedCard.Id);
+                var pharmacoDatas = await therapyDataService.GetPharmacoTherapyDatas(entry.MedCard.Id);
                 foreach (PharmacoTherapyData pharmacoTherapyData in pharmacoDatas) PharmacoTherapyDatas.Add(pharmacoTherapyData);
+                IsLoadingPharma = false;
 
-                var physioDatas = await ambulatoryDataService.GetPhysioTherapyDatas(entry.MedCard.Id);
+                IsLoadingPhysio = true;
+                var physioDatas = await therapyDataService.GetPhysioTherapyDatas(entry.MedCard.Id);
                 foreach (PhysioTherapyData physioTherapyData in physioDatas) PhysioTherapyDatas.Add(physioTherapyData);
-                var physioGroups = await ambulatoryDataService.GetPhysioGroups();
+                var physioGroups = await new GenericDataServices<PhysTherFactGroup>(new HospitalDbContextFactory()).GetAll();
                 foreach (PhysTherFactGroup physTherFactGroup in physioGroups) PhysTherFactGroups.Add(physTherFactGroup);
+                IsLoadingPhysio = false;
 
-                var surgeryDatas = await ambulatoryDataService.GetSurgeryTherapyDatas(entry.MedCard.Id);
+                IsLoadingSurgery = true;
+                var surgeryDatas = await therapyDataService.GetSurgeryTherapyDatas(entry.MedCard.Id);
                 foreach (SurgeryTherapyData surgeryData in surgeryDatas) SurgeryTherapyDatas.Add(surgeryData);
-
-                PharmacoData.MedCard = entry.MedCard;
-                PharmacoData.TherapyDoctor = entry.DoctorDestination;
-                PhysioData.MedCard = entry.MedCard;
-                PhysioData.TherapyDoctor = entry.DoctorDestination;
-                PhysioData.PhysTherStatus = PhysTherStatus.Ожидание;
-
-                SurgeryData.MedCard = entry.MedCard;
-                SurgeryData.TherapyDoctor = entry.DoctorDestination;
-                SurgeryData.SurgeryStatus = SurgeryStatus.Ожидание;
-
-                Diagnoses.Add(entry.MedCard.Diagnosis);
+                CurrentSurgeryType = SurgeryType.Оперативная;
+                IsLoadingSurgery = false;
             }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 4);
+            }
+
+            PharmacoData.MedCard = entry.MedCard;
+            PharmacoData.TherapyDoctor = entry.DoctorDestination;
+            PhysioData.MedCard = entry.MedCard;
+            PhysioData.TherapyDoctor = entry.DoctorDestination;
+            PhysioData.ProcedureStatus = ProcedureStatus.Редакция;
+
+            SurgeryData.MedCard = entry.MedCard;
+            SurgeryData.TherapyDoctor = entry.DoctorDestination;
+            SurgeryData.ProcedureStatus = ProcedureStatus.Редакция;
+
+            Diagnoses.Add(entry.MedCard?.Diagnosis); //check
         }
 
-        private async void SearchDiagnoses(string value, bool isCode = false)
+        private async Task SearchDiagnoses(string value, bool isCode = false) //эксперементальная функция горячего поиска, нужно прерывание и задержка
         {
             if (value.Length > (isCode ? 1 : 2))
             {
                 if (CurrentDiagnosis == null)
                 {
-                    Diagnoses.Clear();
-                    var result = await ambulatoryDataService.GetDiagnoses(value, isCode);
-                    foreach (Diagnosis diagnosis in result)
+                    IsLoadingDiagnosis = true;
+                    try
                     {
-                        Diagnoses.Add(diagnosis);
-                        //if (diagnosis.Title == value) CurrentDiagnosis = diagnosis;
+                        var result = await therapyDataService.GetDiagnoses(value, isCode);
+                        Diagnoses.Clear();
+                        foreach (Diagnosis diagnosis in result)
+                        {
+                            Diagnoses.Add(diagnosis);
+                            //if (diagnosis.Title == value) CurrentDiagnosis = diagnosis;
+                        }
                     }
+                    catch (Exception ex)
+                    {
+                        NotificationManager.AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(3), ex.Message, true));
+                    }
+                    IsLoadingDiagnosis = false;
                 }
             }
             else
             {
-                Diagnoses.Clear();
+                CurrentDiagnosisGroup = null;
                 CurrentDiagnosis = null;
             }
         }
-        private async void SearchDrugs(string value)
+        private async Task SearchDrugs(string value) //эксперементальная функция горячего поиска, нужно прерывание и задержка
         {
             if (value.Length > 2)
             {
                 if (PharmacoData.Drug == null)
                 {
-                    Drugs.Clear(); //drugsearchlist
-                    var result = await ambulatoryDataService.GetDrugs(value);
-                    foreach (Drug drug in result)
+                    IsLoadingPharma = true;
+                    try
                     {
-                        Drugs.Add(drug);
+                        var result = await therapyDataService.GetDrugs(value);
+                        Drugs.Clear(); //drugsearchlist
+                        foreach (Drug drug in result) Drugs.Add(drug);
                     }
+                    catch (Exception ex)
+                    {
+                        NotificationManager.AddException(ex, 4);
+                    }
+                    IsLoadingPharma = false;
                 }
             }
             else PharmacoData.Drug = null;
+        } 
+
+        private async Task GetDrugSubClass(DrugClass drugClass)
+        {
+            IsLoadingPharma = true;
+            try
+            {
+                DrugSubClasses.Clear();
+                var result = await therapyDataService.GetDrugSubClasses(drugClass);
+                foreach (DrugSubClass drugSubClass in result) DrugSubClasses.Add(drugSubClass);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 4);
+            }
+            IsLoadingPharma = false;
+        }
+        private async Task GetDrugGroup(DrugSubClass drugSubClass)
+        {
+            IsLoadingPharma = true;
+            try
+            {
+                DrugGroups.Clear();
+                var result = await therapyDataService.GetDrugGroup(drugSubClass);
+                foreach (DrugGroup drugGroup in result) DrugGroups.Add(drugGroup);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 4);
+            }
+            IsLoadingPharma = false;
+        }
+        private async Task GetDrugs(DrugGroup drugGroup)
+        {
+            IsLoadingPharma = true;
+            try
+            {
+                Drugs.Clear();
+                var result = await therapyDataService.GetDrugs(drugGroup);
+                foreach (Drug drug in result) Drugs.Add(drug);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 4);
+            }
+            IsLoadingPharma = false;
         }
 
-        private async void GetDrugSubClass(DrugClass drugClass)
+        private async Task GetDiagnosisGroups(DiagnosisClass diagnosisClass)
         {
-            DrugSubClasses.Clear();
-            var result = await dataServicesDrugSubClass.GetWhere(d => d.DrugClass == drugClass);
-            foreach (DrugSubClass drugSubClass in result) DrugSubClasses.Add(drugSubClass);
+            IsLoadingDiagnosis = true;
+            try
+            {
+                DiagnosisGroups.Clear();
+                var res = await therapyDataService.GetDiagnosisGroups(diagnosisClass);
+                foreach (DiagnosisGroup group in res) DiagnosisGroups.Add(group);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 4);
+            }
+            IsLoadingDiagnosis = false;
         }
-        private async void GetDrugGroup(DrugSubClass drugSubClass)
+        private async Task GetDiagnoses(DiagnosisGroup diagnosisGroup)
         {
-            DrugGroups.Clear();
-            var result = await dataServicesDrugGroup.GetWhere(d => d.DrugSubClass == drugSubClass);
-            foreach (DrugGroup drugGroup in result) DrugGroups.Add(drugGroup);
-        }
-        private async void GetDrugs(DrugGroup drugGroup)
-        {
-            Drugs.Clear();
-            var result = await ambulatoryDataService.GetDrugs(drugGroup);
-            foreach (Drug drug in result) Drugs.Add(drug);
+            IsLoadingDiagnosis = true;
+            try
+            {
+                Diagnoses.Clear();
+                var res = await therapyDataService.GetDiagnoses(diagnosisGroup);
+                foreach (Diagnosis diagnosis in res) Diagnoses.Add(diagnosis);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 4);
+            }
+            IsLoadingDiagnosis = false;
         }
 
-        private async void GetDiagnosisGroups(DiagnosisClass diagnosisClass)
+        private async Task GetPhysioFactors(PhysTherFactGroup physTherFactGroup)
         {
-            DiagnosisGroups.Clear();
-            var res = await ambulatoryDataService.GetDiagnosisGroups(diagnosisClass);
-            foreach (DiagnosisGroup group in res) DiagnosisGroups.Add(group);
-        }
-        private async void GetDiagnoses(DiagnosisGroup diagnosisGroup)
-        {
-            Diagnoses.Clear();
-            var res = await ambulatoryDataService.GetDiagnoses(diagnosisGroup);
-            foreach (Diagnosis diagnosis in res) Diagnoses.Add(diagnosis);
-        }
-
-        private async void GetPhysioFactors(PhysTherFactGroup physTherFactGroup)
-        {
-            PhysioTherapyFactors.Clear();
-            var res = await ambulatoryDataService.GetPhysioFactors(physTherFactGroup);
-            foreach (PhysioTherapyFactor factor in res) PhysioTherapyFactors.Add(factor);
+            IsLoadingPhysio = true;
+            try
+            {
+                PhysioTherapyFactors.Clear();
+                var res = await therapyDataService.GetPhysioFactors(physTherFactGroup);
+                foreach (PhysioTherapyFactor factor in res) PhysioTherapyFactors.Add(factor);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 4);
+            }
+            IsLoadingPhysio = false;
         } //null check all above on method params
 
-        private async void GetSurgeryGroups(SurgeryType type)
+        private async Task GetSurgeryGroups(SurgeryType type)
         {
-            SurgeryGroups.Clear();
-            var res = await ambulatoryDataService.GetSurgeryGroups(type);
-            foreach (SurgeryGroup group in res) SurgeryGroups.Add(group);
+            IsLoadingSurgery = true;
+            try
+            {
+                var res = await therapyDataService.GetSurgeryGroups(type);
+                SurgeryGroups.Clear();
+                foreach (SurgeryGroup group in res) SurgeryGroups.Add(group);
+            }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 4);
+            }
+            IsLoadingSurgery = false;
         }
-        private async void GetSurgeryOperations(SurgeryGroup group)
+        private async Task GetSurgeryOperations(SurgeryGroup group)
         {
-            if (group != null)
+            IsLoadingSurgery = true;
+            try
             {
                 SurgeryOperations.Clear();
-                var res = await ambulatoryDataService.GetSurgeryOperations(group);
+                var res = await therapyDataService.GetSurgeryOperations(group);
                 foreach (SurgeryOperation operation in res) SurgeryOperations.Add(operation);
             }
+            catch (Exception ex)
+            {
+                NotificationManager.AddException(ex, 4);
+            }
+            IsLoadingSurgery = false;
         }
 
-
-        public TherapyViewModel(Entry entry)
-        {
-            _currentEntry = entry;
-            Initialize(entry);
-        }
-
-        public ObservableCollection<TestData> TestDatas { get; } = new ObservableCollection<TestData>();
         public ObservableCollection<Diagnosis> Diagnoses { get; } = new ObservableCollection<Diagnosis>();
         public ObservableCollection<DiagnosisClass> DiagnosisClasses { get; } = new ObservableCollection<DiagnosisClass>();
         public ObservableCollection<DiagnosisGroup> DiagnosisGroups { get; } = new ObservableCollection<DiagnosisGroup>();
@@ -190,7 +283,6 @@ namespace Hospital.ViewModel.Ambulatory
         public ObservableCollection<PhysioTherapyFactor> PhysioTherapyFactors { get; } = new ObservableCollection<PhysioTherapyFactor>();
 
         public ObservableCollection<SurgeryTherapyData> SurgeryTherapyDatas { get; } = new ObservableCollection<SurgeryTherapyData>();
-
         public ObservableCollection<SurgeryGroup> SurgeryGroups { get; } = new ObservableCollection<SurgeryGroup>();
         public ObservableCollection<SurgeryOperation> SurgeryOperations { get; } = new ObservableCollection<SurgeryOperation>();
 
@@ -202,7 +294,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _currentDrugClass = value;
                 OnPropertyChanged(nameof(CurrentDrugClass));
-                GetDrugSubClass(value);
+                GetDrugSubClass(value).ConfigureAwait(true);
             }
         }
         public DrugSubClass CurrentDrugSubClass
@@ -212,7 +304,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _currentDrugSubClass = value;
                 OnPropertyChanged(nameof(CurrentDrugSubClass));
-                GetDrugGroup(value);
+                GetDrugGroup(value).ConfigureAwait(true);
             }
         }
         public DrugGroup CurrentDrugGroup
@@ -222,7 +314,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _currentDrugGroup = value;
                 OnPropertyChanged(nameof(CurrentDrugGroup));
-                GetDrugs(value);
+                GetDrugs(value).ConfigureAwait(true);
             }
         }
         public Drug CurrentDrug
@@ -245,7 +337,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _drugSearchValue = value;
                 OnPropertyChanged(nameof(DrugSearchValue));
-                SearchDrugs(value);
+                SearchDrugs(value).ConfigureAwait(true);
             }
         }
 
@@ -257,7 +349,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _currentPhysioFactGroup = value; 
                 OnPropertyChanged(nameof(CurrentPhysioFactGroup));
-                GetPhysioFactors(value);
+                GetPhysioFactors(value).ConfigureAwait(true);
             }
         }
         public PhysioTherapyFactor CurrentPhysioFactor { get => PhysioData.PhysioTherapyFactor; set { PhysioData.PhysioTherapyFactor = value; OnPropertyChanged(nameof(CurrentPhysioFactor));} }
@@ -269,7 +361,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _currentDiagnosisClass = value;
                 OnPropertyChanged(nameof(CurrentDiagnosisClass));
-                GetDiagnosisGroups(value);
+                GetDiagnosisGroups(value).ConfigureAwait(true);
             }
         }
         public DiagnosisGroup CurrentDiagnosisGroup
@@ -279,18 +371,26 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _currentDiagnosisGroup = value;
                 OnPropertyChanged(nameof(CurrentDiagnosisGroup));
-                GetDiagnoses(value);
+                GetDiagnoses(value).ConfigureAwait(true);
             }
         }
         public Diagnosis CurrentDiagnosis
         {
-            get => _currentEntry.MedCard.Diagnosis;
+            get => MedCard?.Diagnosis;
             set
             {
-                _currentEntry.MedCard.Diagnosis = value;
+                if (value != null)
+                {
+                    MedCard.Diagnosis = value;
+                    MedCard.DiagnosisDoctor = _currentEntry.DoctorDestination;
+                    MedCard.DiagnosisDate = DateTime.Now;
+                }
+                else
+                {
+                    MedCard.Diagnosis = null;
+                    MedCard.DiagnosisDoctor = null;
+                }
                 OnPropertyChanged(nameof(CurrentDiagnosis));
-                _currentEntry.MedCard.DiagnosisDoctor = _currentEntry.DoctorDestination;
-                _currentEntry.MedCard.DiagnosisDate = DateTime.Now;
             }
         }
         public string DiagnosisSearchTitleValue
@@ -300,7 +400,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _diagnosisSearchTitleValue = value;
                 OnPropertyChanged(nameof(DiagnosisSearchTitleValue));
-                SearchDiagnoses(value);
+                SearchDiagnoses(value).ConfigureAwait(true);
             }
         }
         public string DiagnosisSearchCodeValue
@@ -310,7 +410,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _diagnosisSearchCodeValue = value;
                 OnPropertyChanged(nameof(DiagnosisSearchCodeValue));
-                SearchDiagnoses(value, true);
+                SearchDiagnoses(value, true).ConfigureAwait(true);
             }
         }
 
@@ -322,7 +422,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _currentSurgeryType = value; 
                 OnPropertyChanged(nameof(CurrentSurgeryType));
-                GetSurgeryGroups(value);
+                GetSurgeryGroups(value).ConfigureAwait(true);
             }
         }
         public SurgeryGroup CurrentSurgeryGroup
@@ -332,7 +432,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 _currentSurgeryGroup = value;
                 OnPropertyChanged(nameof(CurrentSurgeryGroup));
-                GetSurgeryOperations(value);
+                GetSurgeryOperations(value).ConfigureAwait(true);
             }
         }
 
@@ -348,6 +448,14 @@ namespace Hospital.ViewModel.Ambulatory
                 return _addedDatas;
             }
         }
+
+        public bool IsLoadingPharma { get => _isLoadingPharma; set { _isLoadingPharma = value; OnPropertyChanged(nameof(IsLoadingPharma)); } }
+        public bool IsLoadingSurgery { get => _isLoadingSurgery; set { _isLoadingSurgery = value; OnPropertyChanged(nameof(IsLoadingSurgery)); } }
+        public bool IsLoadingPhysio { get => _isLoadingPhysio; set { _isLoadingPhysio = value; OnPropertyChanged(nameof(IsLoadingPhysio)); } }
+        public bool IsLoadingDiagnosis { get => _isLoadingDiagnosis; set { _isLoadingDiagnosis = value; OnPropertyChanged(nameof(IsLoadingDiagnosis)); } }
+        public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged(nameof(MedCard)); } }
+
+        public int AwaitCount { get => PhysioTherapyDatas.Where(p => p.ProcedureStatus == ProcedureStatus.Ожидание).Count() + SurgeryTherapyDatas.Where(s => s.ProcedureStatus == ProcedureStatus.Ожидание).Count(); }
 
         public void AddPharmacoTherapyData()
         {
@@ -419,7 +527,7 @@ namespace Hospital.ViewModel.Ambulatory
             data.DiagnosisDate = _currentEntry.MedCard.DiagnosisDate;
             data.CreateDateTime = DateTime.Now;
             SurgeryTherapyDatas.Add(data);
-            CurrentSurgeryGroup = null;
+            //CurrentSurgeryGroup = null;
             SurgeryData.Option = null;
             SurgeryData.SurgeryOperation = null;
             OnPropertyChanged(nameof(AddedDatas));
@@ -440,6 +548,6 @@ namespace Hospital.ViewModel.Ambulatory
             NotificationManager.AddItem(new NotificationItem(NotificationType.Information, TimeSpan.FromSeconds(3), "Удалено " + removecounter.ToString() + " элементов", true));
         }
 
-        public async Task UpdateData() => await ambulatoryDataService.UpdateData(AddedDatas);
+        //public async Task UpdateData() => await ambulatoryDataService.UpdateData(AddedDatas);
     }
 }

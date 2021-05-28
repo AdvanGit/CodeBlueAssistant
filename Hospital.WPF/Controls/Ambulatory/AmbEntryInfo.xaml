@@ -11,30 +11,25 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <UserControl.Resources>
-        <ResourceDictionary>
-            <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="/Resources/Local/AmbulatoryResources.xaml"/>
-            </ResourceDictionary.MergedDictionaries>
-            <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource tb.Panel}"/>
-            <Style TargetType="{x:Type TextBlock}">
-                <Setter Property="FontSize" Value="16"/>
-                <Setter Property="VerticalAlignment" Value="Bottom"/>
-            </Style>
-            <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
-                <Setter Property="Height" Value="30"/>
-                <Setter Property="Background" Value="Transparent"/>
-            </Style>
-            <CollectionViewSource x:Key="cvsAddedDiagnosticDatas" Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=DataContext.DiagnosticViewModel.AddedDatas}">
-                <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="Test.TestType.TestMethod"/>
-                </CollectionViewSource.GroupDescriptions>
-            </CollectionViewSource>
-            <CollectionViewSource x:Key="cvsAddedTherapyDatas" Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=DataContext.TherapyViewModel.AddedDatas}">
-                <CollectionViewSource.GroupDescriptions>
-                    <PropertyGroupDescription PropertyName="Type"/>
-                </CollectionViewSource.GroupDescriptions>
-            </CollectionViewSource>
-        </ResourceDictionary>
+        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource tb.Panel}"/>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="16"/>
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+        </Style>
+        <Style TargetType="{x:Type Button}" BasedOn="{StaticResource MahApps.Styles.Button.Flat}">
+            <Setter Property="Height" Value="30"/>
+            <Setter Property="Background" Value="Transparent"/>
+        </Style>
+        <CollectionViewSource x:Key="cvsAddedDiagnosticDatas" Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=DataContext.DiagnosticViewModel.AddedDatas}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Test.TestType.TestMethod"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        <CollectionViewSource x:Key="cvsAddedTherapyDatas" Source="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}, Path=DataContext.TherapyViewModel.AddedDatas}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Type"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
 
     <Grid>
@@ -79,7 +74,7 @@
                             <TextBlock Text="НЕЯВКА"/>
                         </StackPanel>
                     </Button>
-                    <Button mah:ItemHelper.HoverBackgroundBrush="{StaticResource Brush.AccentGreen}">
+                    <Button mah:ItemHelper.HoverBackgroundBrush="{StaticResource Brush.AccentGreen}" ToolTip="Недоступно">
                         <StackPanel Orientation="Horizontal">
                             <Path Data="{StaticResource path.Check}" Margin="0 12 5 12"/>
                             <TextBlock Text="ВЫПИСКА"/>

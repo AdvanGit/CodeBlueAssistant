@@ -89,7 +89,7 @@
                 </mah:TransitioningContentControl>
             </Grid>
 
-            <mah:TransitioningContentControl Effect="{StaticResource ShadowCard}" Grid.Row="2" Content="{Binding ElementName=RegistratorView, Path=Navigator.CurrentBody}" Transition="Right" VerticalAlignment="Stretch" VerticalContentAlignment="Top"/>
+            <mah:TransitioningContentControl Grid.Row="2" Content="{Binding ElementName=RegistratorView, Path=Navigator.CurrentBody}" Transition="Right" VerticalAlignment="Stretch" VerticalContentAlignment="Top"/>
 
         </Grid>
     </Grid>

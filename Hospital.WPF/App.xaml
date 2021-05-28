@@ -10,7 +10,6 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
                 <!--<ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />-->
-                <!-- Theme setting -->
                 
                 <ResourceDictionary Source="/Resources/Converters.xaml" />
                 <ResourceDictionary Source="/Resources/EnumProviders.xaml"/>
@@ -21,6 +20,8 @@
                 <ResourceDictionary Source="/Resources/Buttons.xaml" />
                 <ResourceDictionary Source="/Resources/DataGrids.xaml" />
                 <ResourceDictionary Source="/Resources/Lists.xaml" />
+
+                <ResourceDictionary Source="/Resources/Local/AmbulatoryResources.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

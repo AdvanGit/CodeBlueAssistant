@@ -13,6 +13,7 @@
         <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MahApps.Styles.TextBox}">
             <Setter Property="BorderThickness" Value="0,0,0,2"/>
             <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Height" Value="30"/>
             <Setter Property="Margin" Value="0,0,0,5"/>
             <Setter Property="mah:ControlsHelper.CornerRadius" Value="2,2,0,0"/>
             <Setter Property="Background" Value="{StaticResource BrushPrimaryPanel}"/>
@@ -26,6 +27,7 @@
         <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource MahApps.Styles.ComboBox}">
             <Setter Property="BorderThickness" Value="0,0,0,2"/>
             <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Height" Value="30"/>
             <Setter Property="mah:ControlsHelper.CornerRadius" Value="2,2,0,0"/>
             <Setter Property="Margin" Value="0,0,0,5"/>
             <Setter Property="Background" Value="{StaticResource BrushPrimaryPanel}"/>
@@ -35,6 +37,7 @@
         <Style TargetType="{x:Type DatePicker}" BasedOn="{StaticResource MahApps.Styles.DatePicker}">
             <Setter Property="BorderThickness" Value="0,0,0,2"/>
             <Setter Property="FontSize" Value="15"/>
+            <Setter Property="Height" Value="30"/>
             <Setter Property="VerticalContentAlignment" Value="Center"/>
             <Setter Property="Margin" Value="0,0,0,5"/>
             <Setter Property="mah:ControlsHelper.CornerRadius" Value="2,2,0,0"/>
@@ -55,6 +58,7 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
+        <Border Background="{StaticResource MahApps.Brushes.ThemeBackground}" Grid.RowSpan="3" Grid.ColumnSpan="2" Effect="{StaticResource ShadowCard}"/>
         <Border Background="{DynamicResource Brush.AccentGreen}" Grid.Row="0" Grid.ColumnSpan="2"/>
         <TextBlock Text="РЕДАКТИРОВАТЬ" Foreground="White" Grid.Row="0" Grid.ColumnSpan="2" FontWeight="DemiBold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
 
@@ -112,7 +116,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <TextBlock Grid.Row="0" Grid.Column="0"  Text="Город" />
-                <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding EditingPatient.Adress.City}" Margin="0,0,5,5" />
+                <TextBox Grid.Row="1" Grid.Column="0" Text="{Binding EditingPatient.Adress.City}" Margin="0,0,5,5"/>
                 <TextBlock Grid.Row="0" Grid.Column="1" Text="Улица" Margin="10,0,0,2" />
                 <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding EditingPatient.Adress.Street}" Margin="5,0,0,5"/>
                 <TextBlock Grid.Row="2" Grid.Column="0" Text="Дом"/>

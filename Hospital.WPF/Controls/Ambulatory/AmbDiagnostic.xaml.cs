@@ -43,7 +43,7 @@ namespace Hospital.WPF.Controls.Ambulatory
 
         private void CheckBox_Checked(object sender, RoutedEventArgs e)
         {
-            (DataContext as DiagnosticViewModel).RaiseDataPropetryChange();
+            (DataContext as DiagnosticViewModel).RaiseIsSymptomPropetryChange();
         }
     }
 }
