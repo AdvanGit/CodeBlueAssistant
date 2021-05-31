@@ -17,7 +17,7 @@ namespace Hospital.Domain.Model
 
         public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged(nameof(MedCard)); } }
         public Drug Drug { get => _drug; set { _drug = value; OnPropertyChanged("Drug"); } }
-        public string Trademark { get => _trademark; set { _trademark = value; OnPropertyChanged(nameof(Trademark)); OnPropertyChanged(nameof(Option));  } }
+        public string Trademark { get => _trademark; set { _trademark = value; OnPropertyChanged(nameof(Trademark)); OnPropertyChanged(nameof(Option)); } }
         public string Dose { get => _dose; set { _dose = value; OnPropertyChanged("Dose"); OnPropertyChanged(nameof(Value)); } }
         public DateTime DateCreate { get => _dateCreate; set { _dateCreate = value; OnPropertyChanged("DateCreate"); } }
         public Treatment Treatment { get => _treatment; set { _treatment = value; OnPropertyChanged(nameof(Treatment)); } }

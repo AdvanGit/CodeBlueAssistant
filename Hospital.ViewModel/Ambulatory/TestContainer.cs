@@ -3,9 +3,10 @@ using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Hospital.ViewModel.Ambulatory
@@ -51,6 +52,7 @@ namespace Hospital.ViewModel.Ambulatory
 
         protected internal async Task Initialize(TestMethod testMethod, Entry entry)
         {
+
             if (entry.MedCard != null) await GetData(entry.MedCard.Id, testMethod);
             await GetTypeList(testMethod);
             this.entry = entry;
@@ -120,9 +122,10 @@ namespace Hospital.ViewModel.Ambulatory
                 DateResult = DateTime.Now //ждем внедения модуля с процедурами, а пока заглушка
             };
         }
-        public void RemoveRangeData(IList<TestData> datas)
+        public void RemoveRangeData(object obj)
         {
             int removecounter = 0;
+            var datas = (obj as IList).Cast<TestData>().ToList();
             if (datas.Count != 0)
             {
                 foreach (TestData data in datas)
@@ -163,7 +166,9 @@ namespace Hospital.ViewModel.Ambulatory
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void OnPropertyChanged(string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
+        public void OnPropertyChanged(string prop = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop));
         }
     }
 }

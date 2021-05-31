@@ -13,7 +13,7 @@ namespace Hospital.ViewModel.Notificator
 
     public struct NotificationItem
     {
-        public NotificationItem(NotificationType type, TimeSpan hold, string message,  bool isStop = false, bool isManual = false )
+        public NotificationItem(NotificationType type, TimeSpan hold, string message, bool isStop = false, bool isManual = false)
         {
             Type = type;
             Message = message;
@@ -26,8 +26,8 @@ namespace Hospital.ViewModel.Notificator
 
         public string Message { get; }
 
-        public TimeSpan Hold { get;  }
-        public bool IsStop { get;  }
+        public TimeSpan Hold { get; }
+        public bool IsStop { get; }
         public bool IsManual { get; }
     }
 }

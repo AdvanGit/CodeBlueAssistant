@@ -5,7 +5,7 @@ using System.Windows.Controls;
 namespace Hospital.WPF.Controls.Registrator
 {
     public partial class RegEditPanel : UserControl, INavigatorItem
-    { 
+    {
         public RegEditPanel()
         {
             InitializeComponent();

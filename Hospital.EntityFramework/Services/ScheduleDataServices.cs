@@ -25,11 +25,12 @@ namespace Hospital.EntityFramework.Services
                     .AsNoTracking()
                     .Where(e => e.DoctorDestination.Id == doctorId)
                     .Where(e => e.TargetDateTime.Date == date.Date)
-                    .Include(e => e.DoctorDestination).ThenInclude(s=>s.Department).ThenInclude(d=>d.Title)
-                    .Include(e=>e.Patient)
-                    .Include(e=>e.Registrator).ThenInclude(r=>r.Department).ThenInclude(d=>d.Title)
-                    .Include(e=>e.MedCard).ThenInclude(m=>m.Diagnosis)
-                    .OrderBy(e=>e.TargetDateTime)
+                    .Include(e => e.DoctorDestination).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
+                    .Include(e => e.Patient)
+                    .Include(e => e.Registrator).ThenInclude(r => r.Department).ThenInclude(d => d.Title)
+                    .Include(e => e.MedCard).ThenInclude(m => m.Diagnosis)
+                    .Include(e => e.MedCard).ThenInclude(m => m.TherapyDoctor).ThenInclude(t => t.Department).ThenInclude(d => d.Title)
+                    .OrderBy(e => e.TargetDateTime)
                     .ToListAsync();
                 return entries;
             }

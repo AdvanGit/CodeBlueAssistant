@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
+using System.Text.Json;
 
 namespace Hospital.Domain.Model
 {
-    public enum Gender : byte { male, female}
+    public enum Gender : byte { male, female }
     public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
 
     public class User : DomainObject
@@ -75,8 +75,8 @@ namespace Hospital.Domain.Model
         public string _Adress { get; set; }
         public Adress Adress
         {
-            get { return _Adress == null ? null : JsonConvert.DeserializeObject<Adress>(_Adress); }
-            set { _Adress = JsonConvert.SerializeObject(value); }
+            get { return _Adress == null ? null : JsonSerializer.Deserialize<Adress>(_Adress); }
+            set { _Adress = JsonSerializer.Serialize(value); }
         }
 
         public Gender Gender

@@ -31,6 +31,9 @@
             <EventSetter Event="Checked" Handler="CheckBox_Checked"/>
             <EventSetter Event="Unchecked" Handler="CheckBox_Checked"/>
         </Style>
+        <Style TargetType="{x:Type StackPanel}" x:Key="StackPanel.Editable">
+            <Setter Property="IsEnabled" Value="{Binding Path=DataContext.IsEditable, Mode=OneWay, RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}}"/>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
@@ -45,7 +48,7 @@
                                 <TextBlock Text="ФИЗИКАЛЬНАЯ ДИАГНОСТИКА" FontSize="14" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource BrushForegroundLight}"/>
                             </StackPanel>
                             <TextBlock Text="{Binding PhysicalContainer.Datas.Count, StringFormat=Всего: {0}}" Style="{StaticResource tb.expander.stats}" />
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Style="{StaticResource StackPanel.Editable}" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <ListBox Height="30" Background="Transparent" Name="SelectorPhysDiagnostic" Visibility="{Binding ElementName=cb_ItemBarPhysDiag, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -270,8 +273,7 @@
                                 <TextBlock Text="ЛАБАРАТОРНАЯ ДИАГНОСТИКА" FontSize="14" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource BrushForegroundLight}"/>
                             </StackPanel>
                             <TextBlock Padding="10,0" Text="{Binding LabContainer.Datas.Count, StringFormat=Всего: {0}}" Style="{StaticResource tb.expander.stats}"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
-
+                            <StackPanel Style="{StaticResource StackPanel.Editable}" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <ListBox Height="30" Background="Transparent" Name="SelectorLabDiagnostic" Visibility="{Binding ElementName=cb_ItemBarLabDiag, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -284,7 +286,6 @@
                                     <ListBoxItem Content="ШАБЛОН"/>
                                     <ListBoxItem Content="ТЕСТ"/>
                                 </ListBox>
-
                                 <CheckBox x:Name="cb_ItemBarLabDiag" Style="{StaticResource  ExpanderChkBoxFlatButton}" >
                                     <Path Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Path.Style>
@@ -519,7 +520,7 @@
                                 <TextBlock Text="ИНСТРУМЕНТАЛЬНАЯ ДИАГНОСТИКА" FontSize="14" VerticalAlignment="Center" FontWeight="SemiBold" Foreground="{StaticResource BrushForegroundLight}"/>
                             </StackPanel>
                             <TextBlock Text="{Binding ToolContainer.Datas.Count, StringFormat=Всего: {0}}" Style="{StaticResource tb.expander.stats}"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Style="{StaticResource StackPanel.Editable}" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <ListBox Height="30" Background="Transparent" Name="SelectorToolDiagnostic" Visibility="{Binding ElementName=cb_ItemBarToolDiag, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -532,7 +533,6 @@
                                     <ListBoxItem Content="ШАБЛОН"/>
                                     <ListBoxItem Content="ТЕСТ"/>
                                 </ListBox>
-
                                 <CheckBox x:Name="cb_ItemBarToolDiag" Style="{StaticResource  ExpanderChkBoxFlatButton}">
                                     <Path Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Path.Style>

@@ -2,18 +2,15 @@
 using Hospital.WPF.Controls;
 using Hospital.WPF.Navigators;
 using MahApps.Metro.Controls;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace Hospital.WPF.Views
 {
     public partial class Main : MetroWindow
     {
         private static INavigatorItem _currentPage;
-        
+
         public Main()
         {
             InitializeComponent();
@@ -27,14 +24,14 @@ namespace Hospital.WPF.Views
 
         public static INavigatorItem CurrentPage
         {
-            get => _currentPage; 
-            set 
+            get => _currentPage;
+            set
             {
                 _currentPage = null;
                 OnStaticPropertyChanged(nameof(CurrentPage)); //refresh bindings
                 _currentPage = value;
-                OnStaticPropertyChanged(nameof(CurrentPage)); 
-            } 
+                OnStaticPropertyChanged(nameof(CurrentPage));
+            }
         }
 
         public static event PropertyChangedEventHandler StaticPropertyChanged;

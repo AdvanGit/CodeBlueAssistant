@@ -21,6 +21,7 @@ namespace Hospital.ViewModel
                 if (item != null)
                 {
                     CurrentStuffId = item.Id;
+                    HeaderCaption = item.FirstName + " " + item.MidName[0] + ". " + item.LastName[0] + ".";
                     return true;
                 }
                 else
@@ -31,7 +32,7 @@ namespace Hospital.ViewModel
             }
             catch (Exception ex)
             {
-                NotificationManager.AddException(ex,8);
+                NotificationManager.AddException(ex, 8);
                 return false;
             }
             finally

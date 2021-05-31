@@ -23,7 +23,7 @@ namespace Hospital.Domain.Model
         public TimeSpan TimeSpan { get => _timeSpan; set { _timeSpan = value; OnPropertyChanged(nameof(TimeSpan)); } }
 
         //public List<DateTime> DateTimes { get => GetTimes(); }
-        
+
         public List<DateTime> GetTimes()
         {
             var dateTimes = new List<DateTime>();

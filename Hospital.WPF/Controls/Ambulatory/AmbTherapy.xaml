@@ -192,7 +192,7 @@
                 <Border Height="1" Grid.ColumnSpan="3" VerticalAlignment="Bottom" Background="{DynamicResource BrushPrimaryBorderLight}"/>
             </Grid>
         </Expander>
-        <ScrollViewer Grid.Row="2"  HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="2" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical">
 
                 <Expander IsExpanded="False" Template="{StaticResource ExpanderDiagTable}">
@@ -251,7 +251,7 @@
                                 <TextBlock Text="ФАРМАКОТЕРАПИЯ" Style="{StaticResource tb.expander.header}"/>
                             </StackPanel>
                             <TextBlock Text="{Binding PharmacoTherapyDatas.Count, StringFormat=Всего: {0}}" Style="{StaticResource tb.expander.stats}"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Style="{StaticResource StackPanel.Editable}" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <ListBox Height="30" Background="Transparent" Name="SearchSelectorDrug" Visibility="{Binding ElementName=cb_ItemBarPhysDiag, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <ListBox.ItemsPanel>
                                         <ItemsPanelTemplate>
@@ -264,7 +264,6 @@
                                     <ListBoxItem Content="ПОИСК"/>
                                     <ListBoxItem Content="КАТАЛОГ"/>
                                 </ListBox>
-
                                 <CheckBox x:Name="cb_ItemBarPhysDiag" Style="{StaticResource ExpanderChkBoxFlatButton}">
                                     <Path Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Path.Style>
@@ -486,7 +485,7 @@
                                 <TextBlock Text="ФИЗИОТЕРАПИЯ" Style="{StaticResource tb.expander.header}"/>
                             </StackPanel>
                             <TextBlock Text="{Binding PhysioTherapyDatas.Count, StringFormat=Всего: {0}}" Style="{StaticResource tb.expander.stats}"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Style="{StaticResource StackPanel.Editable}" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <CheckBox x:Name="cb_ItemBarPhysTher" Style="{StaticResource ExpanderChkBoxFlatButton}">
                                     <Path Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Path.Style>
@@ -663,7 +662,7 @@
                                 <TextBlock Text="ХИРУРГИЯ" Style="{StaticResource tb.expander.header}"/>
                             </StackPanel>
                             <TextBlock Text="{Binding SurgeryTherapyDatas.Count, StringFormat=Всего: {0}}" Style="{StaticResource tb.expander.stats}"/>
-                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
+                            <StackPanel Style="{StaticResource StackPanel.Editable}" Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding RelativeSource={RelativeSource AncestorType={x:Type Expander}}, Path=IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                                 <CheckBox x:Name="cb_ItemBarSurgeryTher" Style="{StaticResource ExpanderChkBoxFlatButton}">
                                     <Path Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center">
                                         <Path.Style>
@@ -745,8 +744,10 @@
                                         <ComboBox Grid.Column="1" Grid.Row="0" ItemsSource="{Binding Source={StaticResource Enum.SurgeryClass}}" SelectedItem="{Binding SurgeryData.SurgeryClass}"/>
                                         <ComboBox Grid.Column="2" Grid.Row="0" ItemsSource="{Binding Source={StaticResource Enum.SurgeryPriority}}" SelectedItem="{Binding SurgeryData.SurgeryPriority}"/>
                                         <ComboBox Grid.Column="0" Grid.Row="1" ItemsSource="{Binding SurgeryGroups}" SelectedItem="{Binding CurrentSurgeryGroup}"
+                                                  mah:TextBoxHelper.Watermark="Оперативное вмешательство..."
                                                   SelectedValue="{Binding CurrentSurgeryGroup.Title}" SelectedValuePath="Title" DisplayMemberPath="Title"/>
                                         <ComboBox Grid.Column="1" Grid.ColumnSpan="2" Grid.Row="1" ItemsSource="{Binding SurgeryOperations}" SelectedItem="{Binding SurgeryData.SurgeryOperation}"
+                                                  mah:TextBoxHelper.Watermark="Оперативный прием..."
                                                   SelectedValue="{Binding SurgeryData.SurgeryOperation.Title}" SelectedValuePath="Title" DisplayMemberPath="Title"
                                                   IsEnabled="{Binding CurrentSurgeryGroup, Converter={StaticResource NullToBoolConverter}}"/>
                                     </Grid>

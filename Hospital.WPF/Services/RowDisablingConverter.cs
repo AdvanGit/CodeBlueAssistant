@@ -5,11 +5,11 @@ using System.Windows.Data;
 
 namespace Hospital.WPF.Services
 {
-    class RowDisablingConverter : IValueConverter 
+    class RowDisablingConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if ((EntryStatus)value == EntryStatus.Ожидание)
+            if ((EntryStatus)value == Enum.Parse<EntryStatus>("0"))
             {
                 return true;
             }

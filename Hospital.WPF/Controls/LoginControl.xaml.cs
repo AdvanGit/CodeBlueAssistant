@@ -26,7 +26,7 @@ namespace Hospital.WPF.Controls
             DataContext = _vm;
         }
 
-        public Command Init => new Command(async obj => 
+        public Command Init => new Command(async obj =>
         {
             if (long.TryParse(obj.ToString(), out long phone))
             {
@@ -39,6 +39,6 @@ namespace Hospital.WPF.Controls
                 }
             }
             else NotificationManager.AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(3), "Номер введен неверно", true));
-        }, obj => (obj != null &&  obj.ToString().Length > 5 ));
+        }, obj => (obj != null && obj.ToString().Length > 5));
     }
 }
