@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text.Json;
 
 namespace Hospital.Domain.Model
 {
@@ -15,8 +15,11 @@ namespace Hospital.Domain.Model
         public TestType Category { get => _category; set { _category = value; OnPropertyChanged(nameof(Category)); } }
         public string Title { get => _title; set { _title = value; OnPropertyChanged(nameof(Title)); } }
 
-        public string JsonObjects { get; 
-            set; }
+        public string JsonObjects
+        {
+            get;
+            set;
+        }
 
         [NotMapped] //хранение в int потому как нужно будет делать запрос к актуальным тестам, хранение объектов нецелесообразно
         public IEnumerable<int> Objects

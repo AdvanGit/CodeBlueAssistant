@@ -60,7 +60,7 @@
                 <DataGridTextColumn Binding="{Binding DoctorDestination.LastName}" Header="ОТЧЕСТВО" MinWidth="100" MaxWidth="170"/>
                 <DataGridTextColumn Binding="{Binding DoctorDestination.Qualification}" Header="СПЕЦИАЛЬНОСТЬ" MinWidth="50"/>
                 <DataGridTextColumn Binding="{Binding DoctorDestination.Department.Title.Caption}" Header="ОТЕДЕЛЕНИЕ" MinWidth="120" MaxWidth="200"/>
-                <DataGridTextColumn Header="АДРЕС" MinWidth="150">
+                <DataGridTextColumn Header="АДРЕС" MinWidth="150" SortMemberPath="DoctorDestination.Department.Adress.Street">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{1} {2}, {0}">
                             <Binding Path="DoctorDestination.Department.Adress.City"/>

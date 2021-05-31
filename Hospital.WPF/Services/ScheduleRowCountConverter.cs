@@ -8,7 +8,7 @@ namespace Hospital.WPF.Services
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (double.TryParse(values[0].ToString(), out double totalWidth) 
+            if (double.TryParse(values[0].ToString(), out double totalWidth)
                 && int.TryParse(values[1].ToString(), out int columnCount))
             {
                 double result = (totalWidth / columnCount);

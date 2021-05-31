@@ -1,11 +1,9 @@
-﻿using Hospital.Domain.Model; //отступ от mvvm, ссылки на enum TestMethod заменить string, либо переопределить отдельно во viewModel
-using Hospital.ViewModel.Ambulatory;
+﻿using Hospital.ViewModel.Ambulatory;
 using Hospital.WPF.Controls;
 using Hospital.WPF.Controls.Ambulatory;
 using Hospital.WPF.Views;
 using System;
 using System.Collections;
-using System.Linq;
 
 namespace Hospital.WPF.Commands
 {
@@ -35,7 +33,7 @@ namespace Hospital.WPF.Commands
         private readonly Command _findBySelect;
         private readonly Command _setSavePanel;
         private readonly Command _toAbsence;
-        //private readonly Command _saveDatas;
+        private readonly Command _saveDatas;
         #endregion
 
         private readonly Command _closeTab;
@@ -61,7 +59,7 @@ namespace Hospital.WPF.Commands
            }, obj => (vm.DiagnosticViewModel != null) && (physicalContainer.CurrentTest != null));
             _removePhysicalData = new Command(obj =>
             {
-                new ConfirmDialog(_obj => physicalContainer.RemoveRangeData((obj as IList).Cast<TestData>().ToList()), "вы действительно хотите удалить данные?");
+                new ConfirmDialog(_obj => physicalContainer.RemoveRangeData(obj), "вы действительно хотите удалить данные?");
                 vm.DiagnosticViewModel.RaiseDataPropetryChange();
             }, obj => ((obj != null) && ((IList)obj).Count != 0));
 
@@ -77,7 +75,7 @@ namespace Hospital.WPF.Commands
             }, obj => (vm.DiagnosticViewModel != null) && (labContainer.CurrentTest != null));
             _removeLabData = new Command(obj =>
             {
-                new ConfirmDialog(_obj => labContainer.RemoveRangeData((obj as IList).Cast<TestData>().ToList()), "вы действительно хотите удалить данные?");
+                new ConfirmDialog(_obj => labContainer.RemoveRangeData(obj), "вы действительно хотите удалить данные?");
                 vm.DiagnosticViewModel.RaiseDataPropetryChange();
             }, obj => (obj != null) && ((IList)obj).Count != 0);
 
@@ -93,17 +91,11 @@ namespace Hospital.WPF.Commands
             }, obj => (vm.DiagnosticViewModel != null) && (toolContainer.CurrentTest != null));
             _removeToolData = new Command(obj =>
             {
-                new ConfirmDialog(_obj => toolContainer.RemoveRangeData((obj as IList).Cast<TestData>().ToList()), "вы действительно хотите удалить данные?");
+                new ConfirmDialog(_obj => toolContainer.RemoveRangeData(obj), "вы действительно хотите удалить данные?");
                 vm.DiagnosticViewModel.RaiseDataPropetryChange();
             }, obj => ((obj != null) && ((IList)obj).Count != 0));
             #endregion
 
-            //_removeTestData = new Command(obj => new ConfirmDialog(_obj => vm.DiagnosticViewModel.RemoveData(obj), "вы действительно хотите удалить данные?"), obj => ((obj != null) && ((IList)obj).Count != 0));
-
-            //_addLabTemplate = new Command(obj => vm.DiagnosticViewModel.AddTemplate(TestMethod.Лабараторная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.CurrentLabTemplate != null));
-            //_addLabTestData = new Command(obj => vm.DiagnosticViewModel.AddData(obj, TestMethod.Лабараторная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.SelectedLabTest != null));
-            //_addToolTemplate = new Command(obj => vm.DiagnosticViewModel.AddTemplate(TestMethod.Инструментальная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.CurrentToolTemplate != null));
-            //_addToolTestData = new Command(obj => vm.DiagnosticViewModel.AddData(obj, TestMethod.Инструментальная), obj => (vm.DiagnosticViewModel != null) && (vm.DiagnosticViewModel.SelectedToolTest != null));
             _removePhysioData = new Command(obj => new ConfirmDialog(_obj => vm.TherapyViewModel.RemovePhysioTherapyData(obj), "вы действительно хотите удалить данные?"), obj => ((obj != null) && ((IList)obj).Count != 0));
 
             _addPharmacoTherapyData = new Command(obj => vm.TherapyViewModel.AddPharmacoTherapyData(), obj => (vm.TherapyViewModel != null) && (vm.TherapyViewModel.PharmacoData.Drug != null));
@@ -137,8 +129,9 @@ namespace Hospital.WPF.Commands
                 view.EntrySearchNavigator.SetBody(typeof(AmbEntrySavePanel));
                 vm.EntryViewModel.SetEntryOut(obj);
             }, obj => vm.EntryViewModel != null && obj != null);
-            _toAbsence = new Command(obj => new ConfirmDialog(_obj => vm.EntryViewModel.ToAbsence(), "Вы подтверждаете неявку лица\n" + vm.CurrentEntry.Patient.FirstName + " " + vm.CurrentEntry.Patient.MidName + " " + vm.CurrentEntry.Patient.LastName + "?"));
-            //_saveDatas = new Command(obj => new ConfirmDialog(async _obj => { await vm.DiagnosticViewModel.UpdateData(); await vm.TherapyViewModel.UpdateData(); await vm.EntryViewModel.UpdateEntry(); }, "Записать и сохранить?"));
+
+            _toAbsence = new Command(obj => new ConfirmDialog(async _obj => { await vm.EntryViewModel.ToAbsence(); await vm.Refresh(); }, "Вы подтверждаете неявку лица\n" + vm.EntryViewModel.CurrentEntry.Patient.FirstName + " " + vm.EntryViewModel.CurrentEntry.Patient.MidName + " " + vm.EntryViewModel.CurrentEntry.Patient.LastName + "?"));
+            _saveDatas = new Command(obj => new ConfirmDialog(async _obj => { await vm.SaveChanges(); }, "Записать и сохранить?"));
 
             _closeTab = new Command(obj => new ConfirmDialog(_obj =>
             {
@@ -175,7 +168,7 @@ namespace Hospital.WPF.Commands
         public Command FindEntryNext => _findEntryNext;
 
         public Command ToAbsence => _toAbsence;
-        //public Command SaveDatas => _saveDatas;
+        public Command SaveDatas => _saveDatas;
         public Command CloseTab => _closeTab;
     }
 }

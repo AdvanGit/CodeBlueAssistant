@@ -1,7 +1,6 @@
 ﻿using Hospital.ViewModel;
 using Hospital.WPF.Controls.Registrator;
 using Hospital.WPF.Views;
-using System;
 
 namespace Hospital.WPF.Commands
 {
@@ -10,9 +9,9 @@ namespace Hospital.WPF.Commands
         private static RegistratorViewModel _vm;
         private static Registrator _view;
 
-        private static readonly Command _setBody = new Command(param => 
+        private static readonly Command _setBody = new Command(param =>
             {
-                _view.Navigator.SetBody(param.ToString());;
+                _view.Navigator.SetBody(param.ToString()); ;
                 if (param.ToString() == "RegDoctorTable") _view.SearchBar.TabDoctor.IsSelected = true;
                 else if (param.ToString() == "RegPatientTable") _view.SearchBar.TabPatient.IsSelected = true;
             });
@@ -60,7 +59,7 @@ namespace Hospital.WPF.Commands
         }, obj => _vm.SearchString != "");
         private static readonly Command _cleanEntry = new Command(obj => _vm.SelectedEntry = null);
         private static readonly Command _cleanPatient = new Command(obj => _vm.SelectedPatient = null);
-        private static readonly Command _findEntryPrevious = new Command(async obj => { await _vm.GetEntries(true); }, obj => _vm != null); 
+        private static readonly Command _findEntryPrevious = new Command(async obj => { await _vm.GetEntries(true); }, obj => _vm != null);
         private static readonly Command _findEntryNext = new Command(async obj => { await _vm.GetEntries(false); }, obj => _vm != null);
 
         public RegistratorCommand(RegistratorViewModel viewModel, Registrator view)

@@ -30,14 +30,17 @@
                 <Style TargetType="{x:Type Border}">
                     <Setter Property="Background" Value="{StaticResource BrushPrimaryBorderLight}"/>
                     <Style.Triggers>
-                        <DataTrigger Binding="{Binding CurrentEntry.EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="3">
+                        <DataTrigger Binding="{Binding Path=CurrentEntry.EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="3">
                             <Setter Property="Background" Value="{StaticResource Brush.AccentGreen}"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding CurrentEntry.EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="1">
-                            <Setter Property="Background" Value="{StaticResource Brush.AccentRed}"/>
+                        <DataTrigger Binding="{Binding Path=CurrentEntry.EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="1">
+                            <Setter Property="Background" Value="lightgray"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding CurrentEntry.EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="2">
-                            <Setter Property="Background" Value="{StaticResource BrushForegroundVeryLight}"/>
+                        <DataTrigger Binding="{Binding Path=CurrentEntry.EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="2">
+                            <Setter Property="Background" Value="{StaticResource BrushPrimaryBorderDark}"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Path=CurrentEntry.EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="4">
+                            <Setter Property="Background" Value="{StaticResource BrushAccentInvert}"/>
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>

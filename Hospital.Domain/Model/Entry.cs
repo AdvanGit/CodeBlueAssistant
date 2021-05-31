@@ -2,8 +2,8 @@
 
 namespace Hospital.Domain.Model
 {
-    public enum EntryStatus { Открыта = 0, Закрыта = 1, Отмена = 2, Ожидание = 3, Неявка = 4, Резерв = 5}
-    public enum InviteStatus { Первичное = 0, Повторное = 1, Трансфер = 2, Срочное = 3, Профилактика = 4}
+    public enum EntryStatus { Открыта = 0, Закрыта = 1, Отмена = 2, Ожидание = 3, Неявка = 4, Резерв = 5 }
+    public enum InviteStatus { Первичное = 0, Повторное = 1, Трансфер = 2, Срочное = 3, Профилактика = 4 }
 
     public class Entry : DomainObject
     {

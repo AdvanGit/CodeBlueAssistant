@@ -42,11 +42,10 @@
                             <ControlTemplate TargetType="{x:Type DataGridCell}">
                                 <Grid Background="{TemplateBinding Background}" Height="{TemplateBinding Height}">
                                     <ContentPresenter Margin="{TemplateBinding Padding}"
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                      HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                      VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                     <TextBlock Foreground="{TemplateBinding Foreground}"/>
-                                    <Border BorderBrush="{TemplateBinding BorderBrush}"
-                                                    BorderThickness="{TemplateBinding BorderThickness}"/>
+                                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}"/>
                                     <Grid.InputBindings>
                                         <MouseBinding MouseAction="LeftDoubleClick"
                                                       Command="{Binding Path=Command.SelectEntry, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
@@ -68,7 +67,7 @@
                             <Setter Property="Foreground" Value="{StaticResource BrushBackgroundPaper}"/>
                             <Setter Property="BorderBrush" Value="Transparent"/>
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding EntryStatus, Converter={StaticResource MyRowConverter}}" Value="true">
+                        <DataTrigger Binding="{Binding EntryStatus, Converter={StaticResource MyRowConverter}}" Value="false">
                             <Setter Property="IsEnabled" Value="False"/>
                         </DataTrigger>
                     </Style.Triggers>

@@ -14,7 +14,7 @@
 
     <Grid>
         <StackPanel Orientation="Vertical" >
-            <Label Content="только чтение" HorizontalContentAlignment="Center" Padding="3"
+            <Label HorizontalContentAlignment="Center" Padding="3"
                    Background="LightYellow" FontSize="12">
                 <Label.Style>
                     <Style TargetType="{x:Type Label}">
@@ -30,6 +30,12 @@
                         </Style.Triggers>
                     </Style>
                 </Label.Style>
+                <Label.Content>
+                    <StackPanel>
+                        <TextBlock Text="{Binding CurrentEntry.EntryStatus, StringFormat=статус записи: {0}}" HorizontalAlignment="Center"/>
+                        <TextBlock Text="доступно только для чтения" HorizontalAlignment="Center"/>
+                    </StackPanel>
+                </Label.Content>
             </Label>
             <Expander IsExpanded="True" Foreground="{StaticResource BrushForegroundMid}"
                       Template="{StaticResource Expander.AmbulatoryMenu}"
@@ -186,7 +192,7 @@
                                                             </MultiBinding>
                                                         </TextBlock.Text>
                                                     </TextBlock>
-                                                    <TextBlock Margin="0 6 0 0" Text="{Binding TherapyViewModel.AwaitCount, StringFormat=В ожидании: 0}" FontSize="14"/>
+                                                    <TextBlock Margin="0 6 0 0" Text="{Binding TherapyViewModel.AwaitCount, StringFormat={}В ожидании: {0}}" FontSize="14"/>
                                             </StackPanel>
                                         </Grid>
                                     </Setter.Value>

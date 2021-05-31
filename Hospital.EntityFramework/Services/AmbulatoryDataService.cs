@@ -263,14 +263,15 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
-        public async Task<bool> UpdateData(IEnumerable<object> datas)
+        public async Task<IList<object>> UpdateData(IList<object> entities)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
-                db.UpdateRangeWithoutTracking(datas);
+                db.UpdateRangeWithoutTracking(entities);
                 await db.SaveChangesAsync();
-                return true;
+                return entities;
             }
         }
+
     }
 }

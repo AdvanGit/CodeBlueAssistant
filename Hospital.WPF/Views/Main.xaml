@@ -5,12 +5,13 @@
 		xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 		xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
 		xmlns:local="clr-namespace:Hospital.WPF.Views"
+        xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
         xmlns:controls="clr-namespace:Hospital.WPF.Controls"
 		mc:Ignorable="d" ResizeMode="CanResize" WindowStartupLocation="CenterScreen"
 		BorderThickness="0" GlowBrush="{StaticResource MahApps.Brushes.Gray1}"
 		TitleBarHeight="34" NonActiveWindowTitleBrush="White" WindowTitleBrush="White"
 		OverrideDefaultWindowCommandsBrush="Black" TitleForeground="Black"      
-		TitleAlignment="Center" Title="Hosptal" Height="720" Width="1280">
+		TitleAlignment="Center" Title="{Binding HeaderCaption}" Height="720" Width="1280">
    
 	<mah:MetroWindow.LeftWindowCommands>
 		<mah:WindowCommands ShowLastSeparator="False">

@@ -26,6 +26,7 @@
                  x:Name="TextBoxSearch" Background="{StaticResource BrushBackgroundPaper}"
                  mah:TextBoxHelper.SelectAllOnFocus="True"
                  mah:TextBoxHelper.Watermark="Поиск..."
+                 ToolTip="Preview: Поисковый запрос может включать в себя набор любых параметров, указанных в фильтре, через пробел. Можете использовать символ * для вывода первых элементов списка"
                  mah:ControlsHelper.CornerRadius="2,0,0,2"
                  VerticalContentAlignment="Center" FontSize="15" Padding="35,0" BorderThickness="2">
             <TextBox.Style>

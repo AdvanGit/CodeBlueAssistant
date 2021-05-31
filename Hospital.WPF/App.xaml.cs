@@ -1,6 +1,4 @@
-﻿using Hospital.EntityFramework;
-using Hospital.EntityFramework.DataGenerator;
-using System.Windows;
+﻿using System.Windows;
 
 namespace Hospital.WPF
 {

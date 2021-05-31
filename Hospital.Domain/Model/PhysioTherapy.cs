@@ -41,7 +41,7 @@ namespace Hospital.Domain.Model
         [NotMapped]
         public DateTime Entry => TargetDateTime;
         [NotMapped]
-        public string Value { get => RemainingTime.ToString(); set { TimeSpan.TryParse(value, out _remainingTime); OnPropertyChanged(nameof(RemainingTime)) ; } }
+        public string Value { get => RemainingTime.ToString(); set { TimeSpan.TryParse(value, out _remainingTime); OnPropertyChanged(nameof(RemainingTime)); } }
         [NotMapped]
         public string Option { get => Localization; set { Localization = value; OnPropertyChanged(nameof(Option)); } }
         [NotMapped]

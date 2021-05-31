@@ -613,7 +613,7 @@ namespace Hospital.EntityFramework.DataGenerator
             };
             diagnoses.AddRange(_diagnoses);
         }
-            
+
         static List<Adress> GenerateAdresses(int count)
         {
             Random rnd = new Random();
@@ -683,33 +683,33 @@ namespace Hospital.EntityFramework.DataGenerator
             List<Patient> patients = new List<Patient>();
             string[] males = File.ReadAllLines("DataGenerator/Name.Male.txt");
             string[] females = File.ReadAllLines("DataGenerator/Name.Female.txt");
-                for (int i = 0; i < count; i++)
+            for (int i = 0; i < count; i++)
+            {
+                string[] stringarr = females;
+                Gender gender = Gender.female;
+                if (rnd.Next(2) == 1)
                 {
-                    string[] stringarr = females;
-                    Gender gender = Gender.female;
-                    if (rnd.Next(2) == 1)
-                    {
-                        stringarr = males;
-                        gender = Gender.male;
-                    }
-                    string[] words = Regex.Replace(stringarr[rnd.Next(stringarr.Count())], @"\s+", " ").Split(' ');
+                    stringarr = males;
+                    gender = Gender.male;
+                }
+                string[] words = Regex.Replace(stringarr[rnd.Next(stringarr.Count())], @"\s+", " ").Split(' ');
 
-                    Patient patient = new Patient
-                    {
-                        FirstName = words[0],
-                        MidName = words[1],
-                        LastName = words[2],
-                        Adress = adressesPatient[rnd.Next(adressesPatient.Count)],
-                        BirthDay = DateTime.Now - TimeSpan.FromDays(360 * rnd.Next(18, 80) - rnd.Next(360)),
-                        PhoneNumber = 89000000000 + rnd.Next(10000000, 999999999),
-                        Gender = gender,
-                        Belay = belays[rnd.Next(belays.Count)],
-                        BelayCode = rnd.Next(1000000,9999999),
-                        BelayDateOut = DateTime.Now + TimeSpan.FromDays(360*rnd.Next(1,8)+ rnd.Next(360)),
-                        HasChild = rnd.Next(2) == 0,
-                        IsMarried = rnd.Next(2) == 0
-                    };
-                    patients.Add(patient);
+                Patient patient = new Patient
+                {
+                    FirstName = words[0],
+                    MidName = words[1],
+                    LastName = words[2],
+                    Adress = adressesPatient[rnd.Next(adressesPatient.Count)],
+                    BirthDay = DateTime.Now - TimeSpan.FromDays(360 * rnd.Next(18, 80) - rnd.Next(360)),
+                    PhoneNumber = 89000000000 + rnd.Next(10000000, 999999999),
+                    Gender = gender,
+                    Belay = belays[rnd.Next(belays.Count)],
+                    BelayCode = rnd.Next(1000000, 9999999),
+                    BelayDateOut = DateTime.Now + TimeSpan.FromDays(360 * rnd.Next(1, 8) + rnd.Next(360)),
+                    HasChild = rnd.Next(2) == 0,
+                    IsMarried = rnd.Next(2) == 0
+                };
+                patients.Add(patient);
             }
             return patients;
         }
@@ -719,15 +719,15 @@ namespace Hospital.EntityFramework.DataGenerator
             List<Change> changes = new List<Change>();
             foreach (Staff staff in staffs)
             {
-                    TimeSpan span = TimeSpan.FromMinutes(rnd.Next(2, 12) * 5);
-                    int[] tst = { 8, 13, 17 };
-                    int timeStart = tst[rnd.Next(tst.Length)];
-                    TimeSpan workSpan = TimeSpan.FromHours(rnd.Next(6, 8));
+                TimeSpan span = TimeSpan.FromMinutes(rnd.Next(2, 12) * 5);
+                int[] tst = { 8, 13, 17 };
+                int timeStart = tst[rnd.Next(tst.Length)];
+                TimeSpan workSpan = TimeSpan.FromHours(rnd.Next(6, 8));
 
-                    switch (staff.WeekDays)
+                switch (staff.WeekDays)
                 {
                     case WeekDays.FiveTwo:
-                        for (DateTime _start = dateStart; _start < dateEnd; _start+=TimeSpan.FromDays(1))
+                        for (DateTime _start = dateStart; _start < dateEnd; _start += TimeSpan.FromDays(1))
                         {
                             if (_start.DayOfWeek != DayOfWeek.Saturday && _start.DayOfWeek != DayOfWeek.Sunday)
                             {
@@ -738,7 +738,7 @@ namespace Hospital.EntityFramework.DataGenerator
                         }
                         break;
                     case WeekDays.TwoTwo:
-                        for (DateTime _start = dateStart+TimeSpan.FromDays(rnd.Next(3)); _start < dateEnd; _start += TimeSpan.FromDays(4))
+                        for (DateTime _start = dateStart + TimeSpan.FromDays(rnd.Next(3)); _start < dateEnd; _start += TimeSpan.FromDays(4))
                         {
                             DateTime timeOne = new DateTime(_start.Year, _start.Month, _start.Day, timeStart, 0, 0);
                             DateTime timeTwo = timeOne + TimeSpan.FromDays(1);

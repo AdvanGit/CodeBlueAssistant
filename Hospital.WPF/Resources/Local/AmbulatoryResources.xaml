@@ -170,5 +170,9 @@
         <Setter Property="Background" Value="{StaticResource MahApps.Brushes.ThemeBackground}"/>
         <Setter Property="Thickness" Value="3"/>
     </Style>
-    
+
+    <Style TargetType="{x:Type StackPanel}" x:Key="StackPanel.Editable">
+        <Setter Property="IsEnabled" Value="{Binding Path=DataContext.IsEditable, RelativeSource={RelativeSource AncestorType={x:Type view:Ambulatory}}}"/>
+    </Style>
+
 </ResourceDictionary>

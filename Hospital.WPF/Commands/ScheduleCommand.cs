@@ -1,8 +1,6 @@
 ﻿using Hospital.ViewModel;
 using Hospital.WPF.Views;
 using System;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace Hospital.WPF.Commands
 {
@@ -15,7 +13,6 @@ namespace Hospital.WPF.Commands
         private static readonly Command _previousDate = new Command(obj => _vm.SelectedDate -= TimeSpan.FromDays(1));
         private static readonly Command _addColumn = new Command(obj => _view.TileColumnCount += 1, obj => _view.TileColumnCount < 5);
         private static readonly Command _removeColumn = new Command(obj => _view.TileColumnCount -= 1, obj => _view.TileColumnCount > 1);
-
         private static readonly Command _openTab = new Command(obj =>
         {
             bool isExist = false;

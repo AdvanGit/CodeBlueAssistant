@@ -6,7 +6,7 @@ using System.Windows.Media;
 namespace Hospital.WPF.Resources.Behaviors
 {
     /// <summary>
-    /// Selected item on mouse up button attached dependency property
+    /// Selected item on mouse UP button attached dependency property
     /// https://stackoverflow.com/questions/7589142/why-does-the-wpf-listbox-change-selection-on-mouse-button-down-rather-than-butto
     /// </summary>
     public static class SelectorBehavior

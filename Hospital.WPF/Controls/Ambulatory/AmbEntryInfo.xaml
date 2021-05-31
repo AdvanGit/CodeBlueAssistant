@@ -5,6 +5,7 @@
              xmlns:vm="clr-namespace:Hospital.ViewModel.Ambulatory;assembly=Hospital.ViewModel"
              xmlns:view="clr-namespace:Hospital.WPF.Views"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+             xmlns:behavior="clr-namespace:Hospital.WPF.Resources.Behaviors"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Ambulatory"
              DataContext="{Binding EntryViewModel}" d:DataContext="{d:DesignInstance IsDesignTimeCreatable=False, Type={x:Type vm:EntryViewModel}}"
@@ -54,7 +55,7 @@
                        Content="ТЕКУЩАЯ ЗАПИСЬ" FontWeight="DemiBold" FontSize="14"
                        Background="{StaticResource MahApps.Brushes.Accent}"
                        Foreground="White"/>
-                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
+                <StackPanel Style="{StaticResource StackPanel.Editable}" Orientation="Horizontal" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Right" VerticalAlignment="Center">
                     <StackPanel.Resources>
                         <Style TargetType="{x:Type Button}" BasedOn="{StaticResource Button.PathWithText}">
                             <Setter Property="Background" Value="Transparent"/>
@@ -200,7 +201,7 @@
                        FontWeight="DemiBold" FontSize="14"/>
 
                 <StackPanel Orientation="Vertical" Grid.Row="1">
-                    <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                    <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" behavior:IgnoreMouseWheelBehavior.IgnoreMouseWheel="True"
                         ItemsSource="{Binding Source={StaticResource cvsAddedDiagnosticDatas}}">
                         <ListBox.GroupStyle>
                             <GroupStyle>
@@ -302,8 +303,8 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                     </ListBox>
-                    
-                    <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+
+                    <ListBox ScrollViewer.HorizontalScrollBarVisibility="Disabled" behavior:IgnoreMouseWheelBehavior.IgnoreMouseWheel="True"
                              BorderBrush="{StaticResource BrushPrimaryBorderLight}"
                         ItemsSource="{Binding Source={StaticResource cvsAddedTherapyDatas}}">
                         <ListBox.GroupStyle>

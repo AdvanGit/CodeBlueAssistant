@@ -152,7 +152,6 @@
                                                     <MouseBinding MouseAction="LeftDoubleClick" 
                                                                   Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Schedule}}, Path=Command.OpenTab}"/>
                                                 </Border.InputBindings>
-                                                
                                             </Border>
                                             <Border x:Name="StatusBorder" IsHitTestVisible="False" RenderTransformOrigin="1 0.5" Grid.Column="0" Background="Transparent">
                                                 <Border.RenderTransform>
@@ -212,10 +211,14 @@
                                             <Setter Property="Background" TargetName="StatusBorder" Value="{StaticResource Brush.AccentGreen}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Path=EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="1">
-                                            <Setter Property="Background" TargetName="StatusBorder" Value="{StaticResource Brush.AccentRed}"/>
+                                            <Setter Property="Background" TargetName="StatusBorder" Value="lightgray"/>
+                                            <Setter Property="Foreground" Value="{StaticResource BrushPrimaryBorderDark}"/>
                                         </DataTrigger>
                                         <DataTrigger Binding="{Binding Path=EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="2">
-                                            <Setter Property="Background" TargetName="StatusBorder" Value="{StaticResource BrushForegroundVeryLight}"/>
+                                            <Setter Property="Background" TargetName="StatusBorder" Value="{StaticResource BrushPrimaryBorderDark}"/>
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=EntryStatus, Converter={StaticResource EnumValueToIndexConverter}}" Value="4">
+                                            <Setter Property="Background" TargetName="StatusBorder" Value="{StaticResource BrushAccentInvert}"/>
                                         </DataTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -223,6 +226,10 @@
                         </Setter>
                     </Style>
                 </ListBox.ItemContainerStyle>
+                <ListBox.InputBindings>
+                    <KeyBinding Key="Enter" 
+                                Command="{Binding RelativeSource={RelativeSource AncestorType={x:Type view:Schedule}}, Path=Command.OpenTab}"/>
+                </ListBox.InputBindings>
             </ListBox>
             
             <ContentControl Grid.Column="1" RenderTransformOrigin="1 1">

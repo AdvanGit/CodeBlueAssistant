@@ -4,7 +4,6 @@ using Hospital.WPF.Controls.Ambulatory;
 using Hospital.WPF.Navigators;
 using System;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System.Windows.Controls;
 
 namespace Hospital.WPF.Views
@@ -18,7 +17,7 @@ namespace Hospital.WPF.Views
 
         public AmbulatoryCommand Command { get; }
 
-        public Navigator MenuNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>() 
+        public Navigator MenuNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>()
         {
             new AmbDiagnostic(),
             new AmbTherapy(),

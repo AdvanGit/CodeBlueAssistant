@@ -8,7 +8,7 @@ namespace Hospital.EntityFramework
 {
     public class HospitalDbContext : DbContext
     {
-        public HospitalDbContext(DbContextOptions options) : base(options) {}
+        public HospitalDbContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Patient> Patients { get; set; }
         public DbSet<Staff> Staffs { get; set; }
@@ -55,9 +55,9 @@ namespace Hospital.EntityFramework
             //modelBuilder.Ignore<User>();
             modelBuilder.Ignore<Adress>();
             modelBuilder.Ignore<DomainObject>();
-            
+
             { //examples fluentApi
-                
+
                 //modelBuilder.Entity<Country>();   //Fluent API include  
                 //modelBuilder.Entity<>().Ignore(b => b.Rate);
                 //modelBuilder.Entity<User>().ToTable("People");
@@ -110,8 +110,7 @@ namespace Hospital.EntityFramework
                 });
             return Entry(entity);
         }
-
-        public void UpdateRangeWithoutTracking(IEnumerable<object> entities)
+        public IList<object> UpdateRangeWithoutTracking(IList<object> entities)
         {
             foreach (object entity in entities)
             {
@@ -132,11 +131,13 @@ namespace Hospital.EntityFramework
                         }
                         else
                         {
+                            node.Entry.State = EntityState.Added;
                             node.Entry.State = EntityState.Modified;
                         }
                     }
                 });
             }
+            return entities;
         }
 
         private class StaffConfig : IEntityTypeConfiguration<Staff>

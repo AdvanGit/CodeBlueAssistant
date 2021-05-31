@@ -3,11 +3,8 @@ using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Hospital.ViewModel
 {
@@ -15,7 +12,7 @@ namespace Hospital.ViewModel
     {
         private ScheduleDataServices scheduleDataServices = new ScheduleDataServices(new HospitalDbContextFactory());
 
-        public DateTime SelectedDate { get => _selectedDate; set { _selectedDate = value; OnPropertyChanged(nameof(SelectedDate)); GetEntry(value); } }
+        public DateTime SelectedDate { get => _selectedDate; set { _selectedDate = value; OnPropertyChanged(nameof(SelectedDate)); GetEntry(value).ConfigureAwait(true); } }
         private DateTime _selectedDate;
 
         private Entry _currentEntry;
@@ -28,7 +25,7 @@ namespace Hospital.ViewModel
             SelectedDate = new DateTime(2021, 05, 03);
         }
 
-        private async void GetEntry(DateTime date)
+        private async Task GetEntry(DateTime date)
         {
             IsLoading = true;
             try
@@ -39,9 +36,10 @@ namespace Hospital.ViewModel
             }
             catch (Exception ex)
             {
-                NotificationManager.AddException(ex,4);
+                NotificationManager.AddException(ex, 4);
             }
             IsLoading = false;
         }
+
     }
 }

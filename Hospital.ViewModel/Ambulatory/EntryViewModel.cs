@@ -30,7 +30,7 @@ namespace Hospital.ViewModel.Ambulatory
             DateTime = DateTime.Now
         };
 
-        public EntryViewModel(Entry currentEntry)
+        public void Initialize(Entry currentEntry)
         {
             CurrentEntry = currentEntry;
         }
@@ -84,11 +84,12 @@ namespace Hospital.ViewModel.Ambulatory
         }
         public void SetEntryOut(object item) => EntryOut = (Entry)item;
 
-        public async void ToAbsence()
+        public async Task ToAbsence()
         {
             try
             {
                 CurrentEntry.EntryStatus = EntryStatus.Неявка;
+
                 await entryDataServices.UpdateEntry(CurrentEntry);
                 NotificationManager.AddItem(new NotificationItem(NotificationType.Success, TimeSpan.FromSeconds(2), "Запись успешно обновлена"));
             }
@@ -97,7 +98,8 @@ namespace Hospital.ViewModel.Ambulatory
                 NotificationManager.AddException(ex, 6);
             }
         }
-        public async Task UpdateEntry()
+
+        public void ApplyNextEntry()
         {
             try
             {
@@ -105,11 +107,11 @@ namespace Hospital.ViewModel.Ambulatory
                 EntryOut.Patient = CurrentEntry.Patient;
                 EntryOut.CreateDateTime = DateTime.Now;
                 EntryOut.EntryStatus = EntryStatus.Ожидание;
+                CurrentEntry.MedCard.TherapyDoctor = CurrentEntry.DoctorDestination;
+                CurrentEntry.MedCard.Option = "test option";
                 EntryOut.MedCard = CurrentEntry.MedCard;
-                await entryDataServices.UpdateEntry(EntryOut);
                 CurrentEntry.EntryStatus = EntryStatus.Закрыта;
                 CurrentEntry.EntryOut = EntryOut;
-                await entryDataServices.UpdateEntry(CurrentEntry);
             }
             catch (Exception ex)
             {

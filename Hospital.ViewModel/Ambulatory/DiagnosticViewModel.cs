@@ -2,6 +2,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Hospital.ViewModel.Ambulatory
 {
@@ -43,12 +44,13 @@ namespace Hospital.ViewModel.Ambulatory
             + ToolContainer.Datas.Where(t => t.IsSymptom).Count();
         public int DataCount => PhysicalContainer.Datas.Count() + LabContainer.Datas.Count() + ToolContainer.Datas.Count();
 
-        protected internal async void Initialize(Entry entry) //container task to void
+        protected internal async Task Initialize(Entry entry) //container task to void
         {
             await LabContainer.Initialize(TestMethod.Лабараторная, entry);
             await ToolContainer.Initialize(TestMethod.Инструментальная, entry);
             await PhysicalContainer.Initialize(TestMethod.Физикальная, entry);
             PhysicalContainer.CurrentType = PhysicalContainer.TypeList.FirstOrDefault();
+            RaiseDataPropetryChange();
         }
 
         public void RaiseDataPropetryChange()
