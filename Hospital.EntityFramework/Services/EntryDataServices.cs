@@ -28,9 +28,6 @@ namespace Hospital.EntityFramework.Services
                 if (words[0] == "*") words[0] = "";
                 using (HospitalDbContext db = _contextFactory.CreateDbContext())
                 {
-                    //парсинг строки (Оставлены пробелы в конце и начале строки для удобства тестирования)
-
-
                     //Поиск смен по фильтру и строке
                     List<Change> allChanges = await db.Changes
                         .AsQueryable()
@@ -178,7 +175,5 @@ namespace Hospital.EntityFramework.Services
                 return entry;
             }
         }
-
-
     }
 }

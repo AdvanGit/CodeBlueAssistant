@@ -27,12 +27,12 @@ namespace Hospital.ViewModel.Ambulatory
             IsLoading = true;
             try
             {
+
                 CurrentEntry = await ambulatoryDataService.GetEntryById(entryId);
                 if (CurrentEntry.EntryStatus == Enum.Parse<EntryStatus>("3")) IsEditable = true;
                 else IsEditable = false;
                 if (CurrentEntry.MedCard == null) CurrentEntry.MedCard = new MedCard { Patient = CurrentEntry.Patient };
-                await DiagnosticViewModel.Initialize(CurrentEntry);
-                await TherapyViewModel.Initialize(CurrentEntry);
+                await Task.WhenAll(DiagnosticViewModel.Initialize(CurrentEntry), TherapyViewModel.Initialize(CurrentEntry));
                 EntryViewModel.Initialize(CurrentEntry);
                 Caption = CurrentEntry.TargetDateTime.ToShortTimeString();
             }

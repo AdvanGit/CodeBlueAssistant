@@ -24,16 +24,16 @@ namespace Hospital.ViewModel.Ambulatory
                 return _addedDatas;
             }
         }
-        private ObservableCollection<TestData> _dataIsSymptome = new ObservableCollection<TestData>();
+        private ObservableCollection<TestData> _dataIsSymptom = new ObservableCollection<TestData>();
         public ObservableCollection<TestData> DataIsSymptom
         {
             get
             {
-                _dataIsSymptome.Clear();
-                foreach (TestData data in PhysicalContainer.Datas.Where(p => p.IsSymptom)) _dataIsSymptome.Add(data);
-                foreach (TestData data in ToolContainer.Datas.Where(p => p.IsSymptom)) _dataIsSymptome.Add(data);
-                foreach (TestData data in LabContainer.Datas.Where(p => p.IsSymptom)) _dataIsSymptome.Add(data);
-                return _dataIsSymptome;
+                _dataIsSymptom.Clear();
+                foreach (TestData data in PhysicalContainer.Datas.Where(p => p.IsSymptom)) _dataIsSymptom.Add(data);
+                foreach (TestData data in ToolContainer.Datas.Where(p => p.IsSymptom)) _dataIsSymptom.Add(data);
+                foreach (TestData data in LabContainer.Datas.Where(p => p.IsSymptom)) _dataIsSymptom.Add(data);
+                return _dataIsSymptom;
             }
         }
 
@@ -44,11 +44,11 @@ namespace Hospital.ViewModel.Ambulatory
             + ToolContainer.Datas.Where(t => t.IsSymptom).Count();
         public int DataCount => PhysicalContainer.Datas.Count() + LabContainer.Datas.Count() + ToolContainer.Datas.Count();
 
-        protected internal async Task Initialize(Entry entry) //container task to void
+        protected internal async Task Initialize(Entry entry)
         {
-            await LabContainer.Initialize(TestMethod.Лабараторная, entry);
-            await ToolContainer.Initialize(TestMethod.Инструментальная, entry);
-            await PhysicalContainer.Initialize(TestMethod.Физикальная, entry);
+            await Task.WhenAll(LabContainer.Initialize(TestMethod.Лабараторная, entry),
+                                ToolContainer.Initialize(TestMethod.Инструментальная, entry),
+                                PhysicalContainer.Initialize(TestMethod.Физикальная, entry));
             PhysicalContainer.CurrentType = PhysicalContainer.TypeList.FirstOrDefault();
             RaiseDataPropetryChange();
         }

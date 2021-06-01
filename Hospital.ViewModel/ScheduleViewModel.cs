@@ -40,6 +40,5 @@ namespace Hospital.ViewModel
             }
             IsLoading = false;
         }
-
     }
 }

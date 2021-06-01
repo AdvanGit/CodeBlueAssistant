@@ -41,7 +41,6 @@ namespace Hospital.Domain.Model
         private string _title;
         private string _substance;
         private DrugForm _drugForm;
-        // trademarks list jsonparse
         private DrugSubGroup _drugSubGroup;
 
         public string Title { get => _title; set { _title = value; OnPropertyChanged("Title"); } }

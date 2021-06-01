@@ -9,7 +9,6 @@ namespace Hospital.Domain.Model
         private MedCard _medCard;
         private PhysioTherapyFactor _physioTherapyFactor;
         private PhysTherMethod _physTherMethod; //not use
-        private TimeSpan _duration;
         private string _localization;
         private string _params;
         private DateTime _targetDateTime;
@@ -17,22 +16,21 @@ namespace Hospital.Domain.Model
         private ProcedureStatus _procedureStatus;
         private Staff _operationDoctor;
         private Treatment _treatment;
-
-
+        private TimeSpan _duration;
         private TimeSpan _remainingTime;
 
         public MedCard MedCard { get => _medCard; set { _medCard = value; OnPropertyChanged(nameof(MedCard)); } }
         public PhysioTherapyFactor PhysioTherapyFactor { get => _physioTherapyFactor; set { _physioTherapyFactor = value; OnPropertyChanged("PhysioTherapyFactor"); } }
         public PhysTherMethod PhysTherMethod { get => _physTherMethod; set { _physTherMethod = value; OnPropertyChanged("PhysTherMethod"); } }
-        public TimeSpan Duration { get => _duration; set { _duration = value; OnPropertyChanged(nameof(Duration)); } }
         public string Localization { get => _localization; set { _localization = value; OnPropertyChanged(nameof(Localization)); OnPropertyChanged(nameof(Option)); } }
         public string Params { get => _params; set { _params = value; OnPropertyChanged(nameof(Params)); OnPropertyChanged(nameof(Value)); } }
         public DateTime TargetDateTime { get => _targetDateTime; set { _targetDateTime = value; OnPropertyChanged("TargetDateTime"); } }
         public DateTime CreateDateTime { get => _createDateTime; set { _createDateTime = value; OnPropertyChanged("CreateDateTime"); } }
         public ProcedureStatus ProcedureStatus { get => _procedureStatus; set { _procedureStatus = value; OnPropertyChanged("PhysTherStatus"); } }
         public Staff OperationDoctor { get => _operationDoctor; set { _operationDoctor = value; OnPropertyChanged(nameof(OperationDoctor)); } }
-        public TimeSpan RemainingTime { get => _remainingTime; set { _remainingTime = value; OnPropertyChanged(nameof(RemainingTime)); OnPropertyChanged(nameof(Value)); } }
         public Treatment Treatment { get => _treatment; set { _treatment = value; OnPropertyChanged(nameof(Treatment)); } }
+        public TimeSpan Duration { get => _duration; set { _duration = value; OnPropertyChanged(nameof(Duration)); } }
+        public TimeSpan RemainingTime { get => _remainingTime; set { _remainingTime = value; OnPropertyChanged(nameof(RemainingTime)); OnPropertyChanged(nameof(Value)); } }
 
         [NotMapped]
         public string Title => PhysioTherapyFactor.Caption;

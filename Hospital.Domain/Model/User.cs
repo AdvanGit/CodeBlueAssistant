@@ -102,63 +102,12 @@ namespace Hospital.Domain.Model
         public ObservableCollection<Entry> Registrators { get; set; }
         public ObservableCollection<Entry> DoctorDestinations { get; set; }
 
-        public bool IsEnabled
-        {
-            get => _isEnabled;
-            set
-            {
-                _isEnabled = value;
-                OnPropertyChanged("IsEnabled");
-            }
-        }
-        public string Password
-        {
-            get { return _password; }
-            set
-            {
-                _password = value;
-                OnPropertyChanged("Password");
-            }
-        }
-        public string Qualification
-        {
-            get { return _qualification; }
-            set
-            {
-                _qualification = value;
-                OnPropertyChanged("Qualification");
-            }
-        }
-        public WeekDays WeekDays
-        {
-            get => _weekDays;
-            set
-            {
-                _weekDays = value;
-                OnPropertyChanged("WeekDays");
-            }
-        }
-        public int Cabinet
-        {
-            get => _cabinet;
-            set
-            {
-                _cabinet = value;
-                OnPropertyChanged("Cabinet");
-            }
-        }
-        public Department Department
-        {
-            get
-            {
-                return _department;
-            }
-            set
-            {
-                _department = value;
-                OnPropertyChanged("Department");
-            }
-        }
+        public bool IsEnabled { get => _isEnabled; set { _isEnabled = value; OnPropertyChanged("IsEnabled"); } }
+        public string Password { get => _password; set { _password = value; OnPropertyChanged("Password"); }}
+        public string Qualification { get => _qualification; set { _qualification = value; OnPropertyChanged("Qualification"); } }
+        public WeekDays WeekDays { get => _weekDays; set { _weekDays = value; OnPropertyChanged("WeekDays"); }}
+        public int Cabinet { get => _cabinet; set { _cabinet = value; OnPropertyChanged("Cabinet"); }}
+        public Department Department { get => _department; set { _department = value; OnPropertyChanged("Department"); }}
     }
 
     public class Patient : User
@@ -169,50 +118,10 @@ namespace Hospital.Domain.Model
         private bool _isMarried;
         private bool _hasChild;
 
-        public Belay Belay
-        {
-            get => _belay;
-            set
-            {
-                _belay = value;
-                OnPropertyChanged("Belay");
-            }
-        }
-        public int BelayCode
-        {
-            get => _belayCode;
-            set
-            {
-                _belayCode = value;
-                OnPropertyChanged("BelayCode");
-            }
-        }
-        public DateTime BelayDateOut
-        {
-            get => _belayDateOut;
-            set
-            {
-                _belayDateOut = value;
-                OnPropertyChanged("BelayDateOut");
-            }
-        }
-        public bool IsMarried
-        {
-            get => _isMarried;
-            set
-            {
-                _isMarried = value;
-                OnPropertyChanged("IsMarried");
-            }
-        }
-        public bool HasChild
-        {
-            get => _hasChild;
-            set
-            {
-                _hasChild = value;
-                OnPropertyChanged("HasChild");
-            }
-        }
+        public Belay Belay { get => _belay; set { _belay = value; OnPropertyChanged("Belay"); }}
+        public int BelayCode { get => _belayCode; set { _belayCode = value; OnPropertyChanged("BelayCode"); }}
+        public DateTime BelayDateOut { get => _belayDateOut; set { _belayDateOut = value; OnPropertyChanged("BelayDateOut"); }}
+        public bool IsMarried { get => _isMarried; set { _isMarried = value; OnPropertyChanged("IsMarried"); }}
+        public bool HasChild { get => _hasChild; set { _hasChild = value; OnPropertyChanged("HasChild"); } }
     }
 }

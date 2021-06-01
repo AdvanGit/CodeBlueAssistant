@@ -147,7 +147,7 @@ namespace Hospital.EntityFramework
                 builder.Property(s => s.IsEnabled).HasDefaultValue(true);
                 builder.Property(s => s.LastName).IsRequired();
                 builder.Property(s => s.FirstName).IsRequired();
-                //builder.Property(s => s.CreateDate).HasDefaultValueSql("NOW()");
+                //builder.Property(s => s.CreateDate).HasDefaultValueSql("NOW()"); //зависит от провайдера, лучше настраивать вручную
                 builder.Property(s => s._Adress).HasColumnName("Adress");
                 builder.HasOne(s => s.Department).WithMany(d => d.Staffs);
 
@@ -177,7 +177,7 @@ namespace Hospital.EntityFramework
         {
             public void Configure(EntityTypeBuilder<MedCard> builder)
             {
-                //builder.Property(p => p.DiagnosisId).IsRequired();
+                //builder.Property(p => p.DiagnosisId).IsRequired(); //решить, либо оставлять null, либо сделать спец диагноз "не установлен"
                 //builder.Property(p => p.Conclusion).IsRequired();
             }
         }

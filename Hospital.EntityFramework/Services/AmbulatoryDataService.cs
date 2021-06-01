@@ -146,7 +146,6 @@ namespace Hospital.EntityFramework.Services
                 return result;
             }
         }
-
         public async Task<IEnumerable<DrugSubClass>> GetDrugSubClasses(DrugClass drugClass)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
@@ -169,7 +168,6 @@ namespace Hospital.EntityFramework.Services
                 return result;
             }
         }
-
         public async Task<IEnumerable<Drug>> GetDrugs(DrugGroup drugGroup)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())

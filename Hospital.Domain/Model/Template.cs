@@ -15,11 +15,7 @@ namespace Hospital.Domain.Model
         public TestType Category { get => _category; set { _category = value; OnPropertyChanged(nameof(Category)); } }
         public string Title { get => _title; set { _title = value; OnPropertyChanged(nameof(Title)); } }
 
-        public string JsonObjects
-        {
-            get;
-            set;
-        }
+        public string JsonObjects { get; set;}
 
         [NotMapped] //хранение в int потому как нужно будет делать запрос к актуальным тестам, хранение объектов нецелесообразно
         public IEnumerable<int> Objects
@@ -28,7 +24,7 @@ namespace Hospital.Domain.Model
             set { JsonObjects = JsonSerializer.Serialize(value, typeof(DomainObject)); }
         }
 
-        [NotMapped] //только запись
+        [NotMapped] //инициализация шаблона вручную списком тестов
         public IEnumerable<Test> Test
         {
             set { JsonObjects = JsonSerializer.Serialize(value.Select(v => v.Id).Cast<int>()); }

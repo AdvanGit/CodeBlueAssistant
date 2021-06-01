@@ -22,8 +22,6 @@ namespace Hospital.Domain.Model
         public DateTime DateTimeEnd { get => _dateTimeEnd; set { _dateTimeEnd = value; OnPropertyChanged(nameof(DateTimeEnd)); } }
         public TimeSpan TimeSpan { get => _timeSpan; set { _timeSpan = value; OnPropertyChanged(nameof(TimeSpan)); } }
 
-        //public List<DateTime> DateTimes { get => GetTimes(); }
-
         public List<DateTime> GetTimes()
         {
             var dateTimes = new List<DateTime>();

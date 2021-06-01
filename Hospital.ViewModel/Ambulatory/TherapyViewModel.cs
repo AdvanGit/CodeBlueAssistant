@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace Hospital.ViewModel.Ambulatory
 {
+    /// <summary>
+    /// Всю структуру класса нужно переделать с созданием контейнера наследника ITherapyData, аналогично DiagnosticViewModel
+    /// </summary>
     public class TherapyViewModel : MainViewModel
     {
         private readonly ITherapyDataService therapyDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
@@ -32,7 +35,7 @@ namespace Hospital.ViewModel.Ambulatory
         private DrugSubClass _currentDrugSubClass;
         private DrugGroup _currentDrugGroup;
 
-        //private PhysioTherapyFactor _currentPhysioFactor;
+        //private PhysioTherapyFactor _currentPhysioFactor; //на данный момент не используется
         private PhysTherFactGroup _currentPhysioFactGroup;
 
         private DiagnosisClass _currentDiagnosisClass;
@@ -93,7 +96,7 @@ namespace Hospital.ViewModel.Ambulatory
             SurgeryData.TherapyDoctor = entry.DoctorDestination;
             SurgeryData.ProcedureStatus = ProcedureStatus.Редакция;
 
-            Diagnoses.Add(entry.MedCard?.Diagnosis); //check
+            Diagnoses.Add(entry.MedCard?.Diagnosis);
             CurrentDiagnosis = entry.MedCard?.Diagnosis;
 
             RaiseDataPropertyChanged();
@@ -243,7 +246,7 @@ namespace Hospital.ViewModel.Ambulatory
                 NotificationManager.AddException(ex, 4);
             }
             IsLoadingPhysio = false;
-        } //null check all above on method params
+        } 
 
         private async Task GetSurgeryGroups(SurgeryType type)
         {
