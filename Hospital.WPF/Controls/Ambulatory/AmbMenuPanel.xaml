@@ -184,7 +184,7 @@
                                             <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                                                     <TextBlock Grid.Row="0" FontSize="14" HorizontalAlignment="Left" TextWrapping="Wrap">
                                                         <TextBlock.Text>
-                                                            <MultiBinding StringFormat="{}Диагноз: {0} {1}. {2} {3:dd.MM}" FallbackValue="ДИАГНОЗ: не установлен">
+                                                            <MultiBinding StringFormat="{}Диагноз: {0} {1}. {2} {3:dd.MM}" FallbackValue="Диагноз: не установлен">
                                                                 <Binding Path="TherapyViewModel.CurrentDiagnosis.Code" Mode="OneWay"/>
                                                                 <Binding Path="TherapyViewModel.CurrentDiagnosis.Title" Mode="OneWay"/>
                                                                 <Binding Path="TherapyViewModel.MedCard.DiagnosisDoctor.FirstName" Mode="OneWay"/>

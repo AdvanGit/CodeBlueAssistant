@@ -55,9 +55,16 @@
                 <TextBlock Text="{Binding SelectedPatient.PhoneNumber, StringFormat=тел. {0}}" FontSize="16"/>
         </StackPanel>
 
-        <Button Content="РЕДАКТИРОВАТЬ"
-                FontSize="15" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource MahApps.Styles.Button.ToolBar}"
+        <Button Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Style="{StaticResource Button.PathWithText}" Padding="10"
+                        Foreground="{StaticResource BrushForegroundVeryLight}" BorderBrush="Transparent"
+                        mah:ItemHelper.HoverForegroundBrush="{StaticResource Brush.AccentGreen}"
+                        mah:ControlsHelper.FocusBorderBrush="{StaticResource Brush.AccentGreen}"
                 Command="{Binding Path=Command.EditPatient, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"
-                CommandParameter="false"/>
+                CommandParameter="false">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="РЕДАКТИРОВАТЬ"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </UserControl>

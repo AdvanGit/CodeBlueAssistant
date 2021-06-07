@@ -60,7 +60,16 @@
 
         <TextBlock Grid.Column="1" VerticalAlignment="Bottom" HorizontalAlignment="Left" Text="{Binding SelectedEntry.TargetDateTime, StringFormat=HH:mm}" FontSize="30" Margin="10,5"/>
 
-        <Button Content="СОХРАНИТЬ" FontSize="15" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource MahApps.Styles.Button.ToolBar}"
-                Command="{Binding Path=Command.CreateEntry, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}"/>
+        <Button Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Bottom"
+                Style="{StaticResource Button.PathWithText}" Padding="8"
+                        Foreground="{StaticResource MahApps.Brushes.Accent}" BorderBrush="Transparent"
+                        mah:ItemHelper.HoverForegroundBrush="{StaticResource Brush.AccentGreen}"
+                        mah:ControlsHelper.FocusBorderBrush="{StaticResource Brush.AccentGreen}"
+                Command="{Binding Path=Command.CreateEntry, RelativeSource={RelativeSource AncestorType={x:Type view:Registrator}}}">
+            <StackPanel Orientation="Horizontal">
+                <Path Data="{StaticResource path.Save}" Margin="8 0"/>
+                <TextBlock Text="СОХРАНИТЬ"/>
+            </StackPanel>
+        </Button>
     </Grid>
 </UserControl>

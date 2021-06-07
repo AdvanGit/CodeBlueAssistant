@@ -6,6 +6,7 @@
     <UseWPF>true</UseWPF>
     <StartupObject>Hospital.WPF.App</StartupObject>
     <Version>0.0.1</Version>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <ItemGroup>

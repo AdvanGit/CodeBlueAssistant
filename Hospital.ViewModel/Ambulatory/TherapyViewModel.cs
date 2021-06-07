@@ -394,6 +394,7 @@ namespace Hospital.ViewModel.Ambulatory
                 if (value != null)
                 {
                     MedCard.Diagnosis = value;
+
                     MedCard.DiagnosisDoctor = _currentEntry.DoctorDestination;
                     MedCard.DiagnosisDate = DateTime.Now;
                 }

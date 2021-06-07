@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:ser="clr-namespace:Hospital.WPF.Services"
+             xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              xmlns:notificator="clr-namespace:Hospital.ViewModel.Notificator;assembly=Hospital.ViewModel"
              mc:Ignorable="d"
              MinHeight="70" MaxHeight="200" Background="Black" Foreground="White" Opacity="0.85"
@@ -52,7 +53,10 @@
     <Grid>
         <TextBlock Margin="100 20" Text="{Binding Path=(notificator:NotificationManager.Message), Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                    FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center" TextWrapping="WrapWithOverflow"/>
-        <Button x:Name="test" Content="close" Height="30" Width="50" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,50,0" Click="Button_Click" Background="Transparent" Foreground="White"/>
+        <Button Style="{StaticResource Button.Common}" x:Name="test" Content="OK" Height="30" Width="50" 
+                BorderThickness="1" mah:ControlsHelper.CornerRadius="2"
+                mah:ControlsHelper.FocusBorderBrush="White"
+                HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,50,0" Click="Button_Click" Background="Transparent" Foreground="White"/>
         <Path VerticalAlignment="Center" HorizontalAlignment="Left" Margin="50,0,0,0" Stretch="Uniform" Width="35" Height="35">
             <Path.Style>
                 <Style TargetType="{x:Type Path}">

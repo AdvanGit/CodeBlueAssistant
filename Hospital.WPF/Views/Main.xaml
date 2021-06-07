@@ -10,8 +10,9 @@
 		mc:Ignorable="d" ResizeMode="CanResize" WindowStartupLocation="CenterScreen"
 		BorderThickness="0" GlowBrush="{StaticResource MahApps.Brushes.Gray1}"
 		TitleBarHeight="34" NonActiveWindowTitleBrush="White" WindowTitleBrush="White"
-		OverrideDefaultWindowCommandsBrush="Black" TitleForeground="Black"      
-		TitleAlignment="Center" Title="{Binding HeaderCaption}" Height="720" Width="1280">
+		OverrideDefaultWindowCommandsBrush="Black"
+        TitleForeground="{StaticResource BrushForegroundLight}"  TitleCharacterCasing="Normal" FontSize="16"
+		TitleAlignment="Center" Title="{Binding HeaderCaption}" MinWidth="640"  MinHeight="480" Height="720" Width="1280">
    
 	<mah:MetroWindow.LeftWindowCommands>
 		<mah:WindowCommands ShowLastSeparator="False">
@@ -21,7 +22,7 @@
                         Foreground="{StaticResource BrushPrimaryBorderDark}">
                     <Path Data="{StaticResource path.Menu}" Margin="10" Stretch="Uniform"/>
                 </Button>
-				<ListBox Foreground="{DynamicResource MahApps.Brushes.Gray}" Cursor="Hand"
+				<ListBox Foreground="{StaticResource MahApps.Brushes.Gray}" Cursor="Hand"
 						 VerticalAlignment="Bottom"
 						 ItemsSource="{Binding MenuNavigator.Bodies, ElementName=MainWindow}"
 						 SelectedItem="{Binding CurrentPage, ElementName=MainWindow}"
@@ -60,11 +61,11 @@
     </mah:MetroWindow.RightWindowCommands>
     
     <Grid>
-        <mah:TransitioningContentControl Content="{Binding CurrentPage, ElementName=MainWindow}" Transition="Default"/>
+        <mah:TransitioningContentControl FontSize="12" Content="{Binding CurrentPage, ElementName=MainWindow}" Transition="Default"/>
 
         <Border BorderThickness="0,1,0,0" VerticalAlignment="Top" BorderBrush="{StaticResource BrushPrimaryBorderLight}"/>
         <ContentControl VerticalAlignment="Bottom">
-            <controls:NotificationArea/>
+            <controls:NotificationArea FontSize="12"/>
         </ContentControl>
     </Grid>
 </mah:MetroWindow>

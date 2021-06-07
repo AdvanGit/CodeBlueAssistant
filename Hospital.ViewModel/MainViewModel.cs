@@ -6,7 +6,7 @@ namespace Hospital.ViewModel
     public class MainViewModel : INotifyPropertyChanged
     {
         internal static int CurrentStuffId { get; set; }
-        private static string _headerCaption = "HOSPITAL Preview 0.1";
+        private static string _headerCaption = "CodeBLUE Assistant Preview 0.1";
         public static string HeaderCaption { get => _headerCaption; set { _headerCaption = value; NotifyStaticPropertyChanged(nameof(HeaderCaption)); } }
 
         private bool _isLoading = false;
