@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.ViewModel.Ambulatory
 {
-    public class TestContainer : INotifyPropertyChanged //exeptions
+    public class TestContainer : INotifyPropertyChanged
     {
         private readonly ITestDataService testDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
         private Entry entry;

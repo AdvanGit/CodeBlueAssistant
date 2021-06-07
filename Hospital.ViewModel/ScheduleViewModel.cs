@@ -32,6 +32,7 @@ namespace Hospital.ViewModel
             {
                 Entries.Clear();
                 var result = await scheduleDataServices.GetEntriesByDate(CurrentStuffId, date);
+                Entries.Clear();
                 foreach (Entry entry in result) Entries.Add(entry);
             }
             catch (Exception ex)

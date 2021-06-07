@@ -16,7 +16,11 @@
 	<mah:MetroWindow.LeftWindowCommands>
 		<mah:WindowCommands ShowLastSeparator="False">
             <StackPanel Orientation="Horizontal">
-				<Button Content="menu"/>
+                <Button Style="{StaticResource Button.PathWithText}" ToolTip="Недоступно"
+                        mah:ItemHelper.HoverForegroundBrush="{DynamicResource MahApps.Brushes.Accent}"
+                        Foreground="{StaticResource BrushPrimaryBorderDark}">
+                    <Path Data="{StaticResource path.Menu}" Margin="10" Stretch="Uniform"/>
+                </Button>
 				<ListBox Foreground="{DynamicResource MahApps.Brushes.Gray}" Cursor="Hand"
 						 VerticalAlignment="Bottom"
 						 ItemsSource="{Binding MenuNavigator.Bodies, ElementName=MainWindow}"
