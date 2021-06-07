@@ -24,8 +24,7 @@
                         <Border x:Name="b_hover" Opacity="0" Width="5" HorizontalAlignment="Left"
                                 Background="{Binding (mah:ItemHelper.HoverBackgroundBrush), Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                         <Border x:Name="b_selected" Opacity="0"
-                                Background="{Binding (mah:ItemHelper.SelectedBackgroundBrush), Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}">
-                        </Border>
+                                Background="{Binding (mah:ItemHelper.SelectedBackgroundBrush), Mode=OneWay, RelativeSource={RelativeSource TemplatedParent}}"/>
                         <Expander x:Name="ExpanderMenu"
                                     VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
                                     HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -33,7 +32,7 @@
                                     Background="Transparent"
                                     Foreground="{TemplateBinding Foreground}"
                                     IsExpanded="{Binding RelativeSource={RelativeSource AncestorType=ListBoxItem}, Path=IsSelected}"
-                                    IsHitTestVisible="False" BorderThickness="0,0,0,0" BorderBrush="{DynamicResource BrushPrimaryBorderLight}"
+                                    IsHitTestVisible="False" BorderThickness="0,0,0,0" BorderBrush="{StaticResource BrushPrimaryBorderLight}"
                                     Padding="0 10" FontSize="20">
                             <Expander.Header>
                                 <Grid Height="25">
@@ -253,6 +252,20 @@
                                 <VisualStateGroup.Transitions>
                                     <VisualTransition GeneratedDuration="0:0:0.2" To="Normal" />
                                 </VisualStateGroup.Transitions>
+                                <VisualState x:Name="MouseOver">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="UnderlineBorder"
+                                                         Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleX)"
+                                                         Duration="0:0:0.1" To="1"/>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Normal">
+                                    <Storyboard>
+                                        <DoubleAnimation Storyboard.TargetName="UnderlineBorder"
+                                                         Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleX)"
+                                                         Duration="0:0:0.2" To="0.6"/>
+                                    </Storyboard>
+                                </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup Name="SelectionStates">
                                 <VisualStateGroup.Transitions>
@@ -261,9 +274,10 @@
                                 <VisualState Name="Selected">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="SelectedBorder" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" />
+                                        <DoubleAnimation Storyboard.TargetName="UnderlineBorder" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.2" />
                                     </Storyboard>
                                 </VisualState>
-                                <VisualState Name="Unselected" />
+                                <VisualState Name="Unselected"/>
                                 <VisualState Name="SelectedUnfocused">
                                     <Storyboard>
                                         <DoubleAnimation Storyboard.TargetName="SelectedBorder" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.2" />
@@ -276,14 +290,18 @@
                                 <ColumnDefinition MinWidth="50"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Border Grid.ColumnSpan="2" BorderThickness="0 0 1 0"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    Margin="0,4"/>
+                            <Border Grid.ColumnSpan="2" BorderThickness="0 0 0 3"
+                                    Name="UnderlineBorder" RenderTransformOrigin="0.5 0"
+                                    BorderBrush="{TemplateBinding BorderBrush}">
+                                <Border.RenderTransform>
+                                    <ScaleTransform ScaleX="0.6"/>
+                                </Border.RenderTransform>
+                            </Border>
                             <Border Name="SelectedBorder" Grid.ColumnSpan="2"
-                                    BorderThickness="0,0,0,0" Margin="-1 0 0 0"
+                                    Margin="0 0 0 0"
                                     CornerRadius="{Binding Path=(mah:ControlsHelper.CornerRadius), RelativeSource={RelativeSource Mode=TemplatedParent}, Mode=OneWay}"
                                     Background="{DynamicResource MahApps.Brushes.Accent }"
-                                    BorderBrush="{DynamicResource MahApps.Brushes.Accent}" Opacity="0"/>
+                                    Opacity="0"/>
                             <ProgressBar Grid.ColumnSpan="2" BorderThickness="0"
                                          Foreground="{DynamicResource MahApps.Brushes.Accent2}"
                                          Background="Transparent" IsIndeterminate="{Binding Path=DataContext.IsLoading}">

@@ -6,19 +6,28 @@
     <UseWPF>true</UseWPF>
     <StartupObject>Hospital.WPF.App</StartupObject>
     <Version>0.0.1</Version>
+    <SignAssembly>false</SignAssembly>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DocumentationFile></DocumentationFile>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+
+   
   <ItemGroup>
     <PackageReference Include="MahApps.Metro" Version="2.4.5" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hospital.ViewModel\Hospital.ViewModel.csproj" />
+    <ProjectReference Include="..\Hospital.ViewModel\Hospital.ViewModel.csproj">
+      <ReferenceOutputAssembly>true</ReferenceOutputAssembly>
+    </ProjectReference>
   </ItemGroup>
 
 </Project>
