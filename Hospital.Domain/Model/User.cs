@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace Hospital.Domain.Model
 {
-    public enum Gender : byte { male, female }
+    public enum Gender : byte { Мужской = 0, Женский = 1 }
     public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
 
     public class User : DomainObject

@@ -47,11 +47,9 @@ namespace Hospital.WPF.Commands
             });
         private static readonly Command _savePatient = new Command(async obj =>
             {
-                var command = _vm.SavePatient();
-                await command;
-                if (command.IsCompletedSuccessfully) _view.Navigator.SetBody(typeof(RegPatientTable));
-            });
-        private static readonly Command _createEntry = new Command(async obj => await _vm.CreateEntry(), obj => { return (_vm.SelectedEntry != null && _vm.SelectedPatient != null); });
+                await _vm.SavePatient(); _view.Navigator.SetBody(typeof(RegPatientTable));
+            }, obj => _vm.EditingPatient!=null &&  _vm.EditingPatient.FirstName!=null && _vm.EditingPatient.MidName != null && _vm.EditingPatient.LastName != null && _vm.EditingPatient.PhoneNumber !=0);
+        private static readonly Command _createEntry = new Command(async obj => await _vm.CreateEntry(), obj => _vm.SelectedEntry != null && _vm.SelectedPatient != null );
         private static readonly Command _getSearchFunc = new Command(async obj =>
         {
             if (obj.ToString() == "0") await _vm.SearchDoctor();

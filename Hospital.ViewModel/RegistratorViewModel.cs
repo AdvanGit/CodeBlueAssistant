@@ -175,7 +175,7 @@ namespace Hospital.ViewModel
             await genericDataServicesEntry.Update(SelectedEntry.Id, SelectedEntry);
             SelectedEntry = null;
             SelectedPatient = null;
-        } //check on exist баг создания записи, если уже есть запись на текущее время. вследствии механизма автоматического выбора. сделать проверку, и предложение заменить, проапдейтить запись
+        }
 
         public void SelectEntity(object entity)
         {
@@ -184,7 +184,7 @@ namespace Hospital.ViewModel
         }
         public void EditPatient(bool isNew)
         {
-            if (isNew) EditingPatient = new Patient();
+            if (isNew) EditingPatient = new Patient() { BirthDay = DateTime.Now };
             else EditingPatient = (Patient)SelectedPatient.Clone();
         }
 

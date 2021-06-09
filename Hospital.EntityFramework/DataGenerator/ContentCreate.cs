@@ -650,11 +650,11 @@ namespace Hospital.EntityFramework.DataGenerator
                 for (int i = 0; i < countOnDepartment; i++)
                 {
                     string[] stringarr = females;
-                    Gender gender = Gender.female;
+                    Gender gender = Gender.Женский;
                     if (rnd.Next(2) == 1)
                     {
                         stringarr = males;
-                        gender = Gender.male;
+                        gender = Gender.Мужской;
                     }
                     string[] words = Regex.Replace(stringarr[rnd.Next(stringarr.Count())], @"\s+", " ").Split(' ');
 
@@ -686,11 +686,11 @@ namespace Hospital.EntityFramework.DataGenerator
             for (int i = 0; i < count; i++)
             {
                 string[] stringarr = females;
-                Gender gender = Gender.female;
+                Gender gender = Gender.Женский;
                 if (rnd.Next(2) == 1)
                 {
                     stringarr = males;
-                    gender = Gender.male;
+                    gender = Gender.Мужской;
                 }
                 string[] words = Regex.Replace(stringarr[rnd.Next(stringarr.Count())], @"\s+", " ").Split(' ');
 
