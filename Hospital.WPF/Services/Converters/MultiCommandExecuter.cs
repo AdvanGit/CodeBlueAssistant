@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Hospital.WPF.Services
+namespace Hospital.WPF.Services.Converters
 {
-    class MultiCommandExecuter : IMultiValueConverter
+    public class MultiCommandExecuter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

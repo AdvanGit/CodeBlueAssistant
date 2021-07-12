@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Windows.Data;
 using System.Windows.Media;
 
-namespace Hospital.WPF.Services
+namespace Hospital.WPF.Services.Converters
 {
     public class DiameterToLenghtConverter : IMultiValueConverter
     {

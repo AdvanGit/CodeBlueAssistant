@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Globalization;
+using System.Windows;
 using System.Windows.Data;
 
-namespace Hospital.WPF.Services
+namespace Hospital.WPF.Services.Converters
 {
-    public class EnumValueToIndexConverter : IValueConverter
+    public class TimeSpanToDurationConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-
-            int index = (int)Enum.Parse(value.GetType(), value.ToString());
-            return index;
+            return new Duration((TimeSpan)value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

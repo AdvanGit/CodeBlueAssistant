@@ -2,9 +2,9 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Hospital.WPF.Services
+namespace Hospital.WPF.Services.Converters
 {
-    class ScheduleRowCountConverter : IMultiValueConverter
+    public class ScheduleRowCountConverter : IMultiValueConverter
     {
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {

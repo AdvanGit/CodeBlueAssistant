@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
-namespace Hospital.WPF.Services
+namespace Hospital.WPF.Services.Converters
 {
-    class TimeSpanToDurationConverter : IValueConverter
+    public class ObjectNullToBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new Duration((TimeSpan)value);
+            return value != null;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

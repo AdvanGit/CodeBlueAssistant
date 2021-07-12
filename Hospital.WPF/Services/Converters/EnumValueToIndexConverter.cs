@@ -2,13 +2,15 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Hospital.WPF.Services
+namespace Hospital.WPF.Services.Converters
 {
-    class ObjectNullToBoolConverter : IValueConverter
+    public class EnumValueToIndexConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value != null;
+
+            int index = (int)Enum.Parse(value.GetType(), value.ToString());
+            return index;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

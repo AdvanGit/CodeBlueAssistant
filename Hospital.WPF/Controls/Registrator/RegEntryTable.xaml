@@ -11,10 +11,6 @@
              d:DataContext="{d:DesignInstance Type={x:Type vm:RegistratorViewModel}, IsDesignTimeCreatable=True}"
              mc:Ignorable="d" d:DesignHeight="200" d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <services:RowDisablingConverter x:Key="MyRowConverter"/>
-    </UserControl.Resources>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition />

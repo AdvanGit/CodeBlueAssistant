@@ -10,7 +10,6 @@ namespace Hospital.ViewModel.Notificator
         Error,
     }
 
-
     public struct NotificationItem
     {
         public NotificationItem(NotificationType type, TimeSpan hold, string message, bool isStop = false, bool isManual = false)

@@ -9,9 +9,6 @@
              mc:Ignorable="d"
              MinHeight="70" MaxHeight="200" Background="Black" Foreground="White" Opacity="0.85"
              d:DesignHeight="100" d:DesignWidth="800">
-    <UserControl.Resources>
-        <ser:TimeSpanToDurationConverter x:Key="durationConverter"/>
-    </UserControl.Resources>
     <UserControl.Style>
         <Style TargetType="{x:Type UserControl}">
             <Setter Property="Visibility" Value="Collapsed"/>
@@ -111,7 +108,7 @@
                     <EventTrigger.Actions>
                         <BeginStoryboard>
                             <Storyboard>
-                                <DoubleAnimation Duration="{Binding Path=(notificator:NotificationManager.Span), Mode=OneWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, Converter={StaticResource durationConverter}}"
+                                <DoubleAnimation Duration="{Binding Path=(notificator:NotificationManager.Span), Mode=OneWay, UpdateSourceTrigger=PropertyChanged, NotifyOnTargetUpdated=True, Converter={StaticResource DurationConverter}}"
                                                  From="0" To="1" Storyboard.TargetProperty="(ContentPresenter.RenderTransform).(ScaleTransform.ScaleX)"/>
                             </Storyboard>
                         </BeginStoryboard>

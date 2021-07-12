@@ -3,9 +3,9 @@ using System;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace Hospital.WPF.Services
+namespace Hospital.WPF.Services.Converters
 {
-    class RowDisablingConverter : IValueConverter
+    public class RowDisablingConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

@@ -6,15 +6,10 @@
       xmlns:local="clr-namespace:Hospital.WPF.Views"
       xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
       xmlns:controls="clr-namespace:Hospital.WPF.Controls.Schedule"
-      xmlns:con="clr-namespace:Hospital.WPF.Services"
       xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
       xmlns:view="clr-namespace:Hospital.WPF.Views"
       mc:Ignorable="d" d:DataContext="{d:DesignInstance Type={x:Type vm:ScheduleViewModel}}"
       d:DesignHeight="450" d:DesignWidth="868.296">
-    
-    <UserControl.Resources>
-        <con:ScheduleRowCountConverter x:Key="RowConverter"/>
-    </UserControl.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -136,7 +131,7 @@
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                     <Grid Height="95">
                                         <Grid.Width>
-                                            <MultiBinding Converter="{StaticResource RowConverter}">
+                                            <MultiBinding Converter="{StaticResource ScheduleRowCountConverter}">
                                                 <Binding ElementName="ListBoxSchedule" Path="ActualWidth"/>
                                                 <Binding ElementName="ScheduleView" Path="TileColumnCount"/>
                                             </MultiBinding>

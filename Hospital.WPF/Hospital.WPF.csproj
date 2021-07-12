@@ -14,7 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Hospital.ViewModel\Hospital.ViewModel.csproj"/>
+    <ProjectReference Include="..\Hospital.ViewModel\Hospital.ViewModel.csproj" />
   </ItemGroup>
 
 </Project>

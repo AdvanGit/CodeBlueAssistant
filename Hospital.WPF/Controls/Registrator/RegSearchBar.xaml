@@ -6,14 +6,12 @@
              xmlns:local="clr-namespace:Hospital.WPF.Controls.Registrator"
              xmlns:vm="clr-namespace:Hospital.ViewModel;assembly=Hospital.ViewModel"
              xmlns:view="clr-namespace:Hospital.WPF.Views"
-             xmlns:ser="clr-namespace:Hospital.WPF.Services"
              xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
              mc:Ignorable="d" d:DataContext="{d:DesignInstance Type={x:Type vm:RegistratorViewModel}, IsDesignTimeCreatable=True}"
              d:DesignHeight="74.049" d:DesignWidth="1080">
 
     <UserControl.Resources>
         <Style TargetType="{x:Type ListBoxItem}" BasedOn="{StaticResource RegistratorSearchTab}"/>
-        <ser:SearchExecuter x:Key="SearchExecuter"/>
     </UserControl.Resources>
 
     <Grid Height="35">
