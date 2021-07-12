@@ -12,6 +12,6 @@ namespace Hospital.WPF.Controls.Registrator
         }
 
         public string Label => "Редактировать";
-        public Type Type => typeof(RegEditPanel);
+        public Type Type => GetType();
     }
 }

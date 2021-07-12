@@ -12,6 +12,6 @@ namespace Hospital.WPF.Controls.Ambulatory
         }
 
         public string Label => "AmbEntrySearchBar";
-        public Type Type => typeof(AmbEntrySearchBar);
+        public Type Type => GetType();
     }
 }

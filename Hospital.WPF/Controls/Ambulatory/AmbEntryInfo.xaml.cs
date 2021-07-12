@@ -12,6 +12,6 @@ namespace Hospital.WPF.Controls.Ambulatory
         }
 
         public string Label => "AmbEntryInfo";
-        public Type Type => typeof(AmbEntryInfo);
+        public Type Type => GetType();
     }
 }

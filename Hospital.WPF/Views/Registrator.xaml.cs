@@ -11,7 +11,7 @@ namespace Hospital.WPF.Views
     public partial class Registrator : UserControl, INavigatorItem
     {
         public string Label => "Регистратура";
-        public Type Type => typeof(Registrator);
+        public Type Type => GetType();
 
         private static readonly RegistratorViewModel registratorViewModel = new RegistratorViewModel();
         public Navigator Navigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>()

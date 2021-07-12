@@ -13,7 +13,7 @@ namespace Hospital.WPF.Views
         private AmbulatoryViewModel ambulatoryViewModel;
 
         public string Label => "Ambulatory";
-        public Type Type => typeof(Ambulatory);
+        public Type Type => GetType();
 
         public AmbulatoryCommand Command { get; }
 
@@ -26,6 +26,7 @@ namespace Hospital.WPF.Views
         });
         public Navigator EntryTabNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>() { new AmbEntryInfo(), new AmbEntrySearchBar() });
         public Navigator EntrySearchNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>() { new AmbEntrySearchPanel(), new AmbEntrySelectPanel(), new AmbEntrySavePanel() });
+
 
         public Ambulatory(int entryId)
         {

@@ -10,7 +10,7 @@ namespace Hospital.WPF.Controls.Registrator
     public partial class RegDoctorTable : UserControl, INavigatorItem
     {
         public string Label => "ДОКТОРА";
-        public Type Type => typeof(RegDoctorTable);
+        public Type Type => GetType();
 
         public RegDoctorTable()
         {

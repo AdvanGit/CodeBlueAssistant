@@ -10,7 +10,7 @@ namespace Hospital.WPF.Views
     public partial class Schedule : UserControl, INavigatorItem
     {
         public string Label => "Расписание";
-        public Type Type => typeof(Schedule);
+        public Type Type => GetType();
 
         private static readonly ScheduleViewModel scheduleViewModel = new ScheduleViewModel();
         public ScheduleCommand Command { get; private set; }
@@ -36,6 +36,8 @@ namespace Hospital.WPF.Views
             get { return (GridLength)GetValue(GridLenghtAutoProperty); }
             set { SetValue(GridLenghtAutoProperty, value); }
         }
+
+
         public static readonly DependencyProperty GridLenghtAutoProperty =
             DependencyProperty.Register("GridLenghtAuto", typeof(GridLength), typeof(Schedule), new PropertyMetadata(new GridLength(0)));
 

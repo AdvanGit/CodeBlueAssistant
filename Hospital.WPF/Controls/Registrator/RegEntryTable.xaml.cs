@@ -12,6 +12,6 @@ namespace Hospital.WPF.Controls.Registrator
         }
 
         public string Label => "Записи";
-        public Type Type => typeof(RegEntryTable);
+        public Type Type => GetType();
     }
 }

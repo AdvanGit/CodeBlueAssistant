@@ -17,7 +17,7 @@ namespace Hospital.WPF.Views
 
         private LoginViewModel _vm = new LoginViewModel();
         public string Label => "Авторизация";
-        public Type Type => typeof(Login);
+        public Type Type => GetType();
 
         public Login()
         {
@@ -39,5 +39,6 @@ namespace Hospital.WPF.Views
             }
             else NotificationManager.AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(3), "Номер введен неверно", true));
         }, obj => (obj != null && obj.ToString().Length > 5));
+
     }
 }

@@ -12,6 +12,6 @@ namespace Hospital.WPF.Controls.Ambulatory
         }
 
         public string Label => "AmbEntrySavePanel";
-        public Type Type => typeof(AmbEntrySavePanel);
+        public Type Type => GetType();
     }
 }
