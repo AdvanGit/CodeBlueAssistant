@@ -2,14 +2,13 @@
 using Hospital.ViewModel.Notificator;
 using Hospital.WPF.Commands;
 using Hospital.WPF.Navigators;
-using Hospital.WPF.Views;
 using System;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace Hospital.WPF.Controls
+namespace Hospital.WPF.Views
 {
-    public partial class LoginControl : UserControl, INavigatorItem
+    public partial class Login : UserControl, INavigatorItem
     {
         private void Button_Click(object sender, RoutedEventArgs e)
         {
@@ -18,9 +17,9 @@ namespace Hospital.WPF.Controls
 
         private LoginViewModel _vm = new LoginViewModel();
         public string Label => "Авторизация";
-        public Type Type => typeof(LoginControl);
+        public Type Type => typeof(Login);
 
-        public LoginControl()
+        public Login()
         {
             InitializeComponent();
             DataContext = _vm;

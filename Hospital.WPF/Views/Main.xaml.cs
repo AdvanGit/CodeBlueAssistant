@@ -15,7 +15,7 @@ namespace Hospital.WPF.Views
         {
             InitializeComponent();
             DataContext = new MainViewModel();
-            MenuNavigator.Bodies.Add(new LoginControl());
+            MenuNavigator.Bodies.Add(new Login());
             CurrentPage = MenuNavigator.Bodies[0];
         }
 
