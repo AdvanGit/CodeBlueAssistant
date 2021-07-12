@@ -10,7 +10,7 @@ namespace Hospital.ViewModel
 {
     public class ScheduleViewModel : MainViewModel
     {
-        private ScheduleDataServices scheduleDataServices = new ScheduleDataServices(new HospitalDbContextFactory());
+        private ScheduleDataServices scheduleDataServices = new ScheduleDataServices(contextFactory);
 
         public DateTime SelectedDate { get => _selectedDate; set { _selectedDate = value; OnPropertyChanged(nameof(SelectedDate)); GetEntry(value).ConfigureAwait(true); } }
         private DateTime _selectedDate;

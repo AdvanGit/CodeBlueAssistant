@@ -15,7 +15,7 @@ namespace Hospital.ViewModel
             IsLoading = true;
             try
             {
-                var item = (await new GenericDataServices<Staff>(new HospitalDbContextFactory())
+                var item = (await new GenericDataServices<Staff>(contextFactory)
                     .GetWhere(s => s.PhoneNumber == phoneNumber))
                     .FirstOrDefault();
                 if (item != null)
