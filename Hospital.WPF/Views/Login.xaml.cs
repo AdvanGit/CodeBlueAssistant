@@ -1,8 +1,11 @@
-﻿using Hospital.ViewModel;
+﻿using Hospital.Domain.Security;
+using Hospital.ViewModel;
 using Hospital.ViewModel.Notificator;
 using Hospital.WPF.Commands;
 using Hospital.WPF.Navigators;
+using Hospital.WPF.Services.States;
 using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -29,16 +32,23 @@ namespace Hospital.WPF.Views
         {
             if (long.TryParse(obj.ToString(), out long phone))
             {
-                if (await _vm.GetUser(phone))
+                if (await _vm.CheckUser(phone))
                 {
                     Main.MenuNavigator.Bodies.Clear();
-                    Main.MenuNavigator.Bodies.Add(new Views.Registrator());
-                    Main.MenuNavigator.Bodies.Add(new Views.Schedule());
+                    Main.MenuNavigator.Bodies.Add(new Registrator());
+                    Main.MenuNavigator.Bodies.Add(new Schedule());
                     Main.CurrentPage = Main.MenuNavigator.Bodies[0];
                 }
             }
             else NotificationManager.AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(3), "Номер введен неверно", true));
         }, obj => (obj != null && obj.ToString().Length > 5));
+
+        protected async Task LogIn(long phoneNumber, string password)
+        {
+
+            new ViewStateFactory().GetDefaultViews(await (DataContext as LoginViewModel).GetIdentityAccount(phoneNumber, password));
+
+        }
 
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Hospital.Domain.Security;
+using System;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 
@@ -7,7 +8,7 @@ namespace Hospital.Domain.Model
     public enum Gender : byte { Мужской = 0, Женский = 1 }
     public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
 
-    public class User : DomainObject
+    public abstract class User : DomainObject
     {
         private string _firstName;
         private string _midName;
@@ -16,6 +17,9 @@ namespace Hospital.Domain.Model
         private DateTime _birthDay;
         private Gender _gender;
         private DateTime _createDate;
+
+        private string _passwordHash;
+        public string PasswordHash { get => _passwordHash; set { _passwordHash = value; OnPropertyChanged("PasswordHash"); }}
 
         public string FirstName
         {
@@ -93,21 +97,22 @@ namespace Hospital.Domain.Model
     public class Staff : User
     {
         private bool _isEnabled;
-        private string _password;
         private string _qualification;
         private WeekDays _weekDays;
         private int _cabinet;
         private Department _department;
+        private Role _role;
+
 
         public ObservableCollection<Entry> Registrators { get; set; }
         public ObservableCollection<Entry> DoctorDestinations { get; set; }
 
         public bool IsEnabled { get => _isEnabled; set { _isEnabled = value; OnPropertyChanged("IsEnabled"); } }
-        public string Password { get => _password; set { _password = value; OnPropertyChanged("Password"); }}
         public string Qualification { get => _qualification; set { _qualification = value; OnPropertyChanged("Qualification"); } }
         public WeekDays WeekDays { get => _weekDays; set { _weekDays = value; OnPropertyChanged("WeekDays"); }}
         public int Cabinet { get => _cabinet; set { _cabinet = value; OnPropertyChanged("Cabinet"); }}
         public Department Department { get => _department; set { _department = value; OnPropertyChanged("Department"); }}
+        public Role Role { get => _role; set { _role = value; OnPropertyChanged(nameof(Role)); } }
     }
 
     public class Patient : User

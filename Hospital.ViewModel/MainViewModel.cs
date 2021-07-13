@@ -1,4 +1,5 @@
-﻿using Hospital.EntityFramework;
+﻿using Hospital.Domain.Security;
+using Hospital.EntityFramework;
 using Hospital.ViewModel.Services;
 using System;
 using System.ComponentModel;
@@ -8,8 +9,10 @@ namespace Hospital.ViewModel
     public class MainViewModel : INotifyPropertyChanged
     {
         internal static HospitalDbContextFactory contextFactory = ServiceProvider.GetService<HospitalDbContextFactory>();
-        
+        internal static IAccount currentAccount { get; private set; }
+
         internal static int CurrentStuffId { get; set; }
+
         private static string _headerCaption = "CodeBLUE Assistant Preview 0.1";
         public static string HeaderCaption { get => _headerCaption; set { _headerCaption = value; NotifyStaticPropertyChanged(nameof(HeaderCaption)); } }
 
