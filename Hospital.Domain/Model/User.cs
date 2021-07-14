@@ -1,5 +1,4 @@
-﻿using Hospital.Domain.Security;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.Text.Json;
 
@@ -7,6 +6,7 @@ namespace Hospital.Domain.Model
 {
     public enum Gender : byte { Мужской = 0, Женский = 1 }
     public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
+    public enum Role : byte { Administrator, Ambulatorer, Stationeer, Manager, Registrator }
 
     public abstract class User : DomainObject
     {
@@ -17,10 +17,9 @@ namespace Hospital.Domain.Model
         private DateTime _birthDay;
         private Gender _gender;
         private DateTime _createDate;
-
         private string _passwordHash;
-        public string PasswordHash { get => _passwordHash; set { _passwordHash = value; OnPropertyChanged("PasswordHash"); }}
 
+        public string PasswordHash { get => _passwordHash; set => _passwordHash = value; }
         public string FirstName
         {
             get { return _firstName; }
@@ -103,15 +102,14 @@ namespace Hospital.Domain.Model
         private Department _department;
         private Role _role;
 
-
         public ObservableCollection<Entry> Registrators { get; set; }
         public ObservableCollection<Entry> DoctorDestinations { get; set; }
 
         public bool IsEnabled { get => _isEnabled; set { _isEnabled = value; OnPropertyChanged("IsEnabled"); } }
         public string Qualification { get => _qualification; set { _qualification = value; OnPropertyChanged("Qualification"); } }
-        public WeekDays WeekDays { get => _weekDays; set { _weekDays = value; OnPropertyChanged("WeekDays"); }}
-        public int Cabinet { get => _cabinet; set { _cabinet = value; OnPropertyChanged("Cabinet"); }}
-        public Department Department { get => _department; set { _department = value; OnPropertyChanged("Department"); }}
+        public WeekDays WeekDays { get => _weekDays; set { _weekDays = value; OnPropertyChanged("WeekDays"); } }
+        public int Cabinet { get => _cabinet; set { _cabinet = value; OnPropertyChanged("Cabinet"); } }
+        public Department Department { get => _department; set { _department = value; OnPropertyChanged("Department"); } }
         public Role Role { get => _role; set { _role = value; OnPropertyChanged(nameof(Role)); } }
     }
 
@@ -123,10 +121,10 @@ namespace Hospital.Domain.Model
         private bool _isMarried;
         private bool _hasChild;
 
-        public Belay Belay { get => _belay; set { _belay = value; OnPropertyChanged("Belay"); }}
-        public int BelayCode { get => _belayCode; set { _belayCode = value; OnPropertyChanged("BelayCode"); }}
-        public DateTime BelayDateOut { get => _belayDateOut; set { _belayDateOut = value; OnPropertyChanged("BelayDateOut"); }}
-        public bool IsMarried { get => _isMarried; set { _isMarried = value; OnPropertyChanged("IsMarried"); }}
+        public Belay Belay { get => _belay; set { _belay = value; OnPropertyChanged("Belay"); } }
+        public int BelayCode { get => _belayCode; set { _belayCode = value; OnPropertyChanged("BelayCode"); } }
+        public DateTime BelayDateOut { get => _belayDateOut; set { _belayDateOut = value; OnPropertyChanged("BelayDateOut"); } }
+        public bool IsMarried { get => _isMarried; set { _isMarried = value; OnPropertyChanged("IsMarried"); } }
         public bool HasChild { get => _hasChild; set { _hasChild = value; OnPropertyChanged("HasChild"); } }
     }
 }

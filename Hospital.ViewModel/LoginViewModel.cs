@@ -1,5 +1,4 @@
 ﻿using Hospital.Domain.Model;
-using Hospital.Domain.Security;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
@@ -40,11 +39,6 @@ namespace Hospital.ViewModel
             {
                 IsLoading = false;
             }
-        }
-
-        public async Task<IAccount> GetIdentityAccount(long phoneNumber, string password)
-        {
-            return new Account<Staff>();
         }
     }
 }

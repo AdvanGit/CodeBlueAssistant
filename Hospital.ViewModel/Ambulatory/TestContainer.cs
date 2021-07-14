@@ -1,4 +1,5 @@
 ﻿using Hospital.Domain.Model;
+using Hospital.Domain.Services;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
@@ -13,7 +14,13 @@ namespace Hospital.ViewModel.Ambulatory
 {
     public class TestContainer : INotifyPropertyChanged
     {
-        private readonly ITestDataService testDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
+        private readonly ITestDataService testDataService;
+
+        public TestContainer(HospitalDbContextFactory contextFactory)
+        {
+            testDataService = new TestDataService(contextFactory);
+        }
+
         private Entry entry;
 
         private bool _isLoading;

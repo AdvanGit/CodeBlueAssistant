@@ -8,9 +8,9 @@ namespace Hospital.ViewModel.Ambulatory
 {
     public class DiagnosticViewModel : MainViewModel
     {
-        public TestContainer PhysicalContainer { get; } = new TestContainer();
-        public TestContainer ToolContainer { get; } = new TestContainer();
-        public TestContainer LabContainer { get; } = new TestContainer();
+        public TestContainer PhysicalContainer { get; } = new TestContainer(contextFactory);
+        public TestContainer ToolContainer { get; } = new TestContainer(contextFactory);
+        public TestContainer LabContainer { get; } = new TestContainer(contextFactory);
 
         private ObservableCollection<TestData> _addedDatas = new ObservableCollection<TestData>();
         public ObservableCollection<TestData> AddedDatas

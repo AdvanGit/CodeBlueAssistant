@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Hospital.EntityFramework.Services
+namespace Hospital.Domain.Services
 {
     public interface ITherapyDataService
     {

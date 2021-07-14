@@ -1,4 +1,4 @@
-﻿using Hospital.Domain.Security;
+﻿using Hospital.Domain.Model;
 using Hospital.WPF.Views;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -8,14 +8,13 @@ namespace Hospital.WPF.Services.States
 {
     internal class ViewStateFactory
     {
-
-        internal ICollection<UserControl> GetDefaultViews(IAccount account)
+        internal ICollection<UserControl> GetDefaultViews(Staff staff)
         {
             Collection<UserControl> viewCollection = new Collection<UserControl>();
 
-            switch (account.GetRole())
+            switch (staff.Role)
             {
-                case Role.Doctor:
+                case Role.Ambulatorer:
                     viewCollection.Add(new Schedule());
                     break;
                 case Role.Registrator:
@@ -27,8 +26,6 @@ namespace Hospital.WPF.Services.States
                     viewCollection.Add(new Registrator());
                     viewCollection.Add(new Schedule());
                     break;
-                case Role.Unspecified:
-                    break;
                 default:
                     break;
             }
@@ -36,19 +33,17 @@ namespace Hospital.WPF.Services.States
             return viewCollection;
         }
 
-        internal void ChаngeViewState(ref ICollection<UserControl> BodiesCollection, IAccount account)
+        internal void ChаngeViewState(ref ICollection<UserControl> BodiesCollection, Role role)
         {
-            switch (account.GetRole())
+            switch (role)
             {
-                case Role.Doctor:
+                case Role.Ambulatorer:
                     BodiesCollection.Clear();
                     BodiesCollection.Add(new Schedule());
                     break;
                 case Role.Registrator:
                     BodiesCollection.Clear();
                     BodiesCollection.Add(new Registrator());
-                    break;
-                case Role.Manager:
                     break;
                 case Role.Administrator:
                     BodiesCollection.Clear();

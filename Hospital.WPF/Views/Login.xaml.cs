@@ -1,11 +1,8 @@
-﻿using Hospital.Domain.Security;
-using Hospital.ViewModel;
+﻿using Hospital.ViewModel;
 using Hospital.ViewModel.Notificator;
 using Hospital.WPF.Commands;
 using Hospital.WPF.Navigators;
-using Hospital.WPF.Services.States;
 using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -42,13 +39,5 @@ namespace Hospital.WPF.Views
             }
             else NotificationManager.AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(3), "Номер введен неверно", true));
         }, obj => (obj != null && obj.ToString().Length > 5));
-
-        protected async Task LogIn(long phoneNumber, string password)
-        {
-
-            new ViewStateFactory().GetDefaultViews(await (DataContext as LoginViewModel).GetIdentityAccount(phoneNumber, password));
-
-        }
-
     }
 }

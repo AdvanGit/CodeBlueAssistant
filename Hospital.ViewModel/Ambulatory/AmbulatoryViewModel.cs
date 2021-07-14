@@ -11,7 +11,7 @@ namespace Hospital.ViewModel.Ambulatory
 {
     public class AmbulatoryViewModel : MainViewModel
     {
-        private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
+        private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(contextFactory);
 
         private bool _isEditable;
         private string _caption;

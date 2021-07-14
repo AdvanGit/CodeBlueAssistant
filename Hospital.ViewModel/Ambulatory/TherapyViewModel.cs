@@ -1,4 +1,5 @@
 ﻿using Hospital.Domain.Model;
+using Hospital.Domain.Services;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
@@ -15,7 +16,7 @@ namespace Hospital.ViewModel.Ambulatory
     /// </summary>
     public class TherapyViewModel : MainViewModel
     {
-        private readonly ITherapyDataService therapyDataService = new AmbulatoryDataService(new HospitalDbContextFactory());
+        private readonly ITherapyDataService therapyDataService = new TherapyDataService(contextFactory);
 
         private Entry _currentEntry;
         private MedCard _medCard;
