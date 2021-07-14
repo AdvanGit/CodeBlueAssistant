@@ -1,7 +1,7 @@
 ﻿using Hospital.Domain.Model;
-using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
+using Hospital.ViewModel.Services;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -10,18 +10,23 @@ namespace Hospital.ViewModel
 {
     public class LoginViewModel : MainViewModel
     {
+        IAuthenticator _authenticator;
+
+        public LoginViewModel(IAuthenticator authenticator)
+        {
+            _authenticator = authenticator;
+        }
+
         public async Task<bool> CheckUser(long phoneNumber)
         {
             IsLoading = true;
             try
             {
-                var item = (await new GenericDataServices<Staff>(contextFactory)
-                    .GetWhere(s => s.PhoneNumber == phoneNumber))
-                    .FirstOrDefault();
-                if (item != null)
+                var role = await _authenticator.Login(phoneNumber, "");
+                if (Role.Administrator == role)
                 {
-                    CurrentStuffId = item.Id;
-                    HeaderCaption = item.FirstName + " " + item.MidName[0] + ". " + item.LastName[0] + ".";
+                    CurrentStuffId = _authenticator.CurrentUser.Id;
+                    HeaderCaption = _authenticator.CurrentUser.FirstName + " " + _authenticator.CurrentUser.MidName[0] + ". " + _authenticator.CurrentUser.LastName[0] + ".";
                     return true;
                 }
                 else

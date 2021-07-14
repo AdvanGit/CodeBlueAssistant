@@ -12,5 +12,9 @@ namespace Hospital.Domain.Services
         Task<T> GetById(int id);
         Task<T> Update(int id, T entity);
         Task<bool> Delete(int id);
+
+        Task<IEnumerable<T>> GetWhere(Expression<Func<T, bool>> predicate);
+        Task<IEnumerable<T>> GetWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
+        Task<T> GetItemWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties);
     }
 }

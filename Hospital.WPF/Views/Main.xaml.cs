@@ -1,4 +1,5 @@
 ﻿using Hospital.ViewModel;
+using Hospital.ViewModel.Factories;
 using Hospital.WPF.Controls;
 using Hospital.WPF.Navigators;
 using MahApps.Metro.Controls;
@@ -11,11 +12,14 @@ namespace Hospital.WPF.Views
     {
         private static INavigatorItem _currentPage;
 
-        public Main()
+        private readonly IRootViewModelFactory<LoginViewModel> _loginViewModelFactory;
+
+        public Main(IRootViewModelFactory<LoginViewModel> loginViewModelFactory)
         {
+            _loginViewModelFactory = loginViewModelFactory;
             InitializeComponent();
             DataContext = new MainViewModel();
-            MenuNavigator.Bodies.Add(new Login());
+            MenuNavigator.Bodies.Add(new Login(_loginViewModelFactory.CreateViewModel()));
             CurrentPage = MenuNavigator.Bodies[0];
         }
 

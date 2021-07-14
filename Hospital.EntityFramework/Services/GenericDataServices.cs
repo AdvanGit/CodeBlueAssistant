@@ -82,6 +82,14 @@ namespace Hospital.EntityFramework.Services
             }
         }
 
+        public async Task<T> GetItemWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                return await Include(db.Set<T>(), includeProperties).FirstOrDefaultAsync(predicate);
+            }
+        }
+
         private IQueryable<T> Include(IQueryable<T> query, params Expression<Func<T, object>>[] includeProperties)
         {
             return includeProperties.Aggregate(query, (current, includeProperty) => current.AsNoTracking().Include(includeProperty));

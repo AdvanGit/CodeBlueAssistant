@@ -15,21 +15,20 @@ namespace Hospital.WPF.Views
             App.Current.Shutdown();
         }
 
-        private LoginViewModel _vm = new LoginViewModel();
         public string Label => "Авторизация";
         public Type Type => GetType();
 
-        public Login()
+        public Login(LoginViewModel viewModel)
         {
             InitializeComponent();
-            DataContext = _vm;
+            DataContext = viewModel;
         }
 
         public Command Init => new Command(async obj =>
         {
             if (long.TryParse(obj.ToString(), out long phone))
             {
-                if (await _vm.CheckUser(phone))
+                if (await (DataContext as LoginViewModel).CheckUser(phone))
                 {
                     Main.MenuNavigator.Bodies.Clear();
                     Main.MenuNavigator.Bodies.Add(new Registrator());

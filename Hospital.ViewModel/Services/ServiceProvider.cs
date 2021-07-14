@@ -1,4 +1,5 @@
-﻿using Hospital.EntityFramework;
+﻿using Hospital.Domain.Services;
+using Hospital.EntityFramework;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 
@@ -12,6 +13,7 @@ namespace Hospital.ViewModel.Services
         static ServiceProvider()
         {
             services.AddSingleton<HospitalDbContextFactory>();
+            services.AddSingleton<IAuthenticationService, AuthenticationService>();
 
             serviceProvider = services.BuildServiceProvider();
         }
