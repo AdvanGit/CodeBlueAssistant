@@ -13,7 +13,6 @@ namespace Hospital.WPF.Views
         public string Label => "Регистратура";
         public Type Type => GetType();
 
-        private static readonly RegistratorViewModel registratorViewModel = new RegistratorViewModel();
         public Navigator Navigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>()
         {
             new RegDoctorTable(),
@@ -24,12 +23,12 @@ namespace Hospital.WPF.Views
 
         public RegistratorCommand Command { get; }
 
-        public Registrator()
+        public Registrator(RegistratorViewModel registratorViewModel)
         {
-            InitializeComponent();
             DataContext = registratorViewModel;
-            Command = new RegistratorCommand(registratorViewModel, this);
+            Command = new RegistratorCommand(this);
             foreach (INavigatorItem item in Navigator.Bodies) AddLogicalChild(item);
+            InitializeComponent();
         }
 
         public override void OnApplyTemplate()

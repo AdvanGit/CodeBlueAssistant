@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace Hospital.EntityFramework.Services
 {
-    public class GenericDataServices<T> : IDataServices<T> where T : DomainObject
+    public class GenericDataService<T> : IDataServices<T> where T : DomainObject
     {
         private readonly HospitalDbContextFactory _contextFactory;
 
-        public GenericDataServices(HospitalDbContextFactory contextFactory)
+        public GenericDataService(HospitalDbContextFactory contextFactory)
         {
             _contextFactory = contextFactory;
         }

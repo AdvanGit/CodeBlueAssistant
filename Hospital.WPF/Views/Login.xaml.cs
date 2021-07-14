@@ -24,19 +24,33 @@ namespace Hospital.WPF.Views
             DataContext = viewModel;
         }
 
+        //public Command Init => new Command(async obj =>
+        //{
+        //    if (long.TryParse(obj.ToString(), out long phone))
+        //    {
+        //        if (await (DataContext as LoginViewModel).CheckUser(phone))
+        //        {
+        //            Main.MenuNavigator.Bodies.Clear();
+        //            Main.MenuNavigator.Bodies.Add(new Registrator());
+        //            Main.MenuNavigator.Bodies.Add(new Schedule());
+        //            Main.CurrentPage = Main.MenuNavigator.Bodies[0];
+        //        }
+        //    }
+        //    else NotificationManager.AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(3), "Номер введен неверно", true));
+        //}, obj => (obj != null && obj.ToString().Length > 5));
+
         public Command Init => new Command(async obj =>
         {
             if (long.TryParse(obj.ToString(), out long phone))
             {
                 if (await (DataContext as LoginViewModel).CheckUser(phone))
                 {
-                    Main.MenuNavigator.Bodies.Clear();
-                    Main.MenuNavigator.Bodies.Add(new Registrator());
-                    Main.MenuNavigator.Bodies.Add(new Schedule());
-                    Main.CurrentPage = Main.MenuNavigator.Bodies[0];
+                    Main.ViewStateManager.Setup((DataContext as LoginViewModel).GetAuthenticator());
+                    Main.CurrentPage = Main.ViewStateManager.Navigator.Bodies[0];
                 }
             }
             else NotificationManager.AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(3), "Номер введен неверно", true));
         }, obj => (obj != null && obj.ToString().Length > 5));
+
     }
 }

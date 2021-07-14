@@ -1,7 +1,6 @@
-﻿using Hospital.ViewModel;
-using Hospital.ViewModel.Factories;
-using Hospital.WPF.Controls;
+﻿using Hospital.ViewModel.Factories;
 using Hospital.WPF.Navigators;
+using Hospital.WPF.Services.States;
 using MahApps.Metro.Controls;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -12,19 +11,18 @@ namespace Hospital.WPF.Views
     {
         private static INavigatorItem _currentPage;
 
-        private readonly IRootViewModelFactory<LoginViewModel> _loginViewModelFactory;
-
-        public Main(IRootViewModelFactory<LoginViewModel> loginViewModelFactory)
-        {
-            _loginViewModelFactory = loginViewModelFactory;
-            InitializeComponent();
-            DataContext = new MainViewModel();
-            MenuNavigator.Bodies.Add(new Login(_loginViewModelFactory.CreateViewModel()));
-            CurrentPage = MenuNavigator.Bodies[0];
-        }
-
-        public static Navigator MenuNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>());
+        public static ViewStateManager ViewStateManager { get; private set; }
         public static Navigator TabNavigator { get; } = new Navigator(new ObservableCollection<INavigatorItem>());
+
+        public Main(IRootViewModelFactory viewModelFactory)
+        {
+            DataContext = viewModelFactory.CreateMainViewModel();
+
+            ViewStateManager = new ViewStateManager(viewModelFactory);
+            CurrentPage = ViewStateManager.Navigator.CurrentBody;
+
+            InitializeComponent();
+        }
 
         public static INavigatorItem CurrentPage
         {

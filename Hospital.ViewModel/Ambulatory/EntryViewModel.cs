@@ -13,7 +13,7 @@ namespace Hospital.ViewModel.Ambulatory
 
     public class EntryViewModel : MainViewModel
     {
-        private readonly EntryDataServices entryDataServices = new EntryDataServices(new HospitalDbContextFactory());
+        private readonly EntryDataService _entryDataServices;
 
         private Entry _currentEntry;
         private Entry _selectedEntry;
@@ -29,6 +29,11 @@ namespace Hospital.ViewModel.Ambulatory
             IsFree = true,
             DateTime = DateTime.Now
         };
+
+        public EntryViewModel(EntryDataService entryDataServices)
+        {
+            _entryDataServices = entryDataServices;
+        }
 
         public void Initialize(Entry currentEntry)
         {
@@ -51,7 +56,7 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 FindedEntries.Clear();
-                var res = await entryDataServices.FindDoctor(searchValue, Filter);
+                var res = await _entryDataServices.FindDoctor(searchValue, Filter);
                 FindedEntries.Clear();
                 if (res.Count() > 0) foreach (Entry entry in res) FindedEntries.Add(entry);
                 else NotificationManager.AddItem(new NotificationItem(NotificationType.Information, TimeSpan.FromSeconds(3), "Ничего не найдено"));
@@ -70,7 +75,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 BySelectEntries.Clear();
                 FilteredCollection.Clear();
-                var res = await entryDataServices.GetEntries(SelectedEntry.DoctorDestination, SelectedEntry.TargetDateTime.Date);
+                var res = await _entryDataServices.GetEntries(SelectedEntry.DoctorDestination, SelectedEntry.TargetDateTime.Date);
                 BySelectEntries.Clear();
                 FilteredCollection.Clear();
                 foreach (Entry _entry in res) BySelectEntries.Add(_entry);
@@ -90,7 +95,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 CurrentEntry.EntryStatus = EntryStatus.Неявка;
 
-                await entryDataServices.UpdateEntry(CurrentEntry);
+                await _entryDataServices.UpdateEntry(CurrentEntry);
                 NotificationManager.AddItem(new NotificationItem(NotificationType.Success, TimeSpan.FromSeconds(2), "Запись успешно обновлена"));
             }
             catch (Exception ex)

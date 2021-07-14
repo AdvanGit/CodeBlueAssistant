@@ -14,11 +14,11 @@ namespace Hospital.ViewModel.Ambulatory
 {
     public class TestContainer : INotifyPropertyChanged
     {
-        private readonly ITestDataService testDataService;
+        private readonly ITestDataService _testDataService;
 
-        public TestContainer(HospitalDbContextFactory contextFactory)
+        public TestContainer(ITestDataService testDataService)
         {
-            testDataService = new TestDataService(contextFactory);
+            _testDataService = testDataService;
         }
 
         private Entry entry;
@@ -70,7 +70,7 @@ namespace Hospital.ViewModel.Ambulatory
             IsLoading = true;
             try
             {
-                var datas = await testDataService.GetTestData(medCardId, testMethod);
+                var datas = await _testDataService.GetTestData(medCardId, testMethod);
                 Datas.Clear();
                 foreach (TestData data in datas) Datas.Add(data);
             }
@@ -85,7 +85,7 @@ namespace Hospital.ViewModel.Ambulatory
             IsLoading = true;
             try
             {
-                var datas = await testDataService.GetTestTypeList(method);
+                var datas = await _testDataService.GetTestTypeList(method);
                 TypeList.Clear();
                 foreach (TestType type in datas) TypeList.Add(type);
             }
@@ -100,11 +100,11 @@ namespace Hospital.ViewModel.Ambulatory
             IsLoading = true;
             try
             {
-                var testItems = await testDataService.GetTestList(type);
+                var testItems = await _testDataService.GetTestList(type);
                 TestList.Clear();
                 foreach (Test test in testItems) TestList.Add(test);
 
-                var tempItems = await testDataService.GetTemplateList(type);
+                var tempItems = await _testDataService.GetTemplateList(type);
                 Templates.Clear();
                 foreach (TestTemplate template in tempItems) Templates.Add(template);
             }
@@ -149,7 +149,7 @@ namespace Hospital.ViewModel.Ambulatory
             IsLoading = true;
             try
             {
-                var datas = await testDataService.GetTestList(CurrentTemplate.Objects);
+                var datas = await _testDataService.GetTestList(CurrentTemplate.Objects);
                 foreach (Test test in datas)
                 {
                     Datas.Add(new TestData()

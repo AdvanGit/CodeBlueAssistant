@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace Hospital.EntityFramework.Services
 {
-    public class ScheduleDataServices
+    public class ScheduleDataService
     {
         private readonly HospitalDbContextFactory _contextFactory;
 
-        public ScheduleDataServices(HospitalDbContextFactory contextFactory)
+        public ScheduleDataService(HospitalDbContextFactory contextFactory)
         {
             _contextFactory = contextFactory;
         }

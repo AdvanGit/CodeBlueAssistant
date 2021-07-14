@@ -1,4 +1,5 @@
 ﻿using Hospital.Domain.Model;
+using Hospital.Domain.Services;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Filters;
 using Hospital.EntityFramework.Services;
@@ -13,10 +14,16 @@ namespace Hospital.ViewModel
 {
     public class RegistratorViewModel : MainViewModel
     {
-        private readonly EntryDataServices registratorDataServices = new EntryDataServices(new HospitalDbContextFactory());
-        private readonly GenericDataServices<Belay> genericDataServicesBelay = new GenericDataServices<Belay>(new HospitalDbContextFactory());
-        private readonly GenericDataServices<Patient> genericDataServicesPatient = new GenericDataServices<Patient>(new HospitalDbContextFactory());
-        private readonly GenericDataServices<Entry> genericDataServicesEntry = new GenericDataServices<Entry>(new HospitalDbContextFactory());
+        private readonly EntryDataService _entryDataServices;
+        private readonly IDataServices<Belay> genericDataServicesBelay = new GenericDataService<Belay>(new HospitalDbContextFactory());
+        private readonly IDataServices<Patient> genericDataServicesPatient = new GenericDataService<Patient>(new HospitalDbContextFactory());
+        private readonly IDataServices<Entry> genericDataServicesEntry = new GenericDataService<Entry>(new HospitalDbContextFactory());
+
+        public RegistratorViewModel(EntryDataService entryDataServices)
+        {
+            _entryDataServices = entryDataServices;
+        }
+
 
         private EntrySearchFilter _filter = new EntrySearchFilter()
         {
@@ -34,6 +41,7 @@ namespace Hospital.ViewModel
         private Entry _selectedEntry;
         private Patient _selectedPatient;
         private Patient _editingPatient;
+
 
         public Entry SelectedEntry { get => _selectedEntry; set { _selectedEntry = value; if (value != null) Filter.DateTime = value.TargetDateTime; OnPropertyChanged(nameof(SelectedEntry)); } }
         public Patient SelectedPatient { get => _selectedPatient; set { _selectedPatient = value; OnPropertyChanged(nameof(SelectedPatient)); } }
@@ -56,7 +64,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Patient> result = await registratorDataServices.FindPatient(SearchString);
+                    IEnumerable<Patient> result = await _entryDataServices.FindPatient(SearchString);
                     if (result.Count() != 0)
                     {
                         Patients.Clear();
@@ -78,7 +86,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await registratorDataServices.FindDoctor(SearchString, _filter);
+                    IEnumerable<Entry> result = await _entryDataServices.FindDoctor(SearchString, _filter);
                     if (result.Count() != 0)
                     {
                         Doctors.Clear();
@@ -102,7 +110,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await registratorDataServices.GetEntries(SelectedEntry.DoctorDestination, (SelectedEntry.TargetDateTime));
+                    IEnumerable<Entry> result = await _entryDataServices.GetEntries(SelectedEntry.DoctorDestination, (SelectedEntry.TargetDateTime));
                     Entries.Clear();
                     FilteredEntries.Clear();
                     foreach (Entry entry in result) Entries.Add(entry);
@@ -125,7 +133,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await registratorDataServices.GetEntries(SelectedEntry.DoctorDestination, Filter.DateTime);
+                    IEnumerable<Entry> result = await _entryDataServices.GetEntries(SelectedEntry.DoctorDestination, Filter.DateTime);
                     Entries.Clear();
                     FilteredEntries.Clear();
                     foreach (Entry entry in result) Entries.Add(entry);

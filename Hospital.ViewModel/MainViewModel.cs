@@ -1,5 +1,4 @@
 ﻿using Hospital.EntityFramework;
-using Hospital.ViewModel.Services;
 using System;
 using System.ComponentModel;
 
@@ -7,8 +6,6 @@ namespace Hospital.ViewModel
 {
     public class MainViewModel : INotifyPropertyChanged
     {
-        internal static readonly HospitalDbContextFactory contextFactory = ServiceProvider.GetService<HospitalDbContextFactory>();
-
         internal static int CurrentStuffId { get; set; }
 
         private static string _headerCaption = "CodeBLUE Assistant Preview 0.1";

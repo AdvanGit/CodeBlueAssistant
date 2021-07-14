@@ -1,4 +1,6 @@
 ﻿using Hospital.Domain.Model;
+using Hospital.Domain.Services;
+using Hospital.EntityFramework;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -8,9 +10,16 @@ namespace Hospital.ViewModel.Ambulatory
 {
     public class DiagnosticViewModel : MainViewModel
     {
-        public TestContainer PhysicalContainer { get; } = new TestContainer(contextFactory);
-        public TestContainer ToolContainer { get; } = new TestContainer(contextFactory);
-        public TestContainer LabContainer { get; } = new TestContainer(contextFactory);
+        public DiagnosticViewModel(ITestDataService testDataService)
+        {
+            PhysicalContainer = new TestContainer(testDataService);
+            ToolContainer = new TestContainer(testDataService);
+            LabContainer = new TestContainer(testDataService);
+        }
+
+        public TestContainer PhysicalContainer { get; }
+        public TestContainer ToolContainer { get; }
+        public TestContainer LabContainer { get; }
 
         private ObservableCollection<TestData> _addedDatas = new ObservableCollection<TestData>();
         public ObservableCollection<TestData> AddedDatas

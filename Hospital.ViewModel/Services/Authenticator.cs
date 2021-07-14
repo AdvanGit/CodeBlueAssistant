@@ -22,7 +22,8 @@ namespace Hospital.ViewModel.Services
         {
             var user = await _authenticationService.Login(phonenumber, password);
 
-            if (user.PasswordHash == null)
+            //TODO - create hasher, implements password check, put passwords to db
+            if (user != null && user.PasswordHash == null)
             {
                 CurrentUser = user;
                 LoggedTime = DateTime.Now;

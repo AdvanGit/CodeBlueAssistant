@@ -1,4 +1,5 @@
 ﻿using Hospital.ViewModel;
+using Hospital.ViewModel.Factories;
 using Hospital.WPF.Commands;
 using Hospital.WPF.Navigators;
 using System;
@@ -12,8 +13,17 @@ namespace Hospital.WPF.Views
         public string Label => "Расписание";
         public Type Type => GetType();
 
-        private static readonly ScheduleViewModel scheduleViewModel = new ScheduleViewModel();
         public ScheduleCommand Command { get; private set; }
+
+
+        public Schedule(ScheduleViewModel scheduleViewModel)
+        {
+            DataContext = scheduleViewModel;
+            Command = new ScheduleCommand(this);
+            InitializeComponent();
+        }
+
+        #region dependency properties for column managment
 
         public int TileColumnCount
         {
@@ -36,16 +46,10 @@ namespace Hospital.WPF.Views
             get { return (GridLength)GetValue(GridLenghtAutoProperty); }
             set { SetValue(GridLenghtAutoProperty, value); }
         }
-
-
         public static readonly DependencyProperty GridLenghtAutoProperty =
             DependencyProperty.Register("GridLenghtAuto", typeof(GridLength), typeof(Schedule), new PropertyMetadata(new GridLength(0)));
 
-        public Schedule()
-        {
-            DataContext = scheduleViewModel;
-            Command = new ScheduleCommand(scheduleViewModel, this);
-            InitializeComponent();
-        }
+        #endregion
+
     }
 }

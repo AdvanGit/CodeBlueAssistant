@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+﻿using Hospital.ViewModel.Ambulatory;
 
 namespace Hospital.ViewModel.Factories
 {
@@ -6,4 +6,13 @@ namespace Hospital.ViewModel.Factories
     {
         TViewModelType CreateViewModel();
     }
+
+    public interface IRootViewModelFactory
+    {
+        LoginViewModel CreateLoginViewModel();
+        ScheduleViewModel CreateScheduleViewModel();
+        MainViewModel CreateMainViewModel();
+        RegistratorViewModel CreateRegistratorViewModel();
+    }
+
 }

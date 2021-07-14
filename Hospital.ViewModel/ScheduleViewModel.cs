@@ -1,6 +1,8 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
+using Hospital.ViewModel.Ambulatory;
+using Hospital.ViewModel.Factories;
 using Hospital.ViewModel.Notificator;
 using System;
 using System.Collections.ObjectModel;
@@ -10,7 +12,15 @@ namespace Hospital.ViewModel
 {
     public class ScheduleViewModel : MainViewModel
     {
-        private ScheduleDataServices scheduleDataServices = new ScheduleDataServices(contextFactory);
+        private readonly AmbulatoryViewModelFactory _ambulatoryViewModelFactory;
+        private readonly ScheduleDataService _scheduleDataServices;
+
+        public ScheduleViewModel(ScheduleDataService scheduleDataServices, AmbulatoryViewModelFactory ambulatoryViewModelFactory)
+        {
+            _scheduleDataServices = scheduleDataServices;
+            _ambulatoryViewModelFactory = ambulatoryViewModelFactory;
+            SelectedDate = new DateTime(2021, 05, 03);
+        }
 
         public DateTime SelectedDate { get => _selectedDate; set { _selectedDate = value; OnPropertyChanged(nameof(SelectedDate)); GetEntry(value).ConfigureAwait(true); } }
         private DateTime _selectedDate;
@@ -20,10 +30,6 @@ namespace Hospital.ViewModel
 
         public ObservableCollection<Entry> Entries { get; } = new ObservableCollection<Entry>();
 
-        public ScheduleViewModel()
-        {
-            SelectedDate = new DateTime(2021, 05, 03);
-        }
 
         private async Task GetEntry(DateTime date)
         {
@@ -31,7 +37,7 @@ namespace Hospital.ViewModel
             try
             {
                 Entries.Clear();
-                var result = await scheduleDataServices.GetEntriesByDate(CurrentStuffId, date);
+                var result = await _scheduleDataServices.GetEntriesByDate(CurrentStuffId, date);
                 Entries.Clear();
                 foreach (Entry entry in result) Entries.Add(entry);
             }
@@ -40,6 +46,11 @@ namespace Hospital.ViewModel
                 NotificationManager.AddException(ex, 4);
             }
             IsLoading = false;
+        }
+
+        public AmbulatoryViewModel CreateAmbulatoryViewModel()
+        {
+            return _ambulatoryViewModelFactory.CreateViewModel(CurrentEntry.Id);
         }
     }
 }

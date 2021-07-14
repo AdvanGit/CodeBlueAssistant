@@ -1,4 +1,5 @@
 ﻿using Hospital.Domain.Model;
+using Hospital.Domain.Services;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
@@ -11,14 +12,29 @@ namespace Hospital.ViewModel.Ambulatory
 {
     public class AmbulatoryViewModel : MainViewModel
     {
-        private readonly AmbulatoryDataService ambulatoryDataService = new AmbulatoryDataService(contextFactory);
+        private readonly AmbulatoryDataService _ambulatoryDataService;
+
+        public AmbulatoryViewModel(int entryId, 
+            AmbulatoryDataService ambulatoryDataService, 
+            EntryDataService entryDataServices,
+            ITestDataService testDataService, 
+            ITherapyDataService therapyDataService)
+        {
+            _ambulatoryDataService = ambulatoryDataService;
+            _diagnosticViewModel = new DiagnosticViewModel(testDataService);
+            _therapyViewModel = new TherapyViewModel(therapyDataService);
+            _entryViewModel = new EntryViewModel(entryDataServices);
+
+            EntryId = entryId;
+            GetEntry(entryId).ConfigureAwait(true);
+        }
 
         private bool _isEditable;
         private string _caption;
         private Entry _currentEntry;
-        private DiagnosticViewModel _diagnosticViewModel = new DiagnosticViewModel();
-        private TherapyViewModel _therapyViewModel = new TherapyViewModel();
-        private EntryViewModel _entryViewModel = new EntryViewModel();
+        private DiagnosticViewModel _diagnosticViewModel;
+        private TherapyViewModel _therapyViewModel;
+        private EntryViewModel _entryViewModel;
 
         private int _entryId;
 
@@ -28,7 +44,7 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
 
-                CurrentEntry = await ambulatoryDataService.GetEntryById(entryId);
+                CurrentEntry = await _ambulatoryDataService.GetEntryById(entryId);
                 if (CurrentEntry.EntryStatus == Enum.Parse<EntryStatus>("3")) IsEditable = true;
                 else IsEditable = false;
                 if (CurrentEntry.MedCard == null) CurrentEntry.MedCard = new MedCard { Patient = CurrentEntry.Patient };
@@ -41,12 +57,6 @@ namespace Hospital.ViewModel.Ambulatory
                 NotificationManager.AddException(ex, 5);
             }
             IsLoading = false;
-        }
-
-        public AmbulatoryViewModel(int entryId)
-        {
-            EntryId = entryId;
-            GetEntry(entryId).ConfigureAwait(true);
         }
 
         public string Caption { get => _caption; private set { _caption = value; OnPropertyChanged(nameof(Caption)); } }
@@ -76,7 +86,7 @@ namespace Hospital.ViewModel.Ambulatory
 
             try
             {
-                await ambulatoryDataService.UpdateData(datas);
+                await _ambulatoryDataService.UpdateData(datas);
                 NotificationManager.AddItem(new NotificationItem(NotificationType.Success, TimeSpan.FromSeconds(2), "Данные успешно сохранены\nЗапись создана"));
             }
             catch (Exception ex)

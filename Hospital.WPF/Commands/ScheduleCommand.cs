@@ -1,4 +1,5 @@
 ﻿using Hospital.ViewModel;
+using Hospital.ViewModel.Ambulatory;
 using Hospital.WPF.Views;
 using System;
 
@@ -27,15 +28,15 @@ namespace Hospital.WPF.Commands
             }
             if (!isExist)
             {
-                var view = new Ambulatory(_vm.CurrentEntry.Id);
+                var view = new Ambulatory(_vm.CreateAmbulatoryViewModel());
                 Main.TabNavigator.Bodies.Add(view);
                 Main.CurrentPage = view;
             }
         }, obj => _vm.CurrentEntry != null);
 
-        public ScheduleCommand(ScheduleViewModel scheduleViewModel, Schedule scheduleView)
+        public ScheduleCommand(Schedule scheduleView)
         {
-            _vm = scheduleViewModel;
+            _vm = scheduleView.DataContext as ScheduleViewModel;
             _view = scheduleView;
         }
 

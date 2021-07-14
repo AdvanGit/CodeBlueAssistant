@@ -10,7 +10,7 @@ namespace Hospital.ViewModel
 {
     public class LoginViewModel : MainViewModel
     {
-        IAuthenticator _authenticator;
+        private readonly IAuthenticator _authenticator;
 
         public LoginViewModel(IAuthenticator authenticator)
         {
@@ -44,6 +44,11 @@ namespace Hospital.ViewModel
             {
                 IsLoading = false;
             }
+        }
+
+        public IAuthenticator GetAuthenticator()
+        {
+            return _authenticator;
         }
     }
 }

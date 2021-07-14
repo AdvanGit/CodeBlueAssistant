@@ -38,9 +38,9 @@ namespace Hospital.WPF.Commands
 
         private readonly Command _closeTab;
 
-        public AmbulatoryCommand(AmbulatoryViewModel ambulatoryViewModel, Ambulatory ambulatoryView)
+        public AmbulatoryCommand(Ambulatory ambulatoryView)
         {
-            AmbulatoryViewModel vm = ambulatoryViewModel;
+            AmbulatoryViewModel vm = ambulatoryView.DataContext as AmbulatoryViewModel;
             Ambulatory view = ambulatoryView;
             TestContainer physicalContainer = vm.DiagnosticViewModel.PhysicalContainer;
             TestContainer labContainer = vm.DiagnosticViewModel.LabContainer;
@@ -138,7 +138,7 @@ namespace Hospital.WPF.Commands
                 Main.TabNavigator.Bodies.Remove(view);
                 int tabcount = Main.TabNavigator.Bodies.Count;
                 if (tabcount != 0) Main.CurrentPage = Main.TabNavigator.Bodies[tabcount - 1];
-                else Main.CurrentPage = Main.MenuNavigator.Bodies[0];
+                else Main.CurrentPage = Main.ViewStateManager.Navigator.Bodies[0];
             }, "Вы действительно хотите закрыть вкладку?\n\nВнимение: все несохраненные данные будут утеряны!"));
         }
 

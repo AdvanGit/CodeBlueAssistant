@@ -1,5 +1,4 @@
-﻿using Hospital.Domain.Model;
-using Hospital.Domain.Services;
+﻿using Hospital.Domain.Services;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel;
@@ -19,7 +18,7 @@ namespace Hospital.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             serviceProvider = ConfigureServices();
-            new Main(serviceProvider.GetRequiredService<IRootViewModelFactory<LoginViewModel>>()).Show();
+            new Main(serviceProvider.GetRequiredService<IRootViewModelFactory>()).Show();
 
             base.OnStartup(e);
         }
@@ -28,14 +27,19 @@ namespace Hospital.WPF
         {
             IServiceCollection services = new ServiceCollection();
 
-            services.AddSingleton<IRootViewModelFactory<LoginViewModel>, LoginViewModelFactory>();
+            services.AddSingleton<HospitalDbContextFactory>();
+            services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
+            services.AddSingleton<AmbulatoryViewModelFactory>();
 
             services.AddSingleton<IAuthenticator, Authenticator>();
             services.AddSingleton<IAuthenticationService, AuthenticationService>();
 
-            services.AddSingleton<IDataServices<Staff>, GenericDataServices<Staff>>();
-
-            services.AddSingleton<HospitalDbContextFactory>();
+            services.AddSingleton(typeof(IDataServices<>), typeof(GenericDataService<>));
+            services.AddSingleton<ITestDataService, TestDataService>();
+            services.AddSingleton<ITherapyDataService, TherapyDataService>();
+            services.AddSingleton<AmbulatoryDataService>();
+            services.AddSingleton<ScheduleDataService>();
+            services.AddSingleton<EntryDataService>();
 
             return services.BuildServiceProvider();
         }

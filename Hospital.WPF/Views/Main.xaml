@@ -24,7 +24,7 @@
                 </Button>
 				<ListBox Foreground="{StaticResource MahApps.Brushes.Gray}" Cursor="Hand"
 						 VerticalAlignment="Bottom"
-						 ItemsSource="{Binding MenuNavigator.Bodies, ElementName=MainWindow}"
+						 ItemsSource="{Binding ViewStateManager.Navigator.Bodies, ElementName=MainWindow}"
 						 SelectedItem="{Binding CurrentPage, ElementName=MainWindow}"
 						 ItemContainerStyle="{StaticResource TitleListBoxItem}"
 						 Background="Transparent">

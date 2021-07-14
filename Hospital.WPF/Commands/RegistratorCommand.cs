@@ -60,9 +60,9 @@ namespace Hospital.WPF.Commands
         private static readonly Command _findEntryPrevious = new Command(async obj => { await _vm.GetEntries(true); }, obj => _vm != null);
         private static readonly Command _findEntryNext = new Command(async obj => { await _vm.GetEntries(false); }, obj => _vm != null);
 
-        public RegistratorCommand(RegistratorViewModel viewModel, Registrator view)
+        public RegistratorCommand(Registrator view)
         {
-            _vm = viewModel;
+            _vm = view.DataContext as RegistratorViewModel;
             _view = view;
         }
 

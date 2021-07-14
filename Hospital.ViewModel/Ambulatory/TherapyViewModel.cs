@@ -16,7 +16,12 @@ namespace Hospital.ViewModel.Ambulatory
     /// </summary>
     public class TherapyViewModel : MainViewModel
     {
-        private readonly ITherapyDataService therapyDataService = new TherapyDataService(contextFactory);
+        private readonly ITherapyDataService _therapyDataService;
+
+        public TherapyViewModel(ITherapyDataService therapyDataService)
+        {
+            _therapyDataService = therapyDataService;
+        }
 
         private Entry _currentEntry;
         private MedCard _medCard;
@@ -52,31 +57,31 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 IsLoadingDiagnosis = true;
-                var diagnosisClasses = await new GenericDataServices<DiagnosisClass>(new HospitalDbContextFactory()).GetAll();
+                var diagnosisClasses = await new GenericDataService<DiagnosisClass>(new HospitalDbContextFactory()).GetAll();
                 DiagnosisClasses.Clear();
                 foreach (DiagnosisClass diagnosisClass in diagnosisClasses) DiagnosisClasses.Add(diagnosisClass);
                 IsLoadingDiagnosis = false;
 
                 IsLoadingPharma = true;
-                var drugsClasses = await new GenericDataServices<DrugClass>(new HospitalDbContextFactory()).GetAll();
+                var drugsClasses = await new GenericDataService<DrugClass>(new HospitalDbContextFactory()).GetAll();
                 DrugClasses.Clear();
                 foreach (DrugClass drugClass in drugsClasses) DrugClasses.Add(drugClass);
-                var pharmacoDatas = await therapyDataService.GetPharmacoTherapyDatas(entry.MedCard.Id);
+                var pharmacoDatas = await _therapyDataService.GetPharmacoTherapyDatas(entry.MedCard.Id);
                 PharmacoTherapyDatas.Clear();
                 foreach (PharmacoTherapyData pharmacoTherapyData in pharmacoDatas) PharmacoTherapyDatas.Add(pharmacoTherapyData);
                 IsLoadingPharma = false;
 
                 IsLoadingPhysio = true;
-                var physioDatas = await therapyDataService.GetPhysioTherapyDatas(entry.MedCard.Id);
+                var physioDatas = await _therapyDataService.GetPhysioTherapyDatas(entry.MedCard.Id);
                 PhysioTherapyDatas.Clear();
                 foreach (PhysioTherapyData physioTherapyData in physioDatas) PhysioTherapyDatas.Add(physioTherapyData);
-                var physioGroups = await new GenericDataServices<PhysTherFactGroup>(new HospitalDbContextFactory()).GetAll();
+                var physioGroups = await new GenericDataService<PhysTherFactGroup>(new HospitalDbContextFactory()).GetAll();
                 PhysTherFactGroups.Clear();
                 foreach (PhysTherFactGroup physTherFactGroup in physioGroups) PhysTherFactGroups.Add(physTherFactGroup);
                 IsLoadingPhysio = false;
 
                 IsLoadingSurgery = true;
-                var surgeryDatas = await therapyDataService.GetSurgeryTherapyDatas(entry.MedCard.Id);
+                var surgeryDatas = await _therapyDataService.GetSurgeryTherapyDatas(entry.MedCard.Id);
                 SurgeryTherapyDatas.Clear();
                 foreach (SurgeryTherapyData surgeryData in surgeryDatas) SurgeryTherapyDatas.Add(surgeryData);
                 CurrentSurgeryType = SurgeryType.Оперативная;
@@ -112,7 +117,7 @@ namespace Hospital.ViewModel.Ambulatory
                     IsLoadingDiagnosis = true;
                     try
                     {
-                        var result = await therapyDataService.GetDiagnoses(value, isCode);
+                        var result = await _therapyDataService.GetDiagnoses(value, isCode);
                         Diagnoses.Clear();
                         foreach (Diagnosis diagnosis in result)
                         {
@@ -142,7 +147,7 @@ namespace Hospital.ViewModel.Ambulatory
                     IsLoadingPharma = true;
                     try
                     {
-                        var result = await therapyDataService.GetDrugs(value);
+                        var result = await _therapyDataService.GetDrugs(value);
                         Drugs.Clear(); //drugsearchlist
                         foreach (Drug drug in result) Drugs.Add(drug);
                     }
@@ -162,7 +167,7 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 DrugSubClasses.Clear();
-                var result = await therapyDataService.GetDrugSubClasses(drugClass);
+                var result = await _therapyDataService.GetDrugSubClasses(drugClass);
                 foreach (DrugSubClass drugSubClass in result) DrugSubClasses.Add(drugSubClass);
             }
             catch (Exception ex)
@@ -177,7 +182,7 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 DrugGroups.Clear();
-                var result = await therapyDataService.GetDrugGroup(drugSubClass);
+                var result = await _therapyDataService.GetDrugGroup(drugSubClass);
                 foreach (DrugGroup drugGroup in result) DrugGroups.Add(drugGroup);
             }
             catch (Exception ex)
@@ -192,7 +197,7 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 Drugs.Clear();
-                var result = await therapyDataService.GetDrugs(drugGroup);
+                var result = await _therapyDataService.GetDrugs(drugGroup);
                 foreach (Drug drug in result) Drugs.Add(drug);
             }
             catch (Exception ex)
@@ -208,7 +213,7 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 DiagnosisGroups.Clear();
-                var res = await therapyDataService.GetDiagnosisGroups(diagnosisClass);
+                var res = await _therapyDataService.GetDiagnosisGroups(diagnosisClass);
                 foreach (DiagnosisGroup group in res) DiagnosisGroups.Add(group);
             }
             catch (Exception ex)
@@ -223,7 +228,7 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 Diagnoses.Clear();
-                var res = await therapyDataService.GetDiagnoses(diagnosisGroup);
+                var res = await _therapyDataService.GetDiagnoses(diagnosisGroup);
                 foreach (Diagnosis diagnosis in res) Diagnoses.Add(diagnosis);
             }
             catch (Exception ex)
@@ -239,7 +244,7 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 PhysioTherapyFactors.Clear();
-                var res = await therapyDataService.GetPhysioFactors(physTherFactGroup);
+                var res = await _therapyDataService.GetPhysioFactors(physTherFactGroup);
                 foreach (PhysioTherapyFactor factor in res) PhysioTherapyFactors.Add(factor);
             }
             catch (Exception ex)
@@ -254,7 +259,7 @@ namespace Hospital.ViewModel.Ambulatory
             IsLoadingSurgery = true;
             try
             {
-                var res = await therapyDataService.GetSurgeryGroups(type);
+                var res = await _therapyDataService.GetSurgeryGroups(type);
                 SurgeryGroups.Clear();
                 foreach (SurgeryGroup group in res) SurgeryGroups.Add(group);
             }
@@ -270,7 +275,7 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 SurgeryOperations.Clear();
-                var res = await therapyDataService.GetSurgeryOperations(group);
+                var res = await _therapyDataService.GetSurgeryOperations(group);
                 foreach (SurgeryOperation operation in res) SurgeryOperations.Add(operation);
             }
             catch (Exception ex)
