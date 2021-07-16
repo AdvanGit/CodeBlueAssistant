@@ -1,29 +1,28 @@
-﻿using Hospital.Domain.Services;
-using Hospital.EntityFramework;
+﻿using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
-using Hospital.ViewModel.Ambulatory;
 using Hospital.ViewModel.Services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.ViewModel.Factories
 {
     public class RootViewModelFactory : IRootViewModelFactory
     {
         private readonly IAuthenticator _authenticator;
+        private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
 
         private readonly AmbulatoryViewModelFactory _ambulatoryViewModelFactory;
-        private readonly EntryDataService _entryDataService;
         private readonly ScheduleDataService _scheduleDataServices;
 
         public RootViewModelFactory(
-            IAuthenticator authenticator, 
+            IAuthenticator authenticator,
+            IDbContextFactory<HospitalDbContext> contextFactory,
             AmbulatoryViewModelFactory ambulatoryViewModelFactory,
-            EntryDataService entryDataService,
             ScheduleDataService scheduleDataServices)
         {
             _authenticator = authenticator;
+            _contextFactory = contextFactory;
             _ambulatoryViewModelFactory = ambulatoryViewModelFactory;
             _scheduleDataServices = scheduleDataServices;
-            _entryDataService = entryDataService;
         }
 
         public LoginViewModel CreateLoginViewModel()
@@ -43,7 +42,7 @@ namespace Hospital.ViewModel.Factories
 
         public RegistratorViewModel CreateRegistratorViewModel()
         {
-            return new RegistratorViewModel(_entryDataService);
+            return new RegistratorViewModel(_contextFactory);
         }
     }
 }

@@ -6,7 +6,7 @@ namespace Hospital.Domain.Model
 {
     public enum Gender : byte { Мужской = 0, Женский = 1 }
     public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
-    public enum Role : byte { Administrator, Ambulatorer, Stationeer, Manager, Registrator }
+    public enum Role { Administrator, Ambulatorer, Stationeer, Manager, Registrator }
 
     public abstract class User : DomainObject
     {

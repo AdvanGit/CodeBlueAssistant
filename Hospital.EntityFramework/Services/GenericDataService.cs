@@ -11,9 +11,9 @@ namespace Hospital.EntityFramework.Services
 {
     public class GenericDataService<T> : IDataServices<T> where T : DomainObject
     {
-        private readonly HospitalDbContextFactory _contextFactory;
+        private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
 
-        public GenericDataService(HospitalDbContextFactory contextFactory)
+        public GenericDataService(IDbContextFactory<HospitalDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
         }

@@ -4,6 +4,7 @@ using Hospital.EntityFramework;
 using Hospital.EntityFramework.Filters;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,14 +15,15 @@ namespace Hospital.ViewModel
 {
     public class RegistratorViewModel : MainViewModel
     {
-        private readonly EntryDataService _entryDataServices;
-        private readonly IDataServices<Belay> genericDataServicesBelay = new GenericDataService<Belay>(new HospitalDbContextFactory());
-        private readonly IDataServices<Patient> genericDataServicesPatient = new GenericDataService<Patient>(new HospitalDbContextFactory());
-        private readonly IDataServices<Entry> genericDataServicesEntry = new GenericDataService<Entry>(new HospitalDbContextFactory());
+        private readonly EntryDataService entryDataService;
+        private readonly IDataServices<Belay> belayDataService;
+        private readonly IDataServices<Patient> patientDataService;
 
-        public RegistratorViewModel(EntryDataService entryDataServices)
+        public RegistratorViewModel(IDbContextFactory<HospitalDbContext> contextFactory)
         {
-            _entryDataServices = entryDataServices;
+            entryDataService = new EntryDataService(contextFactory);
+            belayDataService = new GenericDataService<Belay>(contextFactory);
+            patientDataService = new GenericDataService<Patient>(contextFactory);
         }
 
 
@@ -64,7 +66,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Patient> result = await _entryDataServices.FindPatient(SearchString);
+                    IEnumerable<Patient> result = await entryDataService.FindPatient(SearchString);
                     if (result.Count() != 0)
                     {
                         Patients.Clear();
@@ -86,7 +88,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await _entryDataServices.FindDoctor(SearchString, _filter);
+                    IEnumerable<Entry> result = await entryDataService.FindDoctor(SearchString, _filter);
                     if (result.Count() != 0)
                     {
                         Doctors.Clear();
@@ -110,7 +112,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await _entryDataServices.GetEntries(SelectedEntry.DoctorDestination, (SelectedEntry.TargetDateTime));
+                    IEnumerable<Entry> result = await entryDataService.GetEntries(SelectedEntry.DoctorDestination, (SelectedEntry.TargetDateTime));
                     Entries.Clear();
                     FilteredEntries.Clear();
                     foreach (Entry entry in result) Entries.Add(entry);
@@ -133,7 +135,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await _entryDataServices.GetEntries(SelectedEntry.DoctorDestination, Filter.DateTime);
+                    IEnumerable<Entry> result = await entryDataService.GetEntries(SelectedEntry.DoctorDestination, Filter.DateTime);
                     Entries.Clear();
                     FilteredEntries.Clear();
                     foreach (Entry entry in result) Entries.Add(entry);
@@ -152,7 +154,7 @@ namespace Hospital.ViewModel
             {
                 try
                 {
-                    IEnumerable<Belay> result = await genericDataServicesBelay.GetAll();
+                    IEnumerable<Belay> result = await belayDataService.GetAll();
                     foreach (Belay belay in result) Belays.Add(belay);
                 }
                 catch (Exception ex)
@@ -165,10 +167,10 @@ namespace Hospital.ViewModel
         {
             try
             {
-                await genericDataServicesPatient.Update(EditingPatient.Id, EditingPatient);
+                await patientDataService.Update(EditingPatient.Id, EditingPatient);
                 SelectedPatient = EditingPatient;
                 Patients.Clear();
-                Patients.Add(await genericDataServicesPatient.GetById(SelectedPatient.Id));
+                Patients.Add(await patientDataService.GetById(SelectedPatient.Id));
             }
             catch (Exception ex)
             {
@@ -180,7 +182,7 @@ namespace Hospital.ViewModel
             SelectedEntry.Patient = SelectedPatient;
             SelectedEntry.Registrator = SelectedEntry.DoctorDestination; //---заглушка отсутсвия данных аккаунта
             SelectedEntry.EntryStatus = EntryStatus.Ожидание;
-            await genericDataServicesEntry.Update(SelectedEntry.Id, SelectedEntry);
+            await entryDataService.Update(SelectedEntry.Id, SelectedEntry);
             SelectedEntry = null;
             SelectedPatient = null;
         }

@@ -1,6 +1,8 @@
 ﻿using Hospital.Domain.Services;
+using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Ambulatory;
+using Microsoft.EntityFrameworkCore;
 
 namespace Hospital.ViewModel.Factories
 {
@@ -10,13 +12,16 @@ namespace Hospital.ViewModel.Factories
         private readonly EntryDataService _entryDataServices;
         private readonly ITestDataService _testDataService;
         private readonly ITherapyDataService _therapyDataService;
+        private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
 
         public AmbulatoryViewModelFactory(
+            IDbContextFactory<HospitalDbContext> contextFactory,
             ITestDataService testDataService,
             ITherapyDataService therapyDataService,
             AmbulatoryDataService ambulatoryDataService,
             EntryDataService entryDataServices)
         {
+            _contextFactory = contextFactory;
             _testDataService = testDataService;
             _therapyDataService = therapyDataService;
             _ambulatoryDataService = ambulatoryDataService;
@@ -25,7 +30,7 @@ namespace Hospital.ViewModel.Factories
 
         public AmbulatoryViewModel CreateAmbulatoryViewModel(int entryId)
         {
-            return new AmbulatoryViewModel(entryId, _ambulatoryDataService, CreateDiagnosticViewModel(), CreateTherapyViewModel(), CreateEntryViewModel() );
+            return new AmbulatoryViewModel(entryId, _ambulatoryDataService, CreateDiagnosticViewModel(), CreateTherapyViewModel(), CreateEntryViewModel());
         }
 
         public DiagnosticViewModel CreateDiagnosticViewModel()
@@ -40,7 +45,7 @@ namespace Hospital.ViewModel.Factories
 
         public TherapyViewModel CreateTherapyViewModel()
         {
-            return new TherapyViewModel(_therapyDataService);
+            return new TherapyViewModel(_therapyDataService, _contextFactory);
         }
 
     }

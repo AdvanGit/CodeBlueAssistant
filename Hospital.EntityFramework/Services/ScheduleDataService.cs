@@ -9,9 +9,9 @@ namespace Hospital.EntityFramework.Services
 {
     public class ScheduleDataService
     {
-        private readonly HospitalDbContextFactory _contextFactory;
+        private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
 
-        public ScheduleDataService(HospitalDbContextFactory contextFactory)
+        public ScheduleDataService(IDbContextFactory<HospitalDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
         }

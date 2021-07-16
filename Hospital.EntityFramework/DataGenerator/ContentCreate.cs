@@ -1,4 +1,5 @@
 ﻿using Hospital.Domain.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -790,16 +791,9 @@ namespace Hospital.EntityFramework.DataGenerator
             return changes;
         }
 
-
-        public static bool Invoke()
+        public static void Invoke(IDbContextFactory<HospitalDbContext> contextFactory)
         {
-            return false;
-        }
-
-        private static readonly HospitalDbContextFactory _contextFactory = new HospitalDbContextFactory();
-        static ContentCreate()
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            using (HospitalDbContext db = contextFactory.CreateDbContext())
             {
                 //List<Department> departments = GenerateDepartments(departmentTitles);
                 //List<Staff> staffs = GenerateStaff(departments, 3);
@@ -843,7 +837,9 @@ namespace Hospital.EntityFramework.DataGenerator
                 //db.Diagnoses.AddRange(diagnoses);
 
                 //db.SaveChanges();
+
             }
         }
+
     }
 }

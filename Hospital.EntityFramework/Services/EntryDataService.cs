@@ -11,9 +11,9 @@ namespace Hospital.EntityFramework.Services
 {
     public class EntryDataService : GenericDataService<Entry>
     {
-        private readonly HospitalDbContextFactory _contextFactory;
+        private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
 
-        public EntryDataService(HospitalDbContextFactory contextFactory) : base(contextFactory)
+        public EntryDataService(IDbContextFactory<HospitalDbContext> contextFactory) : base(contextFactory)
         {
             _contextFactory = contextFactory;
         }
@@ -175,5 +175,6 @@ namespace Hospital.EntityFramework.Services
                 return entry;
             }
         }
+
     }
 }

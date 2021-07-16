@@ -3,6 +3,7 @@ using Hospital.Domain.Services;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
 using System.Collections.ObjectModel;
@@ -17,10 +18,12 @@ namespace Hospital.ViewModel.Ambulatory
     public class TherapyViewModel : MainViewModel
     {
         private readonly ITherapyDataService _therapyDataService;
+        private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
 
-        public TherapyViewModel(ITherapyDataService therapyDataService)
+        public TherapyViewModel(ITherapyDataService therapyDataService, IDbContextFactory<HospitalDbContext> contextFactory)
         {
             _therapyDataService = therapyDataService;
+            _contextFactory = contextFactory;
         }
 
         private Entry _currentEntry;
@@ -57,13 +60,13 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 IsLoadingDiagnosis = true;
-                var diagnosisClasses = await new GenericDataService<DiagnosisClass>(new HospitalDbContextFactory()).GetAll();
+                var diagnosisClasses = await new GenericDataService<DiagnosisClass>(_contextFactory).GetAll();
                 DiagnosisClasses.Clear();
                 foreach (DiagnosisClass diagnosisClass in diagnosisClasses) DiagnosisClasses.Add(diagnosisClass);
                 IsLoadingDiagnosis = false;
 
                 IsLoadingPharma = true;
-                var drugsClasses = await new GenericDataService<DrugClass>(new HospitalDbContextFactory()).GetAll();
+                var drugsClasses = await new GenericDataService<DrugClass>(_contextFactory).GetAll();
                 DrugClasses.Clear();
                 foreach (DrugClass drugClass in drugsClasses) DrugClasses.Add(drugClass);
                 var pharmacoDatas = await _therapyDataService.GetPharmacoTherapyDatas(entry.MedCard.Id);
@@ -75,7 +78,7 @@ namespace Hospital.ViewModel.Ambulatory
                 var physioDatas = await _therapyDataService.GetPhysioTherapyDatas(entry.MedCard.Id);
                 PhysioTherapyDatas.Clear();
                 foreach (PhysioTherapyData physioTherapyData in physioDatas) PhysioTherapyDatas.Add(physioTherapyData);
-                var physioGroups = await new GenericDataService<PhysTherFactGroup>(new HospitalDbContextFactory()).GetAll();
+                var physioGroups = await new GenericDataService<PhysTherFactGroup>(_contextFactory).GetAll();
                 PhysTherFactGroups.Clear();
                 foreach (PhysTherFactGroup physTherFactGroup in physioGroups) PhysTherFactGroups.Add(physTherFactGroup);
                 IsLoadingPhysio = false;

@@ -10,9 +10,9 @@ namespace Hospital.EntityFramework.Services
 {
     public class AmbulatoryDataService
     {
-        private readonly HospitalDbContextFactory _contextFactory;
+        private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
 
-        public AmbulatoryDataService(HospitalDbContextFactory contextFactory)
+        public AmbulatoryDataService(IDbContextFactory<HospitalDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
         }
