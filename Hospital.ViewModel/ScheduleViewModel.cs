@@ -50,7 +50,7 @@ namespace Hospital.ViewModel
 
         public AmbulatoryViewModel CreateAmbulatoryViewModel()
         {
-            return _ambulatoryViewModelFactory.CreateViewModel(CurrentEntry.Id);
+            return _ambulatoryViewModelFactory.CreateAmbulatoryViewModel(CurrentEntry.Id);
         }
     }
 }

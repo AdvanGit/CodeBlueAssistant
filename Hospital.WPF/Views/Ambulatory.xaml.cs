@@ -1,5 +1,4 @@
 ﻿using Hospital.ViewModel.Ambulatory;
-using Hospital.ViewModel.Factories;
 using Hospital.WPF.Commands;
 using Hospital.WPF.Controls.Ambulatory;
 using Hospital.WPF.Navigators;
@@ -42,10 +41,11 @@ namespace Hospital.WPF.Views
 
         public override void OnApplyTemplate()
         {
-            base.OnApplyTemplate();
             MenuNavigator.SetBody(typeof(AmbDiagnostic));
             EntrySearchNavigator.SetBody(typeof(AmbEntrySearchPanel));
             EntryTabNavigator.SetBody(typeof(AmbEntryInfo));
+
+            base.OnApplyTemplate();
         }
     }
 }

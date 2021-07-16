@@ -15,15 +15,15 @@ namespace Hospital.ViewModel.Ambulatory
         private readonly AmbulatoryDataService _ambulatoryDataService;
 
         public AmbulatoryViewModel(int entryId, 
-            AmbulatoryDataService ambulatoryDataService, 
-            EntryDataService entryDataServices,
-            ITestDataService testDataService, 
-            ITherapyDataService therapyDataService)
+            AmbulatoryDataService ambulatoryDataService,
+            DiagnosticViewModel diagnosticViewModel,
+            TherapyViewModel therapyViewModel,
+            EntryViewModel entryViewModel)
         {
             _ambulatoryDataService = ambulatoryDataService;
-            _diagnosticViewModel = new DiagnosticViewModel(testDataService);
-            _therapyViewModel = new TherapyViewModel(therapyDataService);
-            _entryViewModel = new EntryViewModel(entryDataServices);
+            _diagnosticViewModel = diagnosticViewModel;
+            _therapyViewModel = therapyViewModel;
+            _entryViewModel = entryViewModel;
 
             EntryId = entryId;
             GetEntry(entryId).ConfigureAwait(true);

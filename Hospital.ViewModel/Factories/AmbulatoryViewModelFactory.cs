@@ -23,9 +23,25 @@ namespace Hospital.ViewModel.Factories
             _entryDataServices = entryDataServices;
         }
 
-        public AmbulatoryViewModel CreateViewModel(int entryId)
+        public AmbulatoryViewModel CreateAmbulatoryViewModel(int entryId)
         {
-            return new AmbulatoryViewModel(entryId, _ambulatoryDataService, _entryDataServices , _testDataService, _therapyDataService);
+            return new AmbulatoryViewModel(entryId, _ambulatoryDataService, CreateDiagnosticViewModel(), CreateTherapyViewModel(), CreateEntryViewModel() );
         }
+
+        public DiagnosticViewModel CreateDiagnosticViewModel()
+        {
+            return new DiagnosticViewModel(_testDataService);
+        }
+
+        public EntryViewModel CreateEntryViewModel()
+        {
+            return new EntryViewModel(_entryDataServices);
+        }
+
+        public TherapyViewModel CreateTherapyViewModel()
+        {
+            return new TherapyViewModel(_therapyDataService);
+        }
+
     }
 }
