@@ -1,0 +1,19 @@
+﻿@model RegistratorViewModel
+@{
+    ViewData["Title"] = "Home Page";
+    Model.SearchString = "*";
+    await Model.SearchPatient();
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <table class="table">
+    <tr><td>Имя</td><td>Возраст</td></tr>
+    @foreach (var item in Model.Patients)
+    {
+        <tr><td>@item.FirstName</td><td>@item.LastName</td></tr>
+    }
+</table>
+
+</div>
