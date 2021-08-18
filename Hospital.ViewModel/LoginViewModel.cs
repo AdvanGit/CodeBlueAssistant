@@ -1,44 +1,50 @@
 ﻿using Hospital.Domain.Model;
-using Hospital.EntityFramework.Services;
+using Hospital.Domain.Security;
 using Hospital.ViewModel.Notificator;
-using Hospital.ViewModel.Services;
 using System;
-using System.Linq;
+using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Hospital.ViewModel
 {
     public class LoginViewModel : MainViewModel
     {
-        private readonly IAuthenticator _authenticator;
+        private readonly ClaimsPrincipal _claimsPrincipal;
+        private readonly IAuthenticationService<Staff> _authenticationService;
 
-        public LoginViewModel(IAuthenticator authenticator)
+        public LoginViewModel(ClaimsPrincipal claimsPrincipal, IAuthenticationService<Staff> authenticationService)
         {
-            _authenticator = authenticator;
+            _claimsPrincipal = claimsPrincipal;
+            _authenticationService = authenticationService;
         }
 
-        public async Task<bool> CheckUser(long phoneNumber)
+        public async Task<Staff> Login(long phoneNumber, string password)
         {
             IsLoading = true;
             try
             {
-                var role = await _authenticator.Login(phoneNumber, "");
-                if (Role.Administrator == role)
+                var staff = await _authenticationService.Authenticate(phoneNumber, password);
+                if (staff == null) 
                 {
-                    CurrentStuffId = _authenticator.CurrentUser.Id;
-                    HeaderCaption = _authenticator.CurrentUser.FirstName + " " + _authenticator.CurrentUser.MidName[0] + ". " + _authenticator.CurrentUser.LastName[0] + ".";
-                    return true;
+                    throw new UnauthorizedAccessException("Запись не найдена");
                 }
-                else
-                {
-                    NotificationManager.AddItem(new NotificationItem(NotificationType.Information, TimeSpan.FromSeconds(4), "Запись не найдена"));
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                NotificationManager.AddException(ex, 8);
-                return false;
+
+                var claims = new List<Claim>
+                    {
+                        new Claim(ClaimsIdentity.DefaultRoleClaimType, staff.Role.ToString()),
+                        new Claim(ClaimsIdentity.DefaultNameClaimType, staff.FirstName),
+                        new Claim("FirstName", staff.FirstName),
+                        new Claim("MidName", staff.MidName),
+                        new Claim("LastName", staff.LastName),
+                        new Claim("ShortName", staff.GetShortName()),
+                        new Claim("Id", staff.Id.ToString())
+                    };
+
+                var claimsIdentity = new ClaimsIdentity(claims, "Password" );
+                _claimsPrincipal.AddIdentity(claimsIdentity);
+                HeaderCaption = _claimsPrincipal.FindFirst(c=>c.Type == "ShortName").Value;
+                return staff;
             }
             finally
             {
@@ -46,9 +52,6 @@ namespace Hospital.ViewModel
             }
         }
 
-        public IAuthenticator GetAuthenticator()
-        {
-            return _authenticator;
-        }
+        public ClaimsPrincipal GetPrincipal() => _claimsPrincipal;
     }
 }

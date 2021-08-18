@@ -50,7 +50,7 @@ namespace Hospital.ViewModel.Notificator
         public static void AddException(Exception exception, int timeSpan = 0, bool isHold = false)
         {
             AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(timeSpan),
-                exception.GetType().Name + ": " + exception.Message, false, isHold));
+                exception.GetType().Name + ": " + exception.Message, true, isHold));
         }
         public static void AddItem(NotificationItem item)
         {

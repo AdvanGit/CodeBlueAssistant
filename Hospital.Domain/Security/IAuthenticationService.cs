@@ -1,0 +1,11 @@
+﻿using Hospital.Domain.Model;
+using System.Threading.Tasks;
+
+namespace Hospital.Domain.Security
+{
+    public interface IAuthenticationService<TUser> where TUser : User
+    {
+        Task<TUser> Register(TUser user, string password, string confirmPassword);
+        Task<TUser> Authenticate(long phoneNumber, string password);
+    }
+}

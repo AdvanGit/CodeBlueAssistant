@@ -1,38 +1,43 @@
-﻿using Hospital.EntityFramework;
+﻿using Hospital.Domain.Model;
+using Hospital.Domain.Security;
+using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
-using Hospital.ViewModel.Services;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace Hospital.ViewModel.Factories
 {
     public class RootViewModelFactory : IRootViewModelFactory
     {
-        private readonly IAuthenticator _authenticator;
         private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
 
         private readonly AmbulatoryViewModelFactory _ambulatoryViewModelFactory;
         private readonly ScheduleDataService _scheduleDataServices;
+        private readonly ClaimsPrincipal _claimsPrincipal;
+        private readonly IAuthenticationService<Staff> _authenticationService;
 
         public RootViewModelFactory(
-            IAuthenticator authenticator,
             IDbContextFactory<HospitalDbContext> contextFactory,
             AmbulatoryViewModelFactory ambulatoryViewModelFactory,
-            ScheduleDataService scheduleDataServices)
+            ScheduleDataService scheduleDataServices,
+            ClaimsPrincipal claimsPrincipal,
+            IAuthenticationService<Staff> authenticationService)
         {
-            _authenticator = authenticator;
             _contextFactory = contextFactory;
             _ambulatoryViewModelFactory = ambulatoryViewModelFactory;
             _scheduleDataServices = scheduleDataServices;
+            _claimsPrincipal = claimsPrincipal;
+            _authenticationService = authenticationService;
         }
 
         public LoginViewModel CreateLoginViewModel()
         {
-            return new LoginViewModel(_authenticator);
+            return new LoginViewModel(_claimsPrincipal, _authenticationService);
         }
 
         public ScheduleViewModel CreateScheduleViewModel()
         {
-            return new ScheduleViewModel(_scheduleDataServices, _ambulatoryViewModelFactory);
+            return new ScheduleViewModel(_scheduleDataServices, _ambulatoryViewModelFactory, _claimsPrincipal);
         }
 
         public MainViewModel CreateMainViewModel()

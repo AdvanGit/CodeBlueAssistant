@@ -1,17 +1,16 @@
-﻿using Hospital.Domain.Model;
-using Hospital.ViewModel.Factories;
-using Hospital.ViewModel.Services;
+﻿using Hospital.ViewModel.Factories;
 using Hospital.WPF.Navigators;
 using Hospital.WPF.Views;
 using System;
 using System.Collections.ObjectModel;
+using System.Security.Principal;
 
 namespace Hospital.WPF.Services.States
 {
     public class ViewStateManager
     {
         private readonly IRootViewModelFactory _viewModelFactory;
-        
+
         public Navigator Navigator { get; }
 
         public ViewStateManager(IRootViewModelFactory viewModelFactory)
@@ -21,35 +20,30 @@ namespace Hospital.WPF.Services.States
             Navigator.CurrentBody = Navigator.Bodies[0];
         }
 
-        public void Setup(IAuthenticator authenticator)
+        public void Setup(IPrincipal _claimPrincipal)
         {
-            if (authenticator.IsLoggedIn)
+            if (_claimPrincipal.Identity.IsAuthenticated)
             {
-                switch (authenticator.CurrentUser.Role)
+                if (_claimPrincipal.IsInRole("Administrator"))
                 {
-                    case Role.Administrator:
-                        Navigator.Bodies.Clear();
-                        Navigator.Bodies.Add(new Registrator(_viewModelFactory.CreateRegistratorViewModel()));
-                        Navigator.Bodies.Add(new Schedule(_viewModelFactory.CreateScheduleViewModel()));
-                        break;
-                    case Role.Registrator:
-                        Navigator.Bodies.Clear();
-                        Navigator.Bodies.Add(new Registrator(_viewModelFactory.CreateRegistratorViewModel()));
-                        break;
-                    default:
-                        Navigator.Bodies.Clear();
-                        Navigator.Bodies.Add(new Login(_viewModelFactory.CreateLoginViewModel()));
-                        Navigator.CurrentBody = Navigator.Bodies[0];
-                        throw new NotImplementedException($"для роли {authenticator.CurrentUser.Role} не задан параметр инициализации");
+                    Navigator.Bodies.Clear();
+                    Navigator.Bodies.Add(new Registrator(_viewModelFactory.CreateRegistratorViewModel()));
+                    Navigator.Bodies.Add(new Schedule(_viewModelFactory.CreateScheduleViewModel()));
                 }
+                else if (_claimPrincipal.IsInRole("Registrator"))
+                {
+                    Navigator.Bodies.Clear();
+                    Navigator.Bodies.Add(new Registrator(_viewModelFactory.CreateRegistratorViewModel()));
+                }
+                else if (_claimPrincipal.IsInRole("Ambulatorer"))
+                {
+                    Navigator.Bodies.Clear();
+                    Navigator.Bodies.Add(new Schedule(_viewModelFactory.CreateScheduleViewModel()));
+                }
+                else throw new NotImplementedException($"поведение для роли {_claimPrincipal.Identity.Name} не реализовано");
                 Navigator.CurrentBody = Navigator.Bodies[0];
             }
-            else
-            {
-                Navigator.Bodies.Clear();
-                Navigator.Bodies.Add(new Login(_viewModelFactory.CreateLoginViewModel()));
-                Navigator.CurrentBody = Navigator.Bodies[0];
-            }
+            else throw new UnauthorizedAccessException("Пользователь не распознан");
         }
     }
 }

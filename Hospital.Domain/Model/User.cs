@@ -6,7 +6,7 @@ namespace Hospital.Domain.Model
 {
     public enum Gender : byte { Мужской = 0, Женский = 1 }
     public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
-    public enum Role { Administrator, Ambulatorer, Stationeer, Manager, Registrator }
+    public enum Role {Administrator, Manager, Ambulatorer, Stationeer,  Registrator }
 
     public abstract class User : DomainObject
     {
@@ -91,6 +91,8 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("Gender");
             }
         }
+
+        public string GetShortName() => _firstName + " " + _midName[0] +". "+ _lastName[0] + ".";
     }
 
     public class Staff : User

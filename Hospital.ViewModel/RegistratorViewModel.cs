@@ -16,14 +16,14 @@ namespace Hospital.ViewModel
     public class RegistratorViewModel : MainViewModel
     {
         private readonly EntryDataService entryDataService;
-        private readonly IDataServices<Belay> belayDataService;
-        private readonly IDataServices<Patient> patientDataService;
+        private readonly IGenericRepository<Belay> belayDataService;
+        private readonly IGenericRepository<Patient> patientDataService;
 
         public RegistratorViewModel(IDbContextFactory<HospitalDbContext> contextFactory)
         {
             entryDataService = new EntryDataService(contextFactory);
-            belayDataService = new GenericDataService<Belay>(contextFactory);
-            patientDataService = new GenericDataService<Patient>(contextFactory);
+            belayDataService = new GenericRepository<Belay>(contextFactory);
+            patientDataService = new GenericRepository<Patient>(contextFactory);
         }
 
 

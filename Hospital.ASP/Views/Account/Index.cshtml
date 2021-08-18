@@ -1,0 +1,10 @@
+﻿@model Patient
+@{
+	ViewData["Title"] = "Account info Page";
+}
+
+<div>
+	<div class="validation" asp-validation-summary="All"></div>
+	<h2>@Model.FirstName @Model.MidName @Model.LastName</h2>
+	<h3>@Model.PhoneNumber</h3>
+</div>

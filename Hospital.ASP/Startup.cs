@@ -1,19 +1,16 @@
+using Hospital.Domain.Security;
 using Hospital.Domain.Services;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Factories;
-using Hospital.ViewModel.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace Hospital.ASP
 {
@@ -28,27 +25,39 @@ namespace Hospital.ASP
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connection = Configuration.GetConnectionString("default");
-            services.AddDbContext<HospitalDbContext>(options =>
-                options.UseNpgsql(connection));
+            #region DATABASE
+            string localConnectionString = Configuration.GetConnectionString("local");
+            string npgSqlConnectionString = Configuration.GetConnectionString("npgSql");
 
-            services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new NpgSqlDbContextFactory(connection));
+            //services.AddDbContext<HospitalDbContext>(o => o.UseNpgsql(npgSqlConnectionString));
+            //services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new NpgSqlDbContextFactory(npgSqlConnectionString));
 
+            services.AddDbContext<HospitalDbContext>(o => o.UseSqlServer(localConnectionString));
+            services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new LocalDBContextFactory(localConnectionString));
+            #endregion
 
-            services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
-            services.AddSingleton<AmbulatoryViewModelFactory>();
+            #region DATA LAYER FROM WPF ASSEMBLY
+            services.AddSingleton<IPasswordHasher, TestPasswordHasher>();
 
-            services.AddSingleton<IAuthenticator, Authenticator>();
-            services.AddSingleton<IAuthenticationService, AuthenticationService>();
-
-            services.AddSingleton(typeof(IDataServices<>), typeof(GenericDataService<>));
+            services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            services.AddSingleton(typeof(IAuthenticationService<>), typeof(AuthenticationService<>));
             services.AddSingleton<ITestDataService, TestDataService>();
             services.AddSingleton<ITherapyDataService, TherapyDataService>();
+
             services.AddSingleton<AmbulatoryDataService>();
             services.AddSingleton<ScheduleDataService>();
             services.AddSingleton<EntryDataService>();
 
-            services.AddControllersWithViews();
+            services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
+            services.AddSingleton<AmbulatoryViewModelFactory>();
+            #endregion
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
+            {
+                options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
+            });
+
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -56,6 +65,7 @@ namespace Hospital.ASP
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
             else
             {
@@ -63,11 +73,13 @@ namespace Hospital.ASP
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -76,6 +88,7 @@ namespace Hospital.ASP
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }

@@ -1,13 +1,14 @@
-﻿using Hospital.Domain.Services;
+﻿using Hospital.Domain.Security;
+using Hospital.Domain.Services;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Factories;
-using Hospital.ViewModel.Services;
 using Hospital.WPF.Views;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System.Security.Claims;
 using System.Windows;
 
 namespace Hospital.WPF
@@ -50,22 +51,26 @@ namespace Hospital.WPF
                     string npqSqlConnectionString = context.Configuration.GetConnectionString("npgSql");
 
                     services.AddDbContext<HospitalDbContext>(o => o.UseSqlServer(localConnectionString, b => b.MigrationsAssembly("Hospital.WPF"))); //for migrations
+                    services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new LocalDBContextFactory(localConnectionString));
+
                     //services.AddDbContext<HospitalDbContext>(o => o.UseNpgsql(npqSqlConnectionString, b => b.MigrationsAssembly("Hospital.WPF"))); //for migrations
+                    //services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new NpgSqlDbContextFactory(npqSqlConnectionString));
 
-                    services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new NpgSqlDbContextFactory(npqSqlConnectionString));
 
-                    services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
-                    services.AddSingleton<AmbulatoryViewModelFactory>();
+                    services.AddSingleton<ClaimsPrincipal>();
+                    services.AddSingleton<IPasswordHasher, TestPasswordHasher>();
 
-                    services.AddSingleton<IAuthenticator, Authenticator>();
-                    services.AddSingleton<IAuthenticationService, AuthenticationService>();
-
-                    services.AddSingleton(typeof(IDataServices<>), typeof(GenericDataService<>));
+                    services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+                    services.AddSingleton(typeof(IAuthenticationService<>), typeof(AuthenticationService<>));
                     services.AddSingleton<ITestDataService, TestDataService>();
                     services.AddSingleton<ITherapyDataService, TherapyDataService>();
+
                     services.AddSingleton<AmbulatoryDataService>();
                     services.AddSingleton<ScheduleDataService>();
                     services.AddSingleton<EntryDataService>();
+
+                    services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
+                    services.AddSingleton<AmbulatoryViewModelFactory>();
                 });
         }
     }

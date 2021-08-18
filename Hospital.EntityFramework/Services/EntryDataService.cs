@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Hospital.EntityFramework.Services
 {
-    public class EntryDataService : GenericDataService<Entry>
+    public class EntryDataService : GenericRepository<Entry>
     {
         private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
 

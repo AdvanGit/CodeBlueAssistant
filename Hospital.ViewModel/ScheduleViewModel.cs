@@ -6,6 +6,7 @@ using Hospital.ViewModel.Factories;
 using Hospital.ViewModel.Notificator;
 using System;
 using System.Collections.ObjectModel;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Hospital.ViewModel
@@ -14,11 +15,15 @@ namespace Hospital.ViewModel
     {
         private readonly AmbulatoryViewModelFactory _ambulatoryViewModelFactory;
         private readonly ScheduleDataService _scheduleDataServices;
+        private readonly ClaimsPrincipal _claimsPrincipal;
 
-        public ScheduleViewModel(ScheduleDataService scheduleDataServices, AmbulatoryViewModelFactory ambulatoryViewModelFactory)
+        public ScheduleViewModel(ScheduleDataService scheduleDataServices,
+               AmbulatoryViewModelFactory ambulatoryViewModelFactory,
+               ClaimsPrincipal claimsPrincipal)
         {
             _scheduleDataServices = scheduleDataServices;
             _ambulatoryViewModelFactory = ambulatoryViewModelFactory;
+            _claimsPrincipal = claimsPrincipal;
             SelectedDate = new DateTime(2021, 05, 03);
         }
 
@@ -37,7 +42,7 @@ namespace Hospital.ViewModel
             try
             {
                 Entries.Clear();
-                var result = await _scheduleDataServices.GetEntriesByDate(CurrentStuffId, date);
+                var result = await _scheduleDataServices.GetEntriesByDate( int.Parse(_claimsPrincipal.FindFirst("Id").Value), date);
                 Entries.Clear();
                 foreach (Entry entry in result) Entries.Add(entry);
             }

@@ -60,13 +60,13 @@ namespace Hospital.ViewModel.Ambulatory
             try
             {
                 IsLoadingDiagnosis = true;
-                var diagnosisClasses = await new GenericDataService<DiagnosisClass>(_contextFactory).GetAll();
+                var diagnosisClasses = await new GenericRepository<DiagnosisClass>(_contextFactory).GetAll();
                 DiagnosisClasses.Clear();
                 foreach (DiagnosisClass diagnosisClass in diagnosisClasses) DiagnosisClasses.Add(diagnosisClass);
                 IsLoadingDiagnosis = false;
 
                 IsLoadingPharma = true;
-                var drugsClasses = await new GenericDataService<DrugClass>(_contextFactory).GetAll();
+                var drugsClasses = await new GenericRepository<DrugClass>(_contextFactory).GetAll();
                 DrugClasses.Clear();
                 foreach (DrugClass drugClass in drugsClasses) DrugClasses.Add(drugClass);
                 var pharmacoDatas = await _therapyDataService.GetPharmacoTherapyDatas(entry.MedCard.Id);
@@ -78,7 +78,7 @@ namespace Hospital.ViewModel.Ambulatory
                 var physioDatas = await _therapyDataService.GetPhysioTherapyDatas(entry.MedCard.Id);
                 PhysioTherapyDatas.Clear();
                 foreach (PhysioTherapyData physioTherapyData in physioDatas) PhysioTherapyDatas.Add(physioTherapyData);
-                var physioGroups = await new GenericDataService<PhysTherFactGroup>(_contextFactory).GetAll();
+                var physioGroups = await new GenericRepository<PhysTherFactGroup>(_contextFactory).GetAll();
                 PhysTherFactGroups.Clear();
                 foreach (PhysTherFactGroup physTherFactGroup in physioGroups) PhysTherFactGroups.Add(physTherFactGroup);
                 IsLoadingPhysio = false;

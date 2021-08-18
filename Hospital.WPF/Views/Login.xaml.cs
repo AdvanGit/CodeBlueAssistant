@@ -24,29 +24,21 @@ namespace Hospital.WPF.Views
             DataContext = viewModel;
         }
 
-        //public Command Init => new Command(async obj =>
-        //{
-        //    if (long.TryParse(obj.ToString(), out long phone))
-        //    {
-        //        if (await (DataContext as LoginViewModel).CheckUser(phone))
-        //        {
-        //            Main.MenuNavigator.Bodies.Clear();
-        //            Main.MenuNavigator.Bodies.Add(new Registrator());
-        //            Main.MenuNavigator.Bodies.Add(new Schedule());
-        //            Main.CurrentPage = Main.MenuNavigator.Bodies[0];
-        //        }
-        //    }
-        //    else NotificationManager.AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(3), "Номер введен неверно", true));
-        //}, obj => (obj != null && obj.ToString().Length > 5));
-
         public Command Init => new Command(async obj =>
         {
             if (long.TryParse(obj.ToString(), out long phone))
             {
-                if (await (DataContext as LoginViewModel).CheckUser(phone))
+                try
                 {
-                    Main.ViewStateManager.Setup((DataContext as LoginViewModel).GetAuthenticator());
-                    Main.CurrentPage = Main.ViewStateManager.Navigator.Bodies[0];
+                    if (await (DataContext as LoginViewModel).Login(phone, null) != null)
+                    {
+                        Main.ViewStateManager.Setup((DataContext as LoginViewModel).GetPrincipal());
+                        Main.CurrentPage = Main.ViewStateManager.Navigator.Bodies[0];
+                    }
+                }
+                catch(Exception ex)
+                {
+                    NotificationManager.AddException(ex, 8);
                 }
             }
             else NotificationManager.AddItem(new NotificationItem(NotificationType.Error, TimeSpan.FromSeconds(3), "Номер введен неверно", true));

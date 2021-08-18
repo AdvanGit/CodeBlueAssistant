@@ -9,15 +9,16 @@ using System.Threading.Tasks;
 
 namespace Hospital.EntityFramework.Services
 {
-    public class GenericDataService<T> : IDataServices<T> where T : DomainObject
+    public class GenericRepository<T> : IGenericRepository<T> where T : DomainObject
     {
         private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
 
-        public GenericDataService(IDbContextFactory<HospitalDbContext> contextFactory)
+        public GenericRepository(IDbContextFactory<HospitalDbContext> contextFactory)
         {
             _contextFactory = contextFactory;
         }
 
+        #region CRUD
         public async Task<T> Create(T entity)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
@@ -25,25 +26,6 @@ namespace Hospital.EntityFramework.Services
                 var _entity = await db.Set<T>().AddAsync(entity);
                 await db.SaveChangesAsync();
                 return _entity.Entity;
-            }
-        }
-
-        public async Task<bool> Delete(int id)
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                var entity = await db.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
-                db.Set<T>().Remove(entity);
-                await db.SaveChangesAsync();
-                return true;
-            }
-        }
-
-        public async Task<IEnumerable<T>> GetAll()
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                return await db.Set<T>().AsQueryable().ToListAsync();
             }
         }
 
@@ -60,9 +42,29 @@ namespace Hospital.EntityFramework.Services
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 entity.Id = id;
-                db.Set<T>().Update(entity);
+                var _entity = db.Set<T>().Update(entity);
                 await db.SaveChangesAsync();
-                return entity;
+                return _entity.Entity;
+            }
+        }
+
+        public async Task<bool> Delete(int id)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                var entity = await db.Set<T>().AsQueryable().FirstOrDefaultAsync(e => e.Id == id);
+                db.Set<T>().Remove(entity);
+                await db.SaveChangesAsync();
+                return true;
+            }
+        }
+        #endregion
+
+        public async Task<IEnumerable<T>> GetAll()
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                return await db.Set<T>().AsQueryable().ToListAsync();
             }
         }
 
@@ -79,14 +81,6 @@ namespace Hospital.EntityFramework.Services
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 return await Include(db.Set<T>(), includeProperties).Where(predicate).AsNoTracking().ToListAsync();
-            }
-        }
-
-        public async Task<T> GetItemWithInclude(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includeProperties)
-        {
-            using (HospitalDbContext db = _contextFactory.CreateDbContext())
-            {
-                return await Include(db.Set<T>(), includeProperties).FirstOrDefaultAsync(predicate);
             }
         }
 
