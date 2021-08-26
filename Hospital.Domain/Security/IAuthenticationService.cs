@@ -5,7 +5,7 @@ namespace Hospital.Domain.Security
 {
     public interface IAuthenticationService<TUser> where TUser : User
     {
-        Task<TUser> Register(TUser user, string password, string confirmPassword);
+        Task<TUser> Register(TUser user, string password);
         Task<TUser> Authenticate(long phoneNumber, string password);
     }
 }

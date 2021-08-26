@@ -1,6 +1,4 @@
-﻿using Hospital.ViewModel.Ambulatory;
-
-namespace Hospital.ViewModel.Factories
+﻿namespace Hospital.ViewModel.Factories
 {
     public interface IRootViewModelFactory<TViewModelType> where TViewModelType : MainViewModel
     {

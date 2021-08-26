@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Security.Claims;
 using System.Windows;
 
@@ -25,9 +26,7 @@ namespace Hospital.WPF
         protected override void OnStartup(StartupEventArgs e)
         {
             _host.Start();
-
             new Main(_host.Services.GetRequiredService<IRootViewModelFactory>()).Show();
-
             base.OnStartup(e);
         }
 
@@ -45,33 +44,33 @@ namespace Hospital.WPF
                 {
                     configuration.AddJsonFile("appsettings.json");
                 })
-                .ConfigureServices((context, services) =>
-                {
-                    string localConnectionString = context.Configuration.GetConnectionString("local");
-                    string npqSqlConnectionString = context.Configuration.GetConnectionString("npgSql");
+            .ConfigureServices((context, services) =>
+            {
+                string localConnectionString = context.Configuration.GetConnectionString("local");
+                string npqSqlConnectionString = context.Configuration.GetConnectionString("npgSql");
 
-                    services.AddDbContext<HospitalDbContext>(o => o.UseSqlServer(localConnectionString, b => b.MigrationsAssembly("Hospital.WPF"))); //for migrations
-                    services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new LocalDBContextFactory(localConnectionString));
+                services.AddDbContext<HospitalDbContext>(o => o.UseSqlServer(localConnectionString, x => x.MigrationsAssembly("Hospital.WPF")));
+                services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new LocalDBContextFactory(localConnectionString));
 
-                    //services.AddDbContext<HospitalDbContext>(o => o.UseNpgsql(npqSqlConnectionString, b => b.MigrationsAssembly("Hospital.WPF"))); //for migrations
-                    //services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new NpgSqlDbContextFactory(npqSqlConnectionString));
+                //services.AddDbContext<HospitalDbContext>(o => o.UseNpgsql(npqSqlConnectionString, b => b.MigrationsAssembly("Hospital.WPF"))); //for migrations
+                //services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new NpgSqlDbContextFactory(npqSqlConnectionString));
 
 
-                    services.AddSingleton<ClaimsPrincipal>();
-                    services.AddSingleton<IPasswordHasher, TestPasswordHasher>();
+                services.AddSingleton<ClaimsPrincipal>();
+                services.AddSingleton<IPasswordHasher, TestPasswordHasher>();
 
-                    services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
-                    services.AddSingleton(typeof(IAuthenticationService<>), typeof(AuthenticationService<>));
-                    services.AddSingleton<ITestDataService, TestDataService>();
-                    services.AddSingleton<ITherapyDataService, TherapyDataService>();
+                services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+                services.AddSingleton(typeof(IAuthenticationService<>), typeof(AuthenticationService<>));
+                services.AddSingleton<ITestDataService, TestDataService>();
+                services.AddSingleton<ITherapyDataService, TherapyDataService>();
 
-                    services.AddSingleton<AmbulatoryDataService>();
-                    services.AddSingleton<ScheduleDataService>();
-                    services.AddSingleton<EntryDataService>();
+                services.AddSingleton<AmbulatoryDataService>();
+                services.AddSingleton<ScheduleDataService>();
+                services.AddSingleton<EntryDataService>();
 
-                    services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
-                    services.AddSingleton<AmbulatoryViewModelFactory>();
-                });
+                services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
+                services.AddSingleton<AmbulatoryViewModelFactory>();
+            });
         }
     }
 }

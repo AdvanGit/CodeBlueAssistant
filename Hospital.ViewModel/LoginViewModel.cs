@@ -1,6 +1,5 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.Domain.Security;
-using Hospital.ViewModel.Notificator;
 using System;
 using System.Collections.Generic;
 using System.Security.Claims;
@@ -25,7 +24,7 @@ namespace Hospital.ViewModel
             try
             {
                 var staff = await _authenticationService.Authenticate(phoneNumber, password);
-                if (staff == null) 
+                if (staff == null)
                 {
                     throw new UnauthorizedAccessException("Запись не найдена");
                 }
@@ -41,9 +40,9 @@ namespace Hospital.ViewModel
                         new Claim("Id", staff.Id.ToString())
                     };
 
-                var claimsIdentity = new ClaimsIdentity(claims, "Password" );
+                var claimsIdentity = new ClaimsIdentity(claims, "Password");
                 _claimsPrincipal.AddIdentity(claimsIdentity);
-                HeaderCaption = _claimsPrincipal.FindFirst(c=>c.Type == "ShortName").Value;
+                HeaderCaption = _claimsPrincipal.FindFirst(c => c.Type == "ShortName").Value;
                 return staff;
             }
             finally

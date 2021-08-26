@@ -1,2 +1,144 @@
-﻿@{
+﻿@model Patient
+@{
+	ViewBag.Title = "Регистрация пользователя";
 }
+@section Scripts {
+	@{await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}
+
+<form asp-action="Register" asp-controller="Account" asp-anti-forgery="true">
+	<div class="validation" asp-validation-summary="ModelOnly"></div>
+
+	<div class="card shadow rounded border-0 mb-3">
+		<div class="card-header text-center text-white bg-primary">Служебная информация</div>
+		<div class="card-body p-0">
+
+			<div class="form-group row align-items-center m-0 my-3">
+
+				<label asp-for="PhoneNumber" class="col-sm-3 col-form-label py-0 pr-2">Номер телефона</label>
+				<div class="col-sm-9">
+					<input type="tel" class="form-control" asp-for="PhoneNumber" placeholder="введите номер телефона">
+				</div>
+			</div>
+
+			<div class="form-group row align-items-center m-0 my-3">
+				<label class="col-sm-3 col-form-label py-0 pr-2">E-mail</label>
+				<div class="col-sm-9">
+				  <input type="email" class="form-control" placeholder="введите адрес электронной почты">
+				</div>
+			</div>
+
+			<div class="form-group row align-items-center m-0 my-3">
+				<label for="password" class="col-sm-3 col-form-label py-0 pr-2">Пароль</label>
+				<div class="col-sm-9">
+					<input type="password" class="form-control" name="password" required placeholder="введите пароль">
+				</div>
+			</div>
+
+			<div class="form-group row align-items-center m-0 my-3">
+				<label for="confirmPassword" class="col-sm-3 col-form-label py-0 pr-2">Подтверждение пароля</label>
+				<div class="col-sm-9">
+					<input type="password" class="form-control" name="confirmPassword" required placeholder="подтвердите пароль">
+				</div>
+			</div>
+		</div>
+	</div>   
+
+	<div class="card shadow rounded border-0 mb-3">
+		<div class="card-header text-center text-white bg-primary">Личная информация</div>
+		<div class="card-body p-0">
+
+			<div class="form-group row align-items-center  m-0 my-3">
+				<label asp-for="FirstName" class="col-sm-3 col-form-label py-0 pr-2">Фамилия</label>
+				<div class="col-sm-9">
+					<input type="text" class="form-control" asp-for="FirstName" placeholder="введите фамилию">
+				</div>
+			</div>
+			<div class="form-group row align-items-center m-0 my-3">
+				<label asp-for="MidName" class="col-sm-3 col-form-label py-0 pr-2">Имя</label>
+				<div class="col-sm-9">
+				  <input type="text" class="form-control" asp-for="MidName" placeholder="введите имя">
+				</div>
+			</div>
+			<div class="form-group row align-items-center m-0 my-3">
+				<label asp-for="LastName" class="col-sm-3 col-form-label py-0 pr-2">Отчество</label>
+				<div class="col-sm-9">
+				  <input type="text" class="form-control" asp-for="LastName" placeholder="введите отчество">
+				</div>
+			</div>
+			<div class="form-group row align-items-center m-0 my-3">
+				<label asp-for="BirthDay" class="col-sm-3 col-form-label py-0 pr-2">Дата рождения</label>
+				<div class="col-sm-9">
+				  <input type="date" class="form-control" asp-for="BirthDay" placeholder="введите дату рождения">
+				</div>
+			</div>
+		</div>
+	</div>   
+
+	<div class="card shadow rounded border-0 mb-3">
+		<div class="card-header text-center text-white bg-secondary">Место жительства</div>
+		<div class="card-body p-0">
+
+			<div class="form-group row align-items-center  m-0 my-3">
+				<label asp-for="Adress.City" class="col-sm-3 col-form-label py-0 pr-2">Населенный пункт</label>
+				<div class="col-sm-9">
+				  <input type="text" class="form-control" asp-for="Adress.City" placeholder="введите название населенного пункта">
+				</div>
+			</div>
+			<div class="form-group row align-items-center m-0 my-3">
+				<label asp-for="Adress.Street" class="col-sm-3 col-form-label py-0 pr-2">Улица</label>
+				<div class="col-sm-9">
+				  <input type="text" class="form-control" asp-for="Adress.Street" placeholder="введите название улицы">
+				</div>
+			</div>
+			<div class="form-group row align-items-center m-0 my-3">
+				<label asp-for="Adress.Number" class="col-sm-3 col-form-label py-0 pr-2">Номер строения</label>
+				<div class="col-sm-9">
+				  <input type="text" class="form-control" asp-for="Adress.Number" placeholder="Введите номер строения">
+				</div>
+			</div>
+			<div class="form-group row align-items-center m-0 my-3">
+				<label asp-for="Adress.Room" class="col-sm-3 col-form-label py-0 pr-2">Номер квартиры</label>
+				<div class="col-sm-9">
+				  <input type="number" class="form-control" asp-for="Adress.Room" placeholder="введите номер квартиры (при наличии)">
+				</div>
+			</div>
+		</div>
+	</div>   
+
+	<div class="card shadow rounded border-0 mb-3">
+		<div class="card-header text-center text-white bg-secondary">Данные медицинской страховки</div>
+		<div class="card-body p-0">
+			<div class="form-group row align-items-center m-0 my-3">
+				<label asp-for="Belay.Title" class="col-sm-3 col-form-label py-0 pr-2">Организация</label>
+				<div class="col-sm-9">
+					<select class="custom-select ">
+						<option selected>Open this select menu</option>
+						<option value="1">One</option>
+						<option value="2">Two</option>
+						<option value="3">Three</option>
+					</select>                
+				</div>
+			</div>
+			<div class="form-group row align-items-center m-0 my-3">
+				<label asp-for="BelayCode" class="col-sm-3 col-form-label py-0 pr-2">Номер</label>
+				<div class="col-sm-9">
+				  <input type="text" class="form-control" asp-for="BelayCode" placeholder="введите номер страхового свидетельства">
+				</div>
+			</div>
+			<div class="form-group row align-items-center m-0 my-3">
+				<label asp-for="BelayDateOut" class="col-sm-3 col-form-label py-0 pr-2">Срок действия</label>
+				<div class="col-sm-9">
+				  <input type="date" class="form-control" asp-for="BelayDateOut" placeholder="Введите дату срока действия">
+				</div>
+			</div>
+		</div>
+	</div>   
+
+	<div class="row m-0">    
+		<a href="/Home/Index" class="btn btn-secondary col mr-4">Отмена</a>
+		<input type="submit" value="Отправить" class="btn btn-primary col ml-4"/>
+	</div>
+</form>
+
+

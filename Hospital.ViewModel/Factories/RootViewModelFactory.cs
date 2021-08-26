@@ -20,8 +20,8 @@ namespace Hospital.ViewModel.Factories
             IDbContextFactory<HospitalDbContext> contextFactory,
             AmbulatoryViewModelFactory ambulatoryViewModelFactory,
             ScheduleDataService scheduleDataServices,
-            ClaimsPrincipal claimsPrincipal,
-            IAuthenticationService<Staff> authenticationService)
+            IAuthenticationService<Staff> authenticationService,
+            ClaimsPrincipal claimsPrincipal = null)
         {
             _contextFactory = contextFactory;
             _ambulatoryViewModelFactory = ambulatoryViewModelFactory;

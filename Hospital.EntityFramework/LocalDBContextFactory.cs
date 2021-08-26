@@ -13,11 +13,9 @@ namespace Hospital.EntityFramework
         public HospitalDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<HospitalDbContext>();
-            optionsBuilder.UseSqlServer(_connectionString);
+            optionsBuilder.UseSqlServer(_connectionString, b => b.MigrationsAssembly("Hospital.WPF"));
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution);
-            #if DEBUG
             optionsBuilder.EnableSensitiveDataLogging(true);
-            #endif
             return new HospitalDbContext(optionsBuilder.Options);
         }
     }

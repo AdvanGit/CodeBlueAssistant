@@ -211,28 +211,28 @@
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="True"/>
-                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="male"/>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="Мужской"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Text" Value="Женат"/>
                                             </MultiDataTrigger>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="True"/>
-                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="female"/>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="Женский"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Text" Value="Замужем"/>
                                             </MultiDataTrigger>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="False"/>
-                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="male"/>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="Мужской"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Text" Value="Не женат"/>
                                             </MultiDataTrigger>
                                             <MultiDataTrigger>
                                                 <MultiDataTrigger.Conditions>
                                                     <Condition Binding="{Binding CurrentEntry.Patient.IsMarried}" Value="False"/>
-                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="female"/>
+                                                    <Condition Binding="{Binding CurrentEntry.Patient.Gender}" Value="Женский"/>
                                                 </MultiDataTrigger.Conditions>
                                                 <Setter Property="Text" Value="Не замужем"/>
                                             </MultiDataTrigger>

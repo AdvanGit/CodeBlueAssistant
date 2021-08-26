@@ -1,6 +1,4 @@
-﻿using Hospital.EntityFramework;
-using Hospital.ViewModel.Factories;
-using System;
+﻿using System;
 using System.ComponentModel;
 
 namespace Hospital.ViewModel

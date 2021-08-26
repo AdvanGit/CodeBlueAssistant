@@ -2,6 +2,7 @@
 using Hospital.Domain.Services;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace Hospital.Domain.Security
@@ -9,6 +10,7 @@ namespace Hospital.Domain.Security
     public class AuthenticationService<TUser> : IAuthenticationService<TUser> where TUser : User
     {
         private readonly IGenericRepository<TUser> _dataServices;
+        //TODO: add implementation of hasher
         private readonly IPasswordHasher _passwordHasher;
 
         public AuthenticationService(IPasswordHasher passwordHasher = null, IGenericRepository<TUser> dataServices = null)
@@ -24,15 +26,10 @@ namespace Hospital.Domain.Security
             return result.FirstOrDefault(u => u.PasswordHash == _passwordHasher.GetPasswordHash(password));
         }
 
-        public Task<TUser> Register(TUser user, string password, string confirmPassword)
+        public Task<TUser> Register(TUser user, string password)
         {
-            if (string.IsNullOrEmpty(password)) throw new ArgumentNullException("password must not be null");
-            else if (password != confirmPassword) throw new Exception("Passwords not equals");
-            else 
-            {
-                user.PasswordHash = _passwordHasher.GetPasswordHash(password);
-                return _dataServices.Create(user);
-            }
+            user.PasswordHash = _passwordHasher.GetPasswordHash(password);
+            return _dataServices.Create(user);
         }
     }
 }

@@ -36,10 +36,22 @@ namespace Hospital.ASP.Controllers
         }
 
         [AllowAnonymous]
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
         public IActionResult Login(string returnUrl = null)
         {
             ViewData["ReturnUrl"] = returnUrl;
             return View();
+        }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpPost]
@@ -68,13 +80,31 @@ namespace Hospital.ASP.Controllers
             return View();
         }
 
-
-        public async Task<IActionResult> Logout()
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Register(Patient patient, string password, string confirmPassword)
         {
-            await HttpContext.SignOutAsync();
-            return RedirectToAction("Index", "Home");
+            if (ModelState.IsValid)
+            {
+                if (password != confirmPassword) 
+                    ModelState.AddModelError("", "пароли не совпадают");
+
+                if ((await _dataServicesPatient.GetWhere(s=>s.PhoneNumber == patient.PhoneNumber)).FirstOrDefault() != null)
+                    ModelState.AddModelError("", "номер уже используется");
+
+                if (ModelState.IsValid)
+                {
+                    var user = await _authenticationService.Register(patient, password);
+                    await SignIn(user);
+                    RedirectToAction("Index", "Account");
+                }
+                return View();
+            }
+            return View();
         }
 
+        
         private async Task SignIn(Patient patient)
         {
             var claims = new List<Claim>
@@ -86,6 +116,5 @@ namespace Hospital.ASP.Controllers
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
-
     }
 }

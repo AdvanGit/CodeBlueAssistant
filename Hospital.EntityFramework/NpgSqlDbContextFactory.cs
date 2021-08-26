@@ -21,7 +21,7 @@ namespace Hospital.EntityFramework
         public HospitalDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<HospitalDbContext>();
-            optionsBuilder.UseNpgsql(_connectionString);
+            optionsBuilder.UseNpgsql(_connectionString, b => b.MigrationsAssembly("Hospital.WPF"));
             optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTrackingWithIdentityResolution);
             optionsBuilder.EnableSensitiveDataLogging(true);
             return new HospitalDbContext(optionsBuilder.Options);

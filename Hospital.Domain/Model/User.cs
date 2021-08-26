@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
 using System.Text.Json;
 
 namespace Hospital.Domain.Model
 {
-    public enum Gender : byte { Мужской = 0, Женский = 1 }
-    public enum WeekDays : byte { FiveTwo, TwoTwo, FourTwo, Even, Odd }
-    public enum Role {Administrator, Manager, Ambulatorer, Stationeer,  Registrator }
+    public enum Gender { Мужской = 0, Женский = 1 }
+    public enum WeekDays { FiveTwo, TwoTwo, FourTwo, Even, Odd }
+    public enum Role { Administrator, Manager, Ambulatorer, Stationeer, Registrator }
 
     public abstract class User : DomainObject
     {
@@ -15,11 +16,16 @@ namespace Hospital.Domain.Model
         private string _lastName;
         private long _phoneNumber;
         private DateTime _birthDay;
-        private Gender _gender;
+        private Gender? _gender;
         private DateTime _createDate;
         private string _passwordHash;
 
         public string PasswordHash { get => _passwordHash; set => _passwordHash = value; }
+
+        
+        [Required(ErrorMessage = "не указана фамилия")]
+        [Display(Name = "Фамилия")]
+        [RegularExpression(@"^[А-я][а-я-]*$", ErrorMessage = "Неверный формат")]
         public string FirstName
         {
             get { return _firstName; }
@@ -29,6 +35,11 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("FirstName");
             }
         }
+
+
+        [Required(ErrorMessage = "не указано имя")]
+        [Display(Name = "Имя")]
+        [StringLength(30, ErrorMessage = "{0} длинна должна быть от {2} до {1} символов", MinimumLength = 2)]
         public string MidName
         {
             get { return _midName; }
@@ -38,6 +49,9 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("MidName");
             }
         }
+
+
+
         public string LastName
         {
             get { return _lastName; }
@@ -47,6 +61,9 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("LastName");
             }
         }
+
+        [Required(ErrorMessage = "не указан номер телефона")]
+        [StringLength(30, ErrorMessage = "{0} длинна должна быть от {2} до {1} символов", MinimumLength = 5)]
         public long PhoneNumber
         {
             get { return _phoneNumber; }
@@ -56,6 +73,7 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("PhoneNumber");
             }
         }
+        [Required(ErrorMessage = "не указана дата рождения")]
         public DateTime BirthDay
         {
             get => _birthDay;
@@ -82,7 +100,7 @@ namespace Hospital.Domain.Model
             set { _Adress = JsonSerializer.Serialize(value); }
         }
 
-        public Gender Gender
+        public Gender? Gender
         {
             get => _gender;
             set
@@ -92,7 +110,7 @@ namespace Hospital.Domain.Model
             }
         }
 
-        public string GetShortName() => _firstName + " " + _midName[0] +". "+ _lastName[0] + ".";
+        public string GetShortName() => _firstName + " " + _midName[0] + ". " + _lastName[0] + ".";
     }
 
     public class Staff : User
@@ -118,15 +136,21 @@ namespace Hospital.Domain.Model
     public class Patient : User
     {
         private Belay _belay;
-        private int _belayCode;
-        private DateTime _belayDateOut;
-        private bool _isMarried;
-        private bool _hasChild;
+        private int? _belayCode;
+        private DateTime? _belayDateOut;
+
+        private bool? _isMarried;
+        private bool? _hasChild;
+
+        //TODO: isConfirmed
 
         public Belay Belay { get => _belay; set { _belay = value; OnPropertyChanged("Belay"); } }
-        public int BelayCode { get => _belayCode; set { _belayCode = value; OnPropertyChanged("BelayCode"); } }
-        public DateTime BelayDateOut { get => _belayDateOut; set { _belayDateOut = value; OnPropertyChanged("BelayDateOut"); } }
-        public bool IsMarried { get => _isMarried; set { _isMarried = value; OnPropertyChanged("IsMarried"); } }
-        public bool HasChild { get => _hasChild; set { _hasChild = value; OnPropertyChanged("HasChild"); } }
+        public int? BelayCode { get => _belayCode; set { _belayCode = value; OnPropertyChanged("BelayCode"); } }
+        public DateTime? BelayDateOut { get => _belayDateOut; set { _belayDateOut = value; OnPropertyChanged("BelayDateOut"); } }
+        public bool? IsMarried { get => _isMarried; set { _isMarried = value; OnPropertyChanged("IsMarried"); } }
+        public bool? HasChild { get => _hasChild; set { _hasChild = value; OnPropertyChanged("HasChild"); } }
+
+
+        public bool IsValid() => _belay != null && _belayCode != null && _belayDateOut != null && _isMarried != null && _hasChild != null;
     }
 }
