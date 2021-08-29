@@ -7,6 +7,8 @@ namespace Hospital.Domain.Services
     public interface ITestDataService
     {
         Task<IEnumerable<TestData>> GetTestData(int medCardId, TestMethod method);
+        Task<IEnumerable<TestData>> GetTestData(int patientId);
+
 
         Task<IEnumerable<TestType>> GetTestTypeList(TestMethod testMethod);
 

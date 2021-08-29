@@ -1,10 +1,20 @@
 ﻿@model Patient
 @{
 	ViewData["Title"] = "Account info Page";
+	bool isReadOnly = true;
+	
 }
 
 <div>
 	<div class="validation" asp-validation-summary="All"></div>
+
+	<form asp-action="Index" asp-controller="Account" asp-anti-forgery="true">
+
+		<input type="text" class="" asp-for="FirstName" readonly="@(isReadOnly)">
+		<input type="text" class="" asp-for="MidName" readonly="@(isReadOnly)">
+
+	</form>
+
 	<h2>@Model.FirstName @Model.MidName @Model.LastName</h2>
 	<h3>@Model.PhoneNumber</h3>
 </div>

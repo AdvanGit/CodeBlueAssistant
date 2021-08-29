@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "_Layout";
+
+
+
+}
+
+<nav class="breadcrumb p-0 my-2 rounded">
+    <ul class="nav"> 
+            <li class="nav-item  p-0">
+                <a class="nav-link m-0 py-1 px-2
+                         @Html.ActiveClass("MedCard","Index","text-dark font-weight-bold")" 
+                    style="color: rgba(0,0,0,.5)"
+                    asp-action="Index">Сводка</a>
+            </li>   
+            <li class="nav-item p-0">
+                <a class="nav-link m-0 py-1 px-2
+                        @Html.ActiveClass("MedCard","Tests","text-dark font-weight-bold")"
+                    style="color: rgba(0,0,0,.5)"
+                    asp-action="Tests">Процедуры</a>
+            </li>
+            <li class="nav-item p-0">
+                <a class="nav-link m-0 py-1 px-2 disabled
+                        @Html.ActiveClass("MedCard","Entries","text-dark font-weight-bold")"
+                    style="color: rgba(0,0,0,.5)"
+                    asp-action="Entries">Записи</a>
+            </li>
+    </ul>
+</nav>
+
+@RenderBody()   

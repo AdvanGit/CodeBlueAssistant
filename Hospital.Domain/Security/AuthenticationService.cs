@@ -13,7 +13,7 @@ namespace Hospital.Domain.Security
         //TODO: add implementation of hasher
         private readonly IPasswordHasher _passwordHasher;
 
-        public AuthenticationService(IPasswordHasher passwordHasher = null, IGenericRepository<TUser> dataServices = null)
+        public AuthenticationService(IPasswordHasher passwordHasher, IGenericRepository<TUser> dataServices)
         {
             _passwordHasher = passwordHasher;
             _dataServices = dataServices;

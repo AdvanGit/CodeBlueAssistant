@@ -1,0 +1,72 @@
+﻿@model IEnumerable<TestData>;
+@{
+	ViewData["Title"] = "Тестирования и процедуры";
+	Layout = "_Navbar";
+}
+
+<div class="validation" asp-validation-summary="All"></div>
+
+<div class="d-flex flex-wrap" style="margin-inline: -0.5rem">
+    <div class="flex-fill mx-2">
+		<table class="table table-hover rounded shadow">
+			<thead class="thead-dark">
+				<tr>
+					<th>#</th>
+					<th>Вид диагностики</th>
+					<th>Вид теста</th>
+					<th>Показатель теста</th>
+					<th>Статус заявки</th>
+				</tr>
+			</thead>
+			<tbody>
+				@foreach(TestData data in Model)
+				{
+					<tr onclick="getDetailContent(@data.Id, false)" style="cursor:pointer">
+						<th scope="row">@data.Id</th>
+						<td>@data.Test.TestType.Title</td>
+						<td>@data.Test.Title</td>
+						@if (!string.IsNullOrEmpty(@data.Value))
+						{
+							<td>@data.Value @data.Test.Measure</td>
+						}
+						else
+						{
+							<td>-</td>
+						}
+						<td>@data.Status</td>
+					</tr>
+				}
+			</tbody>
+		</table>
+    </div>
+
+	<div class="mx-2" style="max-width:25rem; display:none;" id="partialPlaceholder"/>
+</div>  
+
+<script>
+    function getDetailContent(testDataId, editable) {
+        $.ajax({
+            url: '@Url.Action("Details")',
+            data: {
+				__RequestVerificationToken: gettoken(),
+				testId: testDataId,
+				isEdit: editable,
+				},
+            type: "POST",
+            success: function(data) {
+                $('#partialPlaceholder').html(data);
+				$('#partialPlaceholder').show();
+            }
+        });
+    }
+
+	function closeDetail() {
+		$('#partialPlaceholder').hide();
+	}
+
+	function gettoken() {
+        var token = '@Html.AntiForgeryToken()';
+        token = $(token).val();
+        return token;
+    }
+</script>

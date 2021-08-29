@@ -111,7 +111,8 @@ namespace Hospital.ASP.Controllers
             {
                 new Claim(ClaimsIdentity.DefaultNameClaimType, patient.FirstName),
                 new Claim(ClaimsIdentity.DefaultRoleClaimType, "patient"),
-                new Claim("phoneNumber", patient.PhoneNumber.ToString())
+                new Claim("phoneNumber", patient.PhoneNumber.ToString()),
+                new Claim("id", patient.Id.ToString())
             };
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType, ClaimsIdentity.DefaultRoleClaimType);
             await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));

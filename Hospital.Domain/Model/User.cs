@@ -25,6 +25,7 @@ namespace Hospital.Domain.Model
         
         [Required(ErrorMessage = "не указана фамилия")]
         [Display(Name = "Фамилия")]
+        [StringLength(30, ErrorMessage = "{0} длинна должна быть от {2} до {1} символов", MinimumLength = 2)]
         [RegularExpression(@"^[А-я][а-я-]*$", ErrorMessage = "Неверный формат")]
         public string FirstName
         {
@@ -40,6 +41,7 @@ namespace Hospital.Domain.Model
         [Required(ErrorMessage = "не указано имя")]
         [Display(Name = "Имя")]
         [StringLength(30, ErrorMessage = "{0} длинна должна быть от {2} до {1} символов", MinimumLength = 2)]
+        [RegularExpression(@"^[А-я][а-я-]*$", ErrorMessage = "Неверный формат")]
         public string MidName
         {
             get { return _midName; }
@@ -49,8 +51,6 @@ namespace Hospital.Domain.Model
                 OnPropertyChanged("MidName");
             }
         }
-
-
 
         public string LastName
         {
@@ -63,7 +63,7 @@ namespace Hospital.Domain.Model
         }
 
         [Required(ErrorMessage = "не указан номер телефона")]
-        [StringLength(30, ErrorMessage = "{0} длинна должна быть от {2} до {1} символов", MinimumLength = 5)]
+        [Range(10000, 99999999999, ErrorMessage = "длинна должна быть от 5 до 11 символов")]
         public long PhoneNumber
         {
             get { return _phoneNumber; }
