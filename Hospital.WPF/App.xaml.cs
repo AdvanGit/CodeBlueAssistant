@@ -49,11 +49,11 @@ namespace Hospital.WPF
                 string localConnectionString = context.Configuration.GetConnectionString("local");
                 string npqSqlConnectionString = context.Configuration.GetConnectionString("npgSql");
 
-                services.AddDbContext<HospitalDbContext>(o => o.UseSqlServer(localConnectionString, x => x.MigrationsAssembly("Hospital.WPF")));
-                services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new LocalDBContextFactory(localConnectionString));
+                //services.AddDbContext<HospitalDbContext>(o => o.UseSqlServer(localConnectionString, x => x.MigrationsAssembly("Hospital.WPF")));
+                //services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new LocalDBContextFactory(localConnectionString));
 
-                //services.AddDbContext<HospitalDbContext>(o => o.UseNpgsql(npqSqlConnectionString, b => b.MigrationsAssembly("Hospital.WPF"))); //for migrations
-                //services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new NpgSqlDbContextFactory(npqSqlConnectionString));
+                services.AddDbContext<HospitalDbContext>(o => o.UseNpgsql(npqSqlConnectionString, b => b.MigrationsAssembly("Hospital.WPF"))); //for migrations
+                services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new NpgSqlDbContextFactory(npqSqlConnectionString));
 
 
                 services.AddSingleton<ClaimsPrincipal>();
