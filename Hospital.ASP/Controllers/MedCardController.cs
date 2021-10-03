@@ -12,12 +12,11 @@ namespace Hospital.ASP.Controllers
     public class MedCardController : Controller
     {
         private readonly ITestDataService _dataService;
-        private readonly IGenericRepository<TestData> _genericDataService;
 
-        public MedCardController(ITestDataService dataService, IGenericRepository<TestData> genericDataService)
+
+        public MedCardController(ITestDataService dataService)
         {
             _dataService = dataService;
-            _genericDataService = genericDataService;
         }
 
         public IActionResult Index()
@@ -40,7 +39,7 @@ namespace Hospital.ASP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<PartialViewResult> Details(int testId, bool isEdit = false)
+        public async Task<PartialViewResult> Details(int testId)
         {
             TestData test = new TestData();
             if (!User.HasClaim(p => p.Type == "id")) ModelState.AddModelError("", "claim:Id не найден");
@@ -55,17 +54,7 @@ namespace Hospital.ASP.Controllers
                 }
                 
             };
-            if (isEdit) return PartialView("_EditDetailPartial", test);
-            else return PartialView("_DetailPartial", test);
+            return PartialView("_DetailPartial", test);
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> EditTestData(TestData data)
-        {
-            await _genericDataService.Update(data.Id, data);
-            return RedirectToAction("Tests");
-        }
-
     }
 }

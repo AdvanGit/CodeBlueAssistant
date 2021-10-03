@@ -1,5 +1,6 @@
-﻿using Hospital.Domain.Model;
-using Hospital.EntityFramework.Filters;
+﻿using Hospital.Domain.Filters;
+using Hospital.Domain.Model;
+using Hospital.Domain.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -88,12 +89,74 @@ namespace Hospital.EntityFramework.Services
                         //если свободные записи найдены, то все последующие смены этого доктора удаляются из очереди
                         if (filter.IsNearest && _result.Count() != 0)
                         {
-                            allChanges.RemoveAll(c => (c.Staff.Id == change.Staff.Id && c.DateTimeStart >= change.DateTimeStart));
+                            allChanges.RemoveAll(c => c.Staff.Id == change.Staff.Id && c.DateTimeStart >= change.DateTimeStart);
                             i--;
                         }
 
                         result.AddRange(_result);
                     }
+                }
+            }
+            return result;
+        }
+
+        public async Task<IEnumerable<Entry>> FindDoctor(int departmentTitleId, EntrySearchFilter filter)
+        {
+            List<Entry> result = new List<Entry>();
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                List<Change> allChanges = await db.Changes
+                    .AsQueryable()
+                    .OrderBy(c => c.DateTimeStart)
+                    .Where(c => c.Staff.Department.Title.Id == departmentTitleId && c.Staff.Department.Type == filter.DepartmentType)
+                    .Where(c => filter.IsDate ? (c.DateTimeStart.Date == filter.DateTime.Date) : (c.DateTimeStart.Date < DateTime.Now.AddDays(30)))
+                    .Include(c => c.Staff).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
+                    //.Take(50) //подобрать оптимальное значение
+                    .ToListAsync();
+
+                for (int i = 0; i < allChanges.Count; i++)
+                {
+                    Change change = allChanges[i];
+
+                    //генерация виртуальных записей на текущую смену
+                    List<Entry> emptyEntries = new List<Entry>();
+                    foreach (DateTime time in change.GetTimes()) emptyEntries
+                            .Add(new Entry
+                            {
+                                EntryStatus = Enum.Parse<EntryStatus>("0"),
+                                CreateDateTime = DateTime.Now,
+                                TargetDateTime = time,
+                                DoctorDestination = change.Staff
+                            });
+
+                    //поиск уже существующих записей на текущую смену !Уходит много времени
+                    List<Entry> existEntries = await db.Entries
+                        .AsQueryable()
+                        .Where(e => e.DoctorDestination.Id == change.Staff.Id)
+                        .Where(e => e.TargetDateTime.Date == change.DateTimeStart.Date)
+                        .Include(e => e.DoctorDestination).ThenInclude(d => d.Department).ThenInclude(d => d.Title)
+                        .ToListAsync();
+
+                    //объединение записей
+                    emptyEntries.AddRange(existEntries);
+
+                    //группировка с заменой совпадений
+                    var _result = emptyEntries
+                        //.OrderBy(e => e.TargetDateTime)
+                        .GroupBy(e => e.TargetDateTime)
+                        .Select(e => e.Last())
+                        .Where(e => filter.IsFree ? e.EntryStatus == EntryStatus.Открыта : true)
+                        .GroupBy(r => r.DoctorDestination.Id)
+                        .Select(r => r.First());
+
+                    //если свободные записи найдены, то все последующие смены этого доктора удаляются из очереди
+                    if (filter.IsNearest && _result.Count() != 0)
+                    {
+                        allChanges.RemoveAll(c => c.Staff.Id == change.Staff.Id && c.DateTimeStart >= change.DateTimeStart);
+                        i--;
+                    }
+
+                    result.AddRange(_result);
                 }
             }
             return result;
@@ -175,6 +238,5 @@ namespace Hospital.EntityFramework.Services
                 return entry;
             }
         }
-
     }
 }

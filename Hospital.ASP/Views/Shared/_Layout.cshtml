@@ -16,37 +16,51 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow"
+            style="font-size: 1.0em !important">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Hospital.ASP</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"><span class="text-warning">One</span>Clinic</a>
                 <button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
-                        </li>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav flex-grow-1 ">
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Аккаунт</a>
+                                <a class="nav-link @Html.ActiveClass("Account","Index","text-white")" asp-area="" asp-controller="Account" asp-action="Index">
+                                    АККАУНТ
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Index">Запись на прием</a>
+                                <a class="nav-link " asp-area="" asp-controller="Appointment" asp-action="Index">
+                                    ЗАПИСЬ НА ПРИЕМ
+                                </a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="MedCard" asp-action="Index">Карта пациента</a>
+                                <a class="nav-link @Html.ActiveClass("MedCard","Index","text-white")" asp-area="" asp-controller="MedCard" asp-action="Index">
+                                    МЕДИЦИНСКАЯ КАРТА
+                                </a>
                             </li>
+                        }
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">             
+                        @if (User.Identity.IsAuthenticated) {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Выход</a>
+                                <a class="nav-link" asp-area="" asp-controller="Account" asp-action="Logout">
+                                    <i class="bi bi-box-arrow-in-left"></i>
+                                    Выход
+                                </a>
                             </li>
                         }
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Вход</a>
+                                <a class="nav-link" asparea="" asp-controller="Account" asp-action="Login">
+                                    <i class="bi bi-box-arrow-in-right"></i>
+                                    Вход
+                                </a>
                             </li>
                         }
                     </ul>
@@ -54,7 +68,7 @@
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container" style="padding-right: 0; padding-left: 0;">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

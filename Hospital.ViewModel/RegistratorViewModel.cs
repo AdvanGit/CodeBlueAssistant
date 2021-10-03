@@ -1,7 +1,7 @@
-﻿using Hospital.Domain.Model;
+﻿using Hospital.Domain.Filters;
+using Hospital.Domain.Model;
 using Hospital.Domain.Services;
 using Hospital.EntityFramework;
-using Hospital.EntityFramework.Filters;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
 using Microsoft.EntityFrameworkCore;

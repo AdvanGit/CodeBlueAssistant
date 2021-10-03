@@ -1,0 +1,87 @@
+﻿@{
+	ViewData["Title"] = "Запись на прием";
+}
+
+<style>
+	.custom-control-lg .custom-checkbox{
+	padding-left: 0;
+	}
+
+    .custom-control-lg .custom-control-label::before,
+    .custom-control-lg .custom-control-label::after {
+        top: 0.1rem;
+        left: -2rem;
+        width: 1.3rem;
+        height: 1.3rem;
+    }
+
+    .custom-control-lg .custom-control-label {
+        margin-left: 0.5rem;
+        font-size: 1rem;
+	}
+</style>
+
+<div class="m-0 row"> 
+	<div class="col-sm-5 mb-3">
+		<div class="form-group">
+			<label for="titleId" class="px-1">Выберите отделение</label>
+			<select class="custom-select" asp-items="@ViewBag.DepartmentList" itemid="itemTitleId" id="titleId"></select>
+		</div>
+
+		<div class="form-group" >
+
+				<label for="date" class="px-1">Выберите дату</label>
+
+				<div class="custom-control custom-checkbox custom-control-lg mb-2">
+					<input type="checkbox" for="isFirstFree" class="custom-control-input" id="dateSwitch" onclick="hideDiv(this)">
+					<label class="custom-control-label" id="isFirstFree" for="dateSwitch">Ближайшая доступная дата</label>
+				</div>
+
+				<input type="date" id="dateField" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" placeholder="Введите дату">
+
+		</div>
+			
+		<button type="button" onclick="getDoctorsResult()" class="btn btn-outline-secondary w-100 my-3">Поиск AJAX</button>
+	</div>
+
+	<div class="col-sm-7">
+		<div id="doctorsPartial"/>
+	</div>
+</div>   
+
+
+<script>
+
+	function hideDiv(obj) {
+		if (obj.checked) {
+			$("#dateField").hide();
+		}
+		else {
+			$("#dateField").show();
+		}
+	}
+
+	function getDoctorsResult(){
+
+		$("#doctorsPartial").empty();
+
+        $.ajax({
+            url: '@Url.Action("DoctorsList", "Appointment")',
+            type: "post",
+			dataType: "html",
+			cache: false,
+			data: {
+				__RequestVerificationToken: getToken(),
+				titleId: document.getElementById('titleId').value,
+				isFirstFree: document.getElementById('dateSwitch').checked, 
+				date: document.getElementById('dateField').value
+			},
+            success: function (result) {
+                $("#doctorsPartial").html(result);
+            },
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				alert('что-то пошло не так');
+			}
+        });
+	}
+</script>

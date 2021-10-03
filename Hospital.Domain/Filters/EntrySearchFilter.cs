@@ -1,7 +1,7 @@
 ﻿using Hospital.Domain.Model;
 using System;
 
-namespace Hospital.EntityFramework.Filters
+namespace Hospital.Domain.Filters
 {
     public class EntrySearchFilter
     {

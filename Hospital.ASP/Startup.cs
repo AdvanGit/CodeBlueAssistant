@@ -49,6 +49,8 @@ namespace Hospital.ASP
 
             services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
             services.AddSingleton<AmbulatoryViewModelFactory>();
+
+
             #endregion
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options =>
