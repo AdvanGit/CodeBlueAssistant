@@ -162,7 +162,7 @@ namespace Hospital.EntityFramework.Services
             return result;
         }
 
-        public async Task<IEnumerable<Patient>> FindPatient(string message) //идея для оптимизации. Сначала вытаскиваем все, что совпадает, а потом сравниваем количество совпадений AsAsyncEnum
+        public async Task<IEnumerable<Patient>> FindPatient(string message)
         {
             List<Patient> result = new List<Patient>();
             string _string = Regex.Replace(message.Trim(), @"\s+", " ");
@@ -189,13 +189,13 @@ namespace Hospital.EntityFramework.Services
             return result;
         }
 
-        public async Task<IEnumerable<Entry>> GetEntries(Staff selectedStaff, DateTime date, bool isFreeOnly = false)
+        public async Task<IEnumerable<Entry>> GetEntries(int selectedStaffId, DateTime date, bool isFreeOnly = false)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 IList<Entry> entries = await db.Entries
                     .AsQueryable()
-                    .Where(e => e.DoctorDestination.Id == selectedStaff.Id)
+                    .Where(e => e.DoctorDestination.Id == selectedStaffId)
                     .Where(e => e.TargetDateTime.Date == date.Date)
                     .Include(e => e.Patient)
                     .Include(e => e.DoctorDestination).ThenInclude(d => d.Department).ThenInclude(d => d.Title)
@@ -205,7 +205,7 @@ namespace Hospital.EntityFramework.Services
 
                 IList<Change> changes = await db.Changes
                     .AsQueryable()
-                    .Where(c => c.Staff.Id == selectedStaff.Id)
+                    .Where(c => c.Staff.Id == selectedStaffId)
                     .Where(c => c.DateTimeStart.Date == date.Date)
                     .Include(c => c.Staff).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                     .ToListAsync();

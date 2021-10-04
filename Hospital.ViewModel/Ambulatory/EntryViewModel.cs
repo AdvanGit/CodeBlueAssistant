@@ -74,7 +74,7 @@ namespace Hospital.ViewModel.Ambulatory
             {
                 BySelectEntries.Clear();
                 FilteredCollection.Clear();
-                var res = await _entryDataServices.GetEntries(SelectedEntry.DoctorDestination, SelectedEntry.TargetDateTime.Date);
+                var res = await _entryDataServices.GetEntries(SelectedEntry.DoctorDestination.Id, SelectedEntry.TargetDateTime.Date);
                 BySelectEntries.Clear();
                 FilteredCollection.Clear();
                 foreach (Entry _entry in res) BySelectEntries.Add(_entry);

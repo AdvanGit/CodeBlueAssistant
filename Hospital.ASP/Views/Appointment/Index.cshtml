@@ -21,37 +21,37 @@
 	}
 </style>
 
-<div class="m-0 row"> 
-	<div class="col-sm-5 mb-3">
+<div class="row m-0 my-3"> 
+	<div class="col-sm-5">
 		<div class="form-group">
 			<label for="titleId" class="px-1">Выберите отделение</label>
 			<select class="custom-select" asp-items="@ViewBag.DepartmentList" itemid="itemTitleId" id="titleId"></select>
 		</div>
 
-		<div class="form-group" >
+		<div class="form-group m-0" >
+			<label for="date" class="px-1">Выберите дату</label>
 
-				<label for="date" class="px-1">Выберите дату</label>
+			<div class="custom-control custom-checkbox custom-control-lg">
+				<input type="checkbox" for="isFirstFree" class="custom-control-input" id="dateSwitch" onclick="hideDiv(this)">
+				<label class="custom-control-label" id="isFirstFree" for="dateSwitch">Ближайшая доступная дата</label>
+			</div>
 
-				<div class="custom-control custom-checkbox custom-control-lg mb-2">
-					<input type="checkbox" for="isFirstFree" class="custom-control-input" id="dateSwitch" onclick="hideDiv(this)">
-					<label class="custom-control-label" id="isFirstFree" for="dateSwitch">Ближайшая доступная дата</label>
-				</div>
-
-				<input type="date" id="dateField" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control" placeholder="Введите дату">
-
+			<input type="date" id="dateField" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control mt-2" placeholder="Введите дату">
 		</div>
 			
-		<button type="button" onclick="getDoctorsResult()" class="btn btn-outline-secondary w-100 my-3">Поиск AJAX</button>
+		<button type="button" onclick="getDoctorsResult()" class="btn btn-outline-secondary w-100 my-3">Поиск</button>
 	</div>
 
 	<div class="col-sm-7">
 		<div id="doctorsPartial"/>
 	</div>
+
+
 </div>   
 
+<div class="container-fluid m-0 my-3" id="entriesPartial"/>
 
 <script>
-
 	function hideDiv(obj) {
 		if (obj.checked) {
 			$("#dateField").hide();
@@ -62,8 +62,8 @@
 	}
 
 	function getDoctorsResult(){
-
 		$("#doctorsPartial").empty();
+		$("#entriesPartial").empty();
 
         $.ajax({
             url: '@Url.Action("DoctorsList", "Appointment")',
@@ -80,8 +80,28 @@
                 $("#doctorsPartial").html(result);
             },
 			error: function (XMLHttpRequest, textStatus, errorThrown) {
-				alert('что-то пошло не так');
+				alert(textStatus);
 			}
         });
+	}
+
+	function getEntries(doctorId, targetDateTime){
+
+		$.ajax({
+			url: '@Url.Action("EntriesList", "Appointment")',
+			type: "post",
+			dataType: "html",
+			cache: false,
+			data: {
+				doctorId: doctorId,
+				date: targetDateTime
+			},
+			success: function (result) {
+				$("#entriesPartial").html(result);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				alert(textStatus);
+			}
+		});
 	}
 </script>

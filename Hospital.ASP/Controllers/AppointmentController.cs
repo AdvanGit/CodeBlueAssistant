@@ -44,8 +44,16 @@ namespace Hospital.ASP.Controllers
                 IsDate = !isFirstFree,
             };
 
-            IEnumerable<Entry> DoctorsEntries = await _entryDataService.FindDoctor(titleId, filter);
-            return PartialView("_DoctorsPartial", DoctorsEntries);
+            IEnumerable<Entry> doctorsEntries = await _entryDataService.FindDoctor(titleId, filter);
+            return PartialView("_DoctorsPartial", doctorsEntries);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EntriesList(int doctorId, DateTime date)
+        {
+
+            IEnumerable<Entry> entries = await _entryDataService.GetEntries(doctorId, date);
+            return PartialView("_EntriesPartial", entries);
         }
     }
 }

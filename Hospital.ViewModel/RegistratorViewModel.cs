@@ -112,7 +112,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await entryDataService.GetEntries(SelectedEntry.DoctorDestination, (SelectedEntry.TargetDateTime));
+                    IEnumerable<Entry> result = await entryDataService.GetEntries(SelectedEntry.DoctorDestination.Id, (SelectedEntry.TargetDateTime));
                     Entries.Clear();
                     FilteredEntries.Clear();
                     foreach (Entry entry in result) Entries.Add(entry);
@@ -135,7 +135,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await entryDataService.GetEntries(SelectedEntry.DoctorDestination, Filter.DateTime);
+                    IEnumerable<Entry> result = await entryDataService.GetEntries(SelectedEntry.DoctorDestination.Id, Filter.DateTime);
                     Entries.Clear();
                     FilteredEntries.Clear();
                     foreach (Entry entry in result) Entries.Add(entry);
