@@ -1,6 +1,8 @@
 ﻿@model IEnumerable<Entry>
 @{
-	var curStaff = Model.FirstOrDefault().DoctorDestination;
+	Staff curStaff;
+	if (Model.Count() != 0) curStaff = Model.FirstOrDefault().DoctorDestination;
+	else curStaff = new Staff { FirstName = "Ничего не найдено", MidName = "", LastName = "" };
 }
 
 <div class="table-responsive rounded shadow">
@@ -9,34 +11,51 @@
 		<h5 class="border-bottom border-secondary m-0 mx-3 py-2">@curStaff.FirstName @curStaff.MidName @curStaff.LastName</h5> 
 
 		<div class="d-flex flex-wrap justify-content-between m-0 mx-3 py-2" style="column-gap:10px;"> 
-			<div>
-				@curStaff.Qualification Врач-диетолол высшей категории
-			</div>
-			<div>
-				@curStaff.Department.Title.Title,
-				@curStaff.Department.Adress.Street @curStaff.Department.Adress.Number,
-				кабинет: <span class="font-weight-bold">@curStaff.Cabinet</span> 
-			</div>
+			@if (curStaff.Department != null)
+			{
+				<div>
+					@curStaff.Qualification Врач-диетолол высшей категории
+				</div>
+				<div>
+					@curStaff.Department.Title.Title,
+					@curStaff.Department.Adress.Street @curStaff.Department.Adress.Number,
+					кабинет: <span class="font-weight-bold">@curStaff.Cabinet</span> 
+				</div>
+			}
+			else
+			{
+				<div>
+					Записи отсутствуют,	попробуйте выбрать другую дату
+				</div>
+			}
 		</div>
 
-		<div class="bg-light text-dark">
-			<div class="text-center p-2">
-				@Model.FirstOrDefault().TargetDateTime.Date.ToLongDateString()
+		<div class="bg-light d-flex justify-content-between text-dark">
+			<button type="button" onclick="getEntries(@ViewBag.CurrentDoctorId, '@ViewBag.CurrentDate.AddDays(-1.0).ToShortDateString()')" class="btn d-flex rounded-0 align-items-center btn-light p-0"> 
+				<i class="bi bi-chevron-left px-2" style="font-size: 1.3rem"></i>
+				<span class="pr-3">назад</span>
+			</button>
+			<div class="p-2 font-weight-bold">
+				@ViewBag.CurrentDate.ToString("d MMMM, ddd")
 			</div>
+			<button type="button" onclick="getEntries(@ViewBag.CurrentDoctorId, '@ViewBag.CurrentDate.AddDays(1.0).ToShortDateString()')" class="btn rounded-0 d-flex align-items-center btn-light p-0">
+				<span class="pl-3">вперед</span>
+				<i class="bi bi-chevron-right px-2" style="font-size: 1.3rem"></i>
+			</button>
 		</div>
-
 	</div>
-
 
 	<table class="table table-hover m-0">
 		<tbody>
 			@foreach(Entry entry in Model)
 			{
-				<tr style="cursor:pointer">
-					<td>@entry.TargetDateTime.ToShortTimeString()</td>
+				<tr class="@(entry.EntryStatus == EntryStatus.Открыта ? "border-success pointer" : "bg-light text-black-50  border-warning") text-center" style="border-right: 5px solid;">
+					<td style="font-size:1.3rem">@entry.TargetDateTime.ToShortTimeString()</td>
+					<td class="align-middle">@(entry.EntryStatus == EntryStatus.Открыта ? "запись открыта": "запись недоступна") </td>
 				</tr>
 			}
 		</tbody>
 	</table>
-</div>
 
+
+</div>

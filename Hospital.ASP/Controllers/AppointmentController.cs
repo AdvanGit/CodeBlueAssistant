@@ -26,7 +26,7 @@ namespace Hospital.ASP.Controllers
         public async Task<IActionResult> Index()
         {
             IEnumerable<Department> res = await _departmentGenericService.GetWithInclude(d => d.Type == DepartmentType.Ambulatory, d => d.Title);
-            //TO-DO: проверка на дубликаты Title
+            //TODO: проверка на дубликаты Title
             ViewBag.DepartmentList = new SelectList(res, "Title.Id", "Title.Title");
             return View();
         }
@@ -49,9 +49,11 @@ namespace Hospital.ASP.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> EntriesList(int doctorId, DateTime date)
         {
-
+            ViewBag.CurrentDate = date;
+            ViewBag.CurrentDoctorId = doctorId;
             IEnumerable<Entry> entries = await _entryDataService.GetEntries(doctorId, date);
             return PartialView("_EntriesPartial", entries);
         }

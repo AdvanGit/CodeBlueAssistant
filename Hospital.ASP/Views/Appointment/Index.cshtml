@@ -93,6 +93,7 @@
 			dataType: "html",
 			cache: false,
 			data: {
+				__RequestVerificationToken: getToken(),
 				doctorId: doctorId,
 				date: targetDateTime
 			},
@@ -104,4 +105,5 @@
 			}
 		});
 	}
+
 </script>

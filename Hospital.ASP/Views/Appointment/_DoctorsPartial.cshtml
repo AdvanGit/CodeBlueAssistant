@@ -18,7 +18,7 @@
 						<br/>@entry.DoctorDestination.Department.Title.Caption
 					</td>
 					<td>@entry.DoctorDestination.Department.Adress.Street @entry.DoctorDestination.Department.Adress.Number</td>
-					<td>@entry.TargetDateTime.Date.ToLongDateString()</td>
+					<td>@entry.TargetDateTime.Date.ToLongDateString() <br /> @entry.TargetDateTime.Date.ToString("dddd")</td>
 				</tr>
 			}
 		</tbody>
