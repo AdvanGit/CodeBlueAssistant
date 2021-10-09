@@ -49,13 +49,104 @@
 		<tbody>
 			@foreach(Entry entry in Model)
 			{
-				<tr class="@(entry.EntryStatus == EntryStatus.Открыта ? "border-success pointer" : "bg-light text-black-50  border-warning") text-center" style="border-right: 5px solid;">
-					<td style="font-size:1.3rem">@entry.TargetDateTime.ToShortTimeString()</td>
-					<td class="align-middle">@(entry.EntryStatus == EntryStatus.Открыта ? "запись открыта": "запись недоступна") </td>
-				</tr>
+				if (entry.EntryStatus == EntryStatus.Открыта)
+				{
+					<tr class="border-success pointer text-center" onclick="showModal('@entry.TargetDateTime.ToString("yyyy-MM-ddTHH:mm:ss")')" style="border-right: 5px solid;">
+						<td style="font-size:1.3rem">@entry.TargetDateTime.ToShortTimeString()</td>
+						<td class="align-middle">запись открыта</td>
+					</tr>
+				}
+				else
+				{
+					<tr class="bg-light text-black-50  border-warning text-center" style="border-right: 5px solid;">
+						<td style="font-size:1.3rem">@entry.TargetDateTime.ToShortTimeString()</td>
+						<td class="align-middle">запись недоступна</td>
+					</tr>
+				}
 			}
 		</tbody>
 	</table>
 
+	<!-- Modal -->
+	<div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-labelledby="exampleModal3Label" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModal3Label">@User.FindFirst("shortName")?.Value (@User.FindFirst("phoneNumber")?.Value)</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body" id="modalBody">
+
+					@if(curStaff.Department != null)
+					{
+						<div>
+							<h5>@curStaff.FirstName @curStaff.MidName @curStaff.LastName</h5>
+							<ul>
+								<li>Отделение: @curStaff.Department.Title.Title</li>
+								<li>Адрес: @curStaff.Department.Adress.City, @curStaff.Department.Adress.Street @curStaff.Department.Adress.Number</li>
+								<li>Кабинет: @curStaff.Cabinet</li>
+							</ul>
+							<hr/>
+							<div class="text-center">
+								<span style="font-size:1.5rem" id="date"></span> <br />
+								<span style="font-size:2rem" id="time"></span>
+							</div>
+						</div>
+					}
+					else
+					{
+						<div>
+							записи не найдены
+						</div>	
+					}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<button type="button" class="btn btn-primary" onclick="confirmEntry(@curStaff.Id)">Save changes</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
 </div>
+
+
+<script>
+
+	var currentDateTime;
+	
+	function showModal(dateTime){
+
+		currentDateTime = new Date(dateTime);
+		alert(currentDateTime);
+
+		$("#date").html(currentDateTime.toLocaleDateString("ru-RU", {day: 'numeric'} ));
+		$("#time").html(currentDateTime.toLocaleTimeString());
+		$("#confirmModal").modal('show');
+	}
+
+	function confirmEntry(doctorId){
+
+		alert(currentDate);
+
+		$.ajax({
+			url: '@Url.Action("ConfirmEntry", "Appointment")',
+			type: "post",
+			dataType: "html",
+			cache: false,
+			data: {
+				__RequestVerificationToken: getToken(),
+				doctorId : doctorId,
+				dateTime : currentDateTime
+			},
+			success: function (result) {
+				$("#modalBody").html(result);
+			},
+			error: function (XMLHttpRequest, textStatus, errorThrown) {
+				alert(errorThrown);
+			}
+		});
+	}
+</script>
