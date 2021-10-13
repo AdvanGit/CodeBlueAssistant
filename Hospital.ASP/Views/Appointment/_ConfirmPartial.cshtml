@@ -1,8 +1,20 @@
 ﻿@model Entry
-@{
-
-}
 
 <div>
-	confirm partial
+	<h5>Вы успешно записаны!</h5>
+	<h4>@Model.DoctorDestination.FirstName @Model.DoctorDestination.MidName @Model.DoctorDestination.LastName</h4>
+		<ul>
+			<li>Отделение: @Model.DoctorDestination.Department.Title.Title</li>
+			<li>Адрес: @Model.DoctorDestination.Department.Adress.ToLongString()</li>
+			<li>Кабинет: @Model.DoctorDestination.Cabinet</li>
+		</ul>
+	<hr />
+	<div class="text-center">
+		<span style="font-size:1.5rem">@Model.TargetDateTime.ToString("dddd, d MMMM")</span> <br />
+		<span style="font-size:2rem">@Model.TargetDateTime.ToShortTimeString()</span>
+	</div>
+	<hr/>
+	<div>
+		посмотреть активные записи вы можете здесь
+	</div>
 </div>

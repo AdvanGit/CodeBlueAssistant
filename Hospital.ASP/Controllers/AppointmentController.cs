@@ -64,27 +64,38 @@ namespace Hospital.ASP.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> ConfirmEntry(int doctorId, DateTime dateTime)
+        public async Task<IActionResult> ConfirmEntry(int doctorId, DateTime dateTimeUTC)
         {
+            var dateTime = dateTimeUTC.ToLocalTime();
+
             Entry entry = (await _entryDataService.GetEntries(doctorId, dateTime.Date))
                 .FirstOrDefault(e => e.TargetDateTime == dateTime);
+
             if (entry != null)
-            {
-                
-            }
-
-
-            if (int.TryParse(User.FindFirstValue("Id"), out int patientId))
-            {
-                ViewBag.CurrentPatient = await _patientGenericService.GetById(patientId);
-                //TODO: дополнительные проверки
-            }
-            else
-            {
-                ModelState.AddModelError("", "Ошибка cookie, попробуйте повторную авторизацию");
-            }
-
-            return PartialView("_ConfirmPartial");
+                if (entry.Id == 0)
+                    if (int.TryParse(User.FindFirstValue("Id"), out int patientId))
+                    {
+                        Patient patient = await _patientGenericService.GetById(patientId);
+                        if (patient != null)
+                        {
+                            entry.Patient = patient;
+                            entry.Registrator = entry.DoctorDestination; //---заглушка отсутсвия данных сайта как регистратора, возможно оставить null
+                            entry.EntryStatus = EntryStatus.Ожидание;
+                            try
+                            {
+                                entry = await _entryDataService.Update(entry.Id, entry);
+                            }
+                            catch (Exception ex)
+                            {
+                                ModelState.AddModelError("", $"Ошибка работы сервиса данных: {ex.Message}");
+                            }
+                        }
+                        else ModelState.AddModelError("", "Ошибка авторизации, пользователь не найден");
+                    }
+                    else ModelState.AddModelError("", "Ошибка cookie, попробуйте повторную авторизацию");
+                else ModelState.AddModelError("", "Ошибка создания записи, запись уже создана");
+            else ModelState.AddModelError("", "Ошибка создания записи, записей на текущее время нет");
+            return PartialView("_ConfirmPartial", entry);
         }
     }
 }

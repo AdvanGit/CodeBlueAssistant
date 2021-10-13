@@ -14,6 +14,13 @@ namespace Hospital.Domain.Model
         public string Number { get => _number; set { _number = value; OnPropertyChanged("Number"); } }
         public int? Room { get => _room; set { _room = value; OnPropertyChanged("Room"); } }
 
+        public string ToLongString()
+        {
+            string res = $"г.{_city} ул.{_street} д.{_number}";
+            if (_room != null && _room != 0) res += $" кв.{_room}";
+            return res;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }

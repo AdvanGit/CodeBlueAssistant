@@ -170,6 +170,7 @@ namespace Hospital.ViewModel
                 await patientDataService.Update(EditingPatient.Id, EditingPatient);
                 SelectedPatient = EditingPatient;
                 Patients.Clear();
+                //TODO - повторного запроса можно избежать если работать с сущьностью, что возвращается из апдейта
                 Patients.Add(await patientDataService.GetById(SelectedPatient.Id));
             }
             catch (Exception ex)

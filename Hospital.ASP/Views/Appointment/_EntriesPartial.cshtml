@@ -103,8 +103,8 @@
 					}
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary" onclick="confirmEntry(@curStaff.Id)">Save changes</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+					<button type="button" id="confirmButton" class="btn btn-primary" onclick="confirmEntry(@curStaff.Id)">ЗАПИСАТЬ</button>
 				</div>
 			</div>
 		</div>
@@ -118,18 +118,15 @@
 	var currentDateTime;
 	
 	function showModal(dateTime){
-
 		currentDateTime = new Date(dateTime);
-		alert(currentDateTime);
-
-		$("#date").html(currentDateTime.toLocaleDateString("ru-RU", {day: 'numeric'} ));
-		$("#time").html(currentDateTime.toLocaleTimeString());
+		$("#date").html(currentDateTime.toLocaleDateString("ru-RU", {day: 'numeric', weekday:'long', month:'long'} ));
+		$("#time").html(currentDateTime.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}));
 		$("#confirmModal").modal('show');
 	}
 
 	function confirmEntry(doctorId){
 
-		alert(currentDate);
+		alert(currentDateTime);
 
 		$.ajax({
 			url: '@Url.Action("ConfirmEntry", "Appointment")',
@@ -139,10 +136,11 @@
 			data: {
 				__RequestVerificationToken: getToken(),
 				doctorId : doctorId,
-				dateTime : currentDateTime
+				dateTimeUTC : currentDateTime.toJSON()
 			},
 			success: function (result) {
 				$("#modalBody").html(result);
+				$("#confirmButton").remove();
 			},
 			error: function (XMLHttpRequest, textStatus, errorThrown) {
 				alert(errorThrown);

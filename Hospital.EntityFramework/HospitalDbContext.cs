@@ -51,38 +51,16 @@ namespace Hospital.EntityFramework
             modelBuilder.ApplyConfiguration(new PatientConfig());
             modelBuilder.ApplyConfiguration(new StaffConfig());
             modelBuilder.ApplyConfiguration(new EntryConfig());
-            modelBuilder.ApplyConfiguration(new MedCardConfig());
-            //modelBuilder.Ignore<User>();
             modelBuilder.Ignore<Adress>();
             modelBuilder.Ignore<DomainObject>();
-
-            { //examples fluentApi
-
-                //modelBuilder.Entity<Country>();   //Fluent API include  
-                //modelBuilder.Entity<>().Ignore(b => b.Rate);
-                //modelBuilder.Entity<User>().ToTable("People");
-                //modelBuilder.Entity<User>().Property(u=>u.Id).HasColumnName("user_id"); 
-                //modelBuilder.Entity<User>().HasIndex(u => u.Passport).IsUnique();
-                //modelBuilder.Entity<User>().HasKey(u => u.Ident);
-                //modelBuilder.Entity<User>().HasKey(u => new { u.PassportSeria, u.PassportNumber});        составной ключ
-                //modelBuilder.Entity<User>().HasAlternateKey(u => u.Passport);
-                //modelBuilder.Entity<User>().HasAlternateKey(u => new { u.Passport, u.PhoneNumber });
-                //modelBuilder.Entity<User>().HasIndex(u => new { u.Passport, u.PhoneNumber });  переопределение индексации
-
-
-                // [DatabaseGenerated(DatabaseGeneratedOption.None)] autogen off modelBuilder.Entity<User>().Property(b => b.Id).ValueGeneratedNever();
-                // [DatabaseGenerated(DatabaseGeneratedOption.Identity)] autogen on
-                //modelBuilder.Entity<User>().Property(u => u.Age).HasDefaultValue(18); override default value
-                //modelBuilder.Entity<User>().Property(u => u.CreatedAt).HasDefaultValueSql("GETDATE()"); get actual date func
-                //modelBuilder.Entity<User>().Property(u => u.Name).HasComputedColumnSql("[FirstName] + ' ' + [LastName]");
-                //modelBuilder.Entity<User>().Property(b => b.Name).IsRequired();    [Required] ann
-                //modelBuilder.Entity<User>().Property(u=>u.Name).HasColumnType("varchar(200)");
-                //modelBuilder.Entity<User>().HasOne(p => p.Company).WithMany(t => t.Users).HasForeignKey(p => p.CompanyInfoKey);   HasOne / HasMany / WithOne / WithMany    [ForeignKey("CompanyInfoKey")]
-                //modelBuilder.Entity<User>().HasOne(p => p.Company).WithMany(t => t.Users).HasForeignKey(p => p.CompanyName).HasPrincipalKey(t => t.Name)
-                // modelBuilder.Entity<User>().HasOne(p => p.Company).WithMany(t => t.Users).OnDelete(DeleteBehavior.Cascade);  SetNull: Restrict:
-            }
         }
 
+
+        /// <summary>
+        /// если возникает баг с коллизией сущьностей при апдейте записей, то возможно использовать эти методы
+        /// /summary>
+        /// <param name="entity">вложенная сущность, которую нужно обновить</param>
+        /// <returns></returns>
         public EntityEntry UpdateWithoutTracking(object entity)
         {
             ChangeTracker.TrackGraph(
@@ -157,7 +135,6 @@ namespace Hospital.EntityFramework
             {
                 //builder.Property(s => s.CreateDate).HasDefaultValueSql("NOW()");
                 builder.Property(s => s._Adress).HasColumnName("Adress");
-                //builder.Ignore(s => s.Adress);
             }
         }
         private class EntryConfig : IEntityTypeConfiguration<Entry>
@@ -167,14 +144,6 @@ namespace Hospital.EntityFramework
                 builder.HasOne(e => e.Registrator).WithMany(s => s.Registrators).OnDelete(DeleteBehavior.NoAction);
                 builder.HasOne(e => e.DoctorDestination).WithMany(s => s.DoctorDestinations).OnDelete(DeleteBehavior.NoAction);
                 //builder.Property(e => e.CreateDateTime).HasDefaultValueSql("NOW()");
-            }
-        }
-        private class MedCardConfig : IEntityTypeConfiguration<MedCard>
-        {
-            public void Configure(EntityTypeBuilder<MedCard> builder)
-            {
-                //builder.Property(p => p.DiagnosisId).IsRequired(); //решить, либо оставлять null, либо сделать спец диагноз "не установлен"
-                //builder.Property(p => p.Conclusion).IsRequired();
             }
         }
     }
