@@ -189,13 +189,13 @@ namespace Hospital.EntityFramework.Services
             return result;
         }
 
-        public async Task<IEnumerable<Entry>> GetEntries(int selectedStaffId, DateTime date, bool isFreeOnly = false)
+        public async Task<IEnumerable<Entry>> GetEntries(int staffId, DateTime date, bool isFreeOnly = false)
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 IList<Entry> entries = await db.Entries
                     .AsQueryable()
-                    .Where(e => e.DoctorDestination.Id == selectedStaffId)
+                    .Where(e => e.DoctorDestination.Id == staffId)
                     .Where(e => e.TargetDateTime.Date == date.Date)
                     .Include(e => e.Patient)
                     .Include(e => e.DoctorDestination).ThenInclude(d => d.Department).ThenInclude(d => d.Title)
@@ -205,7 +205,7 @@ namespace Hospital.EntityFramework.Services
 
                 IList<Change> changes = await db.Changes
                     .AsQueryable()
-                    .Where(c => c.Staff.Id == selectedStaffId)
+                    .Where(c => c.Staff.Id == staffId)
                     .Where(c => c.DateTimeStart.Date == date.Date)
                     .Include(c => c.Staff).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                     .ToListAsync();
@@ -226,6 +226,19 @@ namespace Hospital.EntityFramework.Services
                 result.AddRange(entries);
 
                 return result.OrderBy(e => e.TargetDateTime).GroupBy(e => e.TargetDateTime).Select(e => e.Last());
+            }
+        }
+
+        public async Task<IEnumerable<Entry>> GetEntries(int patientId)
+        {
+            using (HospitalDbContext db = _contextFactory.CreateDbContext())
+            {
+                var entries = await db.Entries
+                    .AsQueryable()
+                    .Where(e => e.Patient.Id == patientId)
+                    .Include(e => e.DoctorDestination).ThenInclude(d => d.Department).ThenInclude(d => d.Title)
+                    .ToListAsync();
+                return entries;
             }
         }
 

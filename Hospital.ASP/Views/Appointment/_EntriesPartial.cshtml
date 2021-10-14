@@ -77,15 +77,15 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body" id="modalBody">
+				<div class="modal-body p-0" id="modalBody">
 
 					@if(curStaff.Department != null)
 					{
-						<div>
+						<div class="p-3">
 							<h5>@curStaff.FirstName @curStaff.MidName @curStaff.LastName</h5>
 							<ul>
 								<li>Отделение: @curStaff.Department.Title.Title</li>
-								<li>Адрес: @curStaff.Department.Adress.City, @curStaff.Department.Adress.Street @curStaff.Department.Adress.Number</li>
+								<li>Адрес: @curStaff.Department.Adress.ToLongString()</li>
 								<li>Кабинет: @curStaff.Cabinet</li>
 							</ul>
 							<hr/>
@@ -97,12 +97,12 @@
 					}
 					else
 					{
-						<div>
+						<div class="p-2">
 							записи не найдены
 						</div>	
 					}
 				</div>
-				<div class="modal-footer">
+				<div class="modal-footer d-flex justify-content-between">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
 					<button type="button" id="confirmButton" class="btn btn-primary" onclick="confirmEntry(@curStaff.Id)">ЗАПИСАТЬ</button>
 				</div>

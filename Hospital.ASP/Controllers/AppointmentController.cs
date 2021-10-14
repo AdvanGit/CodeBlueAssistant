@@ -29,9 +29,16 @@ namespace Hospital.ASP.Controllers
 
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Department> res = await _departmentGenericService.GetWithInclude(d => d.Type == DepartmentType.Ambulatory, d => d.Title);
             //TODO: проверка на дубликаты Title
-            ViewBag.DepartmentList = new SelectList(res, "Title.Id", "Title.Title");
+            IEnumerable<Department> departments = await _departmentGenericService.GetWithInclude(d => d.Type == DepartmentType.Ambulatory, d => d.Title);
+            ViewBag.DepartmentList = new SelectList(departments, "Title.Id", "Title.Title");
+
+            if (int.TryParse(User.FindFirstValue("Id"), out int patientId))
+            {
+                IEnumerable<Entry> entries = await _entryDataService.GetEntries(patientId);
+                if (entries.Count() != 0) ViewBag.EntriesList = entries;
+            }
+            else ModelState.AddModelError("", "ошибка идентификаци");
             return View();
         }
 

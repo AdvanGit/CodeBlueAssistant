@@ -21,6 +21,43 @@
 	}
 </style>
 
+<div class="m-3">
+	@if (ViewBag.EntriesList != null)
+	{
+		<div class="table-responsive rounded m-0">
+			<a class="btn rounded-0 btn-block btn-info m-0 p-2 px-3 d-flex align-items-center justify-content-between" data-toggle="collapse" href="#entriesInfo" aria-expanded="false" aria-controls="entriesInfo">
+				<div>
+					Текущие записи
+				</div>
+				<i class="bi bi-chevron-bar-expand"></i>
+			</a>
+			<div class="collapse show" id="entriesInfo">
+			
+				<table class="table border m-0">
+					<tbody>
+						@foreach (Entry entry in ViewBag.EntriesList) 
+						{
+							<tr>
+								<td class="p-0 px-3" style="vertical-align: middle">@entry.DoctorDestination.Department.Title.Caption</td>
+								<td class="p-0 px-3" style="vertical-align: middle">@entry.DoctorDestination.GetShortName()</td>
+								<td class="p-0" style="width: 2.7rem; vertical-align: middle">
+									<div>
+										<button class="btn rounded-0 p-2 m-0 btn-block btn-light">
+											<i class="bi text-secondary bi-trash-fill"></i>
+										</button>
+									</div>
+								</td>
+							</tr>		
+						}
+					</tbody>
+				</table>
+			
+			</div>
+		</div>
+	}
+</div>
+
+
 <div class="row m-0 my-3"> 
 	<div class="col-sm-5">
 		<div class="form-group">
