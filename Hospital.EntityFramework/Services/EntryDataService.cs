@@ -233,10 +233,13 @@ namespace Hospital.EntityFramework.Services
         {
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
+                //Решить, давать ли возможность отменять записи, созданные операторами? Если нет, то добавить
+                //условие, при котором предоставляются только собственноручно созданные записи
                 var entries = await db.Entries
                     .AsQueryable()
                     .Where(e => e.Patient.Id == patientId)
                     .Include(e => e.DoctorDestination).ThenInclude(d => d.Department).ThenInclude(d => d.Title)
+                    .OrderBy(e => e.TargetDateTime)
                     .ToListAsync();
                 return entries;
             }

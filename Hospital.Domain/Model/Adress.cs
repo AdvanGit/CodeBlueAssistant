@@ -21,6 +21,13 @@ namespace Hospital.Domain.Model
             return res;
         }
 
+        public string ToShortString()
+        {
+            string res = $"ул.{_street} д.{_number}";
+            if (_room != null && _room != 0) res += $" кв.{_room}";
+            return res;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void OnPropertyChanged([CallerMemberName] string prop = "") { PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(prop)); }
     }

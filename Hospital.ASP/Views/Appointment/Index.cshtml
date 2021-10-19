@@ -22,73 +22,46 @@
 </style>
 
 <div class="m-3">
-	@if (ViewBag.EntriesList != null)
-	{
-		<div class="table-responsive rounded m-0">
-			<a class="btn rounded-0 btn-block btn-info m-0 p-2 px-3 d-flex align-items-center justify-content-between" data-toggle="collapse" href="#entriesInfo" aria-expanded="false" aria-controls="entriesInfo">
-				<div>
-					Текущие записи
-				</div>
-				<i class="bi bi-chevron-bar-expand"></i>
-			</a>
-			<div class="collapse show" id="entriesInfo">
-			
-				<table class="table border m-0">
-					<tbody>
-						@foreach (Entry entry in ViewBag.EntriesList) 
-						{
-							<tr>
-								<td class="p-0 px-3" style="vertical-align: middle">@entry.DoctorDestination.Department.Title.Caption</td>
-								<td class="p-0 px-3" style="vertical-align: middle">@entry.DoctorDestination.GetShortName()</td>
-								<td class="p-0" style="width: 2.7rem; vertical-align: middle">
-									<div>
-										<button class="btn rounded-0 p-2 m-0 btn-block btn-light">
-											<i class="bi text-secondary bi-trash-fill"></i>
-										</button>
-									</div>
-								</td>
-							</tr>		
-						}
-					</tbody>
-				</table>
-			
+	
+	<div class="table-responsive rounded shadow">
+	
+		<p class="bg-primary text-white p-2">Параметры поиска</p>
+
+		<div class="px-3">
+			<div class="form-group row m-0 align-items-center">
+				<label for="titleId" class="p-0 col-sm-3">Выберите отделение</label>
+				<select class="custom-select col-sm-9" asp-items="@ViewBag.DepartmentList" itemid="itemTitleId" id="titleId"></select>
 			</div>
+
+			<div class="form-group row m-0 my-3 align-items-center">
+				<label for="date" class="p-0 m-0 col-sm-3">Выберите дату</label>
+
+				<div class="col-sm-5 py-2 d-flex align-items-center custom-control custom-checkbox custom-control-lg">
+					<input type="checkbox" for="isFirstFree" class="custom-control-input " id="dateSwitch" onclick="hideDiv(this)">
+					<label class="custom-control-label" id="isFirstFree" for="dateSwitch">Ближайшая доступная</label>
+				</div>
+
+				<input class="form-control col-sm-4" type="date" id="dateField" value="@DateTime.Today.ToString("yyyy-MM-dd")" placeholder="Введите дату">
+			</div>
+			
+			<button type="button" onclick="getDoctorsResult()" class="btn btn-outline-secondary mb-3 w-100">Поиск</button>
 		</div>
-	}
+
+	</div>
+
+	<div>
+		<div class="my-3" id="doctorsPartial"/>
+	</div>
+
+	<div>
+		<div class="my-3"  id="entriesPartial"/>
+	</div>
+
 </div>
 
-
-<div class="row m-0 my-3"> 
-	<div class="col-sm-5">
-		<div class="form-group">
-			<label for="titleId" class="px-1">Выберите отделение</label>
-			<select class="custom-select" asp-items="@ViewBag.DepartmentList" itemid="itemTitleId" id="titleId"></select>
-		</div>
-
-		<div class="form-group m-0" >
-			<label for="date" class="px-1">Выберите дату</label>
-
-			<div class="custom-control custom-checkbox custom-control-lg">
-				<input type="checkbox" for="isFirstFree" class="custom-control-input" id="dateSwitch" onclick="hideDiv(this)">
-				<label class="custom-control-label" id="isFirstFree" for="dateSwitch">Ближайшая доступная дата</label>
-			</div>
-
-			<input type="date" id="dateField" value="@DateTime.Today.ToString("yyyy-MM-dd")" class="form-control mt-2" placeholder="Введите дату">
-		</div>
-			
-		<button type="button" onclick="getDoctorsResult()" class="btn btn-outline-secondary w-100 my-3">Поиск</button>
-	</div>
-
-	<div class="col-sm-7">
-		<div id="doctorsPartial"/>
-	</div>
-
-
-</div>   
-
-<div class="container-fluid m-0 my-3" id="entriesPartial"/>
-
 <script>
+	var currentEntryId;
+
 	function hideDiv(obj) {
 		if (obj.checked) {
 			$("#dateField").hide();
@@ -142,5 +115,4 @@
 			}
 		});
 	}
-
 </script>

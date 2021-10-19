@@ -111,6 +111,7 @@ namespace Hospital.Domain.Model
         }
 
         public string GetShortName() => _firstName + " " + _midName[0] + ". " + _lastName[0] + ".";
+        public string GetLongName() => _firstName + " " + _midName + " " + _lastName;
     }
 
     public class Staff : User

@@ -2,7 +2,7 @@
 
 <div class="bg-success text-white text-center m-0 p-2">Вы успешно записаны!</div>
 <div class="p-3">
-	<h4>@Model.DoctorDestination.FirstName @Model.DoctorDestination.MidName @Model.DoctorDestination.LastName</h4>
+	<h4>@Model.DoctorDestination.GetLongName()</h4>
 		<ul>
 			<li>Отделение: @Model.DoctorDestination.Department.Title.Title</li>
 			<li>Адрес: @Model.DoctorDestination.Department.Adress.ToLongString()</li>
