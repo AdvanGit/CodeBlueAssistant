@@ -126,10 +126,8 @@
 
 	function confirmEntry(doctorId){
 
-		alert(currentDateTime);
-
 		$.ajax({
-			url: '@Url.Action("ConfirmEntry", "Appointment")',
+			url: '@Url.Action("ConfirmEntry")',
 			type: "post",
 			dataType: "html",
 			cache: false,

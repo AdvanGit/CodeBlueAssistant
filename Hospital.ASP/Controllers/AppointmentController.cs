@@ -80,8 +80,9 @@ namespace Hospital.ASP.Controllers
                         if (patient != null)
                         {
                             entry.Patient = patient;
-                            entry.Registrator = entry.DoctorDestination; //---заглушка отсутсвия данных сайта как регистратора, возможно оставить null
+                            entry.Registrator = null; //---заглушка отсутсвия данных сайта как регистратора, возможно оставить null
                             entry.EntryStatus = EntryStatus.Ожидание;
+                            entry.InviteStatus = InviteStatus.Первичное;
                             try
                             {
                                 entry = await _entryDataService.Update(entry.Id, entry);
