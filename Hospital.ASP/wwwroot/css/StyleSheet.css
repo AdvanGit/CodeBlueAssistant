@@ -101,3 +101,15 @@ input[type="checkbox"].input-validation-error {
 .pointer{
     cursor:pointer!important;
 }
+
+.col-response {
+    -ms-flex-direction: row !important;
+    flex-direction: row !important;
+}
+
+@media (min-width: 768px) {
+    .col-response {
+        -ms-flex-direction: column !important;
+        flex-direction: column !important;
+    }
+}

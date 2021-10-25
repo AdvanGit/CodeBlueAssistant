@@ -1,0 +1,30 @@
+﻿@{
+    Layout = "_Layout";
+}
+
+
+<div class="row m-0 p-0">
+    <div class="col-sm-3 p-0 mt-2">
+        <nav class="breadcrumb p-0 rounded m-0">
+            <ul class="nav col-response"> 
+                    <li class="nav-item p-0">
+                        <a class="nav-link  m-0 py-1 px-2
+                                 @Html.ActiveClass("Account","Index","text-dark font-weight-bold")" 
+                            style="color: rgba(0,0,0,.5)"
+                            asp-action="Index">Личные данные</a>
+                    </li>   
+                    <li class="nav-item  p-0">
+                        <a class="nav-link m-0 py-1 px-2
+                                @Html.ActiveClass("Account","Security","text-dark font-weight-bold")"
+                            style="color: rgba(0,0,0,.5)"
+                            asp-action="Security">Безопасность</a>
+                    </li>
+            </ul>
+        </nav>
+    </div>    
+
+    <div class="col-sm-9 p-0 px-2 mt-2">
+        @RenderBody()
+    </div>
+
+</div>

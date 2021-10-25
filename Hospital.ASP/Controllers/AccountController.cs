@@ -28,12 +28,18 @@ namespace Hospital.ASP.Controllers
         {
             if (User.HasClaim(p => p.Type == "phoneNumber"))
             {
-                var patients = await _dataServicesPatient.GetWhere(p => p.PhoneNumber.ToString() == User.FindFirstValue("phoneNumber"));
+                var patients = await _dataServicesPatient.GetWithInclude(p => p.PhoneNumber.ToString() == User.FindFirstValue("phoneNumber"), p => p.Belay);
                 return View(patients.FirstOrDefault());
             }
             ModelState.AddModelError("", "Ошибка идентификации");
             return View();
         }
+
+        public IActionResult Security()
+        {
+            return View();
+        }
+
 
         [AllowAnonymous]
         public IActionResult Register()
@@ -104,7 +110,6 @@ namespace Hospital.ASP.Controllers
             return View();
         }
 
-        
         private async Task SignIn(Patient patient)
         {
             var claims = new List<Claim>

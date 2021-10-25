@@ -1,19 +1,101 @@
 ﻿@model Patient
+
 @{
-	ViewData["Title"] = "Account info Page";
-	bool isReadOnly = true;
+	ViewData["Title"] = "Аккаунт";
+	Layout = "_Navbar";
 }
+<style>
+	.row label {
+		opacity: 0.5;
+		font-weight: bold;
+		text-align: right;
+	}
+</style>
 
 <div>
-	<div class="validation" asp-validation-summary="All"></div>
+	@if(Model.IsValid())
+	{
+		<div class="alert alert-warning" role="alert">Данные вашей учетной записи не подтверждены, некоторые функции могут быть недоступны</div>
+	}
 
-	<form asp-action="Index" asp-controller="Account" asp-anti-forgery="true">
+	<div class="row m-0">
+		<label class="col-4">Фамилия:</label>
+		<span class="col-8">@Model.FirstName</span>
 
-		<input type="text" class="" asp-for="FirstName" readonly="@(isReadOnly)">
-		<input type="text" class="" asp-for="MidName" readonly="@(isReadOnly)">
+		<label class="col-4">Имя:</label>
+		<span class="col-8">@Model.MidName</span>
 
-	</form>
+		<label class="col-4">Отчество:</label>
+		<span class="col-8">@Model.LastName</span>
 
-	<h2>@Model.FirstName @Model.MidName @Model.LastName</h2>
-	<h3>@Model.PhoneNumber</h3>
+	</div>
+	<hr/>
+	<div class="row m-0">
+		<label class="col-4">Дата рождения:</label>
+		<span class="col-8">@Model.BirthDay.ToShortDateString()</span>
+
+		<label class="col-4">Пол:</label>
+		<div class="col-8">@Model.Gender</div>
+
+		<label class="col-4">Семейное положение:</label>
+		<div class="col-8">
+			@if (Model.IsMarried == true && Model.Gender == Gender.Мужской)
+			{
+				<span>Женат</span>
+			}
+			else if (Model.IsMarried == true && Model.Gender == Gender.Женский)
+			{
+				<span>Замужем</span>
+			}
+			else if (Model.IsMarried == false && Model.Gender == Gender.Мужской)
+			{
+				<span>Холост</span>
+			}
+			else if (Model.IsMarried  == false && Model.Gender == Gender.Женский)
+			{
+				<span>Не замужем</span>
+			}
+			else
+			{
+				<span>(Не указан пол или статус)</span>
+			}
+		</div>
+
+		<label class="col-4">Наличие детей:</label>
+		<div class="col-8">
+			@if (Model.HasChild == true)
+			{
+				<span>Имеются</span>
+			}
+			else if (Model.HasChild == false)
+			{
+				<span>Не имеются</span>
+			}
+			else
+			{
+				<span>Не указано</span>
+			}
+		</div>
+	</div>
+	<hr />
+	<div class="row m-0">
+		<label class="col-4">Адрес прописки:</label>
+		<span class="col-8">@Model.Adress.ToLongString()</span>
+	</div>
+
+	<div class="row m-0">
+		<label class="col-4">Номер телефона:</label>
+		<span class="col-8">@Model.PhoneNumber</span>
+	</div>
+	<hr />
+	<div class="row m-0">
+		<label class="col-4">Страховая компания:</label>
+		<span class="col-8">@Model.Belay?.Title</span>
+
+		<label class="col-4">Номер:</label>
+		<span class="col-8">@Model?.BelayCode</span>
+
+		<label class="col-4">Действие до:</label>
+		<span class="col-8">@Model.BelayDateOut?.ToShortDateString()</span>
+	</div>
 </div>
