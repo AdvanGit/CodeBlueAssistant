@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -16,24 +17,58 @@ namespace Hospital.ASP.Controllers
     public class AccountController : Controller
     {
         private readonly IAuthenticationService<Patient> _authenticationService;
-        private readonly IGenericRepository<Patient> _dataServicesPatient;
+        private readonly IGenericRepository<Patient> _patientRepository;
+        private readonly IGenericRepository<Belay> _belayRepository;
 
-        public AccountController(IAuthenticationService<Patient> authenticationService, IGenericRepository<Patient> dataServicesPatient)
+        public AccountController(IAuthenticationService<Patient> authenticationService, IGenericRepository<Patient> patientRepository, IGenericRepository<Belay> belayRepository)
         {
             _authenticationService = authenticationService;
-            _dataServicesPatient = dataServicesPatient;
+            _patientRepository = patientRepository;
+            _belayRepository = belayRepository;
         }
 
+        //Refactoring with int.tryparse(id) - see Edit action
         public async Task<IActionResult> Index()
         {
             if (User.HasClaim(p => p.Type == "phoneNumber"))
             {
-                var patients = await _dataServicesPatient.GetWithInclude(p => p.PhoneNumber.ToString() == User.FindFirstValue("phoneNumber"), p => p.Belay);
+                var patients = await _patientRepository.GetWithInclude(p => p.PhoneNumber.ToString() == User.FindFirstValue("phoneNumber"), p => p.Belay);
                 return View(patients.FirstOrDefault());
             }
             ModelState.AddModelError("", "Ошибка идентификации");
             return View();
         }
+
+        //TODO:Antiforgery Token on Get Request?
+        public async Task<IActionResult> Edit()
+        {
+            if (int.TryParse(User.FindFirstValue("id"), out int id))
+            {
+                var patient = (await _patientRepository.GetWithInclude(p => p.Id == id, p => p.Belay)).FirstOrDefault();
+                if (patient != null)
+                {
+                    var belays = await _belayRepository.GetAll();
+                    ViewBag.BelaysList = new SelectList(belays, "Id", "Title", belays.Where(b => b.Id == patient.Belay.Id).FirstOrDefault());
+                    return View(patient);
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Такой пользователь не найден");
+                    return View();
+                }
+            }
+            ModelState.AddModelError("", "Ошибка cookie: не найдено подходящее утверждение");
+            return View();
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(Patient patient)
+        {
+            return RedirectToAction("Index");
+        }
+       
 
         public IActionResult Security()
         {
@@ -96,7 +131,7 @@ namespace Hospital.ASP.Controllers
                 if (password != confirmPassword) 
                     ModelState.AddModelError("", "пароли не совпадают");
 
-                if ((await _dataServicesPatient.GetWhere(s=>s.PhoneNumber == patient.PhoneNumber)).FirstOrDefault() != null)
+                if ((await _patientRepository.GetWhere(s=>s.PhoneNumber == patient.PhoneNumber)).FirstOrDefault() != null)
                     ModelState.AddModelError("", "номер уже используется");
 
                 if (ModelState.IsValid)

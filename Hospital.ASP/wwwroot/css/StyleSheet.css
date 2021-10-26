@@ -107,9 +107,17 @@ input[type="checkbox"].input-validation-error {
     flex-direction: row !important;
 }
 
+.rounded-response {
+    border-radius: 0 !important;
+}
+
 @media (min-width: 768px) {
     .col-response {
         -ms-flex-direction: column !important;
         flex-direction: column !important;
+    }
+
+    .rounded-response {
+        border-radius: 0.25rem !important;
     }
 }
