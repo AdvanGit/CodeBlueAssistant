@@ -35,8 +35,17 @@
 		<span class="col-8">@Model.BirthDay.ToShortDateString()</span>
 
 		<label class="col-4">Пол:</label>
-		<div class="col-8">@Model.Gender</div>
-
+		<div class="col-8">
+			@if (Model.Gender == null)
+			{
+				<span>Не определен</span>
+			}
+			else
+			{
+				<span>@Model.Gender</span>
+			}
+		</div>
+		
 		<label class="col-4">Семейное положение:</label>
 		<div class="col-8">
 			@if (Model.IsMarried == true && Model.Gender == Gender.Мужской)

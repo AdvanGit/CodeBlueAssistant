@@ -152,6 +152,6 @@ namespace Hospital.Domain.Model
         public bool? HasChild { get => _hasChild; set { _hasChild = value; OnPropertyChanged("HasChild"); } }
 
 
-        public bool IsValid() => _belay != null && _belayCode != null && _belayDateOut != null && _isMarried != null && _hasChild != null;
+        public bool IsValid() => _belay != null && _belayCode != null && _belayDateOut != null && _isMarried != null && _hasChild != null && Gender != null;
     }
 }

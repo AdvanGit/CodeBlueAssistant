@@ -7,5 +7,6 @@ namespace Hospital.Domain.Security
     {
         Task<TUser> Register(TUser user, string password);
         Task<TUser> Authenticate(long phoneNumber, string password);
+        Task<TUser> ChangePassword(long phoneNumber, string oldPassword, string newPassword);
     }
 }
