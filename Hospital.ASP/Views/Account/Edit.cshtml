@@ -6,34 +6,49 @@
 	await Html.RenderPartialAsync("_ValidationScriptsPartial");
 }
 
-<div>
+<style>
+	.form-group label
+	{
+		padding:0;
+		opacity:0.5;
+		font-weight:bold;
+		padding-left:0.5rem;
+		padding-right:0.5rem;
+	}	
+	.form-group div
+	{
+		padding:0;
+	}	
+</style>
+
+<div class="px-2">
 	<form asp-action="Edit" asp-antiforgery="true" asp-controller="Account">
 		<div class="validation" asp-validation-summary="ModelOnly"></div>
 
 				<div class="form-group row align-items-center  m-0 my-3">
-					<label asp-for="FirstName" class="col-sm-3 col-form-label py-0 pr-2">Фамилия</label>
-					<div class="col-sm-9">
+					<label asp-for="FirstName" class="col-sm-4 col-form-label">Фамилия</label>
+					<div class="col-sm-8">
 						<input type="text" class="form-control" asp-for="FirstName" placeholder="введите фамилию">
 					</div>
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="MidName" class="col-sm-3 col-form-label py-0 pr-2">Имя</label>
-					<div class="col-sm-9">
+					<label asp-for="MidName" class="col-sm-4 col-form-label">Имя</label>
+					<div class="col-sm-8">
 						<input type="text" class="form-control" asp-for="MidName" placeholder="введите имя">
 					</div>
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="LastName" class="col-sm-3 col-form-label py-0 pr-2">Отчество</label>
-					<div class="col-sm-9">
+					<label asp-for="LastName" class="col-sm-4 col-form-label">Отчество</label>
+					<div class="col-sm-8">
 						<input type="text" class="form-control" asp-for="LastName" placeholder="введите отчество">
 					</div>
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="PhoneNumber" class="col-sm-3 col-form-label py-0 pr-2">Ваш номер телефона</label>
-					<div class="col-sm-9">
+					<label asp-for="PhoneNumber" class="col-sm-4 col-form-label">Ваш номер телефона</label>
+					<div class="col-sm-8">
 						<input type="number" class="form-control" asp-for="PhoneNumber" placeholder="введите номер">
 						<input type="hidden" asp-for="Id">
 					</div>
@@ -43,15 +58,15 @@
 
 				
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="BirthDay" class="col-sm-3 col-form-label py-0 pr-2">Дата рождения</label>
-					<div class="col-sm-9">
+					<label asp-for="BirthDay" class="col-sm-4 col-form-label">Дата рождения</label>
+					<div class="col-sm-8">
 						<input type="date" class="form-control" asp-for="BirthDay" placeholder="введите дату рождения">
 					</div>
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="Gender" class="col-sm-3 col-form-label py-0 pr-2">Пол</label>
-					<div class="col-sm-9">
+					<label asp-for="Gender" class="col-sm-4 col-form-label">Пол</label>
+					<div class="col-sm-8">
 						<select class="custom-select" asp-for="Gender" asp-items="Html.GetEnumSelectList<Gender>()">
 							<option value="">Не определился</option>
 						</select>
@@ -59,8 +74,8 @@
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="IsMarried" class="col-sm-3 col-form-label py-0 pr-2">Состоите в браке</label>
-					<div class="col-sm-9">
+					<label asp-for="IsMarried" class="col-sm-4 col-form-label">Состоите в браке</label>
+					<div class="col-sm-8">
 						<select class="custom-select"  asp-for="IsMarried">
 							<option value="">Не определился</option>
 							<option value="true">Состою</option>
@@ -70,8 +85,8 @@
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="HasChild" class="col-sm-3 col-form-label py-0 pr-2">Наличие детей</label>
-					<div class="col-sm-9">
+					<label asp-for="HasChild" class="col-sm-4 col-form-label">Наличие детей</label>
+					<div class="col-sm-8">
 						<select class="custom-select" asp-for="HasChild">
 							<option value="">Не определился</option>
 							<option value="true">Имеются</option>
@@ -83,29 +98,29 @@
 				<hr />
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="Adress.City" class="col-sm-3 col-form-label py-0 pr-2">Город</label>
-					<div class="col-sm-9">
+					<label asp-for="Adress.City" class="col-sm-4 col-form-label">Город</label>
+					<div class="col-sm-8">
 						<input type="text" class="form-control" asp-for="Adress.City" placeholder="Введите город проживания">
 					</div>
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="Adress.Street" class="col-sm-3 col-form-label py-0 pr-2">Улица</label>
-					<div class="col-sm-9">
+					<label asp-for="Adress.Street" class="col-sm-4 col-form-label">Улица</label>
+					<div class="col-sm-8">
 						<input type="text" class="form-control" asp-for="Adress.Street" placeholder="Введите улицу проживания">
 					</div>
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="Adress.Number" class="col-sm-3 col-form-label py-0 pr-2">Дом</label>
-					<div class="col-sm-9">
+					<label asp-for="Adress.Number" class="col-sm-4 col-form-label">Дом</label>
+					<div class="col-sm-8">
 						<input type="text" class="form-control" asp-for="Adress.Number" placeholder="Введите номер дома">
 					</div>
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="Adress.Room" class="col-sm-3 col-form-label py-0 pr-2">Квартира</label>
-					<div class="col-sm-9">
+					<label asp-for="Adress.Room" class="col-sm-4 col-form-label">Квартира</label>
+					<div class="col-sm-8">
 						<input type="text" class="form-control" asp-for="Adress.Room" placeholder="Введите номер квартиры">
 					</div>
 				</div>
@@ -113,22 +128,22 @@
 				<hr />
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="Belay.Id" class="col-sm-3 col-form-label py-0 pr-2">Страховая компания</label>
-					<div class="col-sm-9">
+					<label asp-for="Belay.Id" class="col-sm-4 col-form-label">Страховая компания</label>
+					<div class="col-sm-8">
 						<select class="custom-select" asp-for="Belay.Id" asp-items="@ViewBag.BelaysList"></select>
 					</div>
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="BelayCode" class="col-sm-3 col-form-label py-0 pr-2">Номер свидетельства</label>
-					<div class="col-sm-9">
+					<label asp-for="BelayCode" class="col-sm-4 col-form-label">Номер свидетельства</label>
+					<div class="col-sm-8">
 						<input type="text" class="custom-select" asp-for="BelayCode" placeholder="Введите номер свидетельства">
 					</div>
 				</div>
 
 				<div class="form-group row align-items-center m-0 my-3">
-					<label asp-for="BelayDateOut" class="col-sm-3 col-form-label py-0 pr-2">Действительно до</label>
-					<div class="col-sm-9">
+					<label asp-for="BelayDateOut" class="col-sm-4 col-form-label">Действительно до</label>
+					<div class="col-sm-8">
 						<input type="date" class="form-control" asp-for="BelayDateOut" placeholder="введите срок окончания">
 					</div>
 				</div>
@@ -136,7 +151,7 @@
 
 
 
-				<div class="row m-0 px-3">    
+				<div class="row m-0">    
 					<a asp-action="Index" class="btn btn-secondary col mr-4">Отмена</a>
 					<input type="submit" value="Отправить" class="btn btn-primary col ml-4"/>
 				</div>

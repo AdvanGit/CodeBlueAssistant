@@ -1,7 +1,9 @@
 ﻿using Hospital.ViewModel;
 using Hospital.ViewModel.Factories;
+using Hospital.ViewModel.Notificator;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Diagnostics;
 
 namespace Hospital.ASP.Controllers
@@ -28,8 +30,12 @@ namespace Hospital.ASP.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
+        public IActionResult Error(string message = null)
         {
+            if (!string.IsNullOrEmpty(message))
+            {
+                ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), message);
+            }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

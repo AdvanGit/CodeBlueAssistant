@@ -1,6 +1,8 @@
-﻿using Hospital.Domain.Model;
+﻿using Hospital.ASP.Filters;
+using Hospital.Domain.Model;
 using Hospital.Domain.Security;
 using Hospital.Domain.Services;
+using Hospital.ViewModel.Notificator;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -33,10 +35,14 @@ namespace Hospital.ASP.Controllers
 		{
 			if (int.TryParse(User.FindFirstValue("id"), out int id))
 			{
-				var patients = await _patientRepository.GetWithInclude(p => p.Id == id, p => p.Belay);
-				return View(patients.FirstOrDefault());
+				var patient = (await _patientRepository.GetWithInclude(p => p.Id == id, p => p.Belay)).FirstOrDefault();
+				if (!patient.IsValid())
+                {
+					ViewBag.NotificationItem = new NotificationItem(NotificationType.Warning, new TimeSpan(), "Личная информация указана не полностью, некорые функции могут быть не доступны");
+				}
+				return View(patient);
 			}
-			ModelState.AddModelError("", "Ошибка идентификации");
+			ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), "Ошибка идентификации");
 			return RedirectToAction("Index", "Home");
 		}
 
@@ -53,18 +59,18 @@ namespace Hospital.ASP.Controllers
 				}
 				else
 				{
-					ModelState.AddModelError("", "Такой пользователь не найден");
+					ViewBag.NotificationItem = new NotificationItem(NotificationType.Warning, new TimeSpan(), "Такой пользователь не найден");
 					return View();
 				}
 			}
-			ModelState.AddModelError("", "Ошибка cookie: не найдено подходящее утверждение");
+			ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), "Ошибка cookie: не найдено подходящее утверждение");
 			return View();
 		}
-
 
 		//TODO: BelayId prop
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[ServiceFilter(typeof(CheckCookieServiceFilter))]
 		public async Task<IActionResult> Edit(Patient patient)
 		{
 			if (ModelState.IsValid)
@@ -80,10 +86,13 @@ namespace Hospital.ASP.Controllers
 
 					await HttpContext.SignOutAsync();
 					await SignIn(user);
+					TempData["message"] = "информация обновлена";
+					TempData["type"] = "Success";
+
 				}
 				else
 				{
-					ModelState.AddModelError("", "ошибка cookies, утверждение не найдено");
+					ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), "ошибка cookies, утверждение не найдено");
 				}
 				return RedirectToAction("Index");
 			}
@@ -139,7 +148,7 @@ namespace Hospital.ASP.Controllers
 						return RedirectToAction("Index", "Home");
 					}
 				}
-				ModelState.AddModelError("", "Некорректные логин и(или) пароль");
+				ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), "Некорректные логин или пароль");
 			}
 			return View();
 		}
@@ -169,6 +178,7 @@ namespace Hospital.ASP.Controllers
 
 		[HttpPost]
 		[ValidateAntiForgeryToken]
+		[ServiceFilter(typeof(CheckCookieServiceFilter))]
 		public async Task<IActionResult> ChangePassword(long phoneNumber, string oldPassword, string newPassword, string confirmPassword)
         {
 			if (newPassword == confirmPassword)
@@ -176,15 +186,16 @@ namespace Hospital.ASP.Controllers
                 try 
                 {
 					await _authenticationService.ChangePassword(phoneNumber, oldPassword, newPassword);
-                }
+					ViewBag.NotificationItem = new NotificationItem(NotificationType.Success, new TimeSpan(), "Пароль успешно обновлен");
+				}
                 catch (Exception ex)
                 {
-					ModelState.AddModelError("",ex.Message);
-                }
-            }
+					ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), ex.Message);
+				}
+			}
             else
             {
-				ModelState.AddModelError("", "Пароли не совпадают");
+				ViewBag.NotificationItem = new NotificationItem(NotificationType.Warning, new TimeSpan(), "Пароли не совпадают");
 			}
 			return View("Security");
         }

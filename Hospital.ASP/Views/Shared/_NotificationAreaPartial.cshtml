@@ -1,0 +1,8 @@
+﻿@if (ViewData.ContainsKey("NotificationItem")) 
+{
+	<div class="collapse show" id="notificationArea">
+		<div class="alert alert-warning m-0 mx-2 mt-2" role="alert" type="button" data-toggle="collapse" data-target="#notificationArea" aria-expanded="false" aria-controls="notificationArea">
+			@ViewBag.NotificationItem.Type: @ViewBag.NotificationItem.Message 
+		</div>
+	</div>
+}
