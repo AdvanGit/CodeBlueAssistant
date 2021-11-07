@@ -112,24 +112,19 @@
 			<div class="form-group row align-items-center m-0 my-3">
 				<label asp-for="Belay.Title" class="col-sm-3 col-form-label py-0 pr-2">Организация</label>
 				<div class="col-sm-9">
-					<select class="custom-select">
-						<option selected>Open this select menu</option>
-						<option value="1">One</option>
-						<option value="2">Two</option>
-						<option value="3">Three</option>
-					</select>                
+					<select class="custom-select" asp-for="Belay.Id" asp-items="@ViewBag.BelaysList"></select>
 				</div>
 			</div>
 			<div class="form-group row align-items-center m-0 my-3">
 				<label asp-for="BelayCode" class="col-sm-3 col-form-label py-0 pr-2">Номер</label>
 				<div class="col-sm-9">
-				  <input type="text" class="form-control" asp-for="BelayCode" placeholder="введите номер страхового свидетельства">
+					<input type="text" class="form-control" asp-for="BelayCode" placeholder="введите номер страхового свидетельства">
 				</div>
 			</div>
 			<div class="form-group row align-items-center m-0 my-3">
 				<label asp-for="BelayDateOut" class="col-sm-3 col-form-label py-0 pr-2">Срок действия</label>
 				<div class="col-sm-9">
-				  <input type="date" class="form-control" asp-for="BelayDateOut" placeholder="Введите дату срока действия">
+					<input type="date" class="form-control" asp-for="BelayDateOut" placeholder="Введите дату срока действия">
 				</div>
 			</div>
 		</div>

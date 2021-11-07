@@ -1,8 +1,8 @@
 ﻿using Hospital.ASP.Filters;
+using Hospital.ASP.Services;
 using Hospital.Domain.Model;
 using Hospital.Domain.Security;
 using Hospital.Domain.Services;
-using Hospital.ViewModel.Notificator;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -16,33 +16,35 @@ using System.Threading.Tasks;
 
 namespace Hospital.ASP.Controllers
 {
-	//TODO: checkusercookie attribute pipeline
+	//TODO: Belay to BelayId prop refactoring
 	[Authorize]
 	public class AccountController : Controller
 	{
 		private readonly IAuthenticationService<Patient> _authenticationService;
 		private readonly IGenericRepository<Patient> _patientRepository;
 		private readonly IGenericRepository<Belay> _belayRepository;
+		private readonly INotificationService _notificationService;
 
-		public AccountController(IAuthenticationService<Patient> authenticationService, IGenericRepository<Patient> patientRepository, IGenericRepository<Belay> belayRepository)
-		{
-			_authenticationService = authenticationService;
-			_patientRepository = patientRepository;
-			_belayRepository = belayRepository;
-		}
+        public AccountController(IAuthenticationService<Patient> authenticationService, IGenericRepository<Patient> patientRepository, IGenericRepository<Belay> belayRepository, INotificationService notificationService)
+        {
+            _authenticationService = authenticationService;
+            _patientRepository = patientRepository;
+            _belayRepository = belayRepository;
+            _notificationService = notificationService;
+        }
 
-		public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index()
 		{
 			if (int.TryParse(User.FindFirstValue("id"), out int id))
 			{
 				var patient = (await _patientRepository.GetWithInclude(p => p.Id == id, p => p.Belay)).FirstOrDefault();
 				if (!patient.IsValid())
                 {
-					ViewBag.NotificationItem = new NotificationItem(NotificationType.Warning, new TimeSpan(), "Личная информация указана не полностью, некорые функции могут быть не доступны");
+					_notificationService.AddError("Личная информация указана не полностью, некорые функции могут быть не доступны");
 				}
 				return View(patient);
 			}
-			ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), "Ошибка идентификации");
+			_notificationService.AddError("Ошибка идентификации");
 			return RedirectToAction("Index", "Home");
 		}
 
@@ -59,15 +61,13 @@ namespace Hospital.ASP.Controllers
 				}
 				else
 				{
-					ViewBag.NotificationItem = new NotificationItem(NotificationType.Warning, new TimeSpan(), "Такой пользователь не найден");
+					_notificationService.AddWarning("Такой пользователь не найден");
 					return View();
 				}
 			}
-			ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), "Ошибка cookie: не найдено подходящее утверждение");
+			_notificationService.AddWarning("Ошибка cookie: не найдено подходящее утверждение");
 			return View();
 		}
-
-		//TODO: BelayId prop
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ServiceFilter(typeof(CheckCookieServiceFilter))]
@@ -86,13 +86,10 @@ namespace Hospital.ASP.Controllers
 
 					await HttpContext.SignOutAsync();
 					await SignIn(user);
-					TempData["message"] = "информация обновлена";
-					TempData["type"] = "Success";
-
 				}
 				else
 				{
-					ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), "ошибка cookies, утверждение не найдено");
+					_notificationService.AddWarning("ошибка cookies, утверждение не найдено");
 				}
 				return RedirectToAction("Index");
 			}
@@ -103,16 +100,6 @@ namespace Hospital.ASP.Controllers
 			}
 		}
 
-		public IActionResult Security()
-		{
-			return View();
-		}
-
-		[AllowAnonymous]
-		public IActionResult Register()
-		{
-			return View();
-		}
 
 		[AllowAnonymous]
 		public IActionResult Login(string returnUrl = null)
@@ -120,13 +107,6 @@ namespace Hospital.ASP.Controllers
 			ViewData["ReturnUrl"] = returnUrl;
 			return View();
 		}
-
-		public async Task<IActionResult> Logout()
-		{
-			await HttpContext.SignOutAsync();
-			return RedirectToAction("Index", "Home");
-		}
-
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
@@ -148,11 +128,24 @@ namespace Hospital.ASP.Controllers
 						return RedirectToAction("Index", "Home");
 					}
 				}
-				ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), "Некорректные логин или пароль");
+				_notificationService.AddWarning("Некорректные логин или пароль");
 			}
 			return View();
 		}
 
+		public async Task<IActionResult> Logout()
+		{
+			await HttpContext.SignOutAsync();
+			return RedirectToAction("Index", "Home");
+		}
+
+		[AllowAnonymous]
+		public async Task<IActionResult> Register()
+		{
+			var belays = await _belayRepository.GetAll();
+			ViewBag.BelaysList = new SelectList(belays, "Id", "Title");
+			return View();
+		}
 		[HttpPost]
 		[AllowAnonymous]
 		[ValidateAntiForgeryToken]
@@ -167,6 +160,8 @@ namespace Hospital.ASP.Controllers
 
 				if (ModelState.IsValid)
 				{
+					var belay = await _belayRepository.GetById(patient.Belay.Id);
+					patient.Belay = belay;
 					var user = await _authenticationService.Register(patient, password);
 					await SignIn(user);
 					RedirectToAction("Index", "Account");
@@ -176,6 +171,10 @@ namespace Hospital.ASP.Controllers
 			return View();
 		}
 
+		public IActionResult Security()
+		{
+			return View();
+		}
 		[HttpPost]
 		[ValidateAntiForgeryToken]
 		[ServiceFilter(typeof(CheckCookieServiceFilter))]
@@ -186,16 +185,16 @@ namespace Hospital.ASP.Controllers
                 try 
                 {
 					await _authenticationService.ChangePassword(phoneNumber, oldPassword, newPassword);
-					ViewBag.NotificationItem = new NotificationItem(NotificationType.Success, new TimeSpan(), "Пароль успешно обновлен");
+					_notificationService.AddSuccess("Пароль успешно обновлен");
 				}
                 catch (Exception ex)
                 {
-					ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), ex.Message);
+					_notificationService.AddWarning(ex.Message);
 				}
 			}
             else
             {
-				ViewBag.NotificationItem = new NotificationItem(NotificationType.Warning, new TimeSpan(), "Пароли не совпадают");
+				_notificationService.AddWarning("Пароли не совпадают");
 			}
 			return View("Security");
         }

@@ -72,8 +72,7 @@
 	<div class="container p-0 pb-2">
 
 		<partial name="_CookieConsentPartial"/>
-		<partial name="_NotificationAreaPartial"/>
-
+		@await Component.InvokeAsync("NotificationArea")
 		<main role="main">
 			@RenderBody()
 		</main>

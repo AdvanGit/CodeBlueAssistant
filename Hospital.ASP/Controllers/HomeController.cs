@@ -30,12 +30,8 @@ namespace Hospital.ASP.Controllers
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error(string message = null)
+        public IActionResult Error()
         {
-            if (!string.IsNullOrEmpty(message))
-            {
-                ViewBag.NotificationItem = new NotificationItem(NotificationType.Error, new TimeSpan(), message);
-            }
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
