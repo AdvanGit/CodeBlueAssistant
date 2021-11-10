@@ -23,8 +23,10 @@
 
 
     <div class="d-flex justify-content-center mt-3">
-        <div class="card-body p-0 rounded shadow" style="max-width:40rem">
+        <div class="card p-0 shadow" style="max-width:40rem; flex:1 1 auto;">
+
             <div class="card-header text-center text-white bg-primary">Вход</div>
+
             <div class="card-body">
                 <div class="validation" asp-validation-summary="ModelOnly"></div>
                 <div class="form-group">
@@ -55,13 +57,7 @@
                 </div>
                 <input asp-for="FirstName" hidden value="Фамилия"/>
         		<input asp-for="MidName" hidden value="Имя"/>
-
-@*              <div class="form-group custom-control custom-checkbox custom-control-lg">
-                  <input type="checkbox" class="custom-control-input" checked name="stayIn" id="stayIn">
-                  <label class="custom-control-label" for="stayIn">Запомнить</label>
-                </div>
-*@
-                </div>
+            </div>
 
             <div class="card-footer row m-0">
                 <a class="btn btn-outline-secondary col mr-4" asp-action="Register" asp-controller="Account">Регистрация</a>

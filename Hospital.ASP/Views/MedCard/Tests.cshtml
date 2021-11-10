@@ -7,14 +7,14 @@
 <div class="validation" asp-validation-summary="All"></div>
 
 <div class="d-flex flex-wrap" style="gap:10px;">
-    <div class="flex-fill table-responsive rounded shadow">
+    <div class="flex-fill table-responsive rounded-response shadow">
 		<table class="table table-hover mb-0">
 			<thead class="thead-dark">
 				<tr>
 					<th>#</th>
 					<th>Вид диагностики</th>
 					<th>Вид теста</th>
-					<th>Показатель теста</th>
+					<th class="col-sm-none">Показатель теста</th>
 					<th>Статус заявки</th>
 				</tr>
 			</thead>
@@ -24,16 +24,16 @@
 					<tr onclick="getDetailContent(@data.Id, false)" style="cursor:pointer">
 						<th scope="row">@data.Id</th>
 						<td>@data.Test.TestType.Title</td>
-						<td>@data.Test.Title</td>
+						<td class="col-sm-overflow">@data.Test.Title</td>
 						@if (!string.IsNullOrEmpty(@data.Value))
 						{
-							<td>@data.Value @data.Test.Measure</td>
+							<td class="col-sm-none">@data.Value @data.Test.Measure</td>
 						}
 						else
 						{
-							<td>-</td>
+							<td class="col-sm-none">-</td>
 						}
-						<td>@data.Status</td>
+						<td class="col-sm-overflow">@data.Status</td>
 					</tr>
 				}
 			</tbody>

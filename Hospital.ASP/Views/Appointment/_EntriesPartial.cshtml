@@ -5,7 +5,7 @@
 	else curStaff = new Staff { FirstName = "Ничего не найдено", MidName = "", LastName = "" };
 }
 
-<div class="table-responsive rounded shadow">
+<div class="table-responsive rounded-response shadow">
 	
 	<div class="bg-dark text-white m-0 p-0">
 		<h5 class="border-bottom border-secondary m-0 mx-3 py-2">@curStaff.FirstName @curStaff.MidName @curStaff.LastName</h5> 
@@ -51,14 +51,14 @@
 			{
 				if (entry.EntryStatus == EntryStatus.Открыта)
 				{
-					<tr class="border-success pointer text-center" onclick="showModal('@entry.TargetDateTime.ToString("yyyy-MM-ddTHH:mm:ss")')" style="border-right: 5px solid;">
+					<tr class="border-success pointer text-center" onclick="showModal('@entry.TargetDateTime.ToString("yyyy-MM-ddTHH:mm:ss")')" style="border-left: 5px solid;">
 						<td style="font-size:1.3rem">@entry.TargetDateTime.ToShortTimeString()</td>
 						<td class="align-middle">запись открыта</td>
 					</tr>
 				}
 				else
 				{
-					<tr class="bg-light text-black-50  border-warning text-center" style="border-right: 5px solid;">
+					<tr class="bg-light text-black-50  border-warning text-center" style="border-left: 5px solid;">
 						<td style="font-size:1.3rem">@entry.TargetDateTime.ToShortTimeString()</td>
 						<td class="align-middle">запись недоступна</td>
 					</tr>

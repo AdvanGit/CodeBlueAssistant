@@ -11,41 +11,34 @@ namespace Hospital.ASP.Services
 
         public bool IsExist => !string.IsNullOrEmpty(Message);
 
-        public void AddError(string message, ITempDataDictionary tempData = null)
+        public void AddError(string message)
         {
             NotificationType = "danger";
             Message = message;
-            SetTempData(tempData);
         }
 
-        public void AddInfo(string message, ITempDataDictionary tempData = null)
+        public void AddInfo(string message)
         {
             NotificationType = "info";
             Message = message;
-            SetTempData(tempData);
         }
 
-        public void AddWarning(string message, ITempDataDictionary tempData = null)
+        public void AddWarning(string message)
         {
             NotificationType = "warning";
             Message = message;
-            SetTempData(tempData);
         }
 
-        public void AddSuccess(string message, ITempDataDictionary tempData = null)
+        public void AddSuccess(string message)
         {
             NotificationType = "success";
             Message = message;
-            SetTempData(tempData);
         }
 
-        private void SetTempData(ITempDataDictionary tempData)
+        public void ApplyForRedirect(ITempDataDictionary tempData)
         {
-            if (tempData != null)
-            {
-                tempData["message"] = Message;
-                tempData["notificationType"] = NotificationType;
-            }
+            tempData["message"] = Message;
+            tempData["notificationType"] = NotificationType;
         }
     }
 }

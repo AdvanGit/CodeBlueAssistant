@@ -3,28 +3,28 @@
 }
 
 <div class="card shadow border-0">
-    <div class="card-header bg-primary d-flex justify-content-between">
+	<div class="card-header bg-primary d-flex justify-content-between">
 		<div class="text-center text-white">Детали</div>
-        <button type="button" onclick="closeDetail()" class="close">
-            <i class="bi bi-x text-white"></i>
-        </button>
-    </div>
+		<button type="button" onclick="closeDetail()" style="min-width:20px; min-height:20px" class="close">
+			<i class="bi bi-x text-white"></i>
+		</button>
+	</div>
 	<div class="card-body">
-        <h5 class="card-title m-0">@Model.Test.Title (@Model.Test.TestType.Caption) </h5>
-        <footer class="blockquote-footer mb-3">@Model.Option</footer>
+		<h5 class="card-title m-0">@Model.Test.Title (@Model.Test.TestType.Caption) </h5>
+		<footer class="blockquote-footer mb-3">@Model.Option</footer>
 
-        <ul class="list-unstyled">
-            <li>статус заявки: <span class="@(Model.Status == ProcedureStatus.Готов ? "text-success font-weight-bold" : "")"> @Model.Status</span></li>
-            <li>дата заявки: @Model.DateCreate.ToShortDateString()</li>
-            @if (Model.Status == ProcedureStatus.Готов)
-            {
-                <li>дата исполнения: @Model.DateResult.ToShortDateString()</li>
-                <li>результат: @Model.Value @Model.Test.Measure</li>
-                @if (Model.IsSymptom)
-                {
-                    <li class="font-weight-bold text-warning">Обнаружен симптом!</li>
-                }
-            }
-        </ul>
-    </div>    
+		<ul class="list-unstyled">
+			<li>статус заявки: <span class="@(Model.Status == ProcedureStatus.Готов ? "text-success font-weight-bold" : "")"> @Model.Status</span></li>
+			<li>дата заявки: @Model.DateCreate.ToShortDateString()</li>
+			@if (Model.Status == ProcedureStatus.Готов)
+			{
+				<li>дата исполнения: @Model.DateResult.ToShortDateString()</li>
+				<li>результат: @Model.Value @Model.Test.Measure</li>
+				@if (Model.IsSymptom)
+				{
+					<li class="font-weight-bold text-warning">Обнаружен симптом!</li>
+				}
+			}
+		</ul>
+	</div>    
 </div> 

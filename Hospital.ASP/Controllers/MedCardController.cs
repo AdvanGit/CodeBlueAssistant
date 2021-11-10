@@ -24,7 +24,7 @@ namespace Hospital.ASP.Controllers
 
 		public IActionResult Index()
 		{
-			return View();
+			return RedirectToAction("Tests");
 		}
 
 		public async Task<IActionResult> Tests()

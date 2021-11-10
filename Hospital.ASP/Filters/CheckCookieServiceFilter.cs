@@ -38,8 +38,9 @@ namespace Hospital.ASP.Filters
 				var controller = context.Controller as Controller;
 				if (controller == null) return;
 
-				_notificationService.AddError("Ошибка cookie, одно из утверждений не соответствует действительности. Авторизируйтесь повторно", controller.TempData);
-				context.Result = new RedirectResult("/Home/Error");
+				_notificationService.AddError("Ошибка cookie, одно из утверждений не соответствует действительности. Авторизируйтесь повторно");
+				_notificationService.ApplyForRedirect(controller.TempData);
+				context.Result = new RedirectResult("/Account/Login");
             }
 			else await next();
 		}

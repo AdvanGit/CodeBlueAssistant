@@ -40,11 +40,12 @@ namespace Hospital.ASP.Controllers
 				var patient = (await _patientRepository.GetWithInclude(p => p.Id == id, p => p.Belay)).FirstOrDefault();
 				if (!patient.IsValid())
                 {
-					_notificationService.AddError("Личная информация указана не полностью, некорые функции могут быть не доступны");
+					_notificationService.AddWarning("Личная информация указана не полностью, некорые функции могут быть не доступны");
 				}
 				return View(patient);
 			}
 			_notificationService.AddError("Ошибка идентификации");
+			_notificationService.ApplyForRedirect(TempData);
 			return RedirectToAction("Index", "Home");
 		}
 
@@ -83,13 +84,10 @@ namespace Hospital.ASP.Controllers
 					patient.CreateDate = res.CreateDate;
 					patient.Belay = belay;
 					var user = await _patientRepository.Update(id, patient);
-
+					_notificationService.AddSuccess("Данные успешно сохранены");
+					_notificationService.ApplyForRedirect(TempData);
 					await HttpContext.SignOutAsync();
 					await SignIn(user);
-				}
-				else
-				{
-					_notificationService.AddWarning("ошибка cookies, утверждение не найдено");
 				}
 				return RedirectToAction("Index");
 			}
