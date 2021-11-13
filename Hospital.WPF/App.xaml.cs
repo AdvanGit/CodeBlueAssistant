@@ -8,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
 using System.Security.Claims;
 using System.Windows;
 
@@ -57,7 +56,7 @@ namespace Hospital.WPF
 
 
                 services.AddSingleton<ClaimsPrincipal>();
-                services.AddSingleton<IPasswordHasher, TestPasswordHasher>();
+                services.AddSingleton<IPasswordHasher, DefaultPasswordHasher>();
 
                 services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
                 services.AddSingleton(typeof(IAuthenticationService<>), typeof(AuthenticationService<>));

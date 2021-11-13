@@ -2,6 +2,6 @@
 {
     public interface IPasswordHasher
     {
-        string GetPasswordHash(string passwordString);
+        string GetPasswordHash(long phoneNumber, string passwordString);
     }
 }

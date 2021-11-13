@@ -11,17 +11,15 @@ namespace Hospital.ASP.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IRootViewModelFactory _rootViewModelFactory;
 
-        public HomeController(ILogger<HomeController> logger, IRootViewModelFactory rootViewModelFactory)
+        public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
-            _rootViewModelFactory = rootViewModelFactory;
         }
 
         public IActionResult Index()
         {
-            return View(_rootViewModelFactory.CreateRegistratorViewModel());
+            return View();
         }
 
         public IActionResult Privacy()

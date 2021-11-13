@@ -1,33 +1,40 @@
 ﻿using Hospital.Domain.Model;
 using Hospital.Domain.Security;
-using Hospital.EntityFramework;
+using Hospital.Domain.Services;
 using Hospital.EntityFramework.Services;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 namespace Hospital.ViewModel.Factories
 {
     public class RootViewModelFactory : IRootViewModelFactory
     {
-        private readonly IDbContextFactory<HospitalDbContext> _contextFactory;
-
         private readonly AmbulatoryViewModelFactory _ambulatoryViewModelFactory;
-        private readonly ScheduleDataService _scheduleDataServices;
-        private readonly ClaimsPrincipal _claimsPrincipal;
+
         private readonly IAuthenticationService<Staff> _authenticationService;
+        private readonly ClaimsPrincipal _claimsPrincipal;
+
+        private readonly IGenericRepository<Belay> _belayRepository;
+        private readonly IGenericRepository<Patient> _patientRepository;
+        private readonly ScheduleDataService _scheduleDataServices;
+        private readonly EntryDataService _entryDataService;
+
 
         public RootViewModelFactory(
-            IDbContextFactory<HospitalDbContext> contextFactory,
             AmbulatoryViewModelFactory ambulatoryViewModelFactory,
-            ScheduleDataService scheduleDataServices,
             IAuthenticationService<Staff> authenticationService,
-            ClaimsPrincipal claimsPrincipal = null)
+            ClaimsPrincipal claimsPrincipal,
+            IGenericRepository<Belay> belayRepository,
+            IGenericRepository<Patient> patientRepository,
+            ScheduleDataService scheduleDataServices,
+            EntryDataService entryDataService)
         {
-            _contextFactory = contextFactory;
             _ambulatoryViewModelFactory = ambulatoryViewModelFactory;
-            _scheduleDataServices = scheduleDataServices;
-            _claimsPrincipal = claimsPrincipal;
             _authenticationService = authenticationService;
+            _claimsPrincipal = claimsPrincipal;
+            _belayRepository = belayRepository;
+            _patientRepository = patientRepository;
+            _scheduleDataServices = scheduleDataServices;
+            _entryDataService = entryDataService;
         }
 
         public LoginViewModel CreateLoginViewModel()
@@ -47,7 +54,7 @@ namespace Hospital.ViewModel.Factories
 
         public RegistratorViewModel CreateRegistratorViewModel()
         {
-            return new RegistratorViewModel(_contextFactory);
+            return new RegistratorViewModel(_belayRepository, _patientRepository, _entryDataService);
         }
     }
 }

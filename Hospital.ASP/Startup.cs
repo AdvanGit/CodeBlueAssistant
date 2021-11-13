@@ -4,7 +4,6 @@ using Hospital.Domain.Security;
 using Hospital.Domain.Services;
 using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
-using Hospital.ViewModel.Factories;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -39,8 +38,7 @@ namespace Hospital.ASP
             services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new LocalDBContextFactory(localConnectionString));
             #endregion
 
-            #region DATA LAYER FROM WPF ASSEMBLY
-            services.AddSingleton<IPasswordHasher, TestPasswordHasher>();
+            services.AddTransient<IPasswordHasher, DefaultPasswordHasher>();
 
             services.AddSingleton(typeof(IGenericRepository<>), typeof(GenericRepository<>));
             services.AddSingleton(typeof(IAuthenticationService<>), typeof(AuthenticationService<>));
@@ -50,10 +48,6 @@ namespace Hospital.ASP
             services.AddSingleton<AmbulatoryDataService>();
             services.AddSingleton<ScheduleDataService>();
             services.AddSingleton<EntryDataService>();
-
-            services.AddSingleton<IRootViewModelFactory, RootViewModelFactory>();
-            services.AddSingleton<AmbulatoryViewModelFactory>();
-            #endregion
 
             services.AddScoped<INotificationService, NotificationService>();
             services.AddScoped<CheckCookieServiceFilter>();

@@ -15,15 +15,15 @@ namespace Hospital.ViewModel
 {
     public class RegistratorViewModel : MainViewModel
     {
-        private readonly EntryDataService entryDataService;
-        private readonly IGenericRepository<Belay> belayDataService;
-        private readonly IGenericRepository<Patient> patientDataService;
+        private readonly EntryDataService _entryDataService;
+        private readonly IGenericRepository<Belay> _belayRepository;
+        private readonly IGenericRepository<Patient> _patientRepository;
 
-        public RegistratorViewModel(IDbContextFactory<HospitalDbContext> contextFactory)
+        public RegistratorViewModel(IGenericRepository<Belay> belayRepository, IGenericRepository<Patient> patientRepository, EntryDataService entryDataService)
         {
-            entryDataService = new EntryDataService(contextFactory);
-            belayDataService = new GenericRepository<Belay>(contextFactory);
-            patientDataService = new GenericRepository<Patient>(contextFactory);
+            _belayRepository = belayRepository;
+            _patientRepository = patientRepository;
+            _entryDataService = entryDataService;
         }
 
 
@@ -66,7 +66,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Patient> result = await entryDataService.FindPatient(SearchString);
+                    IEnumerable<Patient> result = await _entryDataService.FindPatient(SearchString);
                     if (result.Count() != 0)
                     {
                         Patients.Clear();
@@ -88,7 +88,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await entryDataService.FindDoctor(SearchString, _filter);
+                    IEnumerable<Entry> result = await _entryDataService.FindDoctor(SearchString, _filter);
                     if (result.Count() != 0)
                     {
                         Doctors.Clear();
@@ -112,7 +112,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await entryDataService.GetEntries(SelectedEntry.DoctorDestination.Id, (SelectedEntry.TargetDateTime));
+                    IEnumerable<Entry> result = await _entryDataService.GetEntries(SelectedEntry.DoctorDestination.Id, (SelectedEntry.TargetDateTime));
                     Entries.Clear();
                     FilteredEntries.Clear();
                     foreach (Entry entry in result) Entries.Add(entry);
@@ -135,7 +135,7 @@ namespace Hospital.ViewModel
                 IsLoading = true;
                 try
                 {
-                    IEnumerable<Entry> result = await entryDataService.GetEntries(SelectedEntry.DoctorDestination.Id, Filter.DateTime);
+                    IEnumerable<Entry> result = await _entryDataService.GetEntries(SelectedEntry.DoctorDestination.Id, Filter.DateTime);
                     Entries.Clear();
                     FilteredEntries.Clear();
                     foreach (Entry entry in result) Entries.Add(entry);
@@ -154,7 +154,7 @@ namespace Hospital.ViewModel
             {
                 try
                 {
-                    IEnumerable<Belay> result = await belayDataService.GetAll();
+                    IEnumerable<Belay> result = await _belayRepository.GetAll();
                     foreach (Belay belay in result) Belays.Add(belay);
                 }
                 catch (Exception ex)
@@ -167,11 +167,11 @@ namespace Hospital.ViewModel
         {
             try
             {
-                await patientDataService.Update(EditingPatient.Id, EditingPatient);
+                await _patientRepository.Update(EditingPatient.Id, EditingPatient);
                 SelectedPatient = EditingPatient;
                 Patients.Clear();
                 //TODO - повторного запроса можно избежать если работать с сущьностью, что возвращается из апдейта
-                Patients.Add(await patientDataService.GetById(SelectedPatient.Id));
+                Patients.Add(await _patientRepository.GetById(SelectedPatient.Id));
             }
             catch (Exception ex)
             {
@@ -183,7 +183,7 @@ namespace Hospital.ViewModel
             SelectedEntry.Patient = SelectedPatient;
             SelectedEntry.Registrator = SelectedEntry.DoctorDestination; //---заглушка отсутсвия данных аккаунта
             SelectedEntry.EntryStatus = EntryStatus.Ожидание;
-            await entryDataService.Update(SelectedEntry.Id, SelectedEntry);
+            await _entryDataService.Update(SelectedEntry.Id, SelectedEntry);
             SelectedEntry = null;
             SelectedPatient = null;
         }
