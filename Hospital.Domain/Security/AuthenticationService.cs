@@ -21,8 +21,10 @@ namespace Hospital.Domain.Security
         //TODO: new Exception type: DbEntryNotFindException
         public async Task<TUser> Authenticate(long phoneNumber, string password)
         {
-            var result = (await _dataServices.GetWhere(s => s.PhoneNumber == phoneNumber &&
-                s.PasswordHash == _passwordHasher.GetPasswordHash(phoneNumber, password))).FirstOrDefault();
+            string passwordHash = _passwordHasher.GetPasswordHash(phoneNumber, password);
+
+            TUser result = (await _dataServices.GetWhere(s => s.PhoneNumber == phoneNumber &&
+                s.PasswordHash == passwordHash)).FirstOrDefault();
 
             return result;
         }
@@ -30,6 +32,7 @@ namespace Hospital.Domain.Security
         public async Task<TUser> ChangePassword(long phoneNumber, string oldPassword, string newPassword)
         {
             string passwordHash = _passwordHasher.GetPasswordHash(phoneNumber, oldPassword);
+
             var user = (await _dataServices.GetWhere(s => s.PhoneNumber == phoneNumber && s.PasswordHash == passwordHash)).FirstOrDefault();
 
             if (user != null)
