@@ -1,9 +1,6 @@
-﻿using Hospital.ViewModel;
-using Hospital.ViewModel.Factories;
-using Hospital.ViewModel.Notificator;
+﻿using Hospital.ASP.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Diagnostics;
 
 namespace Hospital.ASP.Controllers
@@ -18,6 +15,16 @@ namespace Hospital.ASP.Controllers
         }
 
         public IActionResult Index()
+        {
+            return View();
+        }
+
+        public IActionResult About()
+        {
+            return View();
+        }
+
+        public IActionResult HowTo()
         {
             return View();
         }

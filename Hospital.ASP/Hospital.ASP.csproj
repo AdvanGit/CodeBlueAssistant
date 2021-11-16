@@ -20,7 +20,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Hospital.Domain\Hospital.Domain.csproj" />
     <ProjectReference Include="..\Hospital.EntityFramework\Hospital.EntityFramework.csproj" />
-    <ProjectReference Include="..\Hospital.ViewModel\Hospital.ViewModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,43 +1,74 @@
 ﻿@{
-    ViewData["Title"] = "One Clinic";
+	ViewData["Title"] = "One Clinic";
 }
 
-<div class="bd-example mt-3">
-  <div id="carouselExampleCaptions" class="carousel slide carousel-fade" data-ride="carousel">
-    <ol class="carousel-indicators">
-      <li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
-      <li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-      <div class="carousel-item active">
-        <img class="d-block w-100" alt="First slide [1280x600]" src="~/images/test1_thb.jpg" data-holder-rendered="true">
-        <div class="carousel-caption text-right">
-          <h3>#СТОПCOVID-19</h3>
-          <p>Прояви интеллект</p>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <img class="d-block w-100" data-src="holder.js/1280x600?auto=yes&amp;bg=666&amp;fg=444&amp;text=Second slide" alt="Second slide [900x300]" src="~/images/test2_thb.jpg" data-holder-rendered="true">
-        <div class="carousel-caption ">
-          <h3>#ДИСПАНСЕРИЗАЦИОВАН!</h3>
-          <p>Значит не боишься знать о себе все</p>
-        </div>
-      </div>
-      <div class="carousel-item">
-        <img class="d-block w-100" data-src="holder.js/1280x600?auto=yes&amp;bg=666&amp;fg=444&amp;text=Second slide" alt="Second slide [900x300]" src="~/images/test3_thb.jpg" data-holder-rendered="true">
-        <div class="carousel-caption ">
-          <h3>ПЕНСИОНЕРАМ СКИДКИ</h3>
-          <p>Успей, только сегодня!</p>
-        </div>
-      </div>
-    </div>
-    <a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="sr-only">Next</span>
-    </a>
-  </div>
+<style>
+	.gradient {
+		background: linear-gradient(172deg, rgba(255,255,255,0) 40%, rgba(44,57,77,1) 100%) !important;
+		content:'';
+		position:absolute;
+		left:0; top:0;
+		width:100%; height:100%;
+		display:inline-block;
+   }    
+</style>
+
+
+<div class="bd-example my-3">
+	<div id="carouselExampleCaptions" class="carousel slide carousel-fade table-responsive rounded-response" data-ride="carousel">
+	<ol class="carousel-indicators">
+		<li data-target="#carouselExampleCaptions" data-slide-to="0" class="active"></li>
+		<li data-target="#carouselExampleCaptions" data-slide-to="1"></li>
+		<li data-target="#carouselExampleCaptions" data-slide-to="2"></li>
+	</ol>
+	<div class="carousel-inner" role="listbox">
+		<div class="carousel-item active">
+		<img class="d-block w-100" alt="First slide [1280x600]" src="~/images/test1_thb.jpg" data-holder-rendered="true">
+		<div class="gradient"></div>
+		<div class="carousel-caption text-right">
+			<h3>#СТОПCOVID-19</h3>
+			<p>Прояви интеллект</p>
+		</div>
+		</div>
+		<div class="carousel-item">
+		<img class="d-block w-100" data-src="holder.js/1280x600?auto=yes&amp;bg=666&amp;fg=444&amp;text=Second slide" alt="Second slide [900x300]" src="~/images/test2_thb.jpg" data-holder-rendered="true">
+		<div class="gradient"></div>
+		<div class="carousel-caption text-right">
+			<h3>#ДИСПАНСЕРИЗАЦИОВАН!</h3>
+			<p>Значит не боишься знать о себе все</p>
+		</div>
+		</div>
+		<div class="carousel-item">
+		<img class="d-block w-100" data-src="holder.js/1280x600?auto=yes&amp;bg=666&amp;fg=444&amp;text=Second slide" alt="Second slide [900x300]" src="~/images/test3_thb.jpg" data-holder-rendered="true">
+		<div class="gradient"></div>
+		<div class="carousel-caption text-right">
+			<h3>ПЕНСИОНЕРАМ СКИДКИ</h3>
+			<p>Успей, только сегодня!</p>
+		</div>
+		</div>
+	</div>
+
+	<a class="carousel-control-prev" href="#carouselExampleCaptions" role="button" data-slide="prev">
+		<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+		<span class="sr-only">Previous</span>
+	</a>
+	<a class="carousel-control-next" href="#carouselExampleCaptions" role="button" data-slide="next">
+		<span class="carousel-control-next-icon" aria-hidden="true"></span>
+		<span class="sr-only">Next</span>
+	</a>
+	</div>
+
+
+</div>
+
+<div class="jumbotron m-0 px-4 py-2 rounded-response">
+		<h3 class="display-4">Внимание</h3>
+		<p class="lead">Данный сайт предназначен для ознакомления с работой платформы МИС "CodeBlue Assistant"
+					и содержит минимально необходимый функционал для записей на прием к врачам,
+					а так же для информирования о запланированных и проведенных процедурах.</p>
+		<hr class="my-2">
+		<p>В целях демонстрации возможностей работа разрешена только зарегистрированным пользователям. Вы можете использовать демо-аккаунт, или создать свой.</p>
+		<p class="lead">
+			<a class="btn btn-primary" href="#!" role="button">Подробнее</a>
+		</p>	
 </div>

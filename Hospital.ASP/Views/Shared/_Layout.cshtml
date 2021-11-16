@@ -69,7 +69,7 @@
 			</div>
 		</nav>
 	</header>
-	<div class="container p-0 pb-2">
+	<div class="container p-0 pb-3">
 
 		<partial name="_CookieConsentPartial"/>
 		@await Component.InvokeAsync("NotificationArea")
@@ -80,6 +80,7 @@
 
 	<footer class="border-top footer text-muted">
 		<div class="container">
+			<a asp-action="About" asp-controller="Home">О проекте</a>
 			&copy; 2021 - Hospital.ASP - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
 		</div>
 	</footer>

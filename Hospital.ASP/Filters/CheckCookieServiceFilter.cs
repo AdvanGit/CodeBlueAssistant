@@ -1,8 +1,6 @@
 ﻿using Hospital.ASP.Services;
 using Hospital.Domain.Model;
 using Hospital.Domain.Services;
-using Hospital.ViewModel;
-using Hospital.ViewModel.Notificator;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
