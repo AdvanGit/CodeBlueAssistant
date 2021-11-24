@@ -23,7 +23,7 @@
 
 
     <div class="d-flex justify-content-center mt-3">
-        <div class="card p-0 shadow" style="max-width:40rem; flex:1 1 auto;">
+        <div class="card p-0 border-0 shadow" style="max-width:40rem; flex:1 1 auto;">
 
             <div class="card-header text-center text-white bg-primary">Вход</div>
 
@@ -68,3 +68,31 @@
     </div>
 </form>
 
+
+<div  id="demoPartial" class="d-flex justify-content-center mt-3">
+    <button class="btn btn-link" onclick="getAccounts()">
+        Получить демо аккаунты
+    </button>
+</div>
+
+
+<script>
+	function getAccounts(){
+
+			$.ajax({
+				url: '@Url.Action("GetDemoAccounts")',
+				type: "post",
+				dataType: "html",
+				cache: false,
+				data: {
+					__RequestVerificationToken: getToken(),
+				},
+				success: function (result) {
+					$("#demoPartial").html(result);
+				},
+				error: function (XMLHttpRequest, textStatus, errorThrown) {
+					alert(errorThrown);
+				}
+			});
+		}
+</script>

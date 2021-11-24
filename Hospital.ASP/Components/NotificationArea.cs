@@ -17,7 +17,7 @@ namespace Hospital.ASP.Components
             if (_notificationService.IsExist)
             {
                 ViewBag.Message = _notificationService.Message;
-                ViewBag.Type = _notificationService.NotificationType;
+                ViewBag.Type = _notificationService.CssClassString;
                 return View();
             }
             else if (TempData.ContainsKey("message"))

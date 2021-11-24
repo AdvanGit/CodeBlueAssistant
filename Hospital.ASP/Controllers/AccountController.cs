@@ -25,21 +25,21 @@ namespace Hospital.ASP.Controllers
 		private readonly IGenericRepository<Belay> _belayRepository;
 		private readonly INotificationService _notificationService;
 
-        public AccountController(IAuthenticationService<Patient> authenticationService, IGenericRepository<Patient> patientRepository, IGenericRepository<Belay> belayRepository, INotificationService notificationService)
-        {
-            _authenticationService = authenticationService;
-            _patientRepository = patientRepository;
-            _belayRepository = belayRepository;
-            _notificationService = notificationService;
-        }
+		public AccountController(IAuthenticationService<Patient> authenticationService, IGenericRepository<Patient> patientRepository, IGenericRepository<Belay> belayRepository, INotificationService notificationService)
+		{
+			_authenticationService = authenticationService;
+			_patientRepository = patientRepository;
+			_belayRepository = belayRepository;
+			_notificationService = notificationService;
+		}
 
-        public async Task<IActionResult> Index()
+		public async Task<IActionResult> Index()
 		{
 			if (int.TryParse(User.FindFirstValue("id"), out int id))
 			{
 				var patient = (await _patientRepository.GetWithInclude(p => p.Id == id, p => p.Belay)).FirstOrDefault();
 				if (!patient.IsValid())
-                {
+				{
 					_notificationService.AddWarning("Личная информация указана не полностью, некорые функции могут быть не доступны");
 				}
 				return View(patient);
@@ -69,9 +69,8 @@ namespace Hospital.ASP.Controllers
 			_notificationService.AddWarning("Ошибка cookie: не найдено подходящее утверждение");
 			return View();
 		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		[ServiceFilter(typeof(CheckCookieServiceFilter))]
+
+		[HttpPost, ValidateAntiForgeryToken, ServiceFilter(typeof(CheckCookieServiceFilter))]
 		public async Task<IActionResult> Edit(Patient patient)
 		{
 			if (ModelState.IsValid)
@@ -98,16 +97,14 @@ namespace Hospital.ASP.Controllers
 			}
 		}
 
-
 		[AllowAnonymous]
 		public IActionResult Login(string returnUrl = null)
 		{
 			ViewData["ReturnUrl"] = returnUrl;
 			return View();
 		}
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
+
+		[HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
 		public async Task<IActionResult> Login(Patient patient, string returnUrl = null)
 		{
 			if (ModelState.IsValid)
@@ -144,9 +141,8 @@ namespace Hospital.ASP.Controllers
 			ViewBag.BelaysList = new SelectList(belays, "Id", "Title");
 			return View();
 		}
-		[HttpPost]
-		[AllowAnonymous]
-		[ValidateAntiForgeryToken]
+
+		[HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
 		public async Task<IActionResult> Register(Patient patient, string password, string confirmPassword)
 		{
 			if (ModelState.IsValid)
@@ -173,29 +169,56 @@ namespace Hospital.ASP.Controllers
 		{
 			return View();
 		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		[ServiceFilter(typeof(CheckCookieServiceFilter))]
+
+		[HttpPost, ValidateAntiForgeryToken, ServiceFilter(typeof(CheckCookieServiceFilter))]
 		public async Task<IActionResult> ChangePassword(long phoneNumber, string oldPassword, string newPassword, string confirmPassword)
-        {
+		{
 			if (newPassword == confirmPassword)
-            {
-                try 
-                {
+			{
+				try
+				{
 					await _authenticationService.ChangePassword(phoneNumber, oldPassword, newPassword);
 					_notificationService.AddSuccess("Пароль успешно обновлен");
 				}
-                catch (Exception ex)
-                {
+				catch (Exception ex)
+				{
 					_notificationService.AddWarning(ex.Message);
 				}
 			}
-            else
-            {
+			else
+			{
 				_notificationService.AddWarning("Пароли не совпадают");
 			}
 			return View("Security");
-        }
+		}
+
+		[HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
+		public async Task<IActionResult> GetDemoAccounts()
+		{
+			IEnumerable<Patient> patients = await _patientRepository.GetWhere(p => p.Id == 75 || p.Id == 1);
+			return PartialView("_DemoAccountsPartial", patients);
+		}
+
+		[HttpPost, AllowAnonymous, ValidateAntiForgeryToken]
+		public async Task<IActionResult> LoginDemo(Patient patient)
+		{
+			if (ModelState.IsValid)
+			{
+				Patient user = await _patientRepository.GetById(patient.Id);
+				if (user != null && user.PhoneNumber == patient.PhoneNumber)
+				{
+					await SignIn(user);
+					return RedirectToAction("Index", "Home");
+				}
+				_notificationService.AddError("Некорректные данные демо-аккаунта");
+			}
+			else
+			{
+				_notificationService.AddError("Некорректные данные запроса");
+			}
+			_notificationService.ApplyForRedirect(TempData);
+			return RedirectToAction("Login");
+		}
 
 		private async Task SignIn(Patient patient)
 		{
@@ -212,10 +235,9 @@ namespace Hospital.ASP.Controllers
 		}
 
 		private async Task<SelectList> GetBelaysSelectList(int currentItemId)
-        {
+		{
 			var belays = await _belayRepository.GetAll();
 			return new SelectList(belays, "Id", "Title", belays.Where(b => b.Id == currentItemId).FirstOrDefault());
 		}
-
 	}
 }

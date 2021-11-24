@@ -30,7 +30,7 @@ namespace Hospital.WPF.Views
             {
                 try
                 {
-                    if (await (DataContext as LoginViewModel).Login(phone, null) != null)
+                    if (await (DataContext as LoginViewModel).Login(phone, "123") != null)
                     {
                         Main.ViewStateManager.Setup((DataContext as LoginViewModel).GetPrincipal());
                         Main.CurrentPage = Main.ViewStateManager.Navigator.Bodies[0];

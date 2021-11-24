@@ -4,7 +4,7 @@ namespace Hospital.ASP.Services
 {
     public interface INotificationService
     {
-        public string NotificationType { get; }
+        public string CssClassString { get; }
         public string Message { get; }
         public bool IsExist { get; }
 

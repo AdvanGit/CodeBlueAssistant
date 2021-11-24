@@ -24,7 +24,7 @@ namespace Hospital.ASP.Controllers
             return View();
         }
 
-        public IActionResult HowTo()
+        public IActionResult Tutorial()
         {
             return View();
         }
