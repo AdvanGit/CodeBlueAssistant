@@ -18,13 +18,15 @@ namespace Hospital.EntityFramework.Services
 
         public async Task<IEnumerable<Entry>> GetEntriesByDate(int doctorId, DateTime date)
         {
+
+
             using (HospitalDbContext db = _contextFactory.CreateDbContext())
             {
                 List<Entry> entries = await db.Entries
                     .AsQueryable()
                     .AsNoTracking()
                     .Where(e => e.DoctorDestination.Id == doctorId)
-                    .Where(e => e.TargetDateTime.Date == date.Date)
+                    .Where(e => e.TargetDateTime.Date == date.ToUniversalTime().Date)
                     .Include(e => e.DoctorDestination).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                     .Include(e => e.Patient)
                     .Include(e => e.Registrator).ThenInclude(r => r.Department).ThenInclude(d => d.Title)

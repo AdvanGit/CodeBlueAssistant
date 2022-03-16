@@ -8,8 +8,8 @@ namespace Hospital.WPF.Services.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            DateTime today = DateTime.Today;
-            DateTime birthday = (DateTime)value;
+            DateOnly today = DateOnly.FromDateTime(DateTime.Now);
+            DateOnly birthday = (DateOnly)value;
 
             int years = today.Year - birthday.Year;
             int month = today.Month - birthday.Month;

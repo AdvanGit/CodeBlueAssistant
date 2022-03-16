@@ -17,10 +17,11 @@
 
 <body>
 	<header>
-		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow"
+		<nav class="navbar navbar-expand-md navbar-toggleable-md navbar-dark bg-dark border-bottom box-shadow"
 			style="font-size: 1.0em !important">
 			<div class="container">
-				<a class="navbar-brand text-nowrap" asp-area="" asp-controller="Home" asp-action="Index"><span class="text-warning">One</span>Clinic</a>
+				<a class="navbar-brand mr-2 text-nowrap" asp-area="" asp-controller="Home" asp-action="Index"><span class="text-warning">One</span>Clinic</a>
+				<span style="flex:auto;" class="navbar-brand mr-1 lead d-md-none">- @ViewData["Title"]</span>
 				<button class="navbar-toggler border-0" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -30,17 +31,17 @@
 						@if (User.Identity.IsAuthenticated)
 						{
 							<li class="nav-item">
-								<a class="nav-link @Html.ActiveClass("Account","Index","text-white")" asp-area="" asp-controller="Account" asp-action="Index">
+								<a class="nav-link @Html.ActiveClass("Account","Index,Security,Edit","text-white")" asp-area="" asp-controller="Account" asp-action="Index">
 									АККАУНТ
 								</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link " asp-area="" asp-controller="Appointment" asp-action="Index">
+								<a class="nav-link @Html.ActiveClass("Appointment","Index","text-white")" asp-area="" asp-controller="Appointment" asp-action="Index">
 									ЗАПИСЬ НА ПРИЕМ
 								</a>
 							</li>
 							<li class="nav-item">
-								<a class="nav-link @Html.ActiveClass("MedCard","Index","text-white")" asp-area="" asp-controller="MedCard" asp-action="Index">
+								<a class="nav-link @Html.ActiveClass("MedCard","Tests,Entries","text-white")" asp-area="" asp-controller="MedCard" asp-action="Index">
 									МЕДИЦИНСКАЯ КАРТА
 								</a>
 							</li>
@@ -78,10 +79,11 @@
 		</main>
 	</div>
 
-	<footer class="border-top footer text-muted">
+	<footer class="border-top footer text-muted"> 
 		<div class="container">
-			<a asp-action="About" asp-controller="Home">О проекте</a>
-			&copy; 2021 - Hospital.ASP - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+			<a asp-action="About" asp-controller="Home">О проекте</a> -
+			<a asp-action="Tutorial" asp-controller="Home">Помощь</a> - 
+			<a asp-controller="Home" asp-action="Privacy">Privacy</a>
 		</div>
 	</footer>
 

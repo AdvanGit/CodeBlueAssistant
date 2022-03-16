@@ -9,7 +9,7 @@ namespace Hospital.WPF.Services.Validators
         public override ValidationResult Validate(object value, CultureInfo cultureInfo)
         {
             if (value == null) return new ValidationResult(false, $"Поле не может быть пустым");
-            else if (((DateTime)value).Year < 1900 || ((DateTime)value).Date > DateTime.Today ) return new ValidationResult(false, $"Дата рождения не верна");
+            else if (((DateTime)value).Year < 1900 || ((DateTime)value > DateTime.Today)) return new ValidationResult(false, $"Дата рождения не верна");
             else return ValidationResult.ValidResult;
         }
     }

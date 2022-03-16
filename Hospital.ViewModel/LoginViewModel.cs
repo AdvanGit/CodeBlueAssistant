@@ -29,6 +29,7 @@ namespace Hospital.ViewModel
                     throw new UnauthorizedAccessException("Запись не найдена");
                 }
 
+                //need migration claims operation to service
                 var claims = new List<Claim>
                     {
                         new Claim(ClaimsIdentity.DefaultRoleClaimType, staff.Role.ToString()),

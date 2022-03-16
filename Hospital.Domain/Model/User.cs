@@ -9,13 +9,14 @@ namespace Hospital.Domain.Model
     public enum WeekDays { FiveTwo, TwoTwo, FourTwo, Even, Odd }
     public enum Role { Administrator, Manager, Ambulatorer, Stationeer, Registrator }
 
+
     public abstract class User : DomainObject
     {
         private string _firstName;
         private string _midName;
         private string _lastName;
         private long _phoneNumber;
-        private DateTime _birthDay;
+        private DateOnly _birthDay;
         private Gender? _gender;
         private DateTime _createDate;
         private string _passwordHash;
@@ -74,7 +75,7 @@ namespace Hospital.Domain.Model
             }
         }
         [Required(ErrorMessage = "не указана дата рождения")]
-        public DateTime BirthDay
+        public DateOnly BirthDay
         {
             get => _birthDay;
             set

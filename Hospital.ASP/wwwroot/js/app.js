@@ -3,6 +3,6 @@ function sayHello() {
         .value;
     var framework = document.getElementById("framework")
         .value;
-    return "Hello from " + compiler + " and " + framework + "!";
+    return "Hello from ".concat(compiler, " and ").concat(framework, "!");
 }
 //# sourceMappingURL=app.js.map

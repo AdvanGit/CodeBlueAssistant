@@ -24,7 +24,7 @@ namespace Hospital.ViewModel
             _scheduleDataServices = scheduleDataServices;
             _ambulatoryViewModelFactory = ambulatoryViewModelFactory;
             _claimsPrincipal = claimsPrincipal;
-            SelectedDate = new DateTime(2021, 05, 03);
+            SelectedDate = new DateTime(2021, 05, 04);
         }
 
         public DateTime SelectedDate { get => _selectedDate; set { _selectedDate = value; OnPropertyChanged(nameof(SelectedDate)); GetEntry(value).ConfigureAwait(true); } }

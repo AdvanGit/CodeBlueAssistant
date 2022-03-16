@@ -21,6 +21,7 @@ namespace Hospital.EntityFramework.Services
 
         public async Task<IEnumerable<Entry>> FindDoctor(string message, EntrySearchFilter filter)
         {
+            filter.DateTime.ToUniversalTime();
             List<Entry> result = new List<Entry>();
             string _string = Regex.Replace(message.Trim(), @"\s+", " ");
             string[] words = _string.Split(' ');
@@ -34,7 +35,7 @@ namespace Hospital.EntityFramework.Services
                         .AsQueryable()
                         .OrderBy(c => c.DateTimeStart)
                         .Where(c => c.Staff.Department.Type == filter.DepartmentType)
-                        .Where(c => (filter.IsDate ? (c.DateTimeStart.Date == filter.DateTime.Date) : (c.DateTimeStart.Date < (DateTime.Now.AddDays(30)))))
+                        .Where(c => (filter.IsDate ? (c.DateTimeStart.Date == filter.DateTime.ToUniversalTime().Date) : (c.DateTimeStart.Date < (DateTime.UtcNow.AddDays(30)))))
                         .Include(c => c.Staff).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                         //Далее фильтрация происходит на клиенте, EF не дает добро на обработку сложных запросов сервером(в асинхронном режиме)
                         //StringComparison только на клиенте, если рефакторить на сервер, то через ToLower

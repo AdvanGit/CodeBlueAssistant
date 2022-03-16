@@ -1,10 +1,8 @@
 ﻿using Hospital.Domain.Filters;
 using Hospital.Domain.Model;
 using Hospital.Domain.Services;
-using Hospital.EntityFramework;
 using Hospital.EntityFramework.Services;
 using Hospital.ViewModel.Notificator;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -42,12 +40,13 @@ namespace Hospital.ViewModel
 
         private Entry _selectedEntry;
         private Patient _selectedPatient;
-        private Patient _editingPatient;
-
+        private Patient _editingPatient = new Patient();
 
         public Entry SelectedEntry { get => _selectedEntry; set { _selectedEntry = value; if (value != null) Filter.DateTime = value.TargetDateTime; OnPropertyChanged(nameof(SelectedEntry)); } }
         public Patient SelectedPatient { get => _selectedPatient; set { _selectedPatient = value; OnPropertyChanged(nameof(SelectedPatient)); } }
         public Patient EditingPatient { get => _editingPatient; set { _editingPatient = value; OnPropertyChanged(nameof(EditingPatient)); } }
+        public DateTime BirthDateTime { get => _editingPatient.BirthDay.ToDateTime(TimeOnly.MinValue); set { _editingPatient.BirthDay = DateOnly.FromDateTime(value); OnPropertyChanged(nameof(BirthDateTime)); } }
+
 
         public ObservableCollection<Entry> Doctors { get; } = new ObservableCollection<Entry>();
         public ObservableCollection<Entry> Entries { get; } = new ObservableCollection<Entry>();
@@ -195,7 +194,7 @@ namespace Hospital.ViewModel
         }
         public void EditPatient(bool isNew)
         {
-            if (isNew) EditingPatient = new Patient() { BirthDay = DateTime.Now };
+            if (isNew) EditingPatient = new Patient() { BirthDay = DateOnly.FromDateTime(DateTime.Now) };
             else EditingPatient = (Patient)SelectedPatient.Clone();
         }
 

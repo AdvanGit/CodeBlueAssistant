@@ -31,11 +31,11 @@ namespace Hospital.ASP
             string localConnectionString = Configuration.GetConnectionString("local");
             string npgSqlConnectionString = Configuration.GetConnectionString("npgSql");
 
-            //services.AddDbContext<HospitalDbContext>(o => o.UseNpgsql(npgSqlConnectionString));
-            //services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new NpgSqlDbContextFactory(npgSqlConnectionString));
+            services.AddDbContext<HospitalDbContext>(o => o.UseNpgsql(npgSqlConnectionString));
+            services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new NpgSqlDbContextFactory(npgSqlConnectionString));
 
-            services.AddDbContext<HospitalDbContext>(o => o.UseSqlServer(localConnectionString));
-            services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new LocalDBContextFactory(localConnectionString));
+            //services.AddDbContext<HospitalDbContext>(o => o.UseSqlServer(localConnectionString));
+            //services.AddSingleton<IDbContextFactory<HospitalDbContext>>(_ => new LocalDBContextFactory(localConnectionString));
             #endregion
 
             services.AddTransient<IPasswordHasher, DefaultPasswordHasher>();

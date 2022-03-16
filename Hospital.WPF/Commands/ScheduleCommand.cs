@@ -1,5 +1,4 @@
 ﻿using Hospital.ViewModel;
-using Hospital.ViewModel.Ambulatory;
 using Hospital.WPF.Views;
 using System;
 
