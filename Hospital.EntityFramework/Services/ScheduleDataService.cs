@@ -26,7 +26,7 @@ namespace Hospital.EntityFramework.Services
                     .AsQueryable()
                     .AsNoTracking()
                     .Where(e => e.DoctorDestination.Id == doctorId)
-                    .Where(e => e.TargetDateTime.Date == date.ToUniversalTime().Date)
+                    .Where(e => e.TargetDateTime.Date == date.Date)
                     .Include(e => e.DoctorDestination).ThenInclude(s => s.Department).ThenInclude(d => d.Title)
                     .Include(e => e.Patient)
                     .Include(e => e.Registrator).ThenInclude(r => r.Department).ThenInclude(d => d.Title)

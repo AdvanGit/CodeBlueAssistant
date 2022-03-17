@@ -21,6 +21,7 @@ namespace Hospital.ASP
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
         }
 
         public IConfiguration Configuration { get; }
@@ -73,7 +74,7 @@ namespace Hospital.ASP
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseBrowserLink();
+                //app.UseBrowserLink(); //removed .net 6
             }
             else
             {

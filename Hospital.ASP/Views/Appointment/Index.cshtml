@@ -90,7 +90,7 @@
 				$("#doctorsPartial").html(result);
 			},
 			error: function (XMLHttpRequest, textStatus, errorThrown) {
-				alert(errorThrown);
+				alert(textStatus + " " + errorThrown);
 			}
 		});
 	}
